@@ -2,7 +2,7 @@ name: Build and Deploy to Plesk
 on:
   push:
     branches:
-      - dev
+      - master
 
 jobs:
   build-and-deploy:
