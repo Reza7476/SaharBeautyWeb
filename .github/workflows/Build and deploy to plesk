@@ -23,7 +23,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Publish project
-        run: dotnet publish SaharBeautyWeb.csproj --configuration Release --no-restore --output ./publish  --self-contained false
+        run: dotnet publish SaharBeautyWeb/SaharBeautyWeb.csproj --configuration Release --no-restore --output ./publish  --self-contained false
 
       - name: List published files
         run: ls -laR ./publish
