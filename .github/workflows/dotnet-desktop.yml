@@ -1,0 +1,39 @@
+name: Build and Deploy to Plesk
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore SaharBeautyWeb/SaharBeautyWeb.csproj
+
+      - name: Build project
+        run: dotnet build SaharBeautyWeb/SaharBeautyWeb.csproj --configuration Release --no-restore
+
+      - name: Publish project
+        run: dotnet publish SaharBeautyWeb/SaharBeautyWeb.csproj --configuration Release --no-restore --output ./publish --self-contained false
+
+      - name: List published files
+        run: ls -laR ./publish
+
+      - name: Deploy to Production via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./publish/
