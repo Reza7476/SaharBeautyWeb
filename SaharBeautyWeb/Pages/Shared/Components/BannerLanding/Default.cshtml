@@ -1,0 +1,27 @@
+﻿@model BannerLandingModel
+
+<div class="banner-area banner-img-one" id="banner-backGround"
+     style="background-image: url('@Model.URL'); ">
+    <div class="banner-shape">
+        <img src="~/Layout/assets/images/banner/banner-shape1.png" alt="Shape">
+        <img src="~/Layout/assets/images/banner/banner-shape2.png" alt="Shape">
+        <img src="~/Layout/assets/images/banner/banner-shape3.png" alt="Shape">
+        <img src="~/Layout/assets/images/banner/banner-shape4.png" alt="Shape">
+        <img src="~/Layout/assets/images/banner/banner-shape5.png" alt="Shape">
+    </div>
+    <div class="d-table">
+        <div class="d-table-cell">
+            <div class="container-fluid">
+                <div class="banner-content">
+                    <h1 class="wow fadeInUp">@Model.Title</h1>
+                    <div class="banner-btn-area">
+                        <a class="common-btn" href="services.html">خدمات ما</a>
+                        <a class="common-btn banner-btn" href="about.html">درباره ما</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+   
