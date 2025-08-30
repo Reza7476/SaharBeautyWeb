@@ -243,7 +243,7 @@
             </div>
         </div>
     </div>
-
+ 
     @RenderBody()
 
     <footer class="footer-area pt-100 pb-70">
@@ -397,6 +397,7 @@
     <script src="~/Layout/assets/js/extensions/revolution.extension.video.min.js"></script>
     <script src="~/Layout/assets/js/jquery.nice-select.min.js"></script>
     <script src="~/Layout/assets/js/custom.js"></script>
+    @RenderSection("scripts", false)
     <div class="switch-box">
         <label id="switch" class="switch">
             <input type="checkbox" onchange="toggleTheme()" id="slider">
@@ -405,5 +406,11 @@
             </span>
         </label>
     </div>
+
+    <script>
+        $(()=>{
+            alert("reza");
+        })
+    </script>
 </body>
 </html>
