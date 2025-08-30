@@ -1,0 +1,105 @@
+﻿@page
+@model SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners.IndexModel
+@{
+    Layout = "_UserPanelLayout";
+}
+
+
+
+<div class="tab-pane active" role="tabpanel">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">بنر</h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <div class="row justify-content-center">
+                    <div class="col-xl-8">
+                        <div id="banner-container">
+                            <!-- Shimmer State -->
+                            <div class="d-flex align-items-start ">
+                                <div class="flex-grow-1 overflow-hidden shimmer-line">
+                                    <h5 class="font-size-14 text-truncate ">
+                                        <a href="#" class="text-dark"></a>
+                                    </h5>
+                                    <p class="font-size-13 text-muted mb-0"></p>
+                                </div>
+                                <div class="flex-shrink-0 ms-2">
+                                    <div class="dropdown shimmer-line">
+                                        <a class="btn btn-link text-muted font-size-16 p-1 py-0 dropdown-toggle shadow-none"
+                                           href="#"
+                                           role="button"
+                                           data-bs-toggle="dropdown"
+                                           aria-expanded="false">
+                                            <i class="bx bx-dots-horizontal-rounded"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#"></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="position-relative mt-3 shimmer-box ">
+                                <img src="" alt="" class="img-thumbnail">
+                            </div>
+                        </div>
+                        <!-- /banner-container -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+
+        $(() => {
+            var $container = $("#banner-container");
+            $.ajax({
+                url: '/UserPanels/Admin/SiteSettings/Banners?handler=Banner',
+                type: 'GET',
+                success: function (res) {
+                    if (res.success && res.data) {
+                        console.log(res.data);
+                        var banner = res.data;
+                        $container.html(`
+                                   <div class="d-flex align-items-start">
+                                       <div class="flex-grow-1 overflow-hidden">
+                                           <h5 class="font-size-14 text-truncate">
+                                               <a href="#" class="text-dark">${banner.title}</a>
+                                           </h5>
+                                           <p class="font-size-13 text-muted mb-0">${banner.createDate}</p>
+                                       </div>
+                                       <div class="flex-shrink-0 ms-2">
+                                           <div class="dropdown">
+                                               <a class="btn btn-link text-muted font-size-16 p-1 py-0 dropdown-toggle shadow-none"
+                                                  href="#"
+                                                  role="button"
+                                                  data-bs-toggle="dropdown"
+                                                  aria-expanded="false">
+                                                   <i class="bx bx-dots-horizontal-rounded"></i>
+                                               </a>
+                                               <ul class="dropdown-menu dropdown-menu-end">
+                                                   <li><a class="dropdown-item" id="${banner.id}" href="#">ویرایش</a></li>
+                                               </ul>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="position-relative mt-3">
+                                       <img src="${banner.url}" alt="${banner.imageName}" class="img-thumbnail">
+                                   </div>`)
+                    } else {
+                        $container.html('<p class="text-center text-muted">داده‌ای موجود نیست</p>');
+                    }
+                },
+                error: function () {
+                    $container.html('<p class="text-center text-danger">خطا در بارگذاری بنر</p>');
+                }
+            })
+
+        });
+               
+    </script>
+}

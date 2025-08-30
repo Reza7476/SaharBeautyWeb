@@ -1,7 +1,15 @@
+using SaharBeautyWeb.Configurations.Outofacs;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var baseAddress = builder.Configuration["ApiSettings:BaseUrl"];
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddHttpClient();
+
+builder.Host.AddAutofac(baseAddress!);
 
 var app = builder.Build();
 
@@ -14,6 +22,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
