@@ -24,6 +24,7 @@
     <link href="~/Layout/Admin/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="~/Layout/Admin/assets/css/app-rtl.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="~/css/shimmer.css" rel="stylesheet" />
 
 </head>
 
@@ -63,9 +64,8 @@
                 </div> <!-- container-fluid -->
             </div>
             <!-- End Page-content -->
-
             @await Component.InvokeAsync("Footer")
-            
+
         </div>
         <!-- end main content-->
 
@@ -96,7 +96,7 @@
     <script src="~/Layout/Admin/assets/js/pages/dashboard.init.js"></script>
 
     <script src="~/Layout/Admin/assets/js/app.js"></script>
-
+    @RenderSection("scripts", false)
 </body>
 
 </html>
