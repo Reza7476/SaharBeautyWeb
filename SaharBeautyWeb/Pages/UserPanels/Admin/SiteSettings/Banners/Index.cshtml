@@ -5,8 +5,8 @@
 }
 
 
-
-<div class="tab-pane active" role="tabpanel">
+@Html.AntiForgeryToken()
+<div class="tab-pane active" role="tabpanel" id="banner-shimmer">
     <div class="card">
         <div class="card-header">
             <h5 class="card-title mb-0">بنر</h5>
@@ -50,48 +50,102 @@
         </div>
     </div>
 </div>
+<button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    مدال پس زمینه ایستا
+</button>
+<div class="row" style="display:none" id="register-banner">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">ثبت بنر</h4>
+            </div>
+            <div class="card-body">
+                <form class="needs-validation" novalidate="" method="post" action="">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <input type="text" id="banner-title" class="form-control" placeholder="لطفا یک عنوان را وارد نمایید">
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <input type="file" id="banner-image" class="form-control" placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" name="submit" type="submit" id="send-banner">ثبت</button>
+                </form>
+            </div>
+        </div>
+        <!-- end card -->
+    </div> <!-- end col -->
+</div>
+<div class="col-xl-6" style="display:none" id="display-image">
+    <div class="card">
+        <div class="card-body">
+            <div>
+                <img src="/Layout/Admin/assets/images/small/img-2.jpg" class="img-fluid" alt="Responsive image">
+            </div>
+        </div><!-- end card-body -->
+    </div><!-- end card -->
+</div>
+
+
 
 @section Scripts {
     <script>
 
-
         $(() => {
             var $container = $("#banner-container");
+            var $form = $("#register-banner");
+            var $displayImage = $("#display-image");
+            var $banerShimmer = $("#banner-shimmer");
+
             $.ajax({
                 url: '/UserPanels/Admin/SiteSettings/Banners?handler=Banner',
                 type: 'GET',
                 success: function (res) {
                     if (res.success && res.data) {
-                        console.log(res.data);
                         var banner = res.data;
                         $container.html(`
-                                   <div class="d-flex align-items-start">
-                                       <div class="flex-grow-1 overflow-hidden">
-                                           <h5 class="font-size-14 text-truncate">
-                                               <a href="#" class="text-dark">${banner.title}</a>
-                                           </h5>
-                                           <p class="font-size-13 text-muted mb-0">${banner.createDate}</p>
-                                       </div>
-                                       <div class="flex-shrink-0 ms-2">
-                                           <div class="dropdown">
-                                               <a class="btn btn-link text-muted font-size-16 p-1 py-0 dropdown-toggle shadow-none"
-                                                  href="#"
-                                                  role="button"
-                                                  data-bs-toggle="dropdown"
-                                                  aria-expanded="false">
-                                                   <i class="bx bx-dots-horizontal-rounded"></i>
-                                               </a>
-                                               <ul class="dropdown-menu dropdown-menu-end">
-                                                   <li><a class="dropdown-item" id="${banner.id}" href="#">ویرایش</a></li>
-                                               </ul>
-                                           </div>
-                                       </div>
-                                   </div>
-                                   <div class="position-relative mt-3">
-                                       <img src="${banner.url}" alt="${banner.imageName}" class="img-thumbnail">
-                                   </div>`)
+                                 <div class="d-flex align-items-start">
+                                     <div class="flex-grow-1 overflow-hidden">
+                                         <h5 class="font-size-14 text-truncate">
+                                             <a href="#" class="text-dark">${banner.title}</a>
+                                         </h5>
+                                         <p class="font-size-13 text-muted mb-0">${banner.createDate}</p>
+                                     </div>
+                                     <div class="flex-shrink-0 ms-2">
+                                         <div class="dropdown">
+                                             <a class="btn btn-link text-muted font-size-16 p-1 py-0 dropdown-toggle shadow-none"
+                                                href="#"
+                                                role="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                 <i class="bx bx-dots-horizontal-rounded">
+                                                 
+                                                 </i>
+                                             </a>
+                                             <ul class="dropdown-menu dropdown-menu-end">
+                                                 <li>
+                                                   <a class="dropdown-item banner-editt" id="banner-${banner.id}" href="#">
+                                                         ویرایش  
+                                                    </a>
+                                                 </li>
+                                             </ul>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="position-relative mt-3">
+                                     <img src="${banner.url}" alt="${banner.imageName}" class="img-thumbnail">
+                                 </div>`)
+                    } else if (res.success && res.data == null) {
+                        $banerShimmer.hide();
+                        $form.show();
                     } else {
-                        $container.html('<p class="text-center text-muted">داده‌ای موجود نیست</p>');
+                        handleApiError(res);
                     }
                 },
                 error: function () {
@@ -99,7 +153,63 @@
                 }
             })
 
+
+            $("#send-banner").on("click", function (e) {
+                e.preventDefault();
+                var title = $("#banner-title").val();
+                var imageFile = $("#banner-image")[0].files[0];
+
+                if (!title || !imageFile) {
+                 showPopup("عنوان و عکس نباید خالی باشند ")
+                return;
+                } 
+
+                var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+                if (!allowedExtensions.exec(imageFile.name)) {
+                    showPopup("فرمت تصویر باید jpg، jpeg یا png باشد.")
+                    return;
+                }
+
+                let formData = new FormData();
+                formData.append("Title", title);
+                formData.append("Image", imageFile);
+                
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                if (token) formData.append('__RequestVerificationToken', token);
+
+                $.ajax({
+                    url: '/UserPanels/Admin/SiteSettings/Banners?handler=Banner',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+                        if (res.success) {
+                            $("#register-banner").hide();
+                            location.reload();
+                        } else {
+                            showPopup(res.error);
+                            return
+                        }
+                    },
+                    error: function (err) {
+                        showPopup("خطا در ارتباط با سرور");
+                        return;
+                    }
+                });
+            });
+
+            $container.on("click", ".banner-editt", function (e) {
+                e.preventDefault();
+
+                // فقط برای تست مطمئن شیم کلیک کار میکنه
+                console.log("ویرایش کلیک شد");
+
+                // نمایش مودال
+                var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                modal.show();
+            });
         });
-               
+
     </script>
 }
