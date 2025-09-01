@@ -7,4 +7,5 @@ namespace SaharBeautyWeb.Services.Banners;
 public interface IBannerService : IService
 {
     Task<ApiResultDto<GetBannerDto?>> Get();
+    Task<ApiResultDto<long>> Add(AddBannerModel dto); 
 }

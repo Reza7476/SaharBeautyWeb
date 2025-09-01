@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SaharBeautyWeb.Models.Commons;
+
 using SaharBeautyWeb.Services.Banners;
 
 namespace SaharBeautyWeb.Pages.Shared.Components.BannerLanding;
@@ -12,24 +14,43 @@ public class BannerLandingViewComponent : ViewComponent
         _service = service;
     }
 
-    public async Task <IViewComponentResult> InvokeAsync()
+    public async Task<IViewComponentResult> InvokeAsync()
     {
         var banner = await _service.Get();
-
-        return View(new BannerLandingModel()
+        BannerLandingModel model;
+        if (banner.IsSuccess && banner.Data != null)
         {
-            Title=banner.Data.Title,
-            CreateDate = banner.Data.CreateDate,
-            ImageName=banner.Data.ImageName,
-            URL = banner.Data.URL
-        });
+            model = new BannerLandingModel()
+            {
+                Title = (banner.Data.Title),
+                CreateDate = (banner.Data.CreateDate),
+                ImageName = (banner.Data.ImageName),
+                URL = (banner.Data.URL),
+                IsSuccess = banner.IsSuccess,
+                StatusCode = banner.StatusCode
+            };
+        }
+        else
+        {
+            model = new BannerLandingModel()
+            {
+                IsSuccess = false,
+                Error = banner.Error,
+                StatusCode = banner.StatusCode,
+            };
+        }
+
+        return View(model);
     }
 }
-public class BannerLandingModel
+
+
+
+
+public class BannerLandingModel : ViewComponentErrorDto
 {
-    public string?  Title { get; set; }
-    public string?  URL{ get; set; }
+    public string? Title { get; set; }
+    public string? URL { get; set; }
     public string? ImageName { get; set; }
     public DateTime? CreateDate { get; set; }
-
 }
