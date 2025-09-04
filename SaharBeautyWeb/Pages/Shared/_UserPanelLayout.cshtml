@@ -49,7 +49,7 @@
                 </div>
             </div>
         </header>
-
+       
         @await Component.InvokeAsync("SideMenu")
 
         <!-- Left Sidebar End -->
@@ -136,22 +136,22 @@
     <script>
         var errorMessages = {};
 
-        // بارگذاری فایل JSON ترجمه خطاها
-        fetch('/config/exception.json') // مسیر درست فایل JSON
+        fetch('/config/exception.json') 
             .then(res => res.json())
             .then(data => {
                 errorMessages = data;
             })
             .catch(err => console.error("خطا در بارگذاری فایل JSON:", err));
 
-
         function handleApiError(errorKey) {
-            // گرفتن ترجمه از JSON بر اساس کلید
-            let message = errorMessages[errorKey] || errorKey;
+            let message = errorMessages[errorKey];
+            console.log(message);
+            if (!message || message.trim() === "") {
+                message = errorKey || "یک خطای ناشناخته رخ داده است";
+            }
             showPopup(message);
         }
 
-        // تابع نمایش Toast
         function showPopup(msg) {
             toastr.error(msg, "خطا", {
                 closeButton: true,

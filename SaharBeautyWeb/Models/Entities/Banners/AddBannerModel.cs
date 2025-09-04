@@ -1,7 +1,12 @@
-﻿namespace SaharBeautyWeb.Models.Entities.Banners;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SaharBeautyWeb.Models.Entities.Banners;
 
 public class AddBannerModel
 {
-    public required string Title { get; set; }
-    public required IFormFile Image { get; set; }
+    [Required(ErrorMessage = "عنوان اجباری است")]
+    public string Title { get; set; }
+
+    [Required(ErrorMessage = "تصویر اجباری است")]
+    public IFormFile Image { get; set; }
 }
