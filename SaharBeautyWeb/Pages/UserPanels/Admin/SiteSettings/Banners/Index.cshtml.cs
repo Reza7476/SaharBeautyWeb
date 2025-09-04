@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Entities.Banners;
 using SaharBeautyWeb.Services.Banners;
 
@@ -15,13 +16,57 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
             _service = service;
         }
 
-        public void OnGet()
-        {
-        }
+        public BannerDto Banner { get; set; }
 
-        public async Task<IActionResult> OnGetBannerAsync()
+        [BindProperty]
+        public AddBannerModel AddBanner { get; set; }
+        public async Task OnGet()
         {
             var banner = await _service.Get();
+            if (banner.IsSuccess && banner.Data != null)
+            {
+
+                Banner = new BannerDto()
+                {
+                    ImageName = banner.Data.ImageName,
+                    URL = banner.Data.URL,
+                    Id = banner.Data.Id,
+                    IsSuccess = banner.IsSuccess,
+                    StatusCode = banner.StatusCode,
+                    CreateDate = banner.Data.CreateDate.ToShamsi(),
+                    Title = banner.Data.Title,
+                    Error = banner.Error
+                };
+            }
+            else
+            {
+                Banner = new BannerDto()
+                {
+                    IsSuccess = banner.IsSuccess,
+                    StatusCode = banner.StatusCode,
+                    Error = banner.Error,
+                    URL = null
+                };
+            }
+        }
+
+
+        public async Task<IActionResult> OnPostCreateBanner()
+        {
+            if (AddBanner.Image == null || string.IsNullOrWhiteSpace(AddBanner.Title))
+            {
+                return new JsonResult(new
+                {
+                    success = false,
+                    error = "عنوان یا عکس ناقص است"
+                });
+            }
+            var banner = await _service.Add(new AddBannerModel()
+            {
+                Title = AddBanner.Title,
+                Image = AddBanner.Image
+            });
+
             return new JsonResult(new
             {
                 data = banner.Data,
@@ -29,24 +74,26 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
                 statusCode = banner.StatusCode,
                 error = banner.Error
             });
-
         }
 
-        public async Task<IActionResult> OnPostBannerAsync(
-            string Title,
-            IFormFile? Image = null
-            )
+        public class BannerDto
         {
-            if (Image == null || string.IsNullOrEmpty(Title))
-            {
-                return new JsonResult(new { success = false, error = "عنوان یا تصویر ناقص است" });
-            }
-            var banner = await _service.Add(new AddBannerModel
-            {
-                Image = Image,
-                Title = Title
-            });
+            public bool IsSuccess { get; set; }
+            public int StatusCode { get; set; }
+            public long Id { get; set; }
+            public string? ImageName { get; set; }
+            public string? URL { get; set; }
+            public string? CreateDate { get; set; }
+            public string? Title { get; set; }
+            public string? Error { get; set; }
+        }
 
+
+
+
+        public async Task<IActionResult> OnGetBannerAsync()
+        {
+            var banner = await _service.Get();
             return new JsonResult(new
             {
                 data = banner.Data,

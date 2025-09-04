@@ -1,0 +1,32 @@
+﻿@using SaharBeautyWeb.Models.Entities.Banners
+@model AddBannerModel
+<div class="row" style="display:block" id="register-banner">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">ثبت بنر</h4>
+            </div>
+            <div class="card-body">
+                <form class="needs-validation"  method="post" asp-page="Index" asp-page-handler="CreateBanner" enctype="multipart/form-data" >
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <input type="text" id="banner-title" class="form-control" asp-for="Title" placeholder="لطفا یک عنوان را وارد نمایید">
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <input type="file" id="banner-image" class="form-control" asp-for=Image placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" type="submit" id="createBanner" >ثبت</button>
+                </form>
+            </div>
+        </div>
+        <!-- end card -->
+    </div> <!-- end col -->
+</div>
+
