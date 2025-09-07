@@ -151,5 +151,48 @@ public class CrudApiService : ICrudApiService
         }
     }
 
+    public async Task<ApiResultDto<List<T>>> GetAllAsync<T>(string url)
+    {
+        try
+        {
+            var response = await _client.GetAsync(url);
+            var raw = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new ApiResultDto<List<T>>
+                {
+                    IsSuccess = response.IsSuccessStatusCode,
+                    StatusCode = (int)response.StatusCode,
+                    Error = !string.IsNullOrEmpty(raw) ? raw : response.ReasonPhrase
+                };
+            }
+
+            var wrapper = JsonSerializer.Deserialize<ApiListResponse<T>>(raw, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            return new ApiResultDto<List<T>>
+            {
+                Data = wrapper?.Elements ?? new List<T>(),
+                IsSuccess= response.IsSuccessStatusCode,
+                StatusCode=(int)response.StatusCode
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResultDto<List<T>>
+            {
+                IsSuccess = false,
+                Error = $"خطا در ارتباط با سرور: {ex.Message}"
+            };
+        }
+    }
+    public class ApiListResponse<T>
+    {
+        public List<T> Elements { get; set; } = default!;
+        public int TotalElements { get; set; }
+    }
 }
 

@@ -50,15 +50,21 @@
             </div>
         </header>
        
-        @await Component.InvokeAsync("SideMenu")
-
+        @await Component.InvokeAsync("SideMenu");
+        
+       
         <!-- Left Sidebar End -->
         <!-- ============================================================== -->
         <div class="main-content">
 
             <div class="page-content">
                 <div class="container-fluid">
-                
+                    @if (ViewData["ErrorMessage"] != null)
+                    {
+                        <div>
+                            <input type="hidden" id="error-input" value="@ViewData["ErrorMessage"]"  />
+                        </div>
+                    }
                     @RenderBody()
 
                 </div> <!-- container-fluid -->
@@ -176,6 +182,14 @@
                 timeOut: 10000
             });
         }
+
+        $(()=>{
+            var error = $("#error-input").val();
+            if(error!==""){
+                handleApiError(error);
+            }
+        })
+
     </script>
 </body>
 

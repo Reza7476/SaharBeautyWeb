@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
+using SaharBeautyWeb.Models.Commons;
 using SaharBeautyWeb.Models.Entities.Banners;
 using SaharBeautyWeb.Services.Banners;
+using System.Text.Json;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
 {
