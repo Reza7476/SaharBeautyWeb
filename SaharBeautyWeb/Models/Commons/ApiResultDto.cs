@@ -2,7 +2,7 @@
 
 public class ApiResultDto<TData>
 {
-    public TData Data { get; set; }
+    public TData? Data { get; set; }
     public string? Error { get; set; }
     public string? Description { get; set; }
     public int StatusCode { get; set; }

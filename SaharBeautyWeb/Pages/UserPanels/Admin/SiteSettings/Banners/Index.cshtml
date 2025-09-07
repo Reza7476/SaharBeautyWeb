@@ -7,14 +7,11 @@
 }
 
 
-@Html.AntiForgeryToken()
-
-@* 
 @if (!Model.Banner?.IsSuccess ?? false)
 {
-    <input style="display:none" id="error" value="@Model.Banner.Error" />
+    <input style="display:none" id="error" value="@Model.Banner?.Error?? $" {خطایی پیش امده }" />
 
-} *@
+}
 @if (Model.Banner?.IsSuccess == true && Model.Banner?.URL != null)
 {
     <div class="d-flex align-items-start">
@@ -42,101 +39,30 @@
         <img src="@Model.Banner.URL" alt="@Model.Banner.ImageName" class="img-thumbnail">
     </div>
 
-    <button type="button"
-            class="btn btn-primary waves-effect waves-light"
-            id="edit-banner @Model.Banner.Id">
+    <button type="button" class="btn btn-primary edit-banner-btn banner-editt" data-id="@Model.Banner.Id">
         ویرایش
     </button>
+
 }
 else if (Model.Banner?.IsSuccess == true && Model.Banner.URL == null)
 {
-    <button type="button"
-            class="btn btn-primary waves-effect waves-light"
-            id="edit-banner ">
-        fjghjyj
-    </button>
     <partial name="_AddPartial" model="Model.AddBanner" />
 }
 
 
-    @section Scripts {
+@section Scripts {
     <script>
 
         $(() => {
-            var $container = $("#banner-container");
-            var $form = $("#register-banner");
-            var $displayImage = $("#display-image");
-            var $banerShimmer = $("#banner-shimmer");
-            var error = $("#error").val();
-            if (error != null) {
-                showPopup(error);
-            }
-
-            // $.ajax({
-            //     url: '/UserPanels/Admin/SiteSettings/Banners?handler=Banner',
-            //     type: 'GET',
-            //     success: function (res) {
-            //         if (res.success && res.data) {
-            //             var banner = res.data;
-            //             $container.html(`
-            //                      <div class="d-flex align-items-start">
-            //                          <div class="flex-grow-1 overflow-hidden">
-            //                              <h5 class="font-size-14 text-truncate">
-            //                                  <a href="#" class="text-dark">${banner.title}</a>
-            //                              </h5>
-            //                              <p class="font-size-13 text-muted mb-0">${banner.createDate}</p>
-            //                          </div>
-            //                          <div class="flex-shrink-0 ms-2">
-            //                              <div class="dropdown">
-            //                                  <a class="btn btn-link text-muted font-size-16 p-1 py-0 dropdown-toggle shadow-none"
-            //                                     href="#"
-            //                                     role="button"
-            //                                     data-bs-toggle="dropdown"
-            //                                     aria-expanded="false">
-            //                                      <i class="bx bx-dots-horizontal-rounded">
-
-            //                                      </i>
-            //                                  </a>
-            //                                  <ul class="dropdown-menu dropdown-menu-end">
-            //                                      <li>
-            //                                        <a class="dropdown-item banner-editt" id="banner-${banner.id}" href="#">
-            //                                              ویرایش
-            //                                         </a>
-            //                                      </li>
-            //                                  </ul>
-            //                              </div>
-            //                          </div>
-            //                      </div>
-            //                      <div class="position-relative mt-3">
-            //                          <img src="${banner.url}" alt="${banner.imageName}" class="img-thumbnail">
-            //                      </div>
-
-            //                     <button type="button"
-            //                             class="btn btn-primary waves-effect waves-light"
-            //                             id="edit-banner${banner.id}">
-            //                             ویرایش
-            //                      </button>`)
-            //         } else if (res.success && res.data == null) {
-            //             $banerShimmer.hide();
-            //             $form.show();
-            //         } else {
-            //             handleApiError(res);
-            //         }
-            //     },
-            //     error: function () {
-            //         $container.html('<p class="text-center text-danger">خطا در بارگذاری بنر</p>');
-            //     }
-            // })
-
-
             $("#createBanner").on("click", function (e) {
+                
                 e.preventDefault();
-
+                
                 var title = $("#banner-title").val();
                 var imageFile = $("#banner-image")[0].files[0];
                 if (!title || !imageFile) {
-                 showPopup("عنوان و عکس نباید خالی باشند ")
-                return;
+                    showPopup("عنوان و عکس نباید خالی باشند ")
+                    return;
                 }
 
                 var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
@@ -174,17 +100,89 @@ else if (Model.Banner?.IsSuccess == true && Model.Banner.URL == null)
                 });
             });
 
-            $container.on("click", ".banner-editt", function (e) {
-                e.preventDefault();
+            $(".edit-banner-btn").on("click", function () {
+                var bannerId = $(this).data("id");
+                $(this).prop("disabled", true);
+                $.ajax({
+                    url: '/UserPanels/Admin/SiteSettings/Banners?handler=EditBannerPartial',
+                    type: 'GET',
+                    data: { id: bannerId },
+                    success: function (html) {
+                        $("#staticBackdrop .modal-body").html(html); 
+                        var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                        modal.show();
+                    },
+                    error: function () {
+                        showPopup("خطا در بارگذاری فرم ویرایش!");
+                    }
+                });
+                $(this).prop("disabled", false);
 
-                // فقط برای تست مطمئن شیم کلیک کار میکنه
-                console.log("ویرایش کلیک شد");
+            })
 
-                // نمایش مودال
-                var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-                modal.show();
+            $(document).on("change", "#input-image-banner-update",function(){
+                var input = this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $("#new-banner-image").attr("src", e.target.result);
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            })
+
+            $(document).on("click", "#saveBannerBtn", function () {
+
+                var title = $("#editBannerTitle").val();
+                var imageInput = $("#input-image-banner-update")[0];
+
+                if (!title || (!imageInput.files || imageInput.files.length === 0)) {
+                    showPopup("عنوان یا عکس نباید خالی باشند");
+                    return;
+                }
+
+                var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+                if (!allowedExtensions.exec(imageInput.name)) {
+                    showPopup("فرمت تصویر باید jpg، jpeg یا png باشد.")
+                    return;
+                }
+
+                var form = $("#editBannerForm")[0];
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '@Url.Page("Index", "EditBanner")',
+                    type: 'Post',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function () {
+                        $("#saveBannerBtn").prop("disabled", true);
+                    },
+                    success: function (res) {
+                        if (res.success) {
+                            var modalEl = document.getElementById('staticBackdrop');
+                            var modal = bootstrap.Modal.getInstance(modalEl);
+                            modal.hide();
+                            $("#editBannerForm")[0].reset();
+                            location.reload(); 
+                        } else {
+                            handleApiError(res.error || "خطا در ویرایش");
+                        }
+                    },
+                    error: function () {
+                        showPopup("خطایی رخ داده");
+                        var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                        modal.hide();
+                    },
+                    complete: function () {
+                        $("#saveBannerBtn").prop("disabled", false);
+                    }
+                });
             });
+
         });
 
     </script>
-    }
+}

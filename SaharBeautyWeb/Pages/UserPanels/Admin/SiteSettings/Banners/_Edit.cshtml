@@ -1,0 +1,24 @@
+﻿@using static SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners.IndexModel
+@model EditBannerModel
+
+<form id="editBannerForm" enctype="multipart/form-data">
+ @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+    <div class="mb-3">
+        <label>عنوان</label>
+        <input type="text"  asp-for="Title" id="editBannerTitle" class="form-control" value="@Model.Title" />
+    </div>
+    <div class="mb-3">
+        <label>عکس</label>
+        <img src="@Model.ImageUrl" id="banner-image" class="img-thumbnail mb-2" />
+        <input type="file" asp-for="Image"  id="input-image-banner-update" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>عکس</label>
+        <img src="" id="new-banner-image" class="img-thumbnail mb-2" />
+    </div>
+
+
+    <button type="button" class="btn btn-primary" id="saveBannerBtn">اعمال تغییرات</button>
+</form>
