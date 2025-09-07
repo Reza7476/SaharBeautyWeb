@@ -74,7 +74,6 @@ public class CrudApiService : ICrudApiService
             var response = await _client.GetAsync(url);
             var raw = await response.Content.ReadAsStringAsync();
 
-            // موفقیت: داده یا null
             if (response.IsSuccessStatusCode)
             {
                 try
@@ -102,13 +101,44 @@ public class CrudApiService : ICrudApiService
                     };
                 }
             }
-
-            // حالت خطا: error + status code
             return new ApiResultDto<T>
             {
                 IsSuccess = false,
                 StatusCode = (int)response.StatusCode,
                 Error = !string.IsNullOrEmpty(raw) ? raw : response.ReasonPhrase
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResultDto<T>
+            {
+                IsSuccess = false,
+                Error = $"خطا در ارتباط با سرور: {ex.Message}"
+            };
+        }
+    }
+
+    public async Task<ApiResultDto<T>> UpdateAsync<T>(string url, MultipartFormDataContent content)
+    {
+        try
+        {
+            using var response = await _client.PatchAsync(url, content);
+            var raw = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                return new ApiResultDto<T>
+                {
+                    IsSuccess = true,
+                    StatusCode = (int)response.StatusCode
+                };
+            }
+
+            return new ApiResultDto<T>
+            {
+                IsSuccess = false,
+                StatusCode = (int)response.StatusCode,
+                Error = !string.IsNullOrWhiteSpace(raw) ? raw : response.ReasonPhrase
             };
         }
         catch (Exception ex)

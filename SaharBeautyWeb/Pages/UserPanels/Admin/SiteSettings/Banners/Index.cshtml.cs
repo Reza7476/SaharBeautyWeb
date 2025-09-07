@@ -20,6 +20,9 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
 
         [BindProperty]
         public AddBannerModel AddBanner { get; set; }
+        [BindProperty]
+        public EditBannerModel EditDto { get; set; }
+
         public async Task OnGet()
         {
             var banner = await _service.Get();
@@ -76,18 +79,47 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
             });
         }
 
-        public class BannerDto
+
+        public async Task<PartialViewResult> OnGetEditBannerPartial()
         {
-            public bool IsSuccess { get; set; }
-            public int StatusCode { get; set; }
-            public long Id { get; set; }
-            public string? ImageName { get; set; }
-            public string? URL { get; set; }
-            public string? CreateDate { get; set; }
-            public string? Title { get; set; }
-            public string? Error { get; set; }
+            var banner = await _service.Get();
+
+            var model = new EditBannerModel()
+            {
+                Id = banner.Data.Id,
+                Title = banner.Data.Title,
+                ImageUrl = banner.Data.URL
+            };
+
+            return Partial("_Edit", model);
         }
 
+        public async Task<IActionResult> OnPostEditBanner()
+        {
+            if (EditDto.Image == null || string.IsNullOrEmpty(EditDto.Title))
+            {
+                return new JsonResult(new
+                {
+                    success = false,
+                    error = "عنوان یا عکس ناقص است"
+                });
+            }
+
+            var updateBanner = await _service.UpdateBanner(new UpdateBannerDto
+            {
+                Id = EditDto.Id,
+                Image = EditDto.Image,
+                Title = EditDto.Title
+            });
+
+            return new JsonResult(new
+            {
+                success = updateBanner.IsSuccess,
+                error = updateBanner.Error,
+                data= updateBanner.Data,
+                statusCode= updateBanner.StatusCode
+            });
+        }
 
 
 
@@ -101,6 +133,25 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
                 statusCode = banner.StatusCode,
                 error = banner.Error
             });
+        }
+        public class BannerDto
+        {
+            public bool IsSuccess { get; set; }
+            public int StatusCode { get; set; }
+            public long Id { get; set; }
+            public string? ImageName { get; set; }
+            public string? URL { get; set; }
+            public string? CreateDate { get; set; }
+            public string? Title { get; set; }
+            public string? Error { get; set; }
+        }
+
+        public class EditBannerModel
+        {
+            public long Id { get; set; }
+            public string? Title { get; set; }
+            public string? ImageUrl { get; set; }
+            public IFormFile? Image { get; set; }
         }
     }
 }

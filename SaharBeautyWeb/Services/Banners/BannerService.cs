@@ -50,6 +50,24 @@ public class BannerService : IBannerService
         var result = await _apiService.GetAsync<GetBannerDto?>("banners");
         return result;
     }
+
+    public  async Task<ApiResultDto<long>> UpdateBanner(UpdateBannerDto dto)
+    {
+        using var content = new MultipartFormDataContent();
+
+        content.Add(new StringContent(dto.Title ?? ""), "Title");
+
+        if (dto.Image != null)
+        {
+            var fileStream = dto.Image.OpenReadStream();
+            var fileContent = new StreamContent(fileStream);
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(dto.Image.ContentType);
+            content.Add(fileContent, "Image", dto.Image.FileName);
+        }
+
+        var result = await _apiService.UpdateAsync<long>($"banners/{dto.Id}", content);
+        return result;
+    }
 }
 
 
