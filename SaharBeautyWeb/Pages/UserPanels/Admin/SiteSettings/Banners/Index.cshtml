@@ -54,6 +54,18 @@ else if (Model.Banner?.IsSuccess == true && Model.Banner.URL == null)
     <script>
 
         $(() => {
+
+            $(document).on("change", "#banner-image",function(){
+                var input=this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload=function(e){
+                        $("#add-new-image-banner").attr("src", e.target.result);
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            })
+
             $("#createBanner").on("click", function (e) {
                 
                 e.preventDefault();
