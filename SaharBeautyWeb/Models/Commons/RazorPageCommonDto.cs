@@ -1,9 +1,8 @@
 ﻿namespace SaharBeautyWeb.Models.Commons;
 
-public class ApiResultDto<TData>
+public class RazorPageCommonDto
 {
-    public TData? Data { get; set; }
-    public string? Error { get; set; }
     public int StatusCode { get; set; }
+    public string? Error { get; set; }
     public bool IsSuccess { get; set; }
 }
