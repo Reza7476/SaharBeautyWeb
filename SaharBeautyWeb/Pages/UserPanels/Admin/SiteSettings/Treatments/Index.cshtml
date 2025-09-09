@@ -13,7 +13,10 @@
                 <div class="row">
                     <div class="col-sm">
                         <div class="mb-4">
-                            <button type="button" class="btn btn-primary waves-effect waves-light"><i class="bx bx-plus me-1"></i>افزودن خدمات </button>
+                            <button type="button" class="btn btn-primary waves-effect waves-light" id="add-treatment-btn">
+                                <i class="bx bx-plus me-1">
+                                </i>افزودن خدمات
+                            </button>
                         </div>
                     </div>
 
@@ -31,7 +34,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model. Treatments)
+                            @foreach (var item in Model.Treatments)
                             {
                                 <tr>
                                     <td>
@@ -43,10 +46,10 @@
                                         </p>
                                     </td>
                                     <td>
-                                        <img class="flex-shrink-0 me-3 rounded-circle" 
-                                        src="@item.Media.Url"
-                                        alt="Generic placeholder image"
-                                        height="36">
+                                        <img class="flex-shrink-0 me-3 rounded-circle"
+                                             src="@item.Media?.Url"
+                                             alt="@item.Media?.ImageName"
+                                             height="36">
                                     </td>
                                     <td>
                                         <div class="dropdown">
@@ -54,7 +57,13 @@
                                                 <i class="bx bx-dots-horizontal-rounded"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="#">ویرایش</a></li>
+                                                <li>
+                                                    <button class="dropdown-item"
+                                                            data-id="@item.Id"
+                                                            href="#">
+                                                        ویرایش
+                                                    </button>
+                                                </li>
                                                 <li><a class="dropdown-item" href="#">پرینت</a></li>
                                                 <li><a class="dropdown-item" href="#">حذف</a></li>
                                             </ul>
@@ -73,3 +82,78 @@
     </div>
     <!-- end col -->
 </div>
+@section Scripts {
+    <script>
+        $(() => {
+            $("#add-treatment-btn").on("click", function (e) {
+                e.preventDefault();
+                $(this).prop("disabled", true);
+                $.ajax({
+                    url: '/UserPanels/Admin/SiteSettings/Treatments?handler=AddTreatmentPartial',
+                    type: 'Get',
+                    success: function (html) {
+                        var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                        $("#staticBackdrop .modal-body").html(html);
+                        modal.show();
+                    },
+                    error: function () {
+                    }
+                })
+            })
+
+            $(document).on("click", "#createTreatment", function (e) {
+                e.preventDefault();
+                var sendBtn = $(this);
+                var title = $("#add-treatment-title").val();
+                var image = $("#add-treatment-image-input")[0];
+                var description = $("#add-treatment-description").val();
+
+                if (!title || (!image.files || image.files.length === 0) || !description) {
+                    showPopup("فیلد ها نباید خالی باشند");
+                    return;
+                }
+
+                var file = image.files[0];
+                var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+                if (!allowedExtensions.exec(file.name)) {
+                    showPopup("فرمت تصویر باید jpg، jpeg یا png باشد.")
+                    return;
+                }
+
+                var form = $("#add-treatment-form")[0];
+                var formData = new FormData(form);
+                $.ajax({
+                    url: '@Url.Page("Index", "AddTreatment")',
+                    type: 'Post',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function () {
+                        sendBtn.prop("disabled", true);
+                    },
+                    success: function (res) {
+                        if (res.success) {
+
+                            var modalEl = document.getElementById('staticBackdrop');
+                            var modal = bootstrap.Modal.getInstance(modalEl);
+                            modal.hide();
+                            $("#add-treatment-form")[0].reset();
+                            location.reload();
+                        } else {
+                            handleApiError(res.error || "خطایی در ثبت خدمت ایجاد شده")
+                        }
+                    },
+                    error: function () {
+                        showPopup("خطایی رخ داده")
+                        var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                        modal.hide();
+                        location.reload();
+                    }
+                });
+
+            })
+
+
+        })
+    </script>
+}

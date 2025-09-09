@@ -7,4 +7,5 @@ namespace SaharBeautyWeb.Services.Treatments;
 public interface ITreatmentService : IService
 {
     Task<ApiResultDto<List<GetAllTreatmentDto>>> GetAll();
+    Task<ApiResultDto<long>> Add(AddTreatmentModel dto);
 }

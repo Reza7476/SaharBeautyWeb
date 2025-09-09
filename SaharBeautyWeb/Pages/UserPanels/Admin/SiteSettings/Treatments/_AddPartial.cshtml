@@ -1,0 +1,45 @@
+﻿@using SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.Dtos
+
+@model AddTreatmentModel
+<div class="row" style="display:block" id="register-banner">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">ثبت خدمت </h4>
+            </div>
+            <div class="card-body">
+                <form class="needs-validation" method="post" id="add-treatment-form" asp-page="Index" asp-page-handler="AddTreatment" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div >
+                            <div class="mb-3">
+                                <input type="text" id="add-treatment-title" class="form-control" asp-for="Title" placeholder="لطفا یک عنوان را وارد نمایید">
+
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label  class="form-label">توضیحات</label>
+                            <textarea class="form-control" id="add-treatment-description" asp-for="Description" rows="5"></textarea>
+                        </div>
+
+                        <div>
+                            <div class="mb-3">
+                                <input type="file" id="add-treatment-image-input" class="form-control" asp-for=Image placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="mb-3">
+                            <img id="add-new-image-treatment" src="" class="img-thumbnail mb2" />
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" type="submit" id="createTreatment">ثبت</button>
+                </form>
+            </div>
+        </div>
+    </div> 
+</div>
