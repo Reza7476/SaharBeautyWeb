@@ -60,8 +60,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Treatments\Dtos\" />
-  </ItemGroup>
-
 </Project>

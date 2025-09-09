@@ -101,6 +101,18 @@
                 })
             })
 
+            $(document).on("change", "#add-treatment-image-input", function () {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#add-new-image-treatment").attr("src", e.target.result);
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            })
+
+
             $(document).on("click", "#createTreatment", function (e) {
                 e.preventDefault();
                 var sendBtn = $(this);
