@@ -18,7 +18,22 @@ public class TreatmentApiService : ITreatmentService
         _client.BaseAddress = new Uri(baseAddress!);
     }
 
+    public async Task<ApiResultDto<long>> Add(AddTreatmentModel dto)
+    {
 
+        using var content = new MultipartFormDataContent();
+        content.Add(new StringContent(dto.Title ?? " "), "Title");
+        content.Add(new StringContent(dto.Description ?? " "), "Description");
+        if (dto.Image != null)
+        {
+            var fileStream = dto.Image.OpenReadStream();
+            var fileContent = new StreamContent(fileStream);
+            content.Add(fileContent, "Media", dto.Image.FileName);
+        }
+
+        var result = await _apiService.AddAsync<long>("treatments/add", content);
+        return result;
+    }
     public async Task<ApiResultDto<List<GetAllTreatmentDto>>> GetAll()
     {
         var result = await _apiService.GetAllAsync<GetAllTreatmentDto>("treatments/all");
