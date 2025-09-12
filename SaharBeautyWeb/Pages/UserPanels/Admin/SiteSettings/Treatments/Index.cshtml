@@ -4,8 +4,6 @@
     Layout = "_UserPanelLayout";
 }
 
-
-
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -58,13 +56,12 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li>
-                                                    <button class="dropdown-item"
+                                                    <button class="dropdown-item edit-treatment-btn"
                                                             data-id="@item.Id"
                                                             href="#">
                                                         ویرایش
                                                     </button>
                                                 </li>
-                                                <li><a class="dropdown-item" href="#">پرینت</a></li>
                                                 <li><a class="dropdown-item" href="#">حذف</a></li>
                                             </ul>
                                         </div>
@@ -111,7 +108,6 @@
                 }
                 reader.readAsDataURL(input.files[0]);
             })
-
 
             $(document).on("click", "#createTreatment", function (e) {
                 e.preventDefault();
@@ -162,10 +158,69 @@
                         location.reload();
                     }
                 });
-
             })
 
+            $(".edit-treatment-btn").on("click", function () {
+                var id = $(this).data("id");
+                $.ajax({
+                url:'@Url.Page("Index","EditTreatmentPartial")',
+                type:'Get',
+                    data: {id:id},
+                    success: function (html) {
+                        var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                        $("#staticBackdrop .modal-body").html(html);
+                        modal.show();
+                    },
+                    error: function () {
 
+                    }
+                });
+            });
+
+            $(document).on("change", "#edit-treatment-image-input", function () {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#preview-edit-image-treatment").attr("src", e.target.result);
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            });
+
+            $(document).on("click", ".add-edited-treatment-image", function (e) {
+                e.preventDefault();
+                var sendBtn = $(this);
+                var form = $("#add-treatment-image-form")[0];
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '@Url.Page("Index", "AddImage")',
+                    type:'Post',
+                    data:formData,
+                    contentType:false,
+                    processData:false,
+                    beforeSend:function(){
+                        sendBtn.prop("disabled", true);
+                    },
+                    success:function(res){
+                        if(res.success){
+                            var modalEl = document.getElementById('staticBackdrop');
+                            var modal = bootstrap.Modal.getInstance(modalEl);
+                            modal.hide();
+                            $("#add-treatment-image-form")[0].reset();
+                            location.reload();
+                        }else{
+                            handleApiError(res.error);
+                            sendBtn.prop("disabled", false);
+                        }
+                    },
+                    error:function(res){
+                        showPopup(res.error);
+                        sendBtn.prop("disabled", false);
+                    }
+                });
+            });
         })
     </script>
 }

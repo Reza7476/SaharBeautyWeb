@@ -1,7 +1,8 @@
-﻿using Autofac.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Routing;
+using SaharBeautyWeb.Configurations.Extensions;
+using SaharBeautyWeb.Models.Commons.Dtos;
+using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 using SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.Dtos;
 using SaharBeautyWeb.Services.Treatments;
 
@@ -10,15 +11,18 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
     public class IndexModel : PageModel
     {
         private readonly ITreatmentService _service;
+        public List<GetAllTreatmentDto> Treatments { get; set; } = new();
+
+        [BindProperty]
+        public AddTreatmentModel AddModel { get; set; }
+
+        [BindProperty]
+        public TreatmentDetailsDto ModelData { get; set; }
 
         public IndexModel(ITreatmentService service)
         {
             _service = service;
         }
-        public List<GetAllTreatmentDto> Treatments { get; set; } = new();
-
-        [BindProperty]
-        public AddTreatmentModel AddModel { get; set; }
 
 
         public async Task OnGet()
@@ -40,7 +44,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
             return Partial("_AddPartial");
         }
 
-        public async Task <IActionResult> OnPostAddTreatment()
+        public async Task<IActionResult> OnPostAddTreatment()
         {
             if (AddModel.Image == null ||
                 string.IsNullOrWhiteSpace(AddModel.Title) ||
@@ -55,18 +59,58 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
 
             var treatment = await _service.Add(new AddTreatmentModel
             {
-                Description=AddModel.Description,
-                Image=AddModel.Image,
-                Title=AddModel.Title
+                Description = AddModel.Description,
+                Image = AddModel.Image,
+                Title = AddModel.Title
             });
 
             return new JsonResult(new
             {
-                data=treatment.Data,
-                success=treatment.IsSuccess,
-                statusCode=treatment.StatusCode,
-                error=treatment.Error
+                data = treatment.Data,
+                success = treatment.IsSuccess,
+                statusCode = treatment.StatusCode,
+                error = treatment.Error
             });
         }
+
+        public async Task<PartialViewResult> OnGetEditTreatmentPartial(long id)
+        {
+            var treatment = await _service.GetById(id);
+
+            var model = new TreatmentDetailsDto()
+            {
+                Description = treatment?.Data?.Description,
+                Title = treatment?.Data?.Title,
+                Media = treatment.Data.Media,
+                Id = id
+
+            };
+            return Partial("_editTreatmentPartial", model);
+        }
+
+        public async Task<IActionResult> OnPostAddImage()
+        {
+            var (isValid, message) = ModelData.AddMedia.ValidateImage();
+            if (!isValid)
+                return new JsonResult(new
+                {
+                    success = isValid,
+                    error = message
+                });
+            var image = await _service.AddImage(new AddMediaDto
+            {
+                AddMedia = ModelData.AddMedia,
+                Id = ModelData.Id
+            });
+            
+            return new  JsonResult(new
+            {
+                data=image.Data,
+                success=image.IsSuccess,
+                statusCode=image.StatusCode,
+                error= image.Error
+            });
+        }
+
     }
 }

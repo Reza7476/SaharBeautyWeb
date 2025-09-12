@@ -1,0 +1,107 @@
+﻿@using SaharBeautyWeb.Models.Entities.Treatments.Dtos
+
+@model TreatmentDetailsDto
+
+
+<div class="row" style="display:block" id="edit-treatment">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">ویرایش خدمت </h4>
+            </div>
+            <div class="card-body">
+                <form class="needs-validation"
+                      method="post"
+                      id="add-treatment-form"
+                      asp-page="Index"
+                      asp-page-handler="AddTreatment"
+                      enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div>
+                            <div class="mb-3">
+                                <input type="text"
+                                       id="edit-treatment-title"
+                                       class="form-control"
+                                       asp-for="Title"
+                                       placeholder="لطفا یک عنوان را وارد نمایید" value="@Model.Title">
+
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">توضیحات</label>
+                            <textarea class="form-control"
+                                      id="edit-treatment-description"
+                                      asp-for="Description"
+                                      rows="5">@Model.Description</textarea>
+                        </div>
+
+                    </div>
+                </form>
+
+                <form class="needs-validation"
+                      method="post"
+                      id="add-treatment-image-form"
+                      asp-page="Index"
+                      asp-page-handler="AddTreatmentImage"
+                      enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class=" col-sm-6">
+                            <div class=" mb-3">
+                                <input type="file"
+                                       asp-for="AddMedia"
+                                       id="edit-treatment-image-input"
+                                       class="form-control"
+                                       placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <img class="img-thumbnail"
+                                     alt=""
+                                     width="200"
+                                     src=""
+                                     id="preview-edit-image-treatment"
+                                     data-holder-rendered="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col-12">
+
+                            <button type="submit" class="btn btn-success add-edited-treatment-image col-12" id-data="@Model.Id">اضاف کردن عکس</button>
+                        </div>
+                    </div>
+                    <div >
+                        <input type="hidden"   asp-for = "@Model.Id" value="@Model.Id"/>
+                    </div>
+
+                </form>
+                <hr />
+                <div class="row">
+                    @foreach (var item in Model.Media)
+                    {
+                        <div class="col-md-6">
+                            <img class="img-thumbnail"
+                                 alt="@item.ImageName"
+                                 width="200"
+                                 src="@item.Url"
+                                 data-holder-rendered="true">
+                            <br />
+                            <button type="button"
+                                    class="btn btn-danger  delete-treatment-image"
+                                    data-id="@item.Id">
+                                حذف
+                            </button>
+                            <br />
+                            <br />
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
