@@ -72,7 +72,7 @@ public class CrudApiService : ICrudApiService
             return new ApiResultDto<object>
             {
                 IsSuccess = response.IsSuccessStatusCode,
-                Error = data?.Error ?? " An error has accorded.",
+                Error = data?.Error ?? " An error has been accorded.",
                 StatusCode = (int)response.StatusCode
             };
 
@@ -86,6 +86,29 @@ public class CrudApiService : ICrudApiService
                 Error = ex.Message,
             };
         }
+    }
+    public async Task<ApiResultDto<object>> UpdateAsPutAsyncFromBody<T>(string url, HttpContent content)
+    {
+        var response = await _client.PutAsync(url, content);
+        var raw= await response.Content.ReadAsStringAsync();
+        if (response.IsSuccessStatusCode)
+        {
+            return new ApiResultDto<object> { 
+                IsSuccess = response.IsSuccessStatusCode ,
+                StatusCode=(int)response.StatusCode 
+            };
+        }
+
+        var data = JsonSerializer.Deserialize<ErrorResponse>(raw, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+        return new ApiResultDto<object>
+        {
+            IsSuccess = response.IsSuccessStatusCode,
+            Error = data?.Error ?? " An error has been accorded.",
+            StatusCode = (int)response.StatusCode
+        };
     }
 
     public async Task<ApiResultDto<T>> GetAsync<T>(string url)
@@ -139,7 +162,7 @@ public class CrudApiService : ICrudApiService
         }
     }
 
-    public async Task<ApiResultDto<T>> UpdateAsync<T>(string url, MultipartFormDataContent content)
+    public async Task<ApiResultDto<T>> UpdateAsPatchAsync<T>(string url, MultipartFormDataContent content)
     {
         try
         {
