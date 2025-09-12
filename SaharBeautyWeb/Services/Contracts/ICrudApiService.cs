@@ -1,13 +1,15 @@
 ﻿using SaharBeautyWeb.Configurations.Interfaces;
 using SaharBeautyWeb.Models.Commons;
-using SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.Dtos;
 
 namespace SaharBeautyWeb.Services.Contracts;
 
 public interface ICrudApiService : IService
 {
     Task<ApiResultDto<T>> AddAsync<T>(string url, MultipartFormDataContent content);
+    
     Task<ApiResultDto<List<T>>> GetAllAsync<T>(string url);
+    
     Task<ApiResultDto<T>> GetAsync<T>(string url);
-    Task <ApiResultDto<T>> UpdateAsync<T>(string url, MultipartFormDataContent content);
+
+    Task<ApiResultDto<T>> UpdateAsync<T>(string url, MultipartFormDataContent content);
 }

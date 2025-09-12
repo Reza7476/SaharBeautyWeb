@@ -1,0 +1,12 @@
+﻿using SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.Dtos;
+
+namespace SaharBeautyWeb.Models.Entities.Treatments;
+
+public class GetTreatmentWithAllImagesDto
+{
+    public string? Title { get; set; }
+    public string? Description { get; set; }
+    public List<MediaDto> Media { get; set; } = default!;
+    public IFormFile? Image { get; set; }
+
+}
