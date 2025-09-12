@@ -102,25 +102,52 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
                 AddMedia = ModelData.AddMedia,
                 Id = ModelData.Id
             });
-            
-            return new  JsonResult(new
+
+            return new JsonResult(new
             {
-                data=image.Data,
-                success=image.IsSuccess,
-                statusCode=image.StatusCode,
-                error= image.Error
+                data = image.Data,
+                success = image.IsSuccess,
+                statusCode = image.StatusCode,
+                error = image.Error
             });
         }
 
-        public async Task<IActionResult> OnPostDeleteImage(long imageId,long id)
+        public async Task<IActionResult> OnPostDeleteImage(long imageId, long id)
         {
             var result = await _service.DeleteImage(imageId, id);
             return new JsonResult(new
             {
-                data=result,
+                data = result,
                 success = result.IsSuccess,
-                error=result.Error,
+                error = result.Error,
 
+            });
+        }
+
+        public async Task<IActionResult> OnPostEditTreatment()
+        {
+            if (ModelData.Title == null || ModelData.Description == null)
+            {
+                return new JsonResult(new
+                {
+                    error = "عنوان یا توضیحات نمیتواند خالی باشند",
+                    success=false
+                }) ;
+            }
+
+            var result = await _service.UpdateTitleAndDescription(new UpdateTreatmentTitleAndDescriptionDto()
+            {
+                Description=ModelData.Description,
+                Title=ModelData.Title,
+                Id=ModelData.Id
+            });
+
+           
+            return new JsonResult(new
+            {
+                data = result,
+                success = result.IsSuccess,
+                error = result.Error,
             });
         }
     }

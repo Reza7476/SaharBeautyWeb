@@ -249,6 +249,40 @@
                     }
                 });
             })
+
+            $(document).on("click", ".edit-treatment-title-description",function(e){
+                e.preventDefault();
+                var sendBtn = $(this);
+                var title = $("#edit-treatment-title").val();
+                var description = $("#edit-treatment-description").val();
+                if (!(title || description)) {
+                    showPopup("عنوان و توضیحات نباید خالی باشند")
+                }
+                var form = $("#edit-treatment-title-description-form")[0];
+                var formData = new FormData(form);
+                $.ajax({
+                    url: '@Url.Page("Index", "EditTreatment")',
+                    type:'Post',
+                    data:formData,
+                    processData:false,
+                    contentType:false,
+                    success:function(res){
+                        if(res.success){
+                            var modalEl = document.getElementById('staticBackdrop');
+                            var modal = bootstrap.Modal.getInstance(modalEl);
+                            modal.hide();
+                            $("#edit-treatment-title-description-form")[0].reset();
+                            location.reload();
+                        }else{
+                            handleApiError(res.erro)
+                        }
+                    },
+                    error: function () {
+                        showPopup("خطایی پیش آمده")
+                    }
+                });
+            })
+
         })
     </script>
 }

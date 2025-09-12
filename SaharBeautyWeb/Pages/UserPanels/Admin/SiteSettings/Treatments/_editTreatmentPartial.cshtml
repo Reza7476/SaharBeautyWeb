@@ -10,16 +10,18 @@
                 <h4 class="card-title">ویرایش خدمت </h4>
             </div>
             <div class="card-body">
+
                 <form class="needs-validation"
                       method="post"
-                      id="add-treatment-form"
+                      id="edit-treatment-title-description-form"
                       asp-page="Index"
-                      asp-page-handler="AddTreatment"
+                      asp-page-handler="EditTreatment"
                       enctype="multipart/form-data">
                     @Html.AntiForgeryToken()
                     <div class="row">
-                        <div>
+                        <div class=" col-sm-6">
                             <div class="mb-3">
+                                <label class="form-label">عنوان</label>
                                 <input type="text"
                                        id="edit-treatment-title"
                                        class="form-control"
@@ -29,17 +31,26 @@
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">توضیحات</label>
-                            <textarea class="form-control"
-                                      id="edit-treatment-description"
-                                      asp-for="Description"
-                                      rows="5">@Model.Description</textarea>
+                        <div class=" col-sm-6">
+                            <div class="mb-3">
+                                <label class="form-label">توضیحات</label>
+                                <textarea class="form-control"
+                                          id="edit-treatment-description"
+                                          asp-for="Description"
+                                          rows="5">@Model.Description</textarea>
+                            </div>
                         </div>
+                    </div>
+                    <div>
+                        <input type="hidden" asp-for="@Model.Id"  value="@Model.Id" />
+                    </div>
+                    <div class="col-12">
 
+                        <button type="submit" class="btn btn-primary waves-effect waves-light col-12 edit-treatment-title-description" >اعمال تغییرات</button>
                     </div>
                 </form>
 
+                <hr />
                 <form class="needs-validation"
                       method="post"
                       id="add-treatment-image-form"

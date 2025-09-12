@@ -11,5 +11,6 @@ public interface ICrudApiService : IService
     
     Task<ApiResultDto<T>> GetAsync<T>(string url);
 
-    Task<ApiResultDto<T>> UpdateAsync<T>(string url, MultipartFormDataContent content);
+    Task<ApiResultDto<T>> UpdateAsPatchAsync<T>(string url, MultipartFormDataContent content);
+    Task<ApiResultDto<object>> UpdateAsPutAsyncFromBody<T>(string url, HttpContent content);
 }

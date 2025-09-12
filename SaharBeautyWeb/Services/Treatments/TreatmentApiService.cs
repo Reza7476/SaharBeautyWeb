@@ -1,8 +1,11 @@
 ﻿using SaharBeautyWeb.Models.Commons;
 using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments;
+using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 using SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.Dtos;
 using SaharBeautyWeb.Services.Contracts;
+using System.Text;
+using System.Text.Json;
 
 namespace SaharBeautyWeb.Services.Treatments;
 
@@ -111,5 +114,20 @@ public class TreatmentApiService : ITreatmentService
             StatusCode = result.StatusCode
         };
         return a;
+    }
+
+    public async Task<ApiResultDto<object>>
+        UpdateTitleAndDescription(UpdateTreatmentTitleAndDescriptionDto dto)
+    {
+        var url = $"treatments/{dto.Id}";
+        var json = JsonSerializer.Serialize(new
+        {
+            Title = dto.Title,
+            Description = dto.Description
+        });
+
+         using var content= new StringContent(json, Encoding.UTF8, "application/json");
+        var result = await _apiService.UpdateAsPutAsyncFromBody<object>(url,content);
+        return result;
     }
 }
