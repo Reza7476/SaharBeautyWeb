@@ -12,4 +12,5 @@ public interface ITreatmentService : IService
     Task<ApiResultDto<long>> Add(AddTreatmentModel dto);
     Task<ApiResultDto<GetTreatmentWithAllImagesDto>> GetById(long id);
     Task<ApiResultDto<long>> AddImage(AddMediaDto dto);
+    Task <ApiResultDto<object>> DeleteImage(long imageId, long id);
 }
