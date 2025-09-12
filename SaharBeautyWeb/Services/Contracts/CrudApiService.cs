@@ -50,6 +50,43 @@ public class CrudApiService : ICrudApiService
             Error = string.IsNullOrWhiteSpace(raw).ToString()
         };
     }
+    public async Task<ApiResultDto<object>> Delete<T>(string url)
+    {
+        try
+        {
+            var response = await _client.DeleteAsync(url);
+            var raw = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                return new ApiResultDto<object>
+                {
+                    IsSuccess = response.IsSuccessStatusCode,
+                    StatusCode = (int)response.StatusCode
+                };
+            }
+            var data = JsonSerializer.Deserialize<ErrorResponse>(raw, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            return new ApiResultDto<object>
+            {
+                IsSuccess = response.IsSuccessStatusCode,
+                Error = data?.Error ?? " An error has accorded.",
+                StatusCode = (int)response.StatusCode
+            };
+
+        }
+        catch (Exception ex)
+        {
+
+            return new ApiResultDto<object>
+            {
+                IsSuccess = false,
+                Error = ex.Message,
+            };
+        }
+    }
 
     public async Task<ApiResultDto<T>> GetAsync<T>(string url)
     {
@@ -174,10 +211,17 @@ public class CrudApiService : ICrudApiService
         }
     }
 
+
     public class ApiListResponse<T>
     {
         public List<T> Elements { get; set; } = default!;
         public int TotalElements { get; set; }
+    }
+
+    public class ErrorResponse
+    {
+        public string Error { get; set; }
+        public int StatusCode { get; set; }
     }
 }
 

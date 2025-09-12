@@ -221,6 +221,34 @@
                     }
                 });
             });
+
+            $(document).on("click", ".delete-treatment-image-btn",function(e){
+                e.preventDefault();
+                var deleteBtn = $(this);
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                var treatmentId = $("#treatmentId").val();
+                imageId = deleteBtn.data("id");
+                $.ajax({
+                    url:'@Url.Page("Index","DeleteImage")',
+                    type:'Post',
+                    data: {
+                        imageid:imageId,
+                        id:treatmentId,
+                        __RequestVerificationToken:token,
+                    },
+                    success:function(res){
+
+                        if (res.success) {
+                         deleteBtn.closest(".col-md-6").remove();
+                        }else{
+                            handleApiError(res.error)
+                        }
+                    },
+                    error: function(){
+                        showPopup("خطایی ایجاد شده");
+                    }
+                });
+            })
         })
     </script>
 }

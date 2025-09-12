@@ -112,5 +112,16 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
             });
         }
 
+        public async Task<IActionResult> OnPostDeleteImage(long imageId,long id)
+        {
+            var result = await _service.DeleteImage(imageId, id);
+            return new JsonResult(new
+            {
+                data=result,
+                success = result.IsSuccess,
+                error=result.Error,
+
+            });
+        }
     }
 }

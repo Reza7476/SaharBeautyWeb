@@ -54,6 +54,19 @@ public class TreatmentApiService : ITreatmentService
         return result;  
     }
 
+    public async Task<ApiResultDto<object>> DeleteImage(long imageId, long id)
+    {
+        string url = $"treatments/{id}/{imageId}/image";
+        var result = await _apiService.Delete<object>(url);
+        return new ApiResultDto<object>
+        {
+            Data=result.Data,
+            Error=result.Error,
+            IsSuccess=result.IsSuccess,
+            StatusCode=result.StatusCode
+        };
+    }
+
     public async Task<ApiResultDto<List<GetAllTreatmentDto>>> GetAll()
     {
         var result = await _apiService.GetAllAsync<GetAllTreatmentDto>("treatments/all");
