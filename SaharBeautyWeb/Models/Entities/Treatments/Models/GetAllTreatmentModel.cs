@@ -6,8 +6,6 @@ public class GetAllTreatmentModel
 {
     public List<GetTreatmentDto> Treatments { get; set; } = new();
     public int TotalElements { get; set; }
-    public int StartRow { get; set; }
-    public int EndRow { get; set; }
     public int CurrentPage { get; set; }
     public int TotalPages { get; set; }
 }
