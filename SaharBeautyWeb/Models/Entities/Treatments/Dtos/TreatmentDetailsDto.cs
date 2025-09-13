@@ -1,4 +1,4 @@
-﻿using SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.Dtos;
+﻿using SaharBeautyWeb.Models.Commons.Dtos;
 
 namespace SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 

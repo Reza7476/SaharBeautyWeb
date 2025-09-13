@@ -2,6 +2,7 @@
 @model SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.IndexModel
 @{
     Layout = "_UserPanelLayout";
+   
 }
 
 <div class="row">
@@ -32,7 +33,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Treatments)
+                            @foreach (var item in Model.ListModel.Treatments)
                             {
                                 <tr>
                                     <td>
@@ -68,8 +69,49 @@
                                     </td>
                                 </tr>
                             }
+
                         </tbody>
                     </table>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info" id="dataTableExample_info" role="status" aria-live="polite">
+                            نمایش @Model.ListModel.StartRow تا @Model.ListModel.EndRow از @Model.ListModel.TotalElements مورد
+
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers" id="dataTableExample_paginate">
+                            <ul class="pagination">
+                                <li class="paginate_button page-item previous" id="dataTableExample_previous">
+                                    <a href="#" aria-controls="dataTableExample" data-dt-idx="0" tabindex="0" class="page-link">
+                                        قبلی
+
+                                    </a>
+                                </li>
+                                <li class="paginate_button page-item ">
+                                    <a href="#" aria-controls="dataTableExample" data-dt-idx="1" tabindex="0" class="page-link">
+                                        1
+                                    </a>
+                                </li>
+                                <li class="paginate_button page-item active">
+                                    <a href="#" aria-controls="dataTableExample" data-dt-idx="2" tabindex="0" class="page-link">
+                                        2
+                                    </a>
+                                </li>
+                                <li class="paginate_button page-item ">
+                                    <a href="#" aria-controls="dataTableExample" data-dt-idx="3" tabindex="0" class="page-link">
+                                        3
+                                    </a>
+                                </li>
+                                <li class="paginate_button page-item next" id="dataTableExample_next">
+                                    <a href="#" aria-controls="dataTableExample" data-dt-idx="4" tabindex="0" class="page-link">
+                                        بعدی
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <!-- end table responsive -->
             </div>
@@ -163,9 +205,9 @@
             $(".edit-treatment-btn").on("click", function () {
                 var id = $(this).data("id");
                 $.ajax({
-                url:'@Url.Page("Index","EditTreatmentPartial")',
-                type:'Get',
-                    data: {id:id},
+                    url: '@Url.Page("Index", "EditTreatmentPartial")',
+                    type: 'Get',
+                    data: { id: id },
                     success: function (html) {
                         var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
                         $("#staticBackdrop .modal-body").html(html);
@@ -196,61 +238,61 @@
 
                 $.ajax({
                     url: '@Url.Page("Index", "AddImage")',
-                    type:'Post',
-                    data:formData,
-                    contentType:false,
-                    processData:false,
-                    beforeSend:function(){
+                    type: 'Post',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function () {
                         sendBtn.prop("disabled", true);
                     },
-                    success:function(res){
-                        if(res.success){
+                    success: function (res) {
+                        if (res.success) {
                             var modalEl = document.getElementById('staticBackdrop');
                             var modal = bootstrap.Modal.getInstance(modalEl);
                             modal.hide();
                             $("#add-treatment-image-form")[0].reset();
                             location.reload();
-                        }else{
+                        } else {
                             handleApiError(res.error);
                             sendBtn.prop("disabled", false);
                         }
                     },
-                    error:function(res){
+                    error: function (res) {
                         showPopup(res.error);
                         sendBtn.prop("disabled", false);
                     }
                 });
             });
 
-            $(document).on("click", ".delete-treatment-image-btn",function(e){
+            $(document).on("click", ".delete-treatment-image-btn", function (e) {
                 e.preventDefault();
                 var deleteBtn = $(this);
                 var token = $('input[name="__RequestVerificationToken"]').val();
                 var treatmentId = $("#treatmentId").val();
                 imageId = deleteBtn.data("id");
                 $.ajax({
-                    url:'@Url.Page("Index","DeleteImage")',
-                    type:'Post',
+                    url: '@Url.Page("Index", "DeleteImage")',
+                    type: 'Post',
                     data: {
-                        imageid:imageId,
-                        id:treatmentId,
-                        __RequestVerificationToken:token,
+                        imageid: imageId,
+                        id: treatmentId,
+                        __RequestVerificationToken: token,
                     },
-                    success:function(res){
+                    success: function (res) {
 
                         if (res.success) {
-                         deleteBtn.closest(".col-md-6").remove();
-                        }else{
+                            deleteBtn.closest(".col-md-6").remove();
+                        } else {
                             handleApiError(res.error)
                         }
                     },
-                    error: function(){
+                    error: function () {
                         showPopup("خطایی ایجاد شده");
                     }
                 });
             })
 
-            $(document).on("click", ".edit-treatment-title-description",function(e){
+            $(document).on("click", ".edit-treatment-title-description", function (e) {
                 e.preventDefault();
                 var sendBtn = $(this);
                 var title = $("#edit-treatment-title").val();
@@ -262,18 +304,18 @@
                 var formData = new FormData(form);
                 $.ajax({
                     url: '@Url.Page("Index", "EditTreatment")',
-                    type:'Post',
-                    data:formData,
-                    processData:false,
-                    contentType:false,
-                    success:function(res){
-                        if(res.success){
+                    type: 'Post',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (res) {
+                        if (res.success) {
                             var modalEl = document.getElementById('staticBackdrop');
                             var modal = bootstrap.Modal.getInstance(modalEl);
                             modal.hide();
                             $("#edit-treatment-title-description-form")[0].reset();
                             location.reload();
-                        }else{
+                        } else {
                             handleApiError(res.erro)
                         }
                     },

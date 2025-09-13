@@ -1,13 +1,12 @@
-﻿using SaharBeautyWeb.Models.Commons;
+﻿using SaharBeautyWeb.Models.Commons.Dtos;
 
-namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.Dtos;
+namespace SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 
-public class GetAllTreatmentDto
+public class GetTreatmentDto
 {
     public long Id { get; set; }
     public string? Title { get; set; }
     public string? Description { get; set; }
     public MediaDto? Media { get; set; }
 }
-
 

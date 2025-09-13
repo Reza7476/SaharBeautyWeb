@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
-using SaharBeautyWeb.Models.Commons;
+using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Banners;
 using SaharBeautyWeb.Services.Contracts;
 using System.Net.Http.Headers;

@@ -1,5 +1,5 @@
 ﻿using SaharBeautyWeb.Configurations.Interfaces;
-using SaharBeautyWeb.Models.Commons;
+using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Banners;
 
 namespace SaharBeautyWeb.Services.Banners;

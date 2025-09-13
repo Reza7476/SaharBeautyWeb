@@ -1,4 +1,4 @@
-﻿using SaharBeautyWeb.Models.Commons;
+﻿using SaharBeautyWeb.Models.Commons.Dtos;
 
 namespace SaharBeautyWeb.Models.Entities.Banners.Landing;
 

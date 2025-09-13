@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SaharBeautyWeb.Models.Commons;
-
+using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Services.Banners;
 
 namespace SaharBeautyWeb.Pages.Shared.Components.BannerLanding;
