@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
-using SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.Dtos;
+using SaharBeautyWeb.Models.Entities.Treatments.Models;
 using SaharBeautyWeb.Services.Treatments;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
@@ -11,7 +11,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
     public class IndexModel : PageModel
     {
         private readonly ITreatmentService _service;
-        public List<GetAllTreatmentDto> Treatments { get; set; } = new();
+        public GetAllTreatmentModel ListModel { get; set; } = new();
 
         [BindProperty]
         public AddTreatmentModel AddModel { get; set; }
@@ -27,11 +27,19 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
 
         public async Task OnGet()
         {
-            var treatments = await _service.GetAll();
+            var limit = 5;
+            var pageNumber = 1;
+            int offset = pageNumber.ToOffset(limit);
+
+            var treatments = await _service.GetAll(offset,limit);
 
             if (treatments.IsSuccess && treatments.Data != null)
             {
-                Treatments = treatments.Data;
+                ListModel.Treatments = treatments.Data.Elements;
+                ListModel.TotalElements = treatments.Data.TotalElements;
+                ListModel.StartRow = offset + 1;
+                ListModel.EndRow = offset + limit;
+
             }
             else
             {
@@ -131,18 +139,18 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
                 return new JsonResult(new
                 {
                     error = "عنوان یا توضیحات نمیتواند خالی باشند",
-                    success=false
-                }) ;
+                    success = false
+                });
             }
 
             var result = await _service.UpdateTitleAndDescription(new UpdateTreatmentTitleAndDescriptionDto()
             {
-                Description=ModelData.Description,
-                Title=ModelData.Title,
-                Id=ModelData.Id
+                Description = ModelData.Description,
+                Title = ModelData.Title,
+                Id = ModelData.Id
             });
 
-           
+
             return new JsonResult(new
             {
                 data = result,

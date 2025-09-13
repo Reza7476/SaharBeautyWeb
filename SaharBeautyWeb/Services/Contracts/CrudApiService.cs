@@ -1,4 +1,5 @@
-﻿using SaharBeautyWeb.Models.Commons;
+﻿using SaharBeautyWeb.Models.Commons.Dtos;
+using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 using System.Text.Json;
 
 namespace SaharBeautyWeb.Services.Contracts;
@@ -90,12 +91,13 @@ public class CrudApiService : ICrudApiService
     public async Task<ApiResultDto<object>> UpdateAsPutAsyncFromBody<T>(string url, HttpContent content)
     {
         var response = await _client.PutAsync(url, content);
-        var raw= await response.Content.ReadAsStringAsync();
+        var raw = await response.Content.ReadAsStringAsync();
         if (response.IsSuccessStatusCode)
         {
-            return new ApiResultDto<object> { 
-                IsSuccess = response.IsSuccessStatusCode ,
-                StatusCode=(int)response.StatusCode 
+            return new ApiResultDto<object>
+            {
+                IsSuccess = response.IsSuccessStatusCode,
+                StatusCode = (int)response.StatusCode
             };
         }
 
@@ -195,16 +197,24 @@ public class CrudApiService : ICrudApiService
         }
     }
 
-    public async Task<ApiResultDto<List<T>>> GetAllAsync<T>(string url)
+    public async Task<ApiResultDto<GetAllDto<T>>> GetAllAsync<T>(string url, int? offset = null, int? limit = null)
     {
         try
         {
+            var queryParams = new List<string>();
+            if (offset.HasValue) queryParams.Add($"Offset={offset.Value}");
+            if (limit.HasValue) queryParams.Add($"Limit={limit.Value}");
+            if (queryParams.Any())
+            {
+                url += "?" + string.Join("&", queryParams);
+            }
+
             var response = await _client.GetAsync(url);
             var raw = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
             {
-                return new ApiResultDto<List<T>>
+                return new ApiResultDto<GetAllDto<T>>
                 {
                     IsSuccess = response.IsSuccessStatusCode,
                     StatusCode = (int)response.StatusCode,
@@ -212,21 +222,21 @@ public class CrudApiService : ICrudApiService
                 };
             }
 
-            var wrapper = JsonSerializer.Deserialize<ApiListResponse<T>>(raw, new JsonSerializerOptions
+            var wrapper = JsonSerializer.Deserialize<GetAllDto<T>>(raw, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });
 
-            return new ApiResultDto<List<T>>
+            return new ApiResultDto<GetAllDto<T>>
             {
-                Data = wrapper?.Elements ?? new List<T>(),
+                Data=wrapper,
                 IsSuccess = response.IsSuccessStatusCode,
-                StatusCode = (int)response.StatusCode
+                StatusCode = (int)response.StatusCode,
             };
         }
         catch (Exception ex)
         {
-            return new ApiResultDto<List<T>>
+            return new ApiResultDto<GetAllDto<T>>
             {
                 IsSuccess = false,
                 Error = $"خطا در ارتباط با سرور: {ex.Message}"
@@ -234,12 +244,6 @@ public class CrudApiService : ICrudApiService
         }
     }
 
-
-    public class ApiListResponse<T>
-    {
-        public List<T> Elements { get; set; } = default!;
-        public int TotalElements { get; set; }
-    }
 
     public class ErrorResponse
     {

@@ -1,6 +1,6 @@
-﻿using SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.Dtos;
+﻿using SaharBeautyWeb.Models.Commons.Dtos;
 
-namespace SaharBeautyWeb.Models.Entities.Treatments;
+namespace SaharBeautyWeb.Models.Entities.Treatments.Models;
 
 public class GetTreatmentWithAllImagesDto
 {

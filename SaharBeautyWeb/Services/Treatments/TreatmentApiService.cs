@@ -1,8 +1,6 @@
-﻿using SaharBeautyWeb.Models.Commons;
-using SaharBeautyWeb.Models.Commons.Dtos;
-using SaharBeautyWeb.Models.Entities.Treatments;
+﻿using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
-using SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.Dtos;
+using SaharBeautyWeb.Models.Entities.Treatments.Models;
 using SaharBeautyWeb.Services.Contracts;
 using System.Text;
 using System.Text.Json;
@@ -44,17 +42,17 @@ public class TreatmentApiService : ITreatmentService
     {
 
         string url = $"treatments/{dto.Id}/add-image";
-        using var content=new MultipartFormDataContent();
+        using var content = new MultipartFormDataContent();
         if (dto.AddMedia != null)
         {
-            var fileSteam=dto.AddMedia.OpenReadStream();
+            var fileSteam = dto.AddMedia.OpenReadStream();
             var fileContent = new StreamContent(fileSteam);
-            content.Add(fileContent,"Media",dto.AddMedia.FileName);
+            content.Add(fileContent, "Media", dto.AddMedia.FileName);
         }
 
         var result = await _apiService.AddAsync<long>(url, content);
 
-        return result;  
+        return result;
     }
 
     public async Task<ApiResultDto<object>> DeleteImage(long imageId, long id)
@@ -63,38 +61,30 @@ public class TreatmentApiService : ITreatmentService
         var result = await _apiService.Delete<object>(url);
         return new ApiResultDto<object>
         {
-            Data=result.Data,
-            Error=result.Error,
-            IsSuccess=result.IsSuccess,
-            StatusCode=result.StatusCode
+            Data = result.Data,
+            Error = result.Error,
+            IsSuccess = result.IsSuccess,
+            StatusCode = result.StatusCode
         };
     }
 
-    public async Task<ApiResultDto<List<GetAllTreatmentDto>>> GetAll()
+    public async Task<ApiResultDto<GetAllDto<GetTreatmentDto>>> GetAll(int? offset = null, int? limit = null)
     {
-        var result = await _apiService.GetAllAsync<GetAllTreatmentDto>("treatments/all");
+        var result = await _apiService.GetAllAsync<GetTreatmentDto>("treatments/all", offset, limit);
 
         if (!result.IsSuccess || result.Error != null)
-            return new ApiResultDto<List<GetAllTreatmentDto>>
+            return new ApiResultDto<GetAllDto<GetTreatmentDto>>
             {
                 Error = result.Error,
                 IsSuccess = result.IsSuccess,
             };
-        var mapped = result.Data?.Select(r => new GetAllTreatmentDto()
+        var mapped =new GetAllDto<GetTreatmentDto>()
         {
-            Description = r.Description,
-            Media = new MediaDto
-            {
-                Extension = r.Media?.Extension ?? " ",
-                ImageName = r.Media?.ImageName ?? " ",
-                UniqueName = r.Media?.UniqueName ?? " ",
-                Url = r.Media?.Url ?? " "
-            },
-            Id = r.Id,
-            Title = r.Title,
-        }).ToList();
+            Elements=result.Data.Elements,
+            TotalElements=result.Data.TotalElements
+        };
 
-        return new ApiResultDto<List<GetAllTreatmentDto>>
+        return new ApiResultDto<GetAllDto<GetTreatmentDto>>
         {
             Data = mapped,
             IsSuccess = true,
@@ -106,7 +96,7 @@ public class TreatmentApiService : ITreatmentService
     {
         var url = $"treatments/{id}";
         var result = await _apiService.GetAsync<GetTreatmentWithAllImagesDto>(url);
-        var a= new ApiResultDto<GetTreatmentWithAllImagesDto>()
+        var a = new ApiResultDto<GetTreatmentWithAllImagesDto>()
         {
             Data = result.Data,
             Error = result.Error,
@@ -126,8 +116,8 @@ public class TreatmentApiService : ITreatmentService
             Description = dto.Description
         });
 
-         using var content= new StringContent(json, Encoding.UTF8, "application/json");
-        var result = await _apiService.UpdateAsPutAsyncFromBody<object>(url,content);
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var result = await _apiService.UpdateAsPutAsyncFromBody<object>(url, content);
         return result;
     }
 }

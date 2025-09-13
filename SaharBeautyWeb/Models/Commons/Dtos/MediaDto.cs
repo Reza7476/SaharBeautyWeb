@@ -1,4 +1,4 @@
-﻿namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.Dtos;
+﻿namespace SaharBeautyWeb.Models.Commons.Dtos;
 
 public class MediaDto
 {

@@ -1,15 +1,13 @@
 ﻿using SaharBeautyWeb.Configurations.Interfaces;
-using SaharBeautyWeb.Models.Commons;
 using SaharBeautyWeb.Models.Commons.Dtos;
-using SaharBeautyWeb.Models.Entities.Treatments;
 using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
-using SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.Dtos;
+using SaharBeautyWeb.Models.Entities.Treatments.Models;
 
 namespace SaharBeautyWeb.Services.Treatments;
 
 public interface ITreatmentService : IService
 {
-    Task<ApiResultDto<List<GetAllTreatmentDto>>> GetAll();
+    Task<ApiResultDto<GetAllDto<GetTreatmentDto>>> GetAll(int? offset=null,int? limit=null);
     Task<ApiResultDto<long>> Add(AddTreatmentModel dto);
     Task<ApiResultDto<GetTreatmentWithAllImagesDto>> GetById(long id);
     Task<ApiResultDto<long>> AddImage(AddMediaDto dto);
