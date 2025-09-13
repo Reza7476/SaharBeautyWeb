@@ -27,17 +27,14 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
 
         public async Task OnGet(int pageNumber = 0, int limit = 5)
         {
-            int offset = pageNumber;
+            int offset = pageNumber;       
             
             var treatments = await _service.GetAll(offset, limit);
-
 
             if (treatments.IsSuccess && treatments.Data != null)
             {
                 ListModel.Treatments = treatments.Data.Elements;
                 ListModel.TotalElements = treatments.Data.TotalElements;
-                ListModel.StartRow = offset + 1;
-                ListModel.EndRow = offset + limit;
                 ListModel.CurrentPage = pageNumber;
                 ListModel.TotalPages= treatments.Data.TotalElements.ToTotalPage(limit); ;
             }
