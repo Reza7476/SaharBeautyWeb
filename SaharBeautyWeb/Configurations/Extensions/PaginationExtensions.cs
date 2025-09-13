@@ -7,4 +7,10 @@ public static  class PaginationExtensions
         var offset = (pageNumber - 1) * limit;
         return offset;  
     }
+
+    public static int ToTotalPage(this int totalElement, int limit)
+    {
+        var totalPage = (int)Math.Ceiling((double)totalElement/limit);
+        return totalPage;
+    }
 }

@@ -2,7 +2,7 @@
 @model SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.IndexModel
 @{
     Layout = "_UserPanelLayout";
-   
+
 }
 
 <div class="row">
@@ -21,97 +21,8 @@
 
                 </div>
                 <!-- end row -->
-
-                <div class="table-responsive">
-                    <table class="table align-middle datatable dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
-                        <thead>
-                            <tr class="bg-transparent">
-                                <th>عنوان خدمت</th>
-                                <th>توضیحات</th>
-                                <th>عکس</th>
-                                <th style="width: 90px;">عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.ListModel.Treatments)
-                            {
-                                <tr>
-                                    <td>
-                                        @item.Title
-                                    </td>
-                                    <td>
-                                        <p>
-                                            @item.Description
-                                        </p>
-                                    </td>
-                                    <td>
-                                        <img class="flex-shrink-0 me-3 rounded-circle"
-                                             src="@item.Media?.Url"
-                                             alt="@item.Media?.ImageName"
-                                             height="36">
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="bx bx-dots-horizontal-rounded"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li>
-                                                    <button class="dropdown-item edit-treatment-btn"
-                                                            data-id="@item.Id"
-                                                            href="#">
-                                                        ویرایش
-                                                    </button>
-                                                </li>
-                                                <li><a class="dropdown-item" href="#">حذف</a></li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-
-                        </tbody>
-                    </table>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 col-md-5">
-                        <div class="dataTables_info" id="dataTableExample_info" role="status" aria-live="polite">
-                            نمایش @Model.ListModel.StartRow تا @Model.ListModel.EndRow از @Model.ListModel.TotalElements مورد
-
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-7">
-                        <div class="dataTables_paginate paging_simple_numbers" id="dataTableExample_paginate">
-                            <ul class="pagination">
-                                <li class="paginate_button page-item previous" id="dataTableExample_previous">
-                                    <a href="#" aria-controls="dataTableExample" data-dt-idx="0" tabindex="0" class="page-link">
-                                        قبلی
-
-                                    </a>
-                                </li>
-                                <li class="paginate_button page-item ">
-                                    <a href="#" aria-controls="dataTableExample" data-dt-idx="1" tabindex="0" class="page-link">
-                                        1
-                                    </a>
-                                </li>
-                                <li class="paginate_button page-item active">
-                                    <a href="#" aria-controls="dataTableExample" data-dt-idx="2" tabindex="0" class="page-link">
-                                        2
-                                    </a>
-                                </li>
-                                <li class="paginate_button page-item ">
-                                    <a href="#" aria-controls="dataTableExample" data-dt-idx="3" tabindex="0" class="page-link">
-                                        3
-                                    </a>
-                                </li>
-                                <li class="paginate_button page-item next" id="dataTableExample_next">
-                                    <a href="#" aria-controls="dataTableExample" data-dt-idx="4" tabindex="0" class="page-link">
-                                        بعدی
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                <div>
+                    @await Html.PartialAsync("_TreatmentsList", Model.ListModel)
                 </div>
                 <!-- end table responsive -->
             </div>

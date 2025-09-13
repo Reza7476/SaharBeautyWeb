@@ -1,0 +1,11 @@
+﻿body {
+}
+.multiline-truncate {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* حداکثر تعداد خطوط */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    max-width: 200px; /* عرض دلخواه */
+}
