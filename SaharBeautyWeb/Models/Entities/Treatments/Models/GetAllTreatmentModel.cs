@@ -8,4 +8,6 @@ public class GetAllTreatmentModel
     public int TotalElements { get; set; }
     public int StartRow { get; set; }
     public int EndRow { get; set; }
+    public int CurrentPage { get; set; }
+    public int TotalPages { get; set; }
 }

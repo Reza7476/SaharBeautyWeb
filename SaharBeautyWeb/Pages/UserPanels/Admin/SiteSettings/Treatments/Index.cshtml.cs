@@ -25,13 +25,12 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
         }
 
 
-        public async Task OnGet()
+        public async Task OnGet(int pageNumber = 0, int limit = 5)
         {
-            var limit = 5;
-            var pageNumber = 1;
-            int offset = pageNumber.ToOffset(limit);
+            int offset = pageNumber;
+            
+            var treatments = await _service.GetAll(offset, limit);
 
-            var treatments = await _service.GetAll(offset,limit);
 
             if (treatments.IsSuccess && treatments.Data != null)
             {
@@ -39,7 +38,8 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
                 ListModel.TotalElements = treatments.Data.TotalElements;
                 ListModel.StartRow = offset + 1;
                 ListModel.EndRow = offset + limit;
-
+                ListModel.CurrentPage = pageNumber;
+                ListModel.TotalPages= treatments.Data.TotalElements.ToTotalPage(limit); ;
             }
             else
             {
