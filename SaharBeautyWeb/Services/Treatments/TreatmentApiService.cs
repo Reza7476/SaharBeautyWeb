@@ -10,10 +10,10 @@ namespace SaharBeautyWeb.Services.Treatments;
 public class TreatmentApiService : ITreatmentService
 {
     private readonly HttpClient _client;
-    private readonly ICrudApiService _apiService;
+    private readonly ICRUDApiService _apiService;
 
     public TreatmentApiService(HttpClient client,
-        ICrudApiService apiService,
+        ICRUDApiService apiService,
         string? baseAddress = null)
     {
         _client = client;
