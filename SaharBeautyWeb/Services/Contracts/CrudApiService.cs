@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace SaharBeautyWeb.Services.Contracts;
 
-public class CrudApiService : ICrudApiService
+public class CrudApiService : ICRUDApiService
 {
 
     private readonly HttpClient _client;

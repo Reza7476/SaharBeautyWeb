@@ -4,7 +4,7 @@ using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 
 namespace SaharBeautyWeb.Services.Contracts;
 
-public interface ICrudApiService : IService
+public interface ICRUDApiService : IService
 {
     Task<ApiResultDto<T>> AddAsync<T>(string url, MultipartFormDataContent content);
     Task<ApiResultDto<object>> Delete<T>(string url);

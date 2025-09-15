@@ -10,12 +10,12 @@ namespace SaharBeautyWeb.Services.Banners;
 public class BannerService : IBannerService
 {
     private readonly HttpClient _client;
-    private readonly ICrudApiService _apiService;
+    private readonly ICRUDApiService _apiService;
 
 
     public BannerService(
         HttpClient client,
-        ICrudApiService apiService,
+        ICRUDApiService apiService,
         string? baseAddress = null)
     {
         _client = client;
