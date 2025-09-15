@@ -117,7 +117,7 @@ else
             setUpImagePreview("#input-why-us-section-image", "#preview-add-image-why-us-section");
             $(document).on("click", "#createWhyUsSection", function (e) {
                 e.preventDefault();
-                var send=$(this);
+                var send = $(this);
                 var titleInput = $("#why-us-section-title")[0];
                 var descriptionInput = $("#why-us-description")[0];
                 var imageInput = $("#input-why-us-section-image")[0];
@@ -135,34 +135,35 @@ else
                     markInputError(imageInput);
                     hassError = true;
                 }
-               if (hasError) return;
-               var formData=new FormData();
-                formData.append("Title", titleInput);
-                formData.append("Description", descriptionInput);
+                if (hasError) return;
+                var formData = new FormData();
+                formData.append("Title", titleInput.value
+                        formData.append("Description", descriptionInput.value);
                 formData.append("Image", imageInput.files[0]);
 
-                 var token = $('input[name="__RequestVerificationToken"]').val();
-                 if (token) formData.append('__RequestVerificationToken', token);
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                if (token) formData.append('__RequestVerificationToken', token);
 
                 $.ajax({
-                    url:'@Url.Page("Index","CreateWhyUsSection")',
-                    type:'Post',
-                    data:formData,
-                    contentType:false,
-                    processData:false,
-                    beforeSend:function(){
+                    url: '@Url.Page("Index", "CreateWhyUsSection")',
+                    type: 'Post',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function () {
                         send.prop("disabled", true);
                     },
-                    success:function(res){
+                    success: function (res) {
                         if (res.success) {
-                            location.reload();
-                        }else{
-                            handleApiError(res);
+                            console.log(res)
+                            //location.reload();
+                        } else {
+                            handleApiError(res.error);
                             send.prop("disabled", false);
                             return;
                         }
-                    },error:function(err)
-                    {
+                    },
+                    error: function (err) {
                         handleApiError(err);
                         send.prop("disabled", false);
                     }
