@@ -45,6 +45,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
             }
             else
             {
+                ViewData["ErrorMessage"] = banner.Error;
                 Banner = new BannerDto()
                 {
                     IsSuccess = banner.IsSuccess,

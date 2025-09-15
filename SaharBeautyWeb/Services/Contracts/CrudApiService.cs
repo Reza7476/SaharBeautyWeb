@@ -1,6 +1,6 @@
 ﻿using SaharBeautyWeb.Models.Commons.Dtos;
-using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SaharBeautyWeb.Services.Contracts;
 
@@ -115,53 +115,32 @@ public class CrudApiService : ICRUDApiService
 
     public async Task<ApiResultDto<T>> GetAsync<T>(string url)
     {
-        try
+
+        var response = await _client.GetAsync(url);
+        var raw = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode || raw == "")
         {
-            var response = await _client.GetAsync(url);
-            var raw = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
-            {
-                try
-                {
-                    var data = JsonSerializer.Deserialize<T>(raw, new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    });
-
-                    return new ApiResultDto<T>
-                    {
-                        IsSuccess = true,
-                        Data = data,
-                        StatusCode = (int)response.StatusCode
-                    };
-                }
-                catch
-                {
-                    return new ApiResultDto<T>
-                    {
-                        IsSuccess = false,
-                        Data = default,
-                        StatusCode = (int)response.StatusCode,
-                        Error = "پاسخ نامعتبر از سرور"
-                    };
-                }
-            }
             return new ApiResultDto<T>
             {
-                IsSuccess = false,
+                IsSuccess = raw == "" ? true : false,
+                Data = default,
                 StatusCode = (int)response.StatusCode,
-                Error = !string.IsNullOrEmpty(raw) ? raw : response.ReasonPhrase
+                Error = raw == "" ? null : raw
             };
         }
-        catch (Exception ex)
+
+        var data = JsonSerializer.Deserialize<T>(raw, new JsonSerializerOptions
         {
-            return new ApiResultDto<T>
-            {
-                IsSuccess = false,
-                Error = $"خطا در ارتباط با سرور: {ex.Message}"
-            };
-        }
+            PropertyNameCaseInsensitive = true
+        });
+
+        return new ApiResultDto<T>
+        {
+            IsSuccess = true,
+            Data = data,
+            StatusCode = (int)response.StatusCode
+        };
     }
 
     public async Task<ApiResultDto<T>> UpdateAsPatchAsync<T>(string url, MultipartFormDataContent content)
@@ -229,7 +208,7 @@ public class CrudApiService : ICRUDApiService
 
             return new ApiResultDto<GetAllDto<T>>
             {
-                Data=wrapper,
+                Data = wrapper,
                 IsSuccess = response.IsSuccessStatusCode,
                 StatusCode = (int)response.StatusCode,
             };
