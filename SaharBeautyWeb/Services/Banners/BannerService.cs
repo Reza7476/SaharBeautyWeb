@@ -37,7 +37,7 @@ public class BannerService : IBannerService
             content.Add(fileContent, "Image", dto.Image.FileName);
         }
 
-        var result = await _apiService.AddAsync<long>("banners/add", content);
+        var result = await _apiService.AddFromFormAsync<long>("banners/add", content);
 
         return result;
     }

@@ -34,7 +34,7 @@ public class TreatmentApiService : ITreatmentService
             content.Add(fileContent, "Media", dto.Image.FileName);
         }
 
-        var result = await _apiService.AddAsync<long>("treatments/add", content);
+        var result = await _apiService.AddFromFormAsync<long>("treatments/add", content);
         return result;
     }
 
@@ -50,7 +50,7 @@ public class TreatmentApiService : ITreatmentService
             content.Add(fileContent, "Media", dto.AddMedia.FileName);
         }
 
-        var result = await _apiService.AddAsync<long>(url, content);
+        var result = await _apiService.AddFromFormAsync<long>(url, content);
 
         return result;
     }

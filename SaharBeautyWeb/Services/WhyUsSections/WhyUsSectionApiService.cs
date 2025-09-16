@@ -2,6 +2,8 @@
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos;
 using SaharBeautyWeb.Services.Contracts;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 
 namespace SaharBeautyWeb.Services.WhyUsSections;
 
@@ -20,6 +22,20 @@ public class WhyUsSectionApiService : IWhyUsSectionService
         _client.BaseAddress = new Uri(baseAddress!);
     }
 
+    public async Task<ApiResultDto<long>> AddWhyUsQuestions(AddWhyUsQuestionsDto dto)
+    {
+        var url = $"why-us-sections/{dto.WhyUsSectionId}/add-question";
+        var json = JsonSerializer.Serialize(new
+        {
+            dto.Answer,
+            dto.Question
+        });
+
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var result = await _apiService.AddFromBodyAsync<long>(url, content);
+        return result;
+    }
+
     public async Task<ApiResultDto<long>> AddWhyUsSection(AddWhyUsSectionDto dto)
     {
         var url = "why-us-sections/add";
@@ -27,12 +43,12 @@ public class WhyUsSectionApiService : IWhyUsSectionService
         content.Add(new StringContent(dto.Title), "Title");
         content.Add(new StringContent(dto.Title), "Description");
         var fileStream = dto.Image.OpenReadStream();
-        var fileContent=new StreamContent(fileStream);
-        fileContent.Headers.ContentType=new MediaTypeHeaderValue("application/json");
+        var fileContent = new StreamContent(fileStream);
+        fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
         content.Add(fileContent, "Image", dto.Image.FileName);
 
 
-        var result = await _apiService.AddAsync<long>(url, content);
+        var result = await _apiService.AddFromFormAsync<long>(url, content);
         return result;
     }
 
@@ -43,7 +59,7 @@ public class WhyUsSectionApiService : IWhyUsSectionService
 
         return new ApiResultDto<GetWhyUsSectionDto>()
         {
-            Data=result.Data,
+            Data = result.Data,
             IsSuccess = result.IsSuccess,
             Error = result.Error
         };
