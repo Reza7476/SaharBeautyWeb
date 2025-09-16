@@ -14,43 +14,6 @@ public class CrudApiService : ICRUDApiService
         _client = httpClient;
     }
 
-    public async Task<ApiResultDto<T>> AddAsync<T>(string url, MultipartFormDataContent content)
-    {
-        var response = await _client.PostAsync(url, content);
-        var raw = await response.Content.ReadAsStringAsync();
-
-        if (response.IsSuccessStatusCode)
-        {
-            try
-            {
-                var data = JsonSerializer.Deserialize<T>(raw, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
-                return new ApiResultDto<T>
-                {
-                    Data = data,
-                    IsSuccess = response.IsSuccessStatusCode,
-                    StatusCode = (int)response.StatusCode
-                };
-            }
-            catch (Exception ex)
-            {
-                return new ApiResultDto<T>
-                {
-                    IsSuccess = false,
-                    Data = default,
-                    StatusCode = (int)response.StatusCode,
-                    Error = ex.Message
-                };
-            }
-        }
-        return new ApiResultDto<T>
-        {
-            IsSuccess = response.IsSuccessStatusCode,
-            Error = string.IsNullOrWhiteSpace(raw).ToString()
-        };
-    }
     public async Task<ApiResultDto<object>> Delete<T>(string url)
     {
         try
@@ -88,6 +51,43 @@ public class CrudApiService : ICRUDApiService
             };
         }
     }
+    public async Task<ApiResultDto<T>> AddFromFormAsync<T>(string url, MultipartFormDataContent content)
+    {
+        var response = await _client.PostAsync(url, content);
+        var raw = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            try
+            {
+                var data = JsonSerializer.Deserialize<T>(raw, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                return new ApiResultDto<T>
+                {
+                    Data = data,
+                    IsSuccess = response.IsSuccessStatusCode,
+                    StatusCode = (int)response.StatusCode
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResultDto<T>
+                {
+                    IsSuccess = false,
+                    Data = default,
+                    StatusCode = (int)response.StatusCode,
+                    Error = ex.Message
+                };
+            }
+        }
+        return new ApiResultDto<T>
+        {
+            IsSuccess = response.IsSuccessStatusCode,
+            Error = string.IsNullOrWhiteSpace(raw).ToString()
+        };
+    }
     public async Task<ApiResultDto<object>> UpdateAsPutAsyncFromBody<T>(string url, HttpContent content)
     {
         var response = await _client.PutAsync(url, content);
@@ -109,6 +109,31 @@ public class CrudApiService : ICRUDApiService
         {
             IsSuccess = response.IsSuccessStatusCode,
             Error = data?.Error ?? " An error has been accorded.",
+            StatusCode = (int)response.StatusCode
+        };
+    }
+
+    public async Task<ApiResultDto<T>> AddFromBodyAsync<T>(string url, HttpContent content)
+    {
+        var response = await _client.PostAsync(url, content);
+        var raw = await response.Content.ReadAsStringAsync();
+        if (response.IsSuccessStatusCode)
+        {
+            var data = JsonSerializer.Deserialize<T>(raw, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            return new ApiResultDto<T>
+            {
+                Data = data,
+                IsSuccess=response.IsSuccessStatusCode,
+                StatusCode=(int)response.StatusCode
+            };
+        }
+        return new ApiResultDto<T>()
+        {
+            Error=raw,
+            IsSuccess = response.IsSuccessStatusCode,
             StatusCode = (int)response.StatusCode
         };
     }

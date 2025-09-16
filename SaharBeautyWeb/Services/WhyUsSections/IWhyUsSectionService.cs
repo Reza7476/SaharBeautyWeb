@@ -6,6 +6,7 @@ namespace SaharBeautyWeb.Services.WhyUsSections;
 
 public interface IWhyUsSectionService : IService
 {
+    Task <ApiResultDto<long>> AddWhyUsQuestions(AddWhyUsQuestionsDto dto);
     Task<ApiResultDto<long>> AddWhyUsSection(AddWhyUsSectionDto dto);
     Task<ApiResultDto<GetWhyUsSectionDto>> GetWhyUsSection();
 }

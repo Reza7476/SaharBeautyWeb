@@ -1,0 +1,43 @@
+﻿@using SaharBeautyWeb.Models.Entities.WhyUsSections.Models
+@model AddWhyUsQuestionModel
+<form class="needs-validation"
+      method="post"
+      id="add-why-us-question-form"
+      asp-page="Index"
+      asp-page-handler="AddQuestions"
+      enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div class="col-md-12">
+        <div class="mb-3">
+            <label class="form-label">عنوان</label>
+            <input type="text"
+                   id="why-us-question"
+                   class="form-control"
+                   asp-for="Question"
+                   placeholder="لطفا یک سوال را وارد نمایید">
+        </div>
+    </div>
+    <input  type="hidden" asp-for="WhyUsSectionId" value="@Model.WhyUsSectionId"/>
+    <div class="col-md-12">
+        <div class="mb-3">
+            <label class="form-label">پاسخ</label>
+            <textarea class="form-control"
+                      asp-for="Answer"
+                      id="why-us-question-answer">
+            </textarea>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="mb-3">
+            <button class="btn btn-primary"
+                      type="submit"
+                      id="add-why-us-question">
+                      ثبت
+            </button>
+        </div>
+    </div>
+
+
+   
+</form>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Autofac.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos;
@@ -11,6 +12,9 @@ public class IndexModel : PageModel
 {
     [BindProperty]
     public WhyUsSectionModel ModelData { get; set; } = new();
+    
+    [BindProperty]
+    public AddWhyUsQuestionModel WhyUsQuestionModel { get; set; }    
 
     private readonly IWhyUsSectionService _service;
 
@@ -27,6 +31,7 @@ public class IndexModel : PageModel
         {
             ModelData.Title = whyUsSection.Data.Title;
             ModelData.Description = whyUsSection.Data.Description;
+            ModelData.Id = whyUsSection.Data.Id;
             ModelData.QuestionModels = whyUsSection.Data.Questions.Select(_ => new WhyUsQuestionModel
             {
                 Answer = _.Answer,
@@ -74,5 +79,44 @@ public class IndexModel : PageModel
             error=result.Error
         });
 
+    }
+
+    public async Task<PartialViewResult> OnGetAddWhyUsQuestionPartial(long id)
+    {
+        var model = new AddWhyUsQuestionModel
+        {
+            WhyUsSectionId = id
+        };
+
+        return Partial("_AddWhyUsQuestion", model);
+    }
+
+    public async Task<IActionResult> OnPostAddQuestions()
+    {
+       if(string.IsNullOrWhiteSpace(WhyUsQuestionModel.Question)||
+            string.IsNullOrWhiteSpace(WhyUsQuestionModel.Answer)||
+            WhyUsQuestionModel.WhyUsSectionId <= 0)
+        {
+            return new JsonResult(new
+            {
+                success = false,
+                error="داده نا معتبر "
+            });
+        }
+        var question = await _service.AddWhyUsQuestions(new AddWhyUsQuestionsDto()
+        {
+            Answer = WhyUsQuestionModel.Answer,
+            Question = WhyUsQuestionModel.Question,
+            WhyUsSectionId = WhyUsQuestionModel.WhyUsSectionId
+
+        });
+
+        return new JsonResult(new
+        {
+            success = question.IsSuccess,
+            data=question.Data,
+            Error=question.Error,
+            StatusCode=question.StatusCode
+        });
     }
 }
