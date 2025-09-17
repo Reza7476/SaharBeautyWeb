@@ -8,5 +8,6 @@ public interface IWhyUsSectionService : IService
 {
     Task <ApiResultDto<long>> AddWhyUsQuestions(AddWhyUsQuestionsDto dto);
     Task<ApiResultDto<long>> AddWhyUsSection(AddWhyUsSectionDto dto);
+    Task<ApiResultDto<object>> DeleteQuestion(long questionId);
     Task<ApiResultDto<GetWhyUsSectionDto>> GetWhyUsSection();
 }

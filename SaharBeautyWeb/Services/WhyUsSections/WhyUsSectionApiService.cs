@@ -52,6 +52,13 @@ public class WhyUsSectionApiService : IWhyUsSectionService
         return result;
     }
 
+    public async Task<ApiResultDto<object>> DeleteQuestion(long questionId)
+    {
+        var url = $"why-us-sections/{questionId}/question";
+        var result = await _apiService.Delete<object>(url);
+        return result;
+    }
+
     public async Task<ApiResultDto<GetWhyUsSectionDto>> GetWhyUsSection()
     {
         var url = "why-us-sections";

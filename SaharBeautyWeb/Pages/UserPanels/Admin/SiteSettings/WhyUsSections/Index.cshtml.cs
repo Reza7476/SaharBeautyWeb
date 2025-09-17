@@ -119,4 +119,16 @@ public class IndexModel : PageModel
             StatusCode=question.StatusCode
         });
     }
+
+    public async Task<IActionResult> OnPostDeleteQuestion(long id)
+    {
+        var result = await _service.DeleteQuestion(id);
+        return new JsonResult(new
+        {
+            Success=result.IsSuccess,
+            Data=result.Data,
+            StatusCode=result.StatusCode,
+           Error=result.Error
+        });
+    }
 }
