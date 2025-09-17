@@ -16,41 +16,29 @@ public class CrudApiService : ICRUDApiService
 
     public async Task<ApiResultDto<object>> Delete<T>(string url)
     {
-        try
-        {
-            var response = await _client.DeleteAsync(url);
-            var raw = await response.Content.ReadAsStringAsync();
+        var response = await _client.DeleteAsync(url);
+        var raw = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
-            {
-                return new ApiResultDto<object>
-                {
-                    IsSuccess = response.IsSuccessStatusCode,
-                    StatusCode = (int)response.StatusCode
-                };
-            }
-            var data = JsonSerializer.Deserialize<ErrorResponse>(raw, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+        if (response.IsSuccessStatusCode)
+        {
             return new ApiResultDto<object>
             {
                 IsSuccess = response.IsSuccessStatusCode,
-                Error = data?.Error ?? " An error has been accorded.",
                 StatusCode = (int)response.StatusCode
             };
-
         }
-        catch (Exception ex)
+        var data = JsonSerializer.Deserialize<ErrorResponse>(raw, new JsonSerializerOptions
         {
-
-            return new ApiResultDto<object>
-            {
-                IsSuccess = false,
-                Error = ex.Message,
-            };
-        }
+            PropertyNameCaseInsensitive = true
+        });
+        return new ApiResultDto<object>
+        {
+            IsSuccess = response.IsSuccessStatusCode,
+            Error = data?.Error ?? " An error has been accorded.",
+            StatusCode = (int)response.StatusCode
+        };
     }
+
     public async Task<ApiResultDto<T>> AddFromFormAsync<T>(string url, MultipartFormDataContent content)
     {
         var response = await _client.PostAsync(url, content);
@@ -126,13 +114,13 @@ public class CrudApiService : ICRUDApiService
             return new ApiResultDto<T>
             {
                 Data = data,
-                IsSuccess=response.IsSuccessStatusCode,
-                StatusCode=(int)response.StatusCode
+                IsSuccess = response.IsSuccessStatusCode,
+                StatusCode = (int)response.StatusCode
             };
         }
         return new ApiResultDto<T>()
         {
-            Error=raw,
+            Error = raw,
             IsSuccess = response.IsSuccessStatusCode,
             StatusCode = (int)response.StatusCode
         };
