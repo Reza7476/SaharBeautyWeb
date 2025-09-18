@@ -1,5 +1,4 @@
-﻿using Autofac.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos;
@@ -12,9 +11,11 @@ public class IndexModel : PageModel
 {
     [BindProperty]
     public WhyUsSectionModel ModelData { get; set; } = new();
-    
     [BindProperty]
-    public AddWhyUsQuestionModel WhyUsQuestionModel { get; set; }    
+    public WhyUsSectionModel_Edit EditModel { get; set; }
+
+    [BindProperty]
+    public AddWhyUsQuestionModel WhyUsQuestionModel { get; set; }
 
     private readonly IWhyUsSectionService _service;
 
@@ -73,10 +74,10 @@ public class IndexModel : PageModel
         });
         return new JsonResult(new
         {
-            data=result.Data,
-            success=result.IsSuccess,
-            statusCode=result.StatusCode,
-            error=result.Error
+            data = result.Data,
+            success = result.IsSuccess,
+            statusCode = result.StatusCode,
+            error = result.Error
         });
 
     }
@@ -93,14 +94,14 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnPostAddQuestions()
     {
-       if(string.IsNullOrWhiteSpace(WhyUsQuestionModel.Question)||
-            string.IsNullOrWhiteSpace(WhyUsQuestionModel.Answer)||
-            WhyUsQuestionModel.WhyUsSectionId <= 0)
+        if (string.IsNullOrWhiteSpace(WhyUsQuestionModel.Question) ||
+             string.IsNullOrWhiteSpace(WhyUsQuestionModel.Answer) ||
+             WhyUsQuestionModel.WhyUsSectionId <= 0)
         {
             return new JsonResult(new
             {
                 success = false,
-                error="داده نا معتبر "
+                error = "داده نا معتبر "
             });
         }
         var question = await _service.AddWhyUsQuestions(new AddWhyUsQuestionsDto()
@@ -114,9 +115,9 @@ public class IndexModel : PageModel
         return new JsonResult(new
         {
             success = question.IsSuccess,
-            data=question.Data,
-            Error=question.Error,
-            StatusCode=question.StatusCode
+            data = question.Data,
+            Error = question.Error,
+            StatusCode = question.StatusCode
         });
     }
 
@@ -125,10 +126,58 @@ public class IndexModel : PageModel
         var result = await _service.DeleteQuestion(id);
         return new JsonResult(new
         {
-            Success=result.IsSuccess,
-            Data=result.Data,
-            StatusCode=result.StatusCode,
-           Error=result.Error
+            Success = result.IsSuccess,
+            Data = result.Data,
+            StatusCode = result.StatusCode,
+            Error = result.Error
         });
+    }
+
+    public async Task<IActionResult> OnGetEditWhyUsSectionEdit(long id)
+    {
+        var section = await _service.GetWhyUsSectionById(id);
+        if (section.IsSuccess && section.Data != null)
+        {
+            var model = new WhyUsSectionModel_Edit()
+            {
+                Description = section.Data.Description,
+                Image = section.Data.Image,
+                Title = section.Data.Title,
+                Id = id
+            };
+            return Partial("_editWhyUsSectionPartial", model);
+        }
+        return BadRequest(new
+        {
+            Error = section.Error != null ? section.Error : "مقداری یافت نشد",
+            Success = section.IsSuccess,
+            StatusCode = section.StatusCode
+        });
+    }
+
+    public async Task<IActionResult> OnPostApplyEditTitleAndDescription()
+    {
+        if (EditModel.Title == null || EditModel.Description == null)
+        {
+            return new JsonResult(new
+            {
+                Success = false,
+                Error = "داده نامعتبر",
+            });
+        }
+        var result = await _service.EditTitleAndDescription(
+                     new EditWhyUsSectionTitleAndDescriptionDto
+                     {
+                         Description = EditModel.Description,
+                         Title = EditModel.Title,
+                         Id = 0//EditModel.Id
+                     });
+        return new JsonResult(new
+        {
+            Success = result.IsSuccess,
+            Error = result.Error,
+            StatusCode = result.StatusCode
+        });
+
     }
 }

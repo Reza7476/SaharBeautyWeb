@@ -76,7 +76,7 @@ public class CrudApiService : ICRUDApiService
             Error = string.IsNullOrWhiteSpace(raw).ToString()
         };
     }
-    public async Task<ApiResultDto<object>> UpdateAsPutAsyncFromBody<T>(string url, HttpContent content)
+    public async Task<ApiResultDto<object>> UpdateAsPutFromBodyAsync<T>(string url, HttpContent content)
     {
         var response = await _client.PutAsync(url, content);
         var raw = await response.Content.ReadAsStringAsync();
