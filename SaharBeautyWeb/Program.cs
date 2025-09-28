@@ -5,7 +5,10 @@ var builder = WebApplication.CreateBuilder(args);
 var baseAddress = builder.Configuration["ApiSettings:BaseUrl"];
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(option =>
+{
+    option.Conventions.ConfigureFilter(new AjaxExceptionFilter());
+});
 
 builder.Services.AddHttpClient();
 

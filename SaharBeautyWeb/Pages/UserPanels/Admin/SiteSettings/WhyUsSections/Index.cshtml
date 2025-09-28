@@ -67,153 +67,18 @@ else
     </div>
 </div>
 
+
 @section Scripts {
     <script>
-
-        $(() => {
-            setUpImagePreview("#input-why-us-section-image", "#preview-add-image-why-us-section");
-            $(document).on("click", "#createWhyUsSection", function (e) {
-                e.preventDefault();
-                var send = $(this);
-                var titleInput = $("#why-us-section-title")[0];
-                var descriptionInput = $("#why-us-description")[0];
-                var imageInput = $("#input-why-us-section-image")[0];
-                let hasError;
-                if (!titleInput.value.trim()) {
-                    markInputError(titleInput);
-                    hasError = true;
-                }
-                if (!descriptionInput.value.trim()) {
-                    markInputError(descriptionInput);
-                    hasError = true;
-
-                }
-                if (!(imageInput.files[0])) {
-                    markInputError(imageInput);
-                    hassError = true;
-                }
-                if (hasError) return;
-                var form = $("#add-why-us-section-form")[0];
-                var formData = new FormData(form);
-                $.ajax({
-                    url: '@Url.Page("Index", "CreateWhyUsSection")',
-                    type: 'Post',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    beforeSend: function () {
-                        send.prop("disabled", true);
-                    },
-                    success: function (res) {
-                        if (res.success) {
-                            location.reload();
-                        } else {
-                            handleApiError(res.error);
-                            send.prop("disabled", false);
-                            return;
-                        }
-                    },
-                    error: function (err) {
-                        handleApiError(err);
-                        send.prop("disabled", false);
-                    }
-
-                });
-
-            })
-
-            $(document).on("click", ".add-why-us-question-btn", function (e) {
-                e.preventDefault();
-                var id = $(this).data("id");
-                console.log(id);
-                $.ajax({
-                    url: '@Url.Page("Index", "AddWhyUsQuestionPartial")',
-                    type: 'Get',
-                    data: { id: id },
-                    success: function (html) {
-                        $("#staticBackdrop .modal-body").html(html);
-                        var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-                        modal.show();
-                    },
-                    error: function () {
-                        showPopup("خطایی پیش امده")
-                    }
-
-                })
-            });
-
-            $(document).on("click", "#add-why-us-question", function (e) {
-                e.preventDefault();
-                var sendBtn = $(this);
-                var question = $("#why-us-question")[0];
-                var answer = $("#why-us-question-answer")[0];
-                var hasError;
-                if (!question.value.trim()) {
-                    markInputError(question);
-                    hasError = true;
-                }
-                if (!answer.value.trim()) {
-                    markInputError(answer);
-                    hasError = true;
-                }
-                if (hasError) return;
-                var form = $("#add-why-us-question-form")[0];
-                var formData = new FormData(form);
-                $.ajax({
-                    url: '@Url.Page("Index", "AddQuestions")',
-                    type: 'Post',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    beforeSend: function () {
-                        sendBtn.prop("disabled", true);
-                    },
-                    success: function (res) {
-                        if (res.success) {
-                            location.reload();
-                        } else {
-                            handleApiError(res.error);
-                        }
-                    },
-                    error: function () {
-                        showPopup("خطایی پیش امده")
-                        location.reload();
-                    }
-                });
-            })
-
-
-            $(document).on("click", ".delete-question-btn", function (e) {
-                e.preventDefault();
-                var removeBtn = $(this);
-                var id = removeBtn.data("id");
-
-                var token = $('input[name="__RequestVerificationToken"]').val();
-                $.ajax({
-                    url: '@Url.Page("Index", "DeleteQuestion")',
-                    type: 'Post',
-                    data: { 
-                        id: id ,
-                        __RequestVerificationToken: token
-                    },
-                    beforeSend: function () {
-                        removeBtn.prop("disabled", true);
-                    },
-                    success: function (res) {
-                        if (res.success) {
-                            location.reload();
-                        } else {
-                            handleApiError(res.error);
-                            removeBtn.prop("disabled", false);
-                        }
-                    }, error: function () {
-                        showPopup("خطای پیش آمده");
-                        removeBtn.prop("disabled", false);
-                    }
-                });
-            });
-        });
-
+        var createWhyUsSectionUrl = '@Url.Page("Index", "CreateWhyUsSection")';
+        var addWhyUsQuestionPartialUrl = '@Url.Page("Index", "AddWhyUsQuestionPartial")';
+        var addQuestionsUrl = '@Url.Page("Index", "AddQuestions")';
+        var deleteQuestionUrl = '@Url.Page("Index", "DeleteQuestion")';
+        var editWhyUsSectionEditUrl = '@Url.Page("Index", "EditWhyUsSectionEdit")';
+        var applyEditTitleAndDescripWhyUsSection = '@Url.Page("Index", "ApplyEditTitleAndDescription")'
+        var applyEditWhyUsImage = '@Url.Page("Index", "ApplyEditWhyUsImage")'
     </script>
+
+    <script src="~/layout/admin/assets/js/pages/userpanels/admin/sitesettings/whyusquestions/whyussection.js"></script>
 
 }

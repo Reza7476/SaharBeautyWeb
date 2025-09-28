@@ -117,7 +117,7 @@ public class TreatmentApiService : ITreatmentService
         });
 
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var result = await _apiService.UpdateAsPutAsyncFromBody<object>(url, content);
+        var result = await _apiService.UpdateAsPutFromBodyAsync<object>(url, content);
         return result;
     }
 }
