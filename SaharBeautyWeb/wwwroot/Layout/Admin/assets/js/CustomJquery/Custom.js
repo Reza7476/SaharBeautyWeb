@@ -33,3 +33,22 @@ function markInputError(input) {
     input.classList.add("input-error");
     setTimeout(() => input.classList.remove("input-error"), 5000);
 }
+
+$(document).ajaxError(function (event, jqxhr) {
+    if (jqxhr.status === 0) {
+        // اینترنت قطع است
+        window.location.href = '/Error';
+        return;
+    }
+
+    try {
+        var json = jqxhr.responseJSON || JSON.parse(jqxhr.responseText);
+        if (json && json.redirect) {
+            window.location.href = json.redirect;
+            return;
+        }
+    } catch { }
+
+    // در غیر این صورت به صفحه خطا برو
+    window.location.href = '/Error';
+});

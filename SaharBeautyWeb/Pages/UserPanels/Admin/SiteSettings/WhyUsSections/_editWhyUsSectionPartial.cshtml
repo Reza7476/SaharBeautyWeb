@@ -1,6 +1,6 @@
 ﻿@using SaharBeautyWeb.Models.Entities.WhyUsSections.Models
 @model WhyUsSectionModel_Edit
-<div class="row" style="display:block" id="edit-treatment">
+<div class="row"  >
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -43,76 +43,79 @@
                     </div>
                     <div class="col-12">
 
-                        <button type="submit" 
-                                class="btn btn-primary waves-effect waves-light col-12 edit-why-us-section-title-description">اعمال تغییرات</button>
+                        <button type="submit"
+                                class="btn btn-primary waves-effect waves-light col-12 edit-why-us-section-title-description">
+                            اعمال تغییرات
+                        </button>
                     </div>
                 </form>
 
                 <hr />
-                <form class="needs-validation"
-                      method="post"
-                      id="add-treatment-image-form"
-                      asp-page="Index"
-                      asp-page-handler="AddTreatmentImage"
-                      enctype="multipart/form-data">
-                    @Html.AntiForgeryToken()
-                    <div class="row">
-                        <div class=" col-sm-6">
-                            <div class=" mb-3">
-                                <input type="file"
-                                       asp-for="AddMedia"
-                                       id="edit-treatment-image-input"
-                                       class="form-control"
-                                       placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="mb-3">
-                                <img class="img-thumbnail"
-                                     alt=""
-                                     width="200"
-                                     src=""
-                                     id="preview-edit-image-treatment"
-                                     data-holder-rendered="true">
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="col-12">
-
-                            <button type="submit"
-                                class="btn btn-primary add-edited-treatment-image col-12"
-                                id-data="@Model.Id">ویرایش عکس</button>
-                        </div>
-                    </div>
-                    <div>
-                        <input type="hidden" asp-for="@Model.Id" id="whyUsSectionId" value="@Model.Id" />
-                    </div>
-
-                </form>
-                <hr />
-
                 <div style="max-height:300px; overflow-y:auto">
 
                     <div class="row">
-                        
-                            <div class="col-md-6">
-                                <img class="img-thumbnail"
-                                     alt="@Model.Image.ImageName"
-                                     width="200"
-                                     src="@Model.Image.Url"
-                                     data-holder-rendered="true">
-                                <br />
-                                <button type="button"
-                                        class="btn btn-danger  delete-treatment-image-btn"
-                                        data-id="@Model.Id">
-                                    حذف
-                                </button>
-                                <br />
-                                <br />
-                            </div>
+
+                        <div class="col-12">
+                            <img class="img-thumbnail"
+                                 alt="@Model.Image?.ImageName"
+                                 src="@Model.Image?.Url"
+                                 data-holder-rendered="true">
+                            <br />
+                            <br />
+                            <br />
+                        </div>
                     </div>
+                </div>
+                <button type="button"
+                        class="btn btn-primary waves-effect waves-light col-12"
+                        id="show-edit-section-form-div">
+                    ویرایش عکس
+                </button>
+                <hr />
+                <div style="display:none" id="edit-why-us-section-image-div">
+                    <form class="needs-validation"
+                          method="post"
+                          id="edit-whyUsSection-image-form"
+                          asp-page="Index"
+                          asp-page-handler="ApplyEditWhyUsImage"
+                          enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class=" col-sm-6">
+                                <div class=" mb-3">
+                                    <input type="file"
+                                           asp-for="AddMedia"
+                                           id="edit-why-us-image-input"
+                                           class="form-control"
+                                           placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <img class="img-thumbnail"
+                                         alt=""
+                                         width="200"
+                                         src=""
+                                         id="preview-edit-image-why-us-section"
+                                         data-holder-rendered="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="col-12">
+
+                                <button type="submit"
+                                        class="btn btn-primary apply-edited-why-us-image col-12"
+                                        id-data="@Model.Id">
+                                    ویرایش عکس
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="hidden" asp-for="@Model.Id" id="whyUsSectionId" value="@Model.Id" />
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

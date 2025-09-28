@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
+using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Models;
 using SaharBeautyWeb.Services.WhyUsSections;
@@ -11,6 +12,7 @@ public class IndexModel : PageModel
 {
     [BindProperty]
     public WhyUsSectionModel ModelData { get; set; } = new();
+
     [BindProperty]
     public WhyUsSectionModel_Edit EditModel { get; set; }
 
@@ -170,7 +172,7 @@ public class IndexModel : PageModel
                      {
                          Description = EditModel.Description,
                          Title = EditModel.Title,
-                         Id = 0//EditModel.Id
+                         Id = EditModel.Id
                      });
         return new JsonResult(new
         {
@@ -179,5 +181,30 @@ public class IndexModel : PageModel
             StatusCode = result.StatusCode
         });
 
+    }
+    public async Task<IActionResult> OnPostApplyEditWhyUsImage()
+    {
+        var (isValid, message) = EditModel.AddMedia.ValidateImage();
+
+        if (EditModel?.Id == null || !isValid)
+        {
+            return new JsonResult(new
+            {
+                error = message,
+                succes = false
+            });
+        }
+
+        var result = await _service.EditImage(new AddMediaDto()
+        {
+            Id = EditModel.Id,
+            AddMedia = EditModel.AddMedia!
+        });
+        return new JsonResult(new
+        {
+            succes = result.IsSuccess,
+            Error=result.Error,
+            StatusCode=result.StatusCode
+        });
     }
 }

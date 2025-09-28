@@ -184,7 +184,7 @@
             processData: false,
             contentType: false,
             data: formData,
-            befoerSend: function () {
+            beforeSend: function () {
                 sendBtn.prop("disabled", true);
             },
             success: function (res) {
@@ -204,5 +204,53 @@
 
     });
 
+    $(document).on("click", "#show-edit-section-form-div", function (event) {
+        event.preventDefault();
+        $("#edit-why-us-section-image-div").css("display", "block");
+    });
 
+
+    setUpImagePreview("#edit-why-us-image-input", "#preview-edit-image-why-us-section");
+    $(document).on("click", ".apply-edited-why-us-image", function (event) {
+        event.preventDefault();
+        var send = $(this);
+        var imageInput = $("#edit-why-us-image-input")[0];
+        let hasError;
+        //if (!(imageInput.files[0])) {
+        //    markInputError(imageInput);
+        //    hassError = true;
+        //}
+        //if (hasError) return;
+
+        var form = $("#edit-whyUsSection-image-form")[0];
+        var formData = new FormData(form);
+        for (var pair  of formData.entries()) {
+            console.log(pair[0] + ":" + pair[1]);
+        }
+        $.ajax({
+            url: applyEditWhyUsImage,
+            type: 'Post',
+            processData: false,
+            contentType: false,
+            data: formData,
+            beforeSend: function () {
+                send.prop("disabled", true);
+            },
+            success: function (res) {
+                if (res.success) {
+                    location.reload();
+                } else {
+                    handleApiError(res.error);
+                    location.reload();
+                }
+            },
+            error: function (xhr) {
+                location.reload();
+            }
+
+
+        });
+
+
+    });
 });

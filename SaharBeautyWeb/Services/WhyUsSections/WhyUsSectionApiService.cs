@@ -1,10 +1,12 @@
-﻿using SaharBeautyWeb.Models.Commons.Dtos;
+﻿using Microsoft.VisualBasic;
+using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Models;
 using SaharBeautyWeb.Services.Contracts;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Threading.RateLimiting;
 
 namespace SaharBeautyWeb.Services.WhyUsSections;
 
@@ -47,8 +49,7 @@ public class WhyUsSectionApiService : IWhyUsSectionService
         var fileContent = new StreamContent(fileStream);
         fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
         content.Add(fileContent, "Image", dto.Image.FileName);
-
-
+        
         var result = await _apiService.AddFromFormAsync<long>(url, content);
         return result;
     }
@@ -98,5 +99,18 @@ public class WhyUsSectionApiService : IWhyUsSectionService
             IsSuccess = result.IsSuccess,
             StatusCode = result.StatusCode
         };
+    }
+
+    public async Task<ApiResultDto<object>> EditImage(AddMediaDto dto)
+    {
+        var url = $"{_controllerUrl}/{dto.Id}/image";
+        using var content = new MultipartFormDataContent();
+        var fileStream = dto.AddMedia.OpenReadStream();
+        var fileContent=new StreamContent(fileStream);
+        fileContent.Headers.ContentType=new MediaTypeHeaderValue("application/json");
+        content.Add(fileContent, "Media", dto.AddMedia.FileName);
+
+        var result = await _apiService.UpdateAsPatchAsync<object>(url, content);
+        return result;
     }
 }
