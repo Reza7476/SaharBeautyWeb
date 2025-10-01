@@ -1,0 +1,22 @@
+﻿@page "{handler?}"
+@model SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs.IndexModel
+@{
+    Layout = "_UserPanelLayout";
+}
+@if (string.IsNullOrEmpty(Model.ModelData.MobileNumber))
+{
+    <partial name="_AddAboutUsPartial" model="Model.AddAboutUsDto" />
+}
+else
+{
+    <p>موفق امیز </p>
+}
+
+@section Scripts {
+    <script>
+        var createAboutUs = '@Url.Page("Index", "CreateAboutUs")';
+    </script>
+
+    <script src="~/layout/admin/assets/js/pages/userpanels/admin/sitesettings/aboutus/aboutus.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+}
