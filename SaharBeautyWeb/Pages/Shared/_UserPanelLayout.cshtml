@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="~/Layout/Admin/assets/images/favicon.ico">
 
@@ -170,8 +172,8 @@
         function handleApiError(errorKey) {
             let message = errorMessages[errorKey];
             console.log(message);
-            if (!message || message.trim() === "") {
-                message = errorKey || "یک خطای ناشناخته رخ داده است";
+            if (!message ) {
+                message = errorKey ;
               showPopup(message);
             }
         }

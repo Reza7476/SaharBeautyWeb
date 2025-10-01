@@ -1,0 +1,127 @@
+﻿@using SaharBeautyWeb.Models.Entities.AboutUs.Management.Models
+@model AddAboutUsModel
+
+<div style="display:block" id="register-why-us-section">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">ثبت درباره ما</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <form class="needs-validation"
+                          method="post"
+                          id="add-about-us-section-form"
+                          asp-page="Index"
+                          asp-page-handler="CreateAboutUs"
+                          enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">شماره موبایل</label>
+                                <input type="text"
+                                       id="about-us-mobile"
+                                       class="form-control"
+                                       asp-for="MobileNumber"
+                                       placeholder="لطفا شماره موبایل را وارد نمایید">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">تلفن محل کار</label>
+                                <input type="text"
+                                       id="about-us-telephone"
+                                       class="form-control"
+                                       asp-for="Telephone"
+                                       placeholder="لطفا شماره تلفن محل را وارد نمایید">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">آدرس</label>
+                                <input type="text"
+                                       asp-for="Address"
+                                       id="about-us-address"
+                                       class="form-control"
+                                       placeholder="لطفا آدرس محل کار را وارد نمایید">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">ایمیل</label>
+                                <input type="text"
+                                       id="about-us-email"
+                                       asp-for="Email"
+                                       class="form-control"
+                                       placeholder="لطفا ایمیل خود  را وارد نمایید">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">اینستاگرام</label>
+                                <input type="text"
+                                       asp-for="Instagram"
+                                       id="about-us-instagram"
+                                       class="form-control"
+                                       placeholder="لطفا آیدی اینستاگرام خود را وارد نمایید">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">مکان سالن روی نقشه</label>
+                            <div id="map" style="height: 400px;"></div>
+                            <input type="hidden" asp-for="Latitude" id="latitude" />
+                            <input type="hidden" asp-for="Longitude" id="longitude" />
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">توضیحات</label>
+                                <textarea class="form-control"
+                                          asp-for="Description"
+                                          id="about-us-description">
+
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label"> انتخاب عکس لوگو</label>
+                                <input type="file"
+                                       id="input-about-us-logo"
+                                       class="form-control"
+                                       asp-for="LogoImage"
+                                       placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <button class="btn btn-primary w-100"
+                                        style="margin-right:auto"
+                                        type="submit"
+                                        id="send-about-us-button"
+                                        disabled >
+                                    ثبت
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+                <di class=" col-md-6 d-flex-justify-content-center">
+                    <img id="preview-add-image-about-us-logo"
+                         src="/Layout/Admin/assets/images/bg-1.jpg"
+                         class="img-thumbnail mb2 img-fixed-size"
+                         style="object-fit:cover" />
+                </di>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
