@@ -1,0 +1,81 @@
+﻿@using SaharBeautyWeb.Models.Entities.AboutUs.Management.Models
+@model GetAboutUsModel
+
+
+
+
+<div class="col-md-12">
+    <div class=" card-body">
+        <h1 class=" card-title"> درباره ما</h1>
+    </div>
+    <input style="display:none" value="@Model.Latitude" id="salon-latitude" />
+    <input style="display:none" value="@Model.Longitude" id="salon-longitude" />
+    <div class=" row">
+        <div class=" col-md-6">
+            <div class="col-md-12">
+                <label>شماره تلفن</label>
+                <p>@Model.MobileNumber</p>
+            </div>
+            <div class="col-md-12">
+                <label>تلفن محل کار</label>
+                <p>@Model.Telephone</p>
+            </div>
+            <div class="col-md-12">
+                <label>ایمیل</label>
+                <p>@Model.Email</p>
+            </div>
+            <div class="col-md-12">
+                <label>اینستاگرام</label>
+                <p>@Model.Instagram</p>
+            </div>
+            <div class="col-md-12">
+                <label>آدرس</label>
+                <p>@Model.Address</p>
+            </div>
+            <div class=" col-md-6">
+                <div class="col-md-12">
+                    <label>توضیحات</label>
+                    <p>@Model.Description</p>
+                </div>
+            </div>
+        </div>
+
+        <div class=" col-md-6">
+            <div class="mb-3">
+                <label class="form-label">مکان سالن روی نقشه</label>
+                <div id="display-salon-map" style="height: 400px; width: 100%; border:1px solid #ccc;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div>
+            <button class="btn btn-primary w-100"
+                    style="margin-right:auto"
+                    type="button"
+                    id="edit-about-us-button">
+                ویرایش درباره ما
+            </button>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <di class=" d-flex-justify-content-center">
+            <img 
+                 src="@Model.LogoImage"
+                 class="img-thumbnail mb2 "
+                 style="object-fit:cover" />
+        </di>
+        <div class="col-md-12">
+            <div >
+                <button class="btn btn-primary w-100"
+                        style="margin-right:auto"
+                        type="button"
+                        id="edit-about-us-logo-button">
+                   ویرایش طرح لوگو
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
