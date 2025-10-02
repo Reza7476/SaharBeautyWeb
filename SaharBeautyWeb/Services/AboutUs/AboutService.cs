@@ -2,6 +2,8 @@
 using SaharBeautyWeb.Models.Entities.AboutUs.Management.Dtos;
 using SaharBeautyWeb.Services.Contracts;
 using System.Globalization;
+using System.Text;
+using System.Text.Json;
 
 namespace SaharBeautyWeb.Services.AboutUs;
 
@@ -65,5 +67,34 @@ public class AboutService : IAboutUsService
         var result = await _apiService.AddFromFormAsync<long>(url, content);
 
         return result;
+    }
+
+    public async Task<ApiResultDto<GetAboutUsDto?>> GeAboutUsById(long id)
+    {
+        var url = $"{_controllerUrl}/{id}";
+
+        var result = await _apiService.GetAsync<GetAboutUsDto?>(url);
+        return result;
+    }
+
+    public async Task<ApiResultDto<object>> Edit(EditAboutUsDto dto)
+    {
+        var url = $"{_controllerUrl}/{dto.Id}";
+        var json = JsonSerializer.Serialize(new
+        {
+            dto.MobileNumber,
+            dto.Latitude,
+            dto.Longitude,
+            dto.Telephone,
+            dto.Description,
+            dto.Address,
+            dto.Email,
+            dto.Instagram
+        });
+
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var result=await _apiService.UpdateAsPutFromBodyAsync<object>(url, content);
+        return result;
+
     }
 }

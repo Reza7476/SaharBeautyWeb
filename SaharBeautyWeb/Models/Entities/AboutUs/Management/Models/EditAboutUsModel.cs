@@ -1,8 +1,6 @@
-﻿using SaharBeautyWeb.Models.Commons.Dtos;
+﻿namespace SaharBeautyWeb.Models.Entities.AboutUs.Management.Models;
 
-namespace SaharBeautyWeb.Models.Entities.AboutUs.Management.Models;
-
-public class GetAboutUsModel
+public class EditAboutUsModel
 {
     public long Id { get; set; }
     public required string MobileNumber { get; set; }
@@ -13,5 +11,4 @@ public class GetAboutUsModel
     public double? Longitude { get; set; }
     public string? Email { get; set; }
     public string? Instagram { get; set; }
-    public ImageDetailsDto? LogoImage { get; set; }
 }
