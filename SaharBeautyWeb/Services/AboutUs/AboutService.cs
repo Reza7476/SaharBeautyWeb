@@ -2,6 +2,7 @@
 using SaharBeautyWeb.Models.Entities.AboutUs.Management.Dtos;
 using SaharBeautyWeb.Services.Contracts;
 using System.Globalization;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
@@ -44,8 +45,8 @@ public class AboutService : IAboutUsService
 
         using var content = new MultipartFormDataContent();
         content.Add(new StringContent(dto.MobileNumber), "MobileNumber");
-        content.Add(new StringContent(dto.Address??""), "Address");
-        content.Add(new StringContent(dto.Email??""), "Email");
+        content.Add(new StringContent(dto.Address ?? ""), "Address");
+        content.Add(new StringContent(dto.Email ?? ""), "Email");
         if (dto.Latitude.HasValue)
         {
             content.Add(new StringContent(dto.Latitude.Value.ToString(CultureInfo.InvariantCulture)), "Latitude");
@@ -93,7 +94,7 @@ public class AboutService : IAboutUsService
         });
 
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var result=await _apiService.UpdateAsPutFromBodyAsync<object>(url, content);
+        var result = await _apiService.UpdateAsPutFromBodyAsync<object>(url, content);
         return result;
 
     }
@@ -107,8 +108,8 @@ public class AboutService : IAboutUsService
         {
             var fileStream = dto.Media.OpenReadStream();
             var fileContent = new StreamContent(fileStream);
-            fileContent.Headers.ContentType=new System.Net.Http.Headers.MediaTypeHeaderValue(dto.Media.FileName);
-            content.Add(fileContent, "Media",dto.Media.FileName);
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            content.Add(fileContent, "Media", dto.Media.FileName);
 
             var result = await _apiService.UpdateAsPatchAsync<object>(url, content);
             return result;

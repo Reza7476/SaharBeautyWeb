@@ -1,14 +1,10 @@
-﻿using Autofac.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.AboutUs.Management.Dtos;
 using SaharBeautyWeb.Models.Entities.AboutUs.Management.Models;
 using SaharBeautyWeb.Services.AboutUs;
-using System.Net;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
 {
@@ -187,6 +183,17 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
         public async Task<IActionResult> OnPostApplyEditedAboutUsLogo()
         {
 
+            var (isValid, message) = EditModel.Logo.ValidateImage();
+
+            if (EditModel?.Id == null || !isValid)
+            {
+                return new JsonResult(new
+                {
+                    error = message,
+                    success = false
+                });
+            }
+
             var result = await _service.EditAboutUsLogo(new EditMediaDto()
             {
                 Media = EditModel.Logo,
@@ -199,6 +206,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
                 statusCode = result.StatusCode,
                 data = result.Data
             });
+
         }
     }
 }

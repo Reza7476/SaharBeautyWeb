@@ -165,10 +165,8 @@
 
     $(document).on("click", "#apply-edited-about-us-logo", function (e) {
         e.preventDefault();
-        alert('hidfvsdfva');
         var form = $("#edit-about-us-logo-form")[0];
         var formData = new FormData(form);
-
         $.ajax({
             url: applyEditedaboutUsLogo,
             type: 'Post',
@@ -176,6 +174,7 @@
             contentType: false,
             processData: false,
             success: function (res) {
+                console.log(res);
                 if (res.success) {
                     location.reload();
                 } else {
@@ -189,13 +188,6 @@
             }
         });
     })
-
-
-
-
-
-
-
 });
 
 function ShowMapForEdit(lat, lon) {
