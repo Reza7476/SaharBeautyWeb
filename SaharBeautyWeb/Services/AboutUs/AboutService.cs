@@ -107,7 +107,8 @@ public class AboutService : IAboutUsService
         {
             var fileStream = dto.Media.OpenReadStream();
             var fileContent = new StreamContent(fileStream);
-            content.Add(fileContent, "Media");
+            fileContent.Headers.ContentType=new System.Net.Http.Headers.MediaTypeHeaderValue(dto.Media.FileName);
+            content.Add(fileContent, "Media",dto.Media.FileName);
 
             var result = await _apiService.UpdateAsPatchAsync<object>(url, content);
             return result;
