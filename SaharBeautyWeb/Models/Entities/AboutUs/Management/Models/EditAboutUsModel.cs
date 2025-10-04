@@ -1,4 +1,6 @@
-﻿namespace SaharBeautyWeb.Models.Entities.AboutUs.Management.Models;
+﻿using SaharBeautyWeb.Models.Commons.Dtos;
+
+namespace SaharBeautyWeb.Models.Entities.AboutUs.Management.Models;
 
 public class EditAboutUsModel
 {
@@ -11,4 +13,6 @@ public class EditAboutUsModel
     public double? Longitude { get; set; }
     public string? Email { get; set; }
     public string? Instagram { get; set; }
+    public ImageDetailsDto? LogoDetails { get; set; }
+    public IFormFile? Logo { get; set; }
 }

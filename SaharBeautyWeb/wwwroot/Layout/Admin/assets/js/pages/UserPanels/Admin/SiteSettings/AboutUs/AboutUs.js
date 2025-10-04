@@ -25,7 +25,6 @@
             contentType: false,
             processData: false,
             success: function (res) {
-                console.log(res);
                 if (res.success) {
                     location.reload();
 
@@ -119,6 +118,80 @@
 
         });
     })
+
+    $(document).on("click", ".edit-about-us-logo-button", function (e) {
+        e.preventDefault();
+        var id = $(this).data("id");
+        $.ajax({
+            url: getLogoByAboutUsId,
+            data: { id: id },
+            type: 'Get',
+            success: function (res, status, xhr) {
+
+                var contentType = xhr.getResponseHeader("content-type") || " ";
+                if (contentType.indexOf("application/json") >= 0) {
+                    if (!res.success) {
+                        handleApiError(res.error);
+                        return;
+                    }
+                }
+                else {
+                    var modalEl = document.getElementById('staticBackdrop');
+                    $("#staticBackdrop .modal-body").html(res);
+                    var modal = new bootstrap.Modal(modalEl);
+                    modal.show();
+                }
+            }
+        });
+
+    })
+
+    $(document).on("change", "#edit-about-us-logo-input", function (e) {
+        e.preventDefault();
+        var input = this;
+        var btnEdit = $("#apply-edited-about-us-logo");
+        var preview = $("#preview-edit-about-us-logo1212");
+
+        if (!validateImageFile(input)) return;
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $(preview).attr("src", e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+            btnEdit.prop("disabled", false);
+        }
+    })
+
+    $(document).on("click", "#apply-edited-about-us-logo", function (e) {
+        e.preventDefault();
+        alert('hidfvsdfva');
+        var form = $("#edit-about-us-logo-form")[0];
+        var formData = new FormData(form);
+
+        $.ajax({
+            url: applyEditedaboutUsLogo,
+            type: 'Post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.success) {
+                    location.reload();
+                } else {
+                    handleApiError(res.error);
+                    location.reload();
+                }
+            },
+            Error: function () {
+
+                alert('errorororo');
+            }
+        });
+    })
+
+
+
 
 
 
