@@ -13,6 +13,20 @@
     });
 }
 
+
+function setUpImagePreviewFixed(input, preview) {
+    if (!validateImageFile(input)) return;
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $(preview).attr("src", e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+
 function validateImageFile(input) {
 
     const file = input.files[0];

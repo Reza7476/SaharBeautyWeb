@@ -97,4 +97,23 @@ public class AboutService : IAboutUsService
         return result;
 
     }
+
+    public async Task<ApiResultDto<object>> EditAboutUsLogo(EditMediaDto dto)
+    {
+
+        var url = $"{_controllerUrl}/{dto.Id}/logo";
+        using var content = new MultipartFormDataContent();
+        if (dto.Media != null)
+        {
+            var fileStream = dto.Media.OpenReadStream();
+            var fileContent = new StreamContent(fileStream);
+            content.Add(fileContent, "Media");
+
+            var result = await _apiService.UpdateAsPatchAsync<object>(url, content);
+            return result;
+
+        }
+        return null;
+
+    }
 }

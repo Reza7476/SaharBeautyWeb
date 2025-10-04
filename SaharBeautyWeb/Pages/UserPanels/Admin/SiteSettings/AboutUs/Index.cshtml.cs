@@ -1,6 +1,7 @@
 ﻿using Autofac.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Diagnostics;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Commons.Dtos;
@@ -134,22 +135,69 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
         {
             var result = await _service.Edit(new EditAboutUsDto()
             {
-                MobileNumber=EditModel.MobileNumber,
-                Address=EditModel.Address,
-                Description=EditModel.Description,
-                Email=EditModel.Email,
-                Id= EditModel.Id,
-                Instagram=EditModel.Instagram,
-                Latitude=EditModel.Latitude,
-                Longitude=EditModel.Longitude,
-                Telephone=EditModel.Telephone
+                MobileNumber = EditModel.MobileNumber,
+                Address = EditModel.Address,
+                Description = EditModel.Description,
+                Email = EditModel.Email,
+                Id = EditModel.Id,
+                Instagram = EditModel.Instagram,
+                Latitude = EditModel.Latitude,
+                Longitude = EditModel.Longitude,
+                Telephone = EditModel.Telephone
             });
             return new JsonResult(new
             {
                 success = result.IsSuccess,
                 error = result.Error,
-                statusCode=result.StatusCode,
-                Data=result.Data
+                statusCode = result.StatusCode,
+                Data = result.Data
+            });
+        }
+
+        public async Task<IActionResult> OnGetGetLogoById(long id)
+        {
+            var result = await _service.GeAboutUsById(id);
+            if (result.IsSuccess && result.Data != null)
+            {
+                var model = new EditAboutUsModel()
+                {
+                    MobileNumber = result.Data.MobileNumber,
+                    LogoDetails = result.Data.LogoImage != null ? new ImageDetailsDto()
+                    {
+                        Extension = result.Data.LogoImage.Extension,
+                        ImageName = result.Data.LogoImage.ImageName,
+                        UniqueName = result.Data.LogoImage.UniqueName,
+                        Url = result.Data.LogoImage.Url
+                    } : null,
+                    Id = result.Data.Id
+                };
+                return Partial("_editLogo", model);
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    success = result.IsSuccess,
+                    error = result.Error,
+                    statusCode = result.StatusCode,
+                });
+            }
+        }
+
+        public async Task<IActionResult> OnPostApplyEditedAboutUsLogo()
+        {
+
+            var result = await _service.EditAboutUsLogo(new EditMediaDto()
+            {
+                Media = EditModel.Logo,
+                Id = EditModel.Id
+            });
+            return new JsonResult(new
+            {
+                success = result.IsSuccess,
+                error = result.Error,
+                statusCode = result.StatusCode,
+                data = result.Data
             });
         }
     }
