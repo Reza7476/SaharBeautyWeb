@@ -1,9 +1,7 @@
 ﻿@model BannerLandingModel
 
-
 @if (Model.Title != null && Model.IsSuccess)
 {
-
     <div class="banner-area banner-img-one"
          id="banner-backGround"
          style="background-image: url('@Model.URL'); ">
@@ -19,10 +17,6 @@
                 <div class="container-fluid">
                     <div class="banner-content">
                         <h1 class="wow fadeInUp">@Model.Title</h1>
-                        <div class="banner-btn-area">
-                            <a class="common-btn" href="services.html">خدمات ما</a>
-                            <a class="common-btn banner-btn" href="about.html">درباره ما</a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -44,10 +38,6 @@ else
                 <div class="container-fluid">
                     <div class="banner-content">
                         <h1 class="wow fadeInUp">Title</h1>
-                        <div class="banner-btn-area">
-                            <a class="common-btn" href="services.html">خدمات ما</a>
-                            <a class="common-btn banner-btn" href="about.html">درباره ما</a>
-                        </div>
                     </div>
                 </div>
             </div>
