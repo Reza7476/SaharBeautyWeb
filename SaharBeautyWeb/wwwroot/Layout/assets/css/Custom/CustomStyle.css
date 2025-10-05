@@ -1,0 +1,13 @@
+﻿body {
+}
+.img-box {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+    .img-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }

@@ -1,4 +1,5 @@
 ﻿using SaharBeautyWeb.Models.Commons.Dtos;
+using System.Net.Http;
 using System.Text.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -235,7 +236,6 @@ public class CrudApiService : ICRUDApiService
             };
         }
     }
-
 
     public class ErrorResponse
     {
