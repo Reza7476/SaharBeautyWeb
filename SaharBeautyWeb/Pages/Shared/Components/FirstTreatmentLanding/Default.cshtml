@@ -1,0 +1,32 @@
+﻿@using SaharBeautyWeb.Models.Entities.Treatments.Models.Landing
+
+
+@model List<GetTreatmentsForLandingDto>
+
+<section class="offer-area ptb-100">
+    <div class="offer-shape">
+        <img src="~/Layout/assets/images/offer/offer-shape1.png" alt="Shape">
+    </div>
+    <div class="container">
+        <div class="section-title">
+            <h2> خدمات ما</h2>
+        </div>
+        <div class="offer-slider owl-theme owl-carousel">
+            @foreach (var item in Model)
+            {
+                <div class="offer-item img-box">
+                    <img src="@item.Media.URL" alt="Offer">
+                    <div class="inner">
+                        <div class="d-table">
+                            <div class="d-table-cell">
+                                <h4>@item.Title</h4>
+                                <a href="service-details.html">مشاهده</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+          
+        </div>
+    </div>
+</section>

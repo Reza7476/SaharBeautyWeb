@@ -1,6 +1,7 @@
 ﻿using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Models;
+using SaharBeautyWeb.Models.Entities.Treatments.Models.Landing;
 using SaharBeautyWeb.Services.Contracts;
 using System.Text;
 using System.Text.Json;
@@ -11,6 +12,8 @@ public class TreatmentApiService : ITreatmentService
 {
     private readonly HttpClient _client;
     private readonly ICRUDApiService _apiService;
+    private const string _controllerUrl = "treatments";
+
 
     public TreatmentApiService(HttpClient client,
         ICRUDApiService apiService,
@@ -18,7 +21,7 @@ public class TreatmentApiService : ITreatmentService
     {
         _client = client;
         _apiService = apiService;
-        _client.BaseAddress = new Uri(baseAddress!);
+        // _client.BaseAddress = new Uri(baseAddress!);
     }
 
     public async Task<ApiResultDto<long>> Add(AddTreatmentModel dto)
@@ -78,10 +81,10 @@ public class TreatmentApiService : ITreatmentService
                 Error = result.Error,
                 IsSuccess = result.IsSuccess,
             };
-        var mapped =new GetAllDto<GetTreatmentDto>()
+        var mapped = new GetAllDto<GetTreatmentDto>()
         {
-            Elements=result.Data.Elements,
-            TotalElements=result.Data.TotalElements
+            Elements = result.Data.Elements,
+            TotalElements = result.Data.TotalElements
         };
 
         return new ApiResultDto<GetAllDto<GetTreatmentDto>>
@@ -104,6 +107,15 @@ public class TreatmentApiService : ITreatmentService
             StatusCode = result.StatusCode
         };
         return a;
+    }
+
+    public async Task<ApiResultDto<List<GetTreatmentsForLandingDto>>> GetForLanding()
+    {
+
+        var url = $"{_controllerUrl}/for-landing";
+
+        var result = await _apiService.GetAsync<List<GetTreatmentsForLandingDto>>(url);
+        return result;
     }
 
     public async Task<ApiResultDto<object>>
