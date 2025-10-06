@@ -3,7 +3,8 @@
 @{
     Layout = "_Layout";
 }
-<link href="~/layout/assets/css/pages/treatmentslist/treatmentslist.css" rel="stylesheet" />
+<link href="~/layout/assets/css/pages/treatmeants/treatmentslist.css" rel="stylesheet" />
+
 <div class="page-title-wrap">
     <div class="page-title-area title-img-two">
         <div class="title-shape">
@@ -15,7 +16,7 @@
                     <h2>خدمات</h2>
                     <ul>
                         <li>
-                            <a href="index.html">خانه</a>
+                            <a href="/">خانه</a>
                         </li>
                         <li>
                             <span>خدمات</span>
@@ -41,7 +42,7 @@
                         <div class="service-content">
                             <h3>@item.Title</h3>
                             <p>@item.Description</p>
-                            <a href="#" class="btn-more">اطلاعات بیشتر</a>
+                            <a href="@Url.Page("Details",new {id=item.Id})" class="btn-more">اطلاعات بیشتر</a>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,35 @@
+﻿@page
+@model SaharBeautyWeb.Pages.Landing.Treatments.DetailsModel
+@{
+    Layout = "_Layout";
+}
+<link href="~/layout/assets/css/pages/treatmeants/treatmentdetails.css" rel="stylesheet" />
+
+@if (Model.Treatment != null)
+{
+
+
+    <div class="service-details-area pt-100 pb-70">
+        <div class="container">
+           
+            <div class="details-spa">
+                <h3>@Model.Treatment.Title </h3>
+                <p>@Model.Treatment.Description</p>
+            </div>
+            <div class="offer-slider owl-theme owl-carousel">
+                @foreach (var item in Model.Treatment.Media)
+                {
+                    <div class="offer-item img-box">
+                        <img src="@item.URL" alt="Offer" >
+                    </div>
+                }
+            </div>
+
+            <div class="mt-4">
+                <a href="javascript:history.back()" class="btn btn-primary">
+                    بازگشت
+                </a>
+            </div>
+        </div>
+    </div>
+}
