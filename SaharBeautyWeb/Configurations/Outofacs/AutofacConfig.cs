@@ -54,11 +54,21 @@ public class AutofacModule : Module
             }
         }
 
+
         _.Register(ctx =>
         {
             var clientFactory = ctx.Resolve<IHttpClientFactory>();
-            return clientFactory.CreateClient();
+            var client = clientFactory.CreateClient();
+            client.BaseAddress = new Uri(_baseAddress); // تنظیم BaseAddress همانجا
+            return client;
         }).As<HttpClient>().InstancePerLifetimeScope();
+
+
+        //_.Register(ctx =>
+        //{
+        //    var clientFactory = ctx.Resolve<IHttpClientFactory>();
+        //    return clientFactory.CreateClient();
+        //}).As<HttpClient>().InstancePerLifetimeScope();
 
         base.Load(_);
     }
