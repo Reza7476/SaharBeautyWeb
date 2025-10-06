@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SaharBeautyWeb.Models.Entities.Treatments.Models;
 using SaharBeautyWeb.Models.Entities.Treatments.Models.Landing;
 using SaharBeautyWeb.Services.Treatments;
 
@@ -21,7 +20,7 @@ public class FirstTreatmentLandingViewComponent : ViewComponent
 
         if (treatment.IsSuccess && treatment.Data != null)
         {
-           return View(treatment.Data);
+            return View(treatment.Data);
         }
         return View(new List<GetTreatmentsForLandingDto>());
     }

@@ -1,0 +1,47 @@
+﻿@using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos
+@model GetWhyUsSectionForLandingDto
+<link href="~/layout/assets/css/pages/layoutlanding/whyussection.css" rel="stylesheet" />
+
+@if (Model.Image != null)
+{
+    <div class="best-area pt-100 pb-70">
+        <div class="best-shape">
+            <img src="~/Layout/assets/images/best/best-shape1.png" alt="Shape">
+        </div>
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="why-us-img">
+                        <img src="@Model.Image.Url" alt="Best">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="faq-item">
+                        <div class="section-title">
+                            <h2>@Model.Title</h2>
+
+                            <p>@Model.Description</p>
+
+                        </div>
+                        <ul class="accordion faq-universal">
+                            @foreach (var item in Model.Questions)
+                            {
+                                <li>
+                                    <h3 class="faq-head">@item.Question</h3>
+                                    <div class="faq-content">
+
+                                        <p>@item.Answer</p>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>موردی برای نمایش وجود ندارد</p>
+}
