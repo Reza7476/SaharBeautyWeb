@@ -21,7 +21,7 @@ public class TreatmentApiService : ITreatmentService
     {
         _client = client;
         _apiService = apiService;
-        // _client.BaseAddress = new Uri(baseAddress!);
+         //_client.BaseAddress = new Uri(baseAddress!);
     }
 
     public async Task<ApiResultDto<long>> Add(AddTreatmentModel dto)
@@ -73,7 +73,8 @@ public class TreatmentApiService : ITreatmentService
 
     public async Task<ApiResultDto<GetAllDto<GetTreatmentDto>>> GetAll(int? offset = null, int? limit = null)
     {
-        var result = await _apiService.GetAllAsync<GetTreatmentDto>("treatments/all", offset, limit);
+        var url = $"{_controllerUrl}/all";
+        var result = await _apiService.GetAllAsync<GetTreatmentDto>(url, offset, limit);
 
         if (!result.IsSuccess || result.Error != null)
             return new ApiResultDto<GetAllDto<GetTreatmentDto>>

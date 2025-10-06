@@ -1,0 +1,75 @@
+﻿@page
+@model SaharBeautyWeb.Pages.Landing.Treatments.IndexModel
+@{
+    Layout = "_Layout";
+}
+<link href="~/layout/assets/css/pages/treatmentslist/treatmentslist.css" rel="stylesheet" />
+<div class="page-title-wrap">
+    <div class="page-title-area title-img-two">
+        <div class="title-shape">
+            <img src="~/Layout/assets/images/title/title-shape1.png" alt="Shape">
+        </div>
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="title-content">
+                    <h2>خدمات</h2>
+                    <ul>
+                        <li>
+                            <a href="index.html">خانه</a>
+                        </li>
+                        <li>
+                            <span>خدمات</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<section class="services-area two pb-70">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model.ListModel.Treatments)
+            {
+                <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
+                    <div class="service-card flex-fill">
+                        <img src="@item.Media.URL" alt="@item.Title" class="service-img" />
+                        <div class="service-content">
+                            <h3>@item.Title</h3>
+                            <p>@item.Description</p>
+                            <a href="#" class="btn-more">اطلاعات بیشتر</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</section>
+
+
+<div class="pagination-wrapper">
+    <ul class="pagination">
+        @if (Model.ListModel.CurrentPage > 0)
+        {
+            <li class="page-item">
+                <a class="page-link" href="@Url.Page("Index",new {pageNumber=Model.ListModel.CurrentPage-1})">قبلی</a>
+            </li>
+        }
+
+        <li class="page-item active  ">
+            <a class="page-link">@(Model.ListModel.CurrentPage + 1)</a>
+        </li>
+
+        @if (Model.ListModel.CurrentPage < Model.ListModel.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" href="@Url.Page("Index",new {pagenumber=Model.ListModel.CurrentPage+1})">بعدی</a>
+            </li>
+        }
+    </ul>
+</div>
