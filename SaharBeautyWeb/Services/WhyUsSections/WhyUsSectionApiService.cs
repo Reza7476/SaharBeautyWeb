@@ -22,7 +22,7 @@ public class WhyUsSectionApiService : IWhyUsSectionService
     {
         _client = client;
         _apiService = apiService;
-        _client.BaseAddress = new Uri(baseAddress!);
+       // _client.BaseAddress = new Uri(baseAddress!);
     }
 
     public async Task<ApiResultDto<long>> AddWhyUsQuestions(AddWhyUsQuestionsDto dto)
@@ -112,5 +112,20 @@ public class WhyUsSectionApiService : IWhyUsSectionService
 
         var result = await _apiService.UpdateAsPatchAsync<object>(url, content);
         return result;
+    }
+
+    public async Task<ApiResultDto<GetWhyUsSectionForLandingDto>> 
+        GetWhyUsSectionForLanding()
+    {
+        var url = $"{_controllerUrl}/all-for-landing";
+        var result = await _apiService.GetAsync<GetWhyUsSectionForLandingDto>(url);
+        return new ApiResultDto<GetWhyUsSectionForLandingDto>()
+        {
+            Data = result.Data,
+            Error = result.Error,
+            IsSuccess = result.IsSuccess,
+            StatusCode = result.StatusCode
+        };
+
     }
 }

@@ -16,4 +16,5 @@ public interface IWhyUsSectionService : IService
     
     Task<ApiResultDto<GetWhyUsSectionDto>> GetWhyUsSection();
     Task<ApiResultDto<WhyUsSectionModel_Edit>> GetWhyUsSectionById(long id);
+    Task <ApiResultDto<GetWhyUsSectionForLandingDto>> GetWhyUsSectionForLanding();
 }
