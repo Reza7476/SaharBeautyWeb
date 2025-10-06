@@ -758,11 +758,11 @@ button:focus {
   margin-bottom: 5px;
   color: #fff;
 }
-.offer-item .inner a {
-  display: inline-block;
-  color: #fff;
-  border-bottom: 1px solid #fff;
-}
+    .offer-item .inner a {
+        display: inline-block;
+        color: #fff;
+        border-bottom: 1px solid #fff;
+    }
 .offer-item .inner a:hover {
   color: #fff;
   letter-spacing: 1px;

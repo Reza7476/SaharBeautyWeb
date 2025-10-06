@@ -1,0 +1,36 @@
+﻿/* اطمینان از موقعیت‌بندی والد */
+
+.offer-item {
+    position: relative;
+    overflow: hidden;
+}
+
+/* لینک پوششی — کل کارت را قابل کلیک می‌کند */
+.offer-content {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10; /* بالاتر از لایه‌های دیگه */
+}
+
+    .offer-content h4 {
+        color: #fff;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    .offer-content .offer-link {
+        display: inline-block;
+        padding: 6px 14px;
+        background: #e91e63;
+        color: #fff;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: background 0.3s;
+    }
+
+        .offer-content .offer-link:hover {
+            background: #c2185b;
+        }
