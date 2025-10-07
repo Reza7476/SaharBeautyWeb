@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SaharBeautyWeb.Pages.Shared.Components.LandingBaseComponent;
 using SaharBeautyWeb.Services.AboutUs;
 
 namespace SaharBeautyWeb.Pages.Shared.Components.FooterLanding;
 
-public class FooterLandingViewComponent : ViewComponent
+public class FooterLandingViewComponent : LandingBaseViewComponent
 {
 
     private readonly IAboutUsService _aboutUsService;
@@ -15,14 +16,13 @@ public class FooterLandingViewComponent : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var aboutUs = await _aboutUsService.GeAboutUs();
-        if (aboutUs != null)
-        {
-            aboutUs.Data!.Latitude ??= 29.6100;   // شیراز
-            aboutUs.Data.Longitude ??= 52.5400; // شیراز
 
-            return View(aboutUs.Data);
+        var result = await _aboutUsService.GeAboutUs();
+        if(result.IsSuccess&& result.Data != null)
+        {
+            result.Data.Latitude ??= 29.6100;
+            result.Data.Longitude ??= 52.5400;
         }
-        return View();
+        return HandleApiResult(result);
     }
 }
