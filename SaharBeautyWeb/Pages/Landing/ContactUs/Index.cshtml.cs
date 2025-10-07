@@ -11,7 +11,8 @@ public class IndexModel : LandingBasePageModel
 
     public GetAboutUsModel ModelData { get; set; }
 
-    public IndexModel(IAboutUsService aboutUsService)
+    public IndexModel(IAboutUsService aboutUsService,
+        ErrorMessages errorMessage) : base(errorMessage)
     {
         _aboutUsService = aboutUsService;
     }

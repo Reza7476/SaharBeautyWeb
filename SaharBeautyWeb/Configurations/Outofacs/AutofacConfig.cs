@@ -52,6 +52,10 @@ public class AutofacModule : Module
                         .InstancePerLifetimeScope();
                 }
             }
+
+            _.RegisterType<ErrorMessages>()
+                .AsSelf()
+                .SingleInstance();
         }
 
 
@@ -62,13 +66,6 @@ public class AutofacModule : Module
             client.BaseAddress = new Uri(_baseAddress); // تنظیم BaseAddress همانجا
             return client;
         }).As<HttpClient>().InstancePerLifetimeScope();
-
-
-        //_.Register(ctx =>
-        //{
-        //    var clientFactory = ctx.Resolve<IHttpClientFactory>();
-        //    return clientFactory.CreateClient();
-        //}).As<HttpClient>().InstancePerLifetimeScope();
 
         base.Load(_);
     }
