@@ -1,37 +1,52 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
+using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Models.Landing;
+using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.Treatments;
 
 namespace SaharBeautyWeb.Pages.Landing.Treatments
 {
-    public class IndexModel : PageModel
+    public class IndexModel : LandingBasePageModel
     {
         private readonly ITreatmentService _service;
 
         public GetAllTreatmentForLandingModel ListModel { get; set; } = new();
 
-        public IndexModel(ITreatmentService service)
+        public IndexModel(ITreatmentService service,
+            ErrorMessages errorMessage) : base(errorMessage)
         {
             _service = service;
         }
 
-        public async Task OnGet(int pageNumber = 0, int limit = 4)
+        public async Task<IActionResult> OnGet(int pageNumber = 0, int limit = 3)
         {
             int offset = pageNumber;
-            var treatments = await _service.GetAll(offset, limit);
-            if (treatments.IsSuccess && treatments.Data != null)
+            var result = await _service.GetAll(offset, limit);
+
+            var apiResult = new ApiResultDto<GetAllTreatmentForLandingModel>()
             {
-                ListModel.Treatments = treatments.Data.Elements;
-                ListModel.TotalElements = treatments.Data.TotalElements;
-                ListModel.CurrentPage = pageNumber;
-                ListModel.TotalPages = treatments.Data.TotalElements.ToTotalPage(limit);
-            }
-            else
+                Data = result.Data != null
+                    ? new GetAllTreatmentForLandingModel()
+                    {
+                        CurrentPage = pageNumber,
+                        TotalElements = result.Data.TotalElements,
+                        TotalPages = result.Data.TotalElements.ToTotalPage(limit),
+                        Treatments = result.Data.Elements,
+                    }
+                    : null,
+                Error = result.Error,
+                StatusCode = result.StatusCode,
+                IsSuccess = result.IsSuccess,
+            };
+            var actionResult = HandleApiResult(apiResult);
+            if(actionResult is PageResult)
             {
-                ViewData["LandingErrorMessage"] = treatments.Error ?? "خطایی پیش آمده";
+                ListModel = apiResult.Data ?? new GetAllTreatmentForLandingModel();
             }
 
+            return actionResult;
         }
     }
 }
