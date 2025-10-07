@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SaharBeautyWeb.Models.Entities.Treatments.Models.Landing;
 using SaharBeautyWeb.Pages.Shared.Components.LandingBaseComponent;
 using SaharBeautyWeb.Services.Treatments;
 
@@ -19,6 +18,6 @@ public class FirstTreatmentLandingViewComponent : LandingBaseViewComponent
 
         var treatment = await _service.GetForLanding();
         return HandleApiResult(treatment);
-       
+
     }
 }
