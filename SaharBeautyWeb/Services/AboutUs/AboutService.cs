@@ -20,7 +20,6 @@ public class AboutService : IAboutUsService
     {
         _client = client;
         _apiService = apiService;
-        _client.BaseAddress = new Uri(baseAddress!);
     }
 
     public async Task<ApiResultDto<GetAboutUsDto?>> GeAboutUs()

@@ -28,6 +28,9 @@
     <link rel="stylesheet" href="~/layout/assets/css/custom/customstyle.css" />
     <title>Jeel -  جیل , پوسته سایت اصناف سالن زیبایی و سلامتی</title>
     <link rel="icon" type="image/png" href="~/Layout/assets/images/favicon.png">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-sA+Sk0Y2PdkwzX/nv+PR3r1mLMrq6EYJtJZl8i0rR7E=" crossorigin="" />
+
 </head>
 <body>
 
@@ -111,13 +114,16 @@
                                 <a href="#" class="nav-link dropdown-toggle">صفحات <i class='bx bx-plus'></i></a>
                                 <ul class="dropdown-menu">
                                     <li class="nav-item">
-                                        <a href="/UserPanels" class="nav-link dropdown-toggle">پنل کاربری <i class='bx bx-plus'></i></a>
+                                        <a  class="nav-link dropdown-toggle">پنل کاربری <i class='bx bx-plus'></i></a>
                                         <ul class="dropdown-menu">
                                             <li class="nav-item">
                                                 <a href="sign-in.html" class="nav-link">ورود</a>
                                             </li>
                                             <li class="nav-item">
                                                 <a href="sign-up.html" class="nav-link">ثبت نام</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/userPanels" class="nav-link">ادمین</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -133,8 +139,10 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a href="about.html" class="nav-link">درباره ما</a>
+                                <a href="about.html" class="nav-link">تماس با ما</a>
                             </li>
+
+                           
 
                         </ul>
                         <div class="side-nav">
@@ -152,126 +160,7 @@
     </div>
 
     @RenderBody()
-
-    <footer class="footer-area pt-100 pb-70">
-        <div class="footer-shape">
-            <img src="~/Layout/assets/images/footer-shape1.png" alt="Shape">
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6 col-lg-4">
-                    <div class="footer-item">
-                        <div class="footer-contact">
-                            <h3>اطلاعات تماس:</h3>
-                            <ul class="info">
-                                <li>
-                                    <a href="#">تهران ، میدان آزادی ، خیابان 9 شرقی</a>
-                                </li>
-                                <li>
-                                    <span>تلفن تماس:</span>
-                                    <a href="tel:9645658765">964-565-8765</a>
-                                </li>
-                                <li>
-                                    <span>تلفن تماس:</span>
-                                    <a href="tel:5464169576">546-416-9576</a>
-                                </li>
-                                <li>
-                                    <span>ایمیل:</span>
-                                    <a href="mailto: hello@jeel.com"> hello@jeel.com</a>
-                                </li>
-                                <li>
-                                    <span>ایمیل:</span>
-                                    <a href="mailto: hello@jeel.com"> hello@jeel.com</a>
-                                </li>
-                            </ul>
-                            <ul class="social">
-                                <li>
-                                    <a href="#" target="_blank">
-                                        <i class='bx bxl-facebook'></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" target="_blank">
-                                        <i class='bx bxl-twitter'></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" target="_blank">
-                                        <i class='bx bxl-pinterest-alt'></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" target="_blank">
-                                        <i class='bx bxl-linkedin'></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" target="_blank">
-                                        <i class='bx bxl-youtube'></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                    <div class="footer-item">
-                        <div class="footer-img">
-                            <a href="index.html">
-                                <img src="~/Layout/assets/images/logo-two.png" alt="Footer">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 offset-sm-3 offset-lg-0 col-lg-4">
-                    <div class="footer-item">
-                        <h3>ساعات کاری:</h3>
-                        <div class="footer-hours">
-                            <div class="left">
-                                <ul>
-                                    <li>شنبه:</li>
-                                    <li>یک شنبه:</li>
-                                    <li>دوشنبه :</li>
-                                    <li>سه شنبه:</li>
-                                    <li>چهارشنبه:</li>
-                                    <li>پنجشنبه:</li>
-                                </ul>
-                            </div>
-                            <div class="right">
-                                <ul>
-                                    <li>
-                                        16:00
-                                        <span>21:00</span>
-                                    </li>
-                                    <li>
-                                        16:00
-                                        <span>21:00</span>
-                                    </li>
-                                    <li>
-                                        16:00
-                                        <span>21:00</span>
-                                    </li>
-                                    <li>
-                                        16:00
-                                        <span>21:00</span>
-                                    </li>
-                                    <li>
-                                        16:00
-                                        <span>21:00</span>
-                                    </li>
-                                    <li>
-                                        16:00
-                                        <span>21:00</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-
+    @await Component.InvokeAsync("FooterLanding");
 
     <div class="go-top">
         <i class='bx bxs-up-arrow-alt'></i>
@@ -314,5 +203,8 @@
         </label>
     </div>
     @RenderSection("script_layout", false)
+    @RenderSection("FooterScripts",  false)
+    
+
 </body>
 </html>

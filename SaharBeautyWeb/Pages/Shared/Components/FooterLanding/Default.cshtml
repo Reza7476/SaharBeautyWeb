@@ -1,0 +1,112 @@
+﻿@using SaharBeautyWeb.Models.Entities.AboutUs.Management.Dtos
+@model GetAboutUsDto
+
+<footer class="footer-area pt-100 pb-70">
+    <div class="footer-shape">
+        <img src="~/Layout/assets/images/footer-shape1.png" alt="Shape">
+    </div>
+    <div class="container">
+        <div class="row">
+            @if (Model != null)
+            {
+                <!-- اطلاعات تماس -->
+                <div class="col-sm-6 col-lg-4">
+                    <div class="footer-item">
+                        <div class="footer-contact">
+                            <h3>اطلاعات تماس:</h3>
+                            <ul class="info">
+                                <li><a>@Model.Address</a></li>
+                                <li><span>تلفن تماس:</span> <a href="tel:@Model.Telephone">@Model.Telephone</a></li>
+                                <li><span>تلفن تماس:</span> <a href="tel:@Model.MobileNumber">@Model.MobileNumber</a></li>
+                                <li><span>ایمیل:</span> <a href="mailto:@Model.Email">@Model.Email</a></li>
+                            </ul>
+                            <ul class="social">
+                                <li><a href="#" target="_blank"><i class='bx bxl-youtube'></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- مختصات پنهان -->
+                    <input type="hidden" id="footer-latitude" value="@Model.Latitude" />
+                    <input type="hidden" id="footer-longitude" value="@Model.Longitude" />
+                </div>
+
+                <!-- لوگو -->
+                @if (Model.LogoImage != null)
+                {
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="footer-item">
+                            <div class="footer-img">
+                                <a href="index.html">
+                                    <img src="@Model.LogoImage.Url" alt="@Model.LogoImage.ImageName">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <!-- ساعات کاری و نقشه -->
+            <div class="col-sm-6 offset-sm-3 offset-lg-0 col-lg-4">
+                <div class="footer-item">
+                    <h3>ساعات کاری:</h3>
+                    <div class="footer-hours">
+                        <div class="left">
+                            <ul>
+                                <li>شنبه:</li>
+                                <li>یک شنبه:</li>
+                                <li>دوشنبه :</li>
+                                <li>سه شنبه:</li>
+                                <li>چهارشنبه:</li>
+                                <li>پنجشنبه:</li>
+                            </ul>
+                        </div>
+                        <div class="right">
+                            <ul>
+                                <li>16:00 <span>21:00</span></li>
+                                <li>16:00 <span>21:00</span></li>
+                                <li>16:00 <span>21:00</span></li>
+                                <li>16:00 <span>21:00</span></li>
+                                <li>16:00 <span>21:00</span></li>
+                                <li>16:00 <span>21:00</span></li>
+                            </ul>
+
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+       
+    <!-- اسکریپت نقشه -->
+
+    <script>
+        $(function () {
+            alert('himap');
+            var lat = parseFloat($('#footer-latitude').val()) || 29.6100;
+            var lng = parseFloat($('#footer-longitude').val()) || 52.5400;
+
+            var map = L.map('footer-map-full', {
+                dragging: true,
+                touchZoom: true,
+                scrollWheelZoom: false,
+                doubleClickZoom: false,
+                boxZoom: false,
+                keyboard: false,
+                zoomControl: true
+            }).setView([lat, lng], 15);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            L.marker([lat, lng]).addTo(map)
+                .bindPopup("مکان ما اینجاست!")
+                .openPopup();
+        });
+    </script>
+</footer>
