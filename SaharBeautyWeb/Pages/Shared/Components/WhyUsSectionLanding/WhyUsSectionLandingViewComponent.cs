@@ -8,7 +8,9 @@ public class WhyUsSectionLandingViewComponent : LandingBaseViewComponent
 {
     private readonly IWhyUsSectionService _service;
 
-    public WhyUsSectionLandingViewComponent(IWhyUsSectionService service)
+    public WhyUsSectionLandingViewComponent(
+        IWhyUsSectionService service,
+        ErrorMessages errorMessage):base(errorMessage)
     {
         _service = service;
     }

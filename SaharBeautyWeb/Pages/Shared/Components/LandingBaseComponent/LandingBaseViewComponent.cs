@@ -6,6 +6,14 @@ namespace SaharBeautyWeb.Pages.Shared.Components.LandingBaseComponent;
 
 public abstract class LandingBaseViewComponent : ViewComponent
 {
+
+    protected readonly ErrorMessages _errorMessage;
+
+    protected LandingBaseViewComponent(ErrorMessages errorMessage)
+    {
+        _errorMessage = errorMessage;
+    }
+
     protected IViewComponentResult HandleApiResult<T>(ApiResultDto<T> result)
     {
         if (result == null)
@@ -16,9 +24,8 @@ public abstract class LandingBaseViewComponent : ViewComponent
             return View(result.Data); 
         }
 
-        string errorMessage = !string.IsNullOrEmpty(result.Error)
-            ? result.Error
-            : "خطایی در سرور رخ داده است";
+        string errorKey = result.Error ?? result.StatusCode.ToString();
+        string errorMessage = _errorMessage.GetMessage(errorKey);
 
         string fallbackViewPath = "/Pages/Shared/Components/LandingBaseComponent/Default.cshtml";
 

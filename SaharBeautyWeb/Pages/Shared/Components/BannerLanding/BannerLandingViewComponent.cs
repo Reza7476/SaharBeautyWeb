@@ -10,7 +10,9 @@ public class BannerLandingViewComponent : LandingBaseViewComponent
 {
     private readonly IBannerService _service;
 
-    public BannerLandingViewComponent(IBannerService service)
+    public BannerLandingViewComponent(
+        IBannerService service,
+        ErrorMessages errorMessage):base(errorMessage)
     {
         _service = service;
     }

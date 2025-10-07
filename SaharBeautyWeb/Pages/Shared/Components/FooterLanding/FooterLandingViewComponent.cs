@@ -9,7 +9,9 @@ public class FooterLandingViewComponent : LandingBaseViewComponent
 
     private readonly IAboutUsService _aboutUsService;
 
-    public FooterLandingViewComponent(IAboutUsService aboutUsService)
+    public FooterLandingViewComponent(
+        IAboutUsService aboutUsService,
+        ErrorMessages errorMessage):base(errorMessage)
     {
         _aboutUsService = aboutUsService;
     }

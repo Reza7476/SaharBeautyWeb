@@ -6,7 +6,8 @@ namespace SaharBeautyWeb.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger,
+            ErrorMessages errorMessage) : base(errorMessage)
         {
             _logger = logger;
         }

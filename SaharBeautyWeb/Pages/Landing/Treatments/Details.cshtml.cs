@@ -8,7 +8,8 @@ namespace SaharBeautyWeb.Pages.Landing.Treatments;
 public class DetailsModel : LandingBasePageModel
 {
     private readonly ITreatmentService _service;
-    public DetailsModel(ITreatmentService service)
+    public DetailsModel(ITreatmentService service,
+        ErrorMessages errorMessage) : base(errorMessage)
     {
         _service = service;
     }
