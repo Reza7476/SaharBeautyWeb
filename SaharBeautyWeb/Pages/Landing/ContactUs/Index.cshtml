@@ -1,0 +1,85 @@
+﻿@page
+@model SaharBeautyWeb.Pages.Landing.ContactUs.IndexModel
+@{
+    Layout = "_Layout";
+}
+<link href="~/layout/assets/css/pages/contactus/contactus.css" rel="stylesheet" />
+<div class="page-title-wrap">
+    <div class="page-title-area title-img-one">
+        <div class="title-shape">
+            <img src="~/Layout/assets/images/title/title-shape1.png" alt="Shape">
+        </div>
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="title-content">
+                    <h2>تماس با ما</h2>
+                    <ul>
+                        <li>
+                            <a href="/">خانه</a>
+                        </li>
+                        <li>
+                            <span>تماس با ما</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="contact-info-area pt-100 pb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-lg-4">
+                <div class="contact-info-item">
+                    <h3>آدرس:</h3>
+                    <ul>
+                        <li>
+                            <a> @Model.ModelData.Address</a>
+                        </li>
+                       
+
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+                <div class="contact-info-item active">
+                    <h3>شماره های تماس:</h3>
+                    <ul>
+                        <li>
+                            <a href="tel:+@Model.ModelData.MobileNumber">@Model.ModelData.MobileNumber</a>
+                        </li>
+                        <li>
+                            <a href="tel:@Model.ModelData.Telephone">@Model.ModelData.Telephone</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 offset-sm-3 offset-lg-0 col-lg-4">
+                <div class="contact-info-item">
+                    <h3>ایمیل:</h3>
+                    <ul>
+                        <li>
+                            <a href="mailto: @Model.ModelData.Email"> @Model.ModelData.Email</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="map-area pb-100">
+    <div class="map-wrapper">
+        <iframe id="map"
+                src="https://www.google.com/maps?q=@Model.ModelData.Latitude,@Model.ModelData.Longitude&z=15&output=embed"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+</div>
+

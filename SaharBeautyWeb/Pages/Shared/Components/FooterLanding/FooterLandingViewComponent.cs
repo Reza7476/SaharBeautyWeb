@@ -18,6 +18,9 @@ public class FooterLandingViewComponent : ViewComponent
         var aboutUs = await _aboutUsService.GeAboutUs();
         if (aboutUs != null)
         {
+            aboutUs.Data!.Latitude ??= 29.6100;   // شیراز
+            aboutUs.Data.Longitude ??= 52.5400; // شیراز
+
             return View(aboutUs.Data);
         }
         return View();

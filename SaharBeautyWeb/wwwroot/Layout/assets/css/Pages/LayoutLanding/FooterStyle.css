@@ -1,0 +1,32 @@
+﻿body {
+}
+
+.footer-map-wrapper {
+    width: 100%;
+    height: 200px; /* ارتفاع متناسب با فوتر */
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+iframe#footer-map {
+    width: 100%;
+    height: 100%;
+    border: none;
+    filter: grayscale(60%) brightness(0.9); /* نقشه کم‌رنگ و هماهنگ با تم فوتر */
+    transition: all 0.3s ease;
+}
+
+    /* هنگام هاور نقشه کمی روشن‌تر شود */
+    iframe#footer-map:hover {
+        filter: grayscale(30%) brightness(1);
+    }
+
+@media (max-width: 768px) {
+    .footer-map-wrapper {
+        height: 180px;
+    }
+}
+
+
