@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Models.Entities.Treatments.Models.Landing;
+using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.Treatments;
 
 namespace SaharBeautyWeb.Pages.Landing.Treatments;
 
-public class DetailsModel : PageModel
+public class DetailsModel : LandingBasePageModel
 {
     private readonly ITreatmentService _service;
     public DetailsModel(ITreatmentService service)
@@ -17,21 +17,19 @@ public class DetailsModel : PageModel
     public GetTreatmentDetailsModel Treatment { get; set; }
     public async Task<IActionResult> OnGet(long id)
     {
-        var treatment = await _service.GetById(id);
-        if (treatment.IsSuccess && treatment.Data != null)
+        var result = await _service.GetById(id);
+        var response = HandleApiResult(result);
+
+        if (result.IsSuccess && result.Data != null)
         {
             Treatment = new GetTreatmentDetailsModel()
             {
-                Description = treatment.Data.Description,
-                Media = treatment.Data.Media,
-                Title = treatment.Data.Title,
+                Description = result.Data.Description,
+                Media = result.Data.Media,
+                Title = result.Data.Title,
             };
-            return Page();
         }
-        else
-        {
-            return RedirectToPage("Index");
-        }
+        return response;
 
     }
 }
