@@ -1,7 +1,7 @@
 ﻿@model string?
 
 <div class="fallback-view-component p-4 text-center bg-gray-100 text-gray-700">
-    <p>اطلاعات در دسترس نیست.</p>
+   
     @if (!string.IsNullOrEmpty(Model))
     {
         <small class="text-red-500">خطا: @Model</small>
