@@ -1,8 +1,6 @@
-﻿using SaharBeautyWeb.Models.Commons.Dtos;
+﻿namespace SaharBeautyWeb.Models.Entities.Banners.Landing;
 
-namespace SaharBeautyWeb.Models.Entities.Banners.Landing;
-
-public class BannerLandingModel : ViewComponentErrorDto
+public class BannerLandingModel
 {
     public string? Title { get; set; }
     public string? URL { get; set; }
