@@ -1,6 +1,7 @@
-﻿@model BannerLandingModel
+﻿@using SaharBeautyWeb.Models.Entities.Banners.Landing
+@model BannerLandingModel
 
-@if (Model.Title != null && Model.IsSuccess)
+@if (Model != null)
 {
     <div class="banner-area banner-img-one"
          id="banner-backGround"
