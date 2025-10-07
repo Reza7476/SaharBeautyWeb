@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Diagnostics;
 using SaharBeautyWeb.Configurations.Outofacs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,8 +18,14 @@ builder.Host.AddAutofac(baseAddress!);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
+    // در محیط توسعه، جزئیات کامل خطا نمایش داده شود
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    // در محیط تولید / هاست، خطاها به صفحه Error هدایت شوند (امن)
     app.UseExceptionHandler(error =>
     {
         error.Run(async context =>
@@ -27,6 +33,7 @@ if (!app.Environment.IsDevelopment())
             var feature = context.Features.Get<IExceptionHandlerPathFeature>();
             var exception = feature?.Error;
             var path = context.Request.Path;
+
             if (path.StartsWithSegments("/Landing"))
             {
                 context.Response.Redirect($"/Landing/Error?message={exception?.Message}");
@@ -42,19 +49,13 @@ if (!app.Environment.IsDevelopment())
         });
     });
 
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // HSTS فقط برای محیط Production
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapRazorPages();
-
 app.Run();
