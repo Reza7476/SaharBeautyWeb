@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SaharBeautyWeb.Models.Commons.Dtos;
+using SaharBeautyWeb.Pages.Shared.Components.LandingBaseComponent;
 using SaharBeautyWeb.Services.Banners;
 
 namespace SaharBeautyWeb.Pages.Shared.Components.BannerLanding;
@@ -25,9 +26,9 @@ public class BannerLandingViewComponent : ViewComponent
                 CreateDate = (banner.Data.CreateDate),
                 ImageName = (banner.Data.ImageName),
                 URL = (banner.Data.URL),
-                IsSuccess = banner.IsSuccess,
-                StatusCode = banner.StatusCode
-            };
+            IsSuccess = banner.IsSuccess,
+            StatusCode = banner.StatusCode
+        };
         }
         else
         {

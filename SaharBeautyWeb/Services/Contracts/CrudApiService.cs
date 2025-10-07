@@ -1,7 +1,5 @@
 ﻿using SaharBeautyWeb.Models.Commons.Dtos;
-using System.Net.Http;
 using System.Text.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SaharBeautyWeb.Services.Contracts;
 
