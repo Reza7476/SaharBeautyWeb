@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using SaharBeautyWeb.Pages.Shared;
 
 namespace SaharBeautyWeb.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : LandingBasePageModel
     {
         private readonly ILogger<IndexModel> _logger;
 
