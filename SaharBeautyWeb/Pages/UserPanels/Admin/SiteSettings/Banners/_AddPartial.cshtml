@@ -7,24 +7,29 @@
                 <h4 class="card-title">ثبت بنر</h4>
             </div>
             <div class="card-body">
-                <form class="needs-validation"  method="post" asp-page="Index" asp-page-handler="CreateBanner" enctype="multipart/form-data" >
+                <form class="needs-validation"  
+                      method="post" 
+                      asp-page="Index" 
+                      asp-page-handler="CreateBanner" 
+                      enctype="multipart/form-data" id="add-banner-form" >
+                    @Html.AntiForgeryToken()
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <input type="text" id="banner-title" class="form-control" asp-for="Title" placeholder="لطفا یک عنوان را وارد نمایید">
+                                <input type="text" id="add-banner-title" class="form-control" asp-for="Title" placeholder="لطفا یک عنوان را وارد نمایید">
 
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <input type="file" id="banner-image" class="form-control" asp-for=Image placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
+                                <input type="file" id="add-banner-image" class="form-control" asp-for=Image placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
                             </div>
                         </div>
                     </div>
                     <div class="raw">
 
                         <div class="mb-3" >
-                            <img  id="add-new-image-banner" src="" class="img-thumbnail mb2"/>
+                            <img  id="preview-new-banner-image" src="" class="img-thumbnail mb2"/>
                         </div>
                     </div>
 

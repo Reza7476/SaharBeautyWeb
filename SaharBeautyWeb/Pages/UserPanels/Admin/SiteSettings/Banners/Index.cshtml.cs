@@ -7,7 +7,7 @@ using SaharBeautyWeb.Services.Banners;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
 {
-    public class IndexModel : UserPanelBaseModelPage
+    public class IndexModel :  AjaxBasePageModel
     {
 
         private readonly IBannerService _service;
@@ -43,10 +43,9 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
             return response;
         }
 
-
-
         public async Task<IActionResult> OnPostCreateBanner()
         {
+
             if (AddBanner.Image == null || string.IsNullOrWhiteSpace(AddBanner.Title))
             {
                 return new JsonResult(new
@@ -55,19 +54,13 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
                     error = "عنوان یا عکس ناقص است"
                 });
             }
-            var banner = await _service.Add(new AddBannerModel()
+            var result = await _service.Add(new AddBannerDto()
             {
                 Title = AddBanner.Title,
                 Image = AddBanner.Image
             });
-
-            return new JsonResult(new
-            {
-                data = banner.Data,
-                success = banner.IsSuccess,
-                statusCode = banner.StatusCode,
-                error = banner.Error
-            });
+            var  response=HandleApiAjxResult(result);
+            return response;
         }
 
 

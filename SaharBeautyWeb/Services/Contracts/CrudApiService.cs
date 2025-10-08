@@ -45,34 +45,22 @@ public class CrudApiService : ICRUDApiService
 
         if (response.IsSuccessStatusCode)
         {
-            try
+            var data = JsonSerializer.Deserialize<T>(raw, new JsonSerializerOptions
             {
-                var data = JsonSerializer.Deserialize<T>(raw, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
-                return new ApiResultDto<T>
-                {
-                    Data = data,
-                    IsSuccess = response.IsSuccessStatusCode,
-                    StatusCode = (int)response.StatusCode
-                };
-            }
-            catch (Exception ex)
+                PropertyNameCaseInsensitive = true
+            });
+            return new ApiResultDto<T>
             {
-                return new ApiResultDto<T>
-                {
-                    IsSuccess = false,
-                    Data = default,
-                    StatusCode = (int)response.StatusCode,
-                    Error = ex.Message
-                };
-            }
+                Data = data,
+                IsSuccess = response.IsSuccessStatusCode,
+                StatusCode = (int)response.StatusCode
+            };
         }
         return new ApiResultDto<T>
         {
             IsSuccess = response.IsSuccessStatusCode,
-            Error = string.IsNullOrWhiteSpace(raw).ToString()
+            Error = raw,
+            StatusCode = (int)response.StatusCode
         };
     }
     public async Task<ApiResultDto<object>> UpdateAsPutFromBodyAsync<T>(string url, HttpContent content)

@@ -3,6 +3,14 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 public class AjaxExceptionFilter : IExceptionFilter
 {
+
+    //protected readonly ErrorMessages _errorMessages;
+
+    //public AjaxExceptionFilter(ErrorMessages errorMessages)
+    //{
+    //    _errorMessages = errorMessages;
+    //}
+
     public void OnException(ExceptionContext context)
     {
         if (IsAjaxRequest(context.HttpContext.Request))
