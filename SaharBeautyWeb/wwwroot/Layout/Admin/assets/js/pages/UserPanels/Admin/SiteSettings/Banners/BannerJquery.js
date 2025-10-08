@@ -1,6 +1,6 @@
 ﻿$(() => {
 
-    $(document).on("change", "#banner-image", function () {
+    $(document).on("change", "#add-banner-image", function () {
         var input = this;
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -12,11 +12,11 @@
     })
 
     $("#createBanner").on("click", function (e) {
-
         e.preventDefault();
+        var btnSend = $(this);
 
-        var title = $("#banner-title").val();
-        var imageFile = $("#banner-image")[0].files[0];
+        var title = $("#add-banner-title").val();
+        var imageFile = $("#add-banner-image")[0].files[0];
         if (!title || !imageFile) {
             showPopup("عنوان و عکس نباید خالی باشند ")
             return;
@@ -27,17 +27,12 @@
             showPopup("فرمت تصویر باید jpg، jpeg یا png باشد.")
             return;
         }
+        var form = $("#add-banner-form")[0]
+        let formData = new FormData(form);
 
-        let formData = new FormData();
-        formData.append("Title", title);
-        formData.append("Image", imageFile);
-
-        var token = $('input[name="__RequestVerificationToken"]').val();
-        if (token) formData.append('__RequestVerificationToken', token);
-
-        var btn = $(this).prop("disabled", true);
+        btnSend.prop("disabled", true);
         $.ajax({
-            url: '@Url.Page("Index", "CreateBanner")',
+            url: createBanner,
             type: 'POST',
             data: formData,
             contentType: false,
@@ -46,12 +41,14 @@
                 if (res.success) {
                     location.reload();
                 } else {
-                    handleApiError(res);
+                    handleApiError(res.error);
+                    btnSend.prop("disabled", false);
                     return
                 }
             },
             error: function (err) {
-                handleApiError(res);
+                handleApiError(err);
+                btnSend.prop("disabled", false);
                 return;
             }
         });

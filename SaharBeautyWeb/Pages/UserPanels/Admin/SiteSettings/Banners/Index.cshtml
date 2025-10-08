@@ -3,7 +3,7 @@
 @model SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners.IndexModel
 @{
     Layout = "_UserPanelLayout";
-   
+
 }
 
 
@@ -39,7 +39,7 @@
     </button>
 
 }
-else 
+else
 {
     <partial name="_AddPartial" model="Model.AddBanner" />
 }
@@ -47,4 +47,7 @@ else
 @section Scripts {
     <script src="~/layout/admin/assets/js/pages/userpanels/admin/sitesettings/banners/bannerjquery.js"></script>
 
+    <script>
+        var createBanner = '@Url.Page("Index", "CreateBanner")';
+    </script>
 }

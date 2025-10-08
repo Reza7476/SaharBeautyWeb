@@ -24,7 +24,7 @@ public class BannerService : IBannerService
         _apiService = apiService;
     }
 
-    public async Task<ApiResultDto<long>> Add(AddBannerModel dto)
+    public async Task<ApiResultDto<long>> Add(AddBannerDto dto)
     {
         using var content = new MultipartFormDataContent();
 
