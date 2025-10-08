@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SaharBeautyWeb.Models.Entities.Banners;
+namespace SaharBeautyWeb.Models.Entities.Banners.Management.Models;
 
 public class AddBannerModel
 {

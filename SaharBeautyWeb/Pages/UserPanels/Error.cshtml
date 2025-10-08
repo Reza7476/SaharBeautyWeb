@@ -1,0 +1,10 @@
+﻿@page
+@model SaharBeautyWeb.Pages.UserPanels.ErrorModel
+@{
+    Layout = "_UserPanelLayout";
+}
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <p>@Model.Message</p>
+
+}

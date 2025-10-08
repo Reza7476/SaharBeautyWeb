@@ -1,6 +1,7 @@
 ﻿using SaharBeautyWeb.Configurations.Interfaces;
 using SaharBeautyWeb.Models.Commons.Dtos;
-using SaharBeautyWeb.Models.Entities.Banners;
+using SaharBeautyWeb.Models.Entities.Banners.Management.Dtos;
+using SaharBeautyWeb.Models.Entities.Banners.Management.Models;
 
 namespace SaharBeautyWeb.Services.Banners;
 

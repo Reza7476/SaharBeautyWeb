@@ -1,60 +1,48 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
-using SaharBeautyWeb.Models.Commons;
-using SaharBeautyWeb.Models.Entities.Banners;
+using SaharBeautyWeb.Models.Entities.Banners.Management.Dtos;
+using SaharBeautyWeb.Models.Entities.Banners.Management.Models;
+using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.Banners;
-using System.Text.Json;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
 {
-    public class IndexModel : PageModel
+    public class IndexModel : UserPanelBaseModelPage
     {
 
         private readonly IBannerService _service;
 
-        public IndexModel(IBannerService service)
+        public IndexModel(IBannerService service,
+            ErrorMessages errorMessage) : base(errorMessage)
         {
             _service = service;
         }
 
-        public BannerDto Banner { get; set; }
+        public BannerModel? Banner { get; set; }
 
         [BindProperty]
         public AddBannerModel AddBanner { get; set; }
         [BindProperty]
         public EditBannerModel EditDto { get; set; }
 
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
-            var banner = await _service.Get();
-            if (banner.IsSuccess && banner.Data != null)
+            var result = await _service.Get();
+            var response = HandleApiResult(result);
+            if (result.IsSuccess)
             {
-
-                Banner = new BannerDto()
+                Banner = result.Data != null ? new BannerModel()
                 {
-                    ImageName = banner.Data.ImageName,
-                    URL = banner.Data.URL,
-                    Id = banner.Data.Id,
-                    IsSuccess = banner.IsSuccess,
-                    StatusCode = banner.StatusCode,
-                    CreateDate = banner.Data.CreateDate.ToShamsi(),
-                    Title = banner.Data.Title,
-                    Error = banner.Error
-                };
+                    ImageName = result.Data.ImageName,
+                    URL = result.Data.URL,
+                    Id = result.Data.Id,
+                    CreateDate = result.Data.CreateDate.ToShamsi(),
+                    Title = result.Data.Title,
+                } : null;
             }
-            else
-            {
-                ViewData["ErrorMessage"] = banner.Error;
-                Banner = new BannerDto()
-                {
-                    IsSuccess = banner.IsSuccess,
-                    StatusCode = banner.StatusCode,
-                    Error = banner.Error,
-                    URL = null
-                };
-            }
+            return response;
         }
+
 
 
         public async Task<IActionResult> OnPostCreateBanner()
@@ -119,8 +107,8 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
             {
                 success = updateBanner.IsSuccess,
                 error = updateBanner.Error,
-                data= updateBanner.Data,
-                statusCode= updateBanner.StatusCode
+                data = updateBanner.Data,
+                statusCode = updateBanner.StatusCode
             });
         }
 
@@ -137,24 +125,8 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
                 error = banner.Error
             });
         }
-        public class BannerDto
-        {
-            public bool IsSuccess { get; set; }
-            public int StatusCode { get; set; }
-            public long Id { get; set; }
-            public string? ImageName { get; set; }
-            public string? URL { get; set; }
-            public string? CreateDate { get; set; }
-            public string? Title { get; set; }
-            public string? Error { get; set; }
-        }
 
-        public class EditBannerModel
-        {
-            public long Id { get; set; }
-            public string? Title { get; set; }
-            public string? ImageUrl { get; set; }
-            public IFormFile? Image { get; set; }
-        }
+
+
     }
 }

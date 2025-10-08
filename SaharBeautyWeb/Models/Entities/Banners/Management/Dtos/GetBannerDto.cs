@@ -1,6 +1,6 @@
 ﻿using Autofac.Core;
 
-namespace SaharBeautyWeb.Models.Entities.Banners;
+namespace SaharBeautyWeb.Models.Entities.Banners.Management.Dtos;
 
 public class GetBannerDto
 {
@@ -10,6 +10,6 @@ public class GetBannerDto
     public required string ImageUniqueName { get; set; }
     public required string Extension { get; set; }
     public required string URL { get; set; }
-    public DateTime  CreateDate { get; set; }
+    public DateTime CreateDate { get; set; }
 
 }
