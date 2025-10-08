@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using SaharBeautyWeb.Models.Commons.Dtos;
-using SaharBeautyWeb.Models.Entities.Banners;
+using SaharBeautyWeb.Models.Entities.Banners.Management.Dtos;
+using SaharBeautyWeb.Models.Entities.Banners.Management.Models;
 using SaharBeautyWeb.Services.Contracts;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -42,11 +43,8 @@ public class BannerService : IBannerService
         return result;
     }
 
-
-
     public async Task<ApiResultDto<GetBannerDto?>> Get()
     {
-       
         var result = await _apiService.GetAsync<GetBannerDto?>("banners");
         return result;
     }

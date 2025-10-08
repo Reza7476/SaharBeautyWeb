@@ -1,0 +1,142 @@
+﻿$(() => {
+
+    $(document).on("change", "#banner-image", function () {
+        var input = this;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#add-new-image-banner").attr("src", e.target.result);
+            }
+        }
+        reader.readAsDataURL(input.files[0]);
+    })
+
+    $("#createBanner").on("click", function (e) {
+
+        e.preventDefault();
+
+        var title = $("#banner-title").val();
+        var imageFile = $("#banner-image")[0].files[0];
+        if (!title || !imageFile) {
+            showPopup("عنوان و عکس نباید خالی باشند ")
+            return;
+        }
+
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+        if (!allowedExtensions.exec(imageFile.name)) {
+            showPopup("فرمت تصویر باید jpg، jpeg یا png باشد.")
+            return;
+        }
+
+        let formData = new FormData();
+        formData.append("Title", title);
+        formData.append("Image", imageFile);
+
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        if (token) formData.append('__RequestVerificationToken', token);
+
+        var btn = $(this).prop("disabled", true);
+        $.ajax({
+            url: '@Url.Page("Index", "CreateBanner")',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.success) {
+                    location.reload();
+                } else {
+                    handleApiError(res);
+                    return
+                }
+            },
+            error: function (err) {
+                handleApiError(res);
+                return;
+            }
+        });
+    });
+
+    $(".edit-banner-btn").on("click", function () {
+        var bannerId = $(this).data("id");
+        $(this).prop("disabled", true);
+        $.ajax({
+            url: '/UserPanels/Admin/SiteSettings/Banners?handler=EditBannerPartial',
+            type: 'GET',
+            data: { id: bannerId },
+            success: function (html) {
+                $("#staticBackdrop .modal-body").html(html);
+                var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                modal.show();
+            },
+            error: function () {
+                showPopup("خطا در بارگذاری فرم ویرایش!");
+            }
+        });
+        $(this).prop("disabled", false);
+
+    })
+
+    $(document).on("change", "#input-image-banner-update", function () {
+        var input = this;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $("#new-banner-image").attr("src", e.target.result);
+            }
+        }
+        reader.readAsDataURL(input.files[0]);
+    })
+
+    $(document).on("click", "#saveBannerBtn", function () {
+
+        var title = $("#editBannerTitle").val();
+        var imageInput = $("#input-image-banner-update")[0];
+
+        if (!title || (!imageInput.files || imageInput.files.length === 0)) {
+            showPopup("عنوان یا عکس نباید خالی باشند");
+            return;
+        }
+
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+        if (!allowedExtensions.exec(imageInput.name)) {
+            showPopup("فرمت تصویر باید jpg، jpeg یا png باشد.")
+            return;
+        }
+
+        var form = $("#editBannerForm")[0];
+        var formData = new FormData(form);
+
+        $.ajax({
+            url: '@Url.Page("Index", "EditBanner")',
+            type: 'Post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $("#saveBannerBtn").prop("disabled", true);
+            },
+            success: function (res) {
+                if (res.success) {
+                    var modalEl = document.getElementById('staticBackdrop');
+                    var modal = bootstrap.Modal.getInstance(modalEl);
+                    modal.hide();
+                    $("#editBannerForm")[0].reset();
+                    location.reload();
+                } else {
+                    handleApiError(res.error || "خطا در ویرایش");
+                }
+            },
+            error: function () {
+                showPopup("خطایی رخ داده");
+                var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                modal.hide();
+            },
+            complete: function () {
+                $("#saveBannerBtn").prop("disabled", false);
+            }
+        });
+    });
+
+});

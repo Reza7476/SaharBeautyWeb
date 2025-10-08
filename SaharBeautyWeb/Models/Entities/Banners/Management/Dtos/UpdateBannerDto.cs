@@ -1,4 +1,4 @@
-﻿namespace SaharBeautyWeb.Models.Entities.Banners;
+﻿namespace SaharBeautyWeb.Models.Entities.Banners.Management.Dtos;
 
 public class UpdateBannerDto
 {
