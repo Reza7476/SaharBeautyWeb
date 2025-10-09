@@ -1,32 +1,17 @@
 ﻿$(() => {
-
-    $(document).on("change", "#add-banner-image", function () {
-        var input = this;
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $("#add-new-image-banner").attr("src", e.target.result);
-            }
-        }
-        reader.readAsDataURL(input.files[0]);
+    $(document).on("change", ".get-banner-image", function () {
+        var imageInput = $(".get-banner-image")[0];
+        var viewImg = $(".preview-new-banner-image")[0];
+        setUpImagePreview(imageInput, viewImg);
     })
 
-    $("#createBanner").on("click", function (e) {
+    $(document).on("click","#createBanner" ,function (e) {
         e.preventDefault();
         var btnSend = $(this);
-
-        var title = $("#add-banner-title").val();
-        var imageFile = $("#add-banner-image")[0].files[0];
-        if (!title || !imageFile) {
-            showPopup("عنوان و عکس نباید خالی باشند ")
-            return;
-        }
-
-        var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-        if (!allowedExtensions.exec(imageFile.name)) {
-            showPopup("فرمت تصویر باید jpg، jpeg یا png باشد.")
-            return;
-        }
+        var imageInput = $(".get-banner-image")[0];
+        var viewImg = $(".preview-new-banner-image")[0];
+        setUpImagePreview(imageInput, viewImg);
+    
         var form = $("#add-banner-form")[0]
         let formData = new FormData(form);
 
@@ -37,8 +22,12 @@
             data: formData,
             contentType: false,
             processData: false,
+            beforeSend: function () {
+                btnSend.prop("disabled", true);
+            },
             success: function (res) {
                 if (res.success) {
+                    $("#add-banner-form")[0].reset();
                     location.reload();
                 } else {
                     handleApiError(res.error);
@@ -86,19 +75,13 @@
         });
     })
 
-    $(document).on("change", "#input-image-banner-update", function () {
-        var imageInput = $("#input-image-banner-update")[0];
-        var viewImg = $("#new-banner-image")[0];
-        setUpImagePreview(imageInput, viewImg);
-    })
+  
 
     $(document).on("click", "#saveBannerBtn", function () {
 
-        var title = $("#editBannerTitle").val();
-        var imageInput = $("#input-image-banner-update")[0];
-        var viewImg = $("#new-banner-image")[0];
         var btnSend = $(this);
-
+        var imageInput = $(".get-banner-image")[0];
+        var viewImg = $(".preview-new-banner-image")[0];
         setUpImagePreview(imageInput, viewImg);
 
         var form = $("#editBannerForm")[0];
