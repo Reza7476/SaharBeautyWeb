@@ -87,15 +87,9 @@
     })
 
     $(document).on("change", "#input-image-banner-update", function () {
-        var input = this;
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $("#new-banner-image").attr("src", e.target.result);
-            }
-        }
-        reader.readAsDataURL(input.files[0]);
+        var imageInput = $("#input-image-banner-update")[0];
+        var viewImg = $("#new-banner-image")[0];
+        setUpImagePreview(imageInput, viewImg);
     })
 
     $(document).on("click", "#saveBannerBtn", function () {
