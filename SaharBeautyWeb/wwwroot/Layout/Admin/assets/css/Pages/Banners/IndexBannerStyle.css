@@ -1,0 +1,95 @@
+﻿.banner-card {
+    max-width: 600px; /* ⬅️ از 450 → 600 */
+    margin: 50px auto;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+    .banner-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 35px rgba(0, 0, 0, 0.12);
+    }
+
+.banner-title {
+    font-size: 1.5rem; /* بزرگ‌تر و خواناتر */
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.banner-date {
+    font-size: 1rem;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+/* 📸 قالب تصویر بزرگ‌تر */
+.banner-image-container {
+    width: 100%;
+    height: 350px; /* ⬅️ از 250 → 350 */
+    border-radius: 16px;
+    overflow: hidden;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ✅ وضوح تصویر بالا با حفظ تناسب */
+.banner-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* عکس متن‌دار یا با جزئیات */
+    image-rendering: auto;
+    transition: transform 0.3s ease;
+}
+
+    .banner-image:hover {
+        transform: scale(1.03);
+    }
+
+.edit-banner-btn {
+    min-width: 140px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+/* 🌙 حالت دارک */
+@media (prefers-color-scheme: dark) {
+    .banner-card {
+        background: #1e1e1e;
+        box-shadow: 0 4px 20px rgba(255, 255, 255, 0.08);
+    }
+
+    .banner-title {
+        color: #f1f1f1;
+    }
+
+    .banner-date {
+        color: #bbb;
+    }
+
+    .banner-image-container {
+        background: #2a2a2a;
+    }
+}
+
+/* 📱 حالت موبایل */
+@media (max-width: 576px) {
+    .banner-card {
+        max-width: 95%;
+        padding: 20px;
+    }
+
+    .banner-image-container {
+        height: 250px;
+    }
+
+    .banner-title {
+        font-size: 1.2rem;
+    }
+}

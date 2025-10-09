@@ -1,16 +1,15 @@
-﻿function setUpImagePreview(inputSelector, previewSelector) {
-    $(document).on("change", inputSelector, function () {
-        const input = this;
-        if (!validateImageFile(input)) return;
-        if (input.files && input.files[0]) {
+﻿
+function setUpImagePreview(inputSelector, previewSelector) {
+    const input = inputSelector;
+    if (!validateImageFile(input)) return;
+    if (input.files && input.files[0]) {
 
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                $(previewSelector).attr("src", e.target.result);
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    });
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $(previewSelector).attr("src", e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
 }
 
 

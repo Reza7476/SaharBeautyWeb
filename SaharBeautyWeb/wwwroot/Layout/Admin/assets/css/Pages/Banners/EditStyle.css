@@ -1,0 +1,62 @@
+﻿/* 🎨 استایل عمومی فرم ویرایش بنر */
+.banner-edit-form {
+    background-color: var(--bs-body-bg);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+}
+
+    /* عنوان فیلدها */
+    .banner-edit-form .form-label {
+        font-weight: 600;
+        color: var(--bs-secondary-color);
+    }
+
+    /* تصویر فعلی و پیش‌نمایش */
+    .banner-edit-form .image-box {
+        display: inline-block;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.75rem;
+        background-color: var(--bs-light-bg-subtle);
+        padding: 0.5rem;
+        max-width: 260px;
+        max-height: 190px;
+    }
+
+        .banner-edit-form .image-box img {
+            max-width: 100%;
+            max-height: 170px;
+            border-radius: 0.5rem;
+            object-fit: cover;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .banner-edit-form .image-box img:hover {
+                transform: scale(1.03);
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            }
+
+    /* دکمه‌ها */
+    .banner-edit-form .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+    }
+
+/* ✅ حالت تاریک */
+@media (prefers-color-scheme: dark) {
+    .banner-edit-form {
+        background-color: #1f1f1f;
+        color: #eaeaea;
+        box-shadow: 0 0 10px rgba(255,255,255,0.05);
+    }
+
+        .banner-edit-form .image-box {
+            background-color: #2a2a2a;
+            border-color: #444;
+        }
+
+        .banner-edit-form .form-label {
+            color: #ccc;
+        }
+}

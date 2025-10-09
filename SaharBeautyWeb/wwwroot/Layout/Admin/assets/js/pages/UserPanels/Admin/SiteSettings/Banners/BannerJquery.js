@@ -102,29 +102,22 @@
 
         var title = $("#editBannerTitle").val();
         var imageInput = $("#input-image-banner-update")[0];
+        var viewImg = $("#new-banner-image")[0];
+        var btnSend = $(this);
 
-        if (!title || (!imageInput.files || imageInput.files.length === 0)) {
-            showPopup("عنوان یا عکس نباید خالی باشند");
-            return;
-        }
-
-        var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-        if (!allowedExtensions.exec(imageInput.name)) {
-            showPopup("فرمت تصویر باید jpg، jpeg یا png باشد.")
-            return;
-        }
+        setUpImagePreview(imageInput, viewImg);
 
         var form = $("#editBannerForm")[0];
         var formData = new FormData(form);
 
         $.ajax({
-            url: '@Url.Page("Index", "EditBanner")',
+            url: editBanner,
             type: 'Post',
             data: formData,
             contentType: false,
             processData: false,
             beforeSend: function () {
-                $("#saveBannerBtn").prop("disabled", true);
+                btnSend.prop("disabled", true);
             },
             success: function (res) {
                 if (res.success) {
@@ -134,7 +127,8 @@
                     $("#editBannerForm")[0].reset();
                     location.reload();
                 } else {
-                    handleApiError(res.error || "خطا در ویرایش");
+                    handleApiError(res.error);
+                    btnSend.prop("disabled", false);
                 }
             },
             error: function () {
@@ -143,7 +137,7 @@
                 modal.hide();
             },
             complete: function () {
-                $("#saveBannerBtn").prop("disabled", false);
+                 btnSend.prop("disabled", false);
             }
         });
     });

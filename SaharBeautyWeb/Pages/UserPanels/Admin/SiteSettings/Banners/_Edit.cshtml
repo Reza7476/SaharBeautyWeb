@@ -1,24 +1,42 @@
-﻿@using SaharBeautyWeb.Models.Entities.Banners.Management.Models
+﻿<link href="~/layout/admin/assets/css/pages/banners/editstyle.css" rel="stylesheet" />
+
+@using SaharBeautyWeb.Models.Entities.Banners.Management.Models
 @model EditBannerModel
 
-<form id="editBannerForm" enctype="multipart/form-data">
- @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="Id" value="@Model.Id" />
+<form id="editBannerForm" class="banner-edit-form" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
     <div class="mb-3">
-        <label>عنوان</label>
-        <input type="text"  asp-for="Title" id="editBannerTitle" class="form-control" value="@Model.Title" />
+        <label asp-for="Title" class="form-label">عنوان بنر</label>
+        <input type="text" asp-for="Title" class="form-control form-control-sm" placeholder="مثلاً تخفیف ویژه..." />
+        <span asp-validation-for="Title" class="text-danger small"></span>
     </div>
-    <div class="mb-3">
-        <label>عکس</label>
-        <img src="@Model.ImageUrl" id="banner-image" class="img-thumbnail mb-2" />
-        <input type="file" asp-for="Image"  id="input-image-banner-update" class="form-control" />
+
+    <div class="mb-3 text-center">
+        <label class="form-label d-block">تصویر فعلی</label>
+        <div class="image-box">
+            <img src="@Model.ImageUrl" alt="@Model.Title" id="banner-image" />
+        </div>
     </div>
 
     <div class="mb-3">
-        <label>عکس</label>
-        <img src="" id="new-banner-image" class="img-thumbnail mb-2" />
+        <label asp-for="Image" class="form-label">انتخاب تصویر جدید</label>
+        <input type="file" asp-for="Image" id="input-image-banner-update"
+               class="form-control form-control-sm"
+               accept=".jpg,.jpeg,.png,.webp" />
+        <span asp-validation-for="Image" class="text-danger small"></span>
     </div>
 
+    <div class="mb-3 text-center d-none" id="preview-container">
+        <label class="form-label d-block">پیش‌نمایش تصویر جدید</label>
+        <div class="image-box">
+            <img src="" id="new-banner-image" />
+        </div>
+    </div>
 
-    <button type="button" class="btn btn-primary" id="saveBannerBtn">اعمال تغییرات</button>
+    <div class="form-actions mt-3">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+        <button type="button" class="btn btn-primary btn-sm" id="saveBannerBtn">اعمال تغییرات</button>
+    </div>
 </form>

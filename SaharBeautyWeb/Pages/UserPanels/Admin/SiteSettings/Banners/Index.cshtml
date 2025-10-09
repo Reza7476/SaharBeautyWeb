@@ -5,38 +5,51 @@
     Layout = "_UserPanelLayout";
 
 }
-
+<link href="~/layout/admin/assets/css/pages/banners/indexbannerstyle.css" rel="stylesheet" />
 
 @if (Model.Banner != null)
 {
-    <div class="d-flex align-items-start">
+    @* <div class="d-flex align-items-start">
         <div class="flex-grow-1 overflow-hidden">
             <h5 class="font-size-14 text-truncate">
                 <a href="#" class="text-dark">@Model.Banner.Title</a>
             </h5>
             <p class="font-size-13 text-muted mb-0">@Model.Banner.CreateDate</p>
         </div>
-        <div class="flex-shrink-0 ms-2">
-            <div class="dropdown">
-                <a class="btn btn-link text-muted font-size-16 p-1 py-0 dropdown-toggle shadow-none"
-                   href="#"
-                   role="button"
-                   data-bs-toggle="dropdown"
-                   aria-expanded="false">
-                    <i class="bx bx-dots-horizontal-rounded">
 
-                    </i>
-                </a>
-            </div>
-        </div>
     </div>
     <div class="position-relative mt-3">
-        <img src="@Model.Banner.URL" alt="@Model.Banner.ImageName" class="img-thumbnail">
+        <img src="@Model.Banner.URL"
+             alt="@Model.Banner.ImageName"
+             class="img-thumbnail">
     </div>
 
-    <button type="button" class="btn btn-primary edit-banner-btn banner-editt" data-id="@Model.Banner.Id">
+    <button type="button" 
+        class="btn btn-primary edit-banner-btn banner-editt" 
+        data-id="@Model.Banner.Id">
         ویرایش
-    </button>
+    </button> *@
+
+    <div class="banner-card container">
+        <div class="banner-info text-center">
+            <h5 class="banner-title">@Model.Banner.Title</h5>
+            <p class="banner-date">@Model.Banner.CreateDate</p>
+        </div>
+
+        <div class="banner-image-container">
+            <img src="@Model.Banner.URL" alt="@Model.Banner.ImageName" class="banner-image" />
+        </div>
+
+        <div class="text-center mt-3">
+            <button type="button"
+                    class="btn btn-primary edit-banner-btn"
+                    data-id="@Model.Banner.Id">
+                ویرایش
+            </button>
+        </div>
+    </div>
+
+
 
 }
 else
@@ -50,5 +63,7 @@ else
     <script>
         var createBanner = '@Url.Page("Index", "CreateBanner")';
         var editBannerPartial = '@Url.Page("Index", "EditBannerPartial")';
+        var editBanner = '@Url.Page("Index", "EditBanner")';
+
     </script>
 }

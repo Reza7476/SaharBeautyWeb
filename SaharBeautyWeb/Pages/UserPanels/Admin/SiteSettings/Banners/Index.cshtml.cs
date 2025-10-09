@@ -78,29 +78,31 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
 
         public async Task<IActionResult> OnPostEditBanner()
         {
-            if (EditDto.Image == null || string.IsNullOrEmpty(EditDto.Title))
-            {
+            var (isValid, message) = EditDto.Image.ValidateImage();
+            if (!isValid)
                 return new JsonResult(new
                 {
                     success = false,
-                    error = "عنوان یا عکس ناقص است"
+                    error = message
                 });
-            }
 
-            var updateBanner = await _service.UpdateBanner(new UpdateBannerDto
+            if (string.IsNullOrEmpty(EditDto.Title))
+            
+                return new JsonResult(new
+                {
+                    success = false,
+                    error = "عنوان یا نیابد خالی باشد"
+                });
+
+            var result = await _service.UpdateBanner(new UpdateBannerDto
             {
                 Id = EditDto.Id,
                 Image = EditDto.Image,
                 Title = EditDto.Title
             });
-
-            return new JsonResult(new
-            {
-                success = updateBanner.IsSuccess,
-                error = updateBanner.Error,
-                data = updateBanner.Data,
-                statusCode = updateBanner.StatusCode
-            });
+            var response = HandleApiAjxResult(result);
+            return response;
+            
         }
 
 
