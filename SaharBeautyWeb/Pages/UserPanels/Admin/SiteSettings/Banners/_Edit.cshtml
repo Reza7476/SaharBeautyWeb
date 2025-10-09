@@ -9,7 +9,7 @@
 
     <div class="mb-3">
         <label asp-for="Title" class="form-label">عنوان بنر</label>
-        <input type="text" asp-for="Title" class="form-control form-control-sm" placeholder="مثلاً تخفیف ویژه..." />
+        <input type="text" asp-for="Title" class="form-control form-control-sm" placeholder="عنوان بنر.." />
         <span asp-validation-for="Title" class="text-danger small"></span>
     </div>
 
@@ -28,7 +28,7 @@
         <span asp-validation-for="Image" class="text-danger small"></span>
     </div>
 
-    <div class="mb-3 text-center d-none" id="preview-container">
+    <div class="mb-3 text-center " id="preview-container">
         <label class="form-label d-block">پیش‌نمایش تصویر جدید</label>
         <div class="image-box">
             <img src="" id="new-banner-image" />
