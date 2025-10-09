@@ -56,22 +56,34 @@
 
     $(".edit-banner-btn").on("click", function () {
         var bannerId = $(this).data("id");
+        var btnSend = $(this);
         $(this).prop("disabled", true);
         $.ajax({
-            url: '/UserPanels/Admin/SiteSettings/Banners?handler=EditBannerPartial',
+            url: editBannerPartial,
             type: 'GET',
             data: { id: bannerId },
-            success: function (html) {
-                $("#staticBackdrop .modal-body").html(html);
+            success: function (res, status, xhr) {
+                const contentType = xhr.getResponseHeader("content-type") || "";
+                if (contentType.includes("application/json")) {
+                    if (!res.success) {
+                        handleApiError(res.error);
+                        btnSend.prop("disabled", false);
+                        return;
+                    }
+                }
+                $("#staticBackdrop .modal-body").html(res);
                 var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
                 modal.show();
             },
             error: function () {
                 showPopup("خطا در بارگذاری فرم ویرایش!");
+                btnSend.prop("disabled", false);
+            },
+            complete: function () {
+
+                btnSend.prop("disabled", false);
             }
         });
-        $(this).prop("disabled", false);
-
     })
 
     $(document).on("change", "#input-image-banner-update", function () {

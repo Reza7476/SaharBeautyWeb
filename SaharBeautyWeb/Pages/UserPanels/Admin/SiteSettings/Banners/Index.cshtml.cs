@@ -7,7 +7,7 @@ using SaharBeautyWeb.Services.Banners;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
 {
-    public class IndexModel :  AjaxBasePageModel
+    public class IndexModel : AjaxBasePageModel
     {
 
         private readonly IBannerService _service;
@@ -59,23 +59,21 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
                 Title = AddBanner.Title,
                 Image = AddBanner.Image
             });
-            var  response=HandleApiAjxResult(result);
+            var response = HandleApiAjxResult(result);
             return response;
         }
 
 
-        public async Task<PartialViewResult> OnGetEditBannerPartial()
+        public async Task<IActionResult> OnGetEditBannerPartial()
         {
-            var banner = await _service.Get();
-
-            var model = new EditBannerModel()
-            {
-                Id = banner.Data.Id,
-                Title = banner.Data.Title,
-                ImageUrl = banner.Data.URL
-            };
-
-            return Partial("_Edit", model);
+            var result = await _service.Get();
+            return HandleApiAjaxPartialResult(
+                result, data => new EditBannerModel()
+                {
+                    Id = data.Id,
+                    Title = data.Title,
+                    ImageUrl = data.URL
+                }, "_Edit");
         }
 
         public async Task<IActionResult> OnPostEditBanner()
