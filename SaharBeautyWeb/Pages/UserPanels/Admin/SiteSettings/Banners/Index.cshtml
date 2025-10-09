@@ -9,27 +9,6 @@
 
 @if (Model.Banner != null)
 {
-    @* <div class="d-flex align-items-start">
-        <div class="flex-grow-1 overflow-hidden">
-            <h5 class="font-size-14 text-truncate">
-                <a href="#" class="text-dark">@Model.Banner.Title</a>
-            </h5>
-            <p class="font-size-13 text-muted mb-0">@Model.Banner.CreateDate</p>
-        </div>
-
-    </div>
-    <div class="position-relative mt-3">
-        <img src="@Model.Banner.URL"
-             alt="@Model.Banner.ImageName"
-             class="img-thumbnail">
-    </div>
-
-    <button type="button" 
-        class="btn btn-primary edit-banner-btn banner-editt" 
-        data-id="@Model.Banner.Id">
-        ویرایش
-    </button> *@
-
     <div class="banner-card container">
         <div class="banner-info text-center">
             <h5 class="banner-title">@Model.Banner.Title</h5>
@@ -48,9 +27,6 @@
             </button>
         </div>
     </div>
-
-
-
 }
 else
 {

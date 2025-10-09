@@ -46,14 +46,13 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
         public async Task<IActionResult> OnPostCreateBanner()
         {
 
-            if (AddBanner.Image == null || string.IsNullOrWhiteSpace(AddBanner.Title))
-            {
+            var (isValid, message) = AddBanner.Image.ValidateImage();
+            if (!isValid)
                 return new JsonResult(new
                 {
                     success = false,
-                    error = "عنوان یا عکس ناقص است"
+                    error = message
                 });
-            }
             var result = await _service.Add(new AddBannerDto()
             {
                 Title = AddBanner.Title,
@@ -104,22 +103,5 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
             return response;
             
         }
-
-
-
-        public async Task<IActionResult> OnGetBannerAsync()
-        {
-            var banner = await _service.Get();
-            return new JsonResult(new
-            {
-                data = banner.Data,
-                success = banner.IsSuccess,
-                statusCode = banner.StatusCode,
-                error = banner.Error
-            });
-        }
-
-
-
     }
 }

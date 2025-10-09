@@ -3,7 +3,7 @@
 @using SaharBeautyWeb.Models.Entities.Banners.Management.Models
 @model EditBannerModel
 
-<form id="editBannerForm" class="banner-edit-form" enctype="multipart/form-data">
+<form id="editBannerForm" class="banner-form" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="Id" />
 
@@ -23,7 +23,7 @@
     <div class="mb-3">
         <label asp-for="Image" class="form-label">انتخاب تصویر جدید</label>
         <input type="file" asp-for="Image" id="input-image-banner-update"
-               class="form-control form-control-sm"
+               class="form-control form-control-sm get-banner-image"
                accept=".jpg,.jpeg,.png,.webp" />
         <span asp-validation-for="Image" class="text-danger small"></span>
     </div>
@@ -31,7 +31,7 @@
     <div class="mb-3 text-center " id="preview-container">
         <label class="form-label d-block">پیش‌نمایش تصویر جدید</label>
         <div class="image-box">
-            <img src="" id="new-banner-image" />
+            <img src="" class="preview-new-banner-image" />
         </div>
     </div>
 
