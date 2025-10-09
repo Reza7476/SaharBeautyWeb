@@ -53,6 +53,14 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
                     success = false,
                     error = message
                 });
+            if(string.IsNullOrWhiteSpace(AddBanner.Title))
+                {
+                return new JsonResult(new
+                {
+                    success = false,
+                    error = "عنوان نباید خالی باشد "
+                });
+            }
             var result = await _service.Add(new AddBannerDto()
             {
                 Title = AddBanner.Title,
