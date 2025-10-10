@@ -1,0 +1,66 @@
+﻿/* treatments.css */
+
+/* ساختار اصلی کارت */
+.treatments-card {
+    background: var(--bs-body-bg);
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+    .treatments-card:hover {
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+    }
+
+/* عنوان بالا */
+.treatments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+    .treatments-header h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--bs-body-color);
+        margin: 0;
+    }
+
+/* دکمه افزودن خدمات */
+#add-treatment-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+    #add-treatment-btn i {
+        font-size: 1.2rem;
+    }
+
+    #add-treatment-btn:hover {
+        transform: scale(1.05);
+    }
+
+/* محتوای لیست */
+.treatments-list {
+    border-top: 1px solid var(--bs-border-color);
+    padding-top: 1rem;
+}
+
+/* حالت ریسپانسیو */
+@media (max-width: 768px) {
+    .treatments-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    #add-treatment-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

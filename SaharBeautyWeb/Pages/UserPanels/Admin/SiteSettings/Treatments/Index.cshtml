@@ -4,238 +4,28 @@
     Layout = "_UserPanelLayout";
 
 }
-
+<link href="~/layout/admin/assets/css/pages/treatments/treatmentstyle.css" rel="stylesheet" />
 <div class="row">
     <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="mb-4">
-                            <button type="button" class="btn btn-primary waves-effect waves-light" id="add-treatment-btn">
-                                <i class="bx bx-plus me-1">
-                                </i>افزودن خدمات
-                            </button>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- end row -->
-                <div>
-                    @await Html.PartialAsync("_TreatmentsList", Model.ListModel)
-                </div>
-                <!-- end table responsive -->
+        <div class="treatments-card">
+            <div class="treatments-header">
+                <h4>لیست خدمات</h4>
+                <button type="button"
+                        class="btn btn-primary waves-effect waves-light"
+                        id="add-treatment-btn">
+                    <i class="bx bx-plus me-1"></i>
+                    افزودن خدمات
+                </button>
             </div>
-            <!-- end card body -->
+
+            <div class="treatments-list">
+                @await Html.PartialAsync("_TreatmentsList", Model.ListModel)
+            </div>
         </div>
-        <!-- end card -->
     </div>
-    <!-- end col -->
 </div>
+
 @section Scripts {
-    <script>
-        $(() => {
-            $("#add-treatment-btn").on("click", function (e) {
-                e.preventDefault();
-                $(this).prop("disabled", true);
-                $.ajax({
-                    url: '/UserPanels/Admin/SiteSettings/Treatments?handler=AddTreatmentPartial',
-                    type: 'Get',
-                    success: function (html) {
-                        var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-                        $("#staticBackdrop .modal-body").html(html);
-                        modal.show();
-                    },
-                    error: function () {
-                    }
-                })
-            })
+    <script src="~/layout/admin/assets/js/pages/userpanels/admin/sitesettings/treatments/treatmentsjquery.js"></script>
 
-            $(document).on("change", "#add-treatment-image-input", function () {
-                var input = this;
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $("#add-new-image-treatment").attr("src", e.target.result);
-                    }
-                }
-                reader.readAsDataURL(input.files[0]);
-            })
-
-            $(document).on("click", "#createTreatment", function (e) {
-                e.preventDefault();
-                var sendBtn = $(this);
-                var title = $("#add-treatment-title").val();
-                var image = $("#add-treatment-image-input")[0];
-                var description = $("#add-treatment-description").val();
-
-                if (!title || (!image.files || image.files.length === 0) || !description) {
-                    showPopup("فیلد ها نباید خالی باشند");
-                    return;
-                }
-
-                var file = image.files[0];
-                var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-                if (!allowedExtensions.exec(file.name)) {
-                    showPopup("فرمت تصویر باید jpg، jpeg یا png باشد.")
-                    return;
-                }
-
-                var form = $("#add-treatment-form")[0];
-                var formData = new FormData(form);
-                $.ajax({
-                    url: '@Url.Page("Index", "AddTreatment")',
-                    type: 'Post',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    beforeSend: function () {
-                        sendBtn.prop("disabled", true);
-                    },
-                    success: function (res) {
-                        if (res.success) {
-
-                            var modalEl = document.getElementById('staticBackdrop');
-                            var modal = bootstrap.Modal.getInstance(modalEl);
-                            modal.hide();
-                            $("#add-treatment-form")[0].reset();
-                            location.reload();
-                        } else {
-                            handleApiError(res.error || "خطایی در ثبت خدمت ایجاد شده")
-                        }
-                    },
-                    error: function () {
-                        showPopup("خطایی رخ داده")
-                        var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-                        modal.hide();
-                        location.reload();
-                    }
-                });
-            })
-
-            $(".edit-treatment-btn").on("click", function () {
-                var id = $(this).data("id");
-                $.ajax({
-                    url: '@Url.Page("Index", "EditTreatmentPartial")',
-                    type: 'Get',
-                    data: { id: id },
-                    success: function (html) {
-                        var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-                        $("#staticBackdrop .modal-body").html(html);
-                        modal.show();
-                    },
-                    error: function () {
-
-                    }
-                });
-            });
-
-            $(document).on("change", "#edit-treatment-image-input", function () {
-                var input = this;
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $("#preview-edit-image-treatment").attr("src", e.target.result);
-                    }
-                }
-                reader.readAsDataURL(input.files[0]);
-            });
-
-            $(document).on("click", ".add-edited-treatment-image", function (e) {
-                e.preventDefault();
-                var sendBtn = $(this);
-                var form = $("#add-treatment-image-form")[0];
-                var formData = new FormData(form);
-
-                $.ajax({
-                    url: '@Url.Page("Index", "AddImage")',
-                    type: 'Post',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    beforeSend: function () {
-                        sendBtn.prop("disabled", true);
-                    },
-                    success: function (res) {
-                        if (res.success) {
-                            var modalEl = document.getElementById('staticBackdrop');
-                            var modal = bootstrap.Modal.getInstance(modalEl);
-                            modal.hide();
-                            $("#add-treatment-image-form")[0].reset();
-                            location.reload();
-                        } else {
-                            handleApiError(res.error);
-                            sendBtn.prop("disabled", false);
-                        }
-                    },
-                    error: function (res) {
-                        showPopup(res.error);
-                        sendBtn.prop("disabled", false);
-                    }
-                });
-            });
-
-            $(document).on("click", ".delete-treatment-image-btn", function (e) {
-                e.preventDefault();
-                var deleteBtn = $(this);
-                var token = $('input[name="__RequestVerificationToken"]').val();
-                var treatmentId = $("#treatmentId").val();
-                imageId = deleteBtn.data("id");
-                $.ajax({
-                    url: '@Url.Page("Index", "DeleteImage")',
-                    type: 'Post',
-                    data: {
-                        imageid: imageId,
-                        id: treatmentId,
-                        __RequestVerificationToken: token,
-                    },
-                    success: function (res) {
-
-                        if (res.success) {
-                            deleteBtn.closest(".col-md-6").remove();
-                        } else {
-                            handleApiError(res.error)
-                        }
-                    },
-                    error: function () {
-                        showPopup("خطایی ایجاد شده");
-                    }
-                });
-            })
-
-            $(document).on("click", ".edit-treatment-title-description", function (e) {
-                e.preventDefault();
-                var sendBtn = $(this);
-                var title = $("#edit-treatment-title").val();
-                var description = $("#edit-treatment-description").val();
-                if (!(title || description)) {
-                    showPopup("عنوان و توضیحات نباید خالی باشند")
-                }
-                var form = $("#edit-treatment-title-description-form")[0];
-                var formData = new FormData(form);
-                $.ajax({
-                    url: '@Url.Page("Index", "EditTreatment")',
-                    type: 'Post',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (res) {
-                        if (res.success) {
-                            var modalEl = document.getElementById('staticBackdrop');
-                            var modal = bootstrap.Modal.getInstance(modalEl);
-                            modal.hide();
-                            $("#edit-treatment-title-description-form")[0].reset();
-                            location.reload();
-                        } else {
-                            handleApiError(res.erro)
-                        }
-                    },
-                    error: function () {
-                        showPopup("خطایی پیش آمده")
-                    }
-                });
-            })
-
-        })
-    </script>
 }
