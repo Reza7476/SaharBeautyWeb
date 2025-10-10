@@ -1,0 +1,52 @@
+﻿body {
+}
+/* ===========================
+   Global Pagination Styles
+   Reusable for all tables/lists
+   =========================== */
+
+.pagination {
+    margin-top: 10px;
+    gap: 6px;
+}
+
+.page-item .page-link {
+    border-radius: 8px;
+    border: 1px solid var(--bs-border-color);
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    transition: all 0.2s ease-in-out;
+    padding: 6px 12px;
+    min-width: 38px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.page-item.active .page-link {
+    background-color: var(--bs-primary);
+    color: #fff;
+    border-color: var(--bs-primary);
+}
+
+.page-item.disabled .page-link {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.page-link:hover {
+    background-color: var(--bs-primary-bg-subtle);
+    color: var(--bs-primary);
+}
+
+/* small screens */
+@media (max-width: 576px) {
+    .pagination {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .page-item .page-link {
+        font-size: 0.85rem;
+        padding: 5px 10px;
+    }
+}
