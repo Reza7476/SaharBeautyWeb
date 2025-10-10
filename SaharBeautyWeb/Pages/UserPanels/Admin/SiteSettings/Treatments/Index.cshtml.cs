@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Commons.Dtos;
@@ -104,31 +105,21 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
                     success = isValid,
                     error = message
                 });
-            var image = await _service.AddImage(new AddMediaDto
+            var result = await _service.AddImage(new AddMediaDto
             {
-                AddMedia = ModelData.AddMedia,
+                AddMedia = ModelData.AddMedia!,
                 Id = ModelData.Id
             });
 
-            return new JsonResult(new
-            {
-                data = image.Data,
-                success = image.IsSuccess,
-                statusCode = image.StatusCode,
-                error = image.Error
-            });
+            var response = HandleApiAjxResult(result);
+            return response;
         }
 
         public async Task<IActionResult> OnPostDeleteImage(long imageId, long id)
         {
             var result = await _service.DeleteImage(imageId, id);
-            return new JsonResult(new
-            {
-                data = result,
-                success = result.IsSuccess,
-                error = result.Error,
-
-            });
+            var response = HandleApiAjxResult(result);
+            return response;
         }
 
         public async Task<IActionResult> OnPostEditTreatment()
