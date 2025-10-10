@@ -52,7 +52,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
         {
             var (isValid, message) = AddModel.Image.ValidateImage();
 
-            if(!isValid)
+            if (!isValid)
             {
                 return new JsonResult(new
                 {
@@ -81,19 +81,18 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
             return HandleApiAjxResult(result);
         }
 
-        public async Task<PartialViewResult> OnGetEditTreatmentPartial(long id)
+        public async Task<IActionResult> OnGetEditTreatmentPartial(long id)
         {
-            var treatment = await _service.GetById(id);
-
-            var model = new TreatmentDetailsDto()
-            {
-                Description = treatment?.Data?.Description,
-                Title = treatment?.Data?.Title,
-                Media = treatment.Data.Media,
-                Id = id
-
-            };
-            return Partial("_editTreatmentPartial", model);
+            var result = await _service.GetById(id);
+            var response = HandleApiAjaxPartialResult(
+                result, data => new TreatmentDetailsDto()
+                {
+                    Description = data.Description,
+                    Title = data.Title,
+                    Media = result.Data!.Media,
+                    Id = id
+                }, "_editTreatmentPartial");
+            return response;
         }
 
         public async Task<IActionResult> OnPostAddImage()

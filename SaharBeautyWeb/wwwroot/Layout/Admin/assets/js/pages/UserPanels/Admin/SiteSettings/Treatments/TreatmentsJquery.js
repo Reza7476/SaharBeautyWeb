@@ -68,22 +68,35 @@
        });
     })
 
-    //$(".edit-treatment-btn").on("click", function () {
-    //    var id = $(this).data("id");
-    //    $.ajax({
-    //        url: '@Url.Page("Index", "EditTreatmentPartial")',
-    //        type: 'Get',
-    //        data: { id: id },
-    //        success: function (html) {
-    //            var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-    //            $("#staticBackdrop .modal-body").html(html);
-    //            modal.show();
-    //        },
-    //        error: function () {
+    $(".edit-treatment-btn").on("click", function () {
+        var id = $(this).data("id");
+        $.ajax({
+            url: editTreatmentPartial,
+            type: 'Get',
+            data: { id: id },
+            success: function (res, status, xhr) {
+                const contentType = xhr.getResponseHeader("content-type") || "";
+                if (contentType.includes("application/json")) {
+                    if (!res.success) {
+                        handleApiError(res.error);
+                        btnSend.prop("disabled", false);
+                        return;
+                    }
+                }
+                $("#staticBackdrop .modal-body").html(res);
+                var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                modal.show();
+            },
+            error: function () {
+                showPopup("خطا در بارگذاری فرم ویرایش!");
+                btnSend.prop("disabled", false);
+            },
+            complete: function () {
 
-    //        }
-    //    });
-    //});
+                btnSend.prop("disabled", false);
+            }
+        });
+    });
 
     //$(document).on("change", "#edit-treatment-image-input", function () {
     //    var input = this;
