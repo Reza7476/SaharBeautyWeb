@@ -95,18 +95,17 @@ public class TreatmentApiService : ITreatmentService
         };
     }
 
-    public async Task<ApiResultDto<GetTreatmentWithAllImagesDto>> GetById(long id)
+    public async Task<ApiResultDto<GetTreatmentWithAllImagesDto?>> GetById(long id)
     {
         var url = $"treatments/{id}";
         var result = await _apiService.GetAsync<GetTreatmentWithAllImagesDto>(url);
-        var a = new ApiResultDto<GetTreatmentWithAllImagesDto>()
+        return new ApiResultDto<GetTreatmentWithAllImagesDto?>()
         {
             Data = result.Data,
             Error = result.Error,
             IsSuccess = result.IsSuccess,
             StatusCode = result.StatusCode
         };
-        return a;
     }
 
     public async Task<ApiResultDto<List<GetTreatmentsForLandingDto>>> GetForLanding()

@@ -1,0 +1,124 @@
+﻿/* ================================
+   استایل فرم ویرایش خدمات
+   ================================ */
+
+.treatment-edit-card {
+    background: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease-in-out;
+    padding: 1.5rem;
+}
+
+    .treatment-edit-card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+
+.treatment-edit-card-header {
+    border-bottom: 2px solid #e5e5e5;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+}
+
+    .treatment-edit-card-header h4 {
+        font-weight: 600;
+        color: #333;
+    }
+
+/* فرم ورودی‌ها */
+.treatment-edit-card .form-control {
+    border-radius: 0.6rem;
+    transition: all 0.25s ease;
+    border: 1px solid #ccc;
+}
+
+    .treatment-edit-card .form-control:focus {
+        border-color: #6c63ff;
+        box-shadow: 0 0 0 0.15rem rgba(108, 99, 255, 0.2);
+    }
+
+/* دکمه‌ها */
+.treatment-edit-card button.btn {
+    border-radius: 0.6rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.treatment-edit-card button.btn-primary {
+    background: #6c63ff;
+    border-color: #6c63ff;
+}
+
+    .treatment-edit-card button.btn-primary:hover {
+        background: #5a52e0;
+    }
+
+.treatment-edit-card button.btn-success {
+    background: #4CAF50;
+    border-color: #4CAF50;
+}
+
+    .treatment-edit-card button.btn-success:hover {
+        background: #43a047;
+    }
+
+.treatment-edit-card button.btn-danger {
+    background: #f44336;
+    border-color: #f44336;
+}
+
+    .treatment-edit-card button.btn-danger:hover {
+        background: #e53935;
+    }
+
+/* عکس‌ها */
+.treatment-edit-card img.img-thumbnail {
+    border-radius: 0.75rem;
+    transition: all 0.25s ease;
+}
+
+    .treatment-edit-card img.img-thumbnail:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+
+/* بخش لیست عکس‌ها */
+.treatment-edit-images {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 1rem 0;
+}
+
+    .treatment-edit-images::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .treatment-edit-images::-webkit-scrollbar-thumb {
+        background: #bdbdbd;
+        border-radius: 4px;
+    }
+
+        .treatment-edit-images::-webkit-scrollbar-thumb:hover {
+            background: #9e9e9e;
+        }
+
+/* حالت موبایل */
+@media (max-width: 768px) {
+    .treatment-edit-card {
+        padding: 1rem;
+    }
+
+    .treatment-edit-card-header h4 {
+        font-size: 1.1rem;
+    }
+
+    .treatment-edit-card button {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .treatment-edit-card img.img-thumbnail {
+        width: 100%;
+        height: auto;
+    }
+}

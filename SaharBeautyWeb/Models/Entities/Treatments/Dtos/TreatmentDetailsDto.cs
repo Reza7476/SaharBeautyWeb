@@ -7,6 +7,6 @@ public class TreatmentDetailsDto
     public long  Id { get; set; }
     public string? Title { get; set; }
     public string? Description { get; set; }
-    public List<MediaDto> Media { get; set; } = default!;
+    public List<MediaDto> Media { get; set; } = new();
     public IFormFile? AddMedia  { get; set; }
 }
