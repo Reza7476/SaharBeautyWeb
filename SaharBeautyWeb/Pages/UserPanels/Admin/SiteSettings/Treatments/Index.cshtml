@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{handler?}"
 @model SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments.IndexModel
 @{
     Layout = "_UserPanelLayout";
@@ -27,5 +27,10 @@
 
 @section Scripts {
     <script src="~/layout/admin/assets/js/pages/userpanels/admin/sitesettings/treatments/treatmentsjquery.js"></script>
+    
+    <script>
 
+        var addTreatmentPartial = '@Url.Page("Index", "AddTreatmentPartial")';
+        var addTreatment = '@Url.Page("Index", "AddTreatment")';
+    </script>
 }

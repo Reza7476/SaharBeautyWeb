@@ -1,45 +1,58 @@
-﻿@using SaharBeautyWeb.Models.Entities.Treatments.Dtos
+﻿
 
+@using SaharBeautyWeb.Models.Entities.Treatments.Dtos
 @model AddTreatmentModel
-<div class="row" style="display:block" id="register-banner">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">ثبت خدمت </h4>
-            </div>
-            <div class="card-body">
-                <form class="needs-validation" method="post" id="add-treatment-form" asp-page="Index" asp-page-handler="AddTreatment" enctype="multipart/form-data">
-                    @Html.AntiForgeryToken()
-                    <div class="row">
-                        <div >
-                            <div class="mb-3">
-                                <input type="text" id="add-treatment-title" class="form-control" asp-for="Title" placeholder="لطفا یک عنوان را وارد نمایید">
-
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label  class="form-label">توضیحات</label>
-                            <textarea class="form-control" id="add-treatment-description" asp-for="Description" rows="5"></textarea>
-                        </div>
-
-                        <div>
-                            <div class="mb-3">
-                                <input type="file" id="add-treatment-image-input" class="form-control" asp-for=Image placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-
-                        <div class="mb-3">
-                            <img id="add-new-image-treatment" src="" class="img-thumbnail mb2" />
-                        </div>
-                    </div>
-
-                    <button class="btn btn-primary" type="submit" id="createTreatment">ثبت</button>
-                </form>
-            </div>
+<link href="~/layout/admin/assets/css/pages/treatments/addstyle.css" rel="stylesheet" />
+<div class="treatment-form-wrapper" id="register-treatment">
+    <div class="treatment-card">
+        <div class="treatment-card-header">
+            <h4 class="treatment-card-title">ثبت خدمت</h4>
         </div>
-    </div> 
+        <div class="treatment-card-body">
+            <form id="add-treatment-form"
+                  method="post"
+                  asp-page="Index"
+                  asp-page-handler="AddTreatment"
+                  enctype="multipart/form-data">
+
+                @Html.AntiForgeryToken()
+
+                <div class="treatment-form-group">
+                    <input type="text"
+                           id="add-treatment-title"
+                           class="treatment-input"
+                           asp-for="Title"
+                           placeholder="عنوان خدمت را وارد کنید" />
+                </div>
+
+                <div class="treatment-form-group">
+                    <label class="treatment-label">توضیحات</label>
+                    <textarea id="add-treatment-description"
+                              class="treatment-textarea"
+                              asp-for="Description"
+                              rows="5"
+                              placeholder="توضیحات خدمت..."></textarea>
+                </div>
+
+                <div class="treatment-form-group">
+                    <label class="treatment-label">انتخاب تصویر</label>
+                    <input type="file"
+                           id=""
+                           class="treatment-input add-treatment-image-input"
+                           asp-for="Image" />
+                </div>
+
+                <div class="treatment-preview">
+                    <img src=""
+                         class="treatment-preview-img preview-new-image-treatment"
+                         alt="پیش‌نمایش تصویر" />
+                </div>
+
+                <button class="treatment-btn" type="submit" id="createTreatment">
+                    ثبت خدمت
+                </button>
+            </form>
+        </div>
+    </div>
 </div>
+
