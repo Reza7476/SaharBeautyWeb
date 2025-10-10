@@ -141,7 +141,6 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
                     success = false
                 });
             }
-
             var result = await _service.UpdateTitleAndDescription(new UpdateTreatmentTitleAndDescriptionDto()
             {
                 Description = ModelData.Description,
@@ -149,13 +148,8 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
                 Id = ModelData.Id
             });
 
-
-            return new JsonResult(new
-            {
-                data = result,
-                success = result.IsSuccess,
-                error = result.Error,
-            });
+            var response = HandleApiAjxResult(result);
+            return response;
         }
     }
 }

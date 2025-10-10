@@ -48,7 +48,6 @@
            },
            success: function (res) {
                if (res.success) {
-
                    var modalEl = document.getElementById('staticBackdrop');
                    var modal = bootstrap.Modal.getInstance(modalEl);
                    modal.hide();
@@ -66,6 +65,43 @@
                location.reload();
            }
        });
+    })
+
+    $(document).on("click", ".edit-treatment-title-description", function (e) {
+        e.preventDefault();
+        var sendBtn = $(this);
+        var title = $("#edit-treatment-title").val();
+        var description = $("#edit-treatment-description").val();
+        if (!(title || description)) {
+            showPopup("عنوان و توضیحات نباید خالی باشند")
+        }
+        var form = $("#edit-treatment-title-description-form")[0];
+        var formData = new FormData(form);
+        $.ajax({
+            url: editTreatment,
+            type: 'Post',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                if (res.success) {
+                    var modalEl = document.getElementById('staticBackdrop');
+                    var modal = bootstrap.Modal.getInstance(modalEl);
+                    modal.hide();
+                    form.reset();
+                    location.reload();
+                } else {
+                    handleApiError(res.error);
+                    sendBtn.prop("disabled", false);
+                }
+            },
+            error: function () {
+                showPopup("خطایی پیش آمده");
+                var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                modal.hide();
+                location.reload();
+            }
+        });
     })
 
     $(".edit-treatment-btn").on("click", function () {
@@ -98,16 +134,7 @@
         });
     });
 
-    //$(document).on("change", "#edit-treatment-image-input", function () {
-    //    var input = this;
-    //    if (input.files && input.files[0]) {
-    //        var reader = new FileReader();
-    //        reader.onload = function (e) {
-    //            $("#preview-edit-image-treatment").attr("src", e.target.result);
-    //        }
-    //    }
-    //    reader.readAsDataURL(input.files[0]);
-    //});
+   
 
     //$(document).on("click", ".add-edited-treatment-image", function (e) {
     //    e.preventDefault();
@@ -171,37 +198,6 @@
     //    });
     //})
 
-    //$(document).on("click", ".edit-treatment-title-description", function (e) {
-    //    e.preventDefault();
-    //    var sendBtn = $(this);
-    //    var title = $("#edit-treatment-title").val();
-    //    var description = $("#edit-treatment-description").val();
-    //    if (!(title || description)) {
-    //        showPopup("عنوان و توضیحات نباید خالی باشند")
-    //    }
-    //    var form = $("#edit-treatment-title-description-form")[0];
-    //    var formData = new FormData(form);
-    //    $.ajax({
-    //        url: '@Url.Page("Index", "EditTreatment")',
-    //        type: 'Post',
-    //        data: formData,
-    //        processData: false,
-    //        contentType: false,
-    //        success: function (res) {
-    //            if (res.success) {
-    //                var modalEl = document.getElementById('staticBackdrop');
-    //                var modal = bootstrap.Modal.getInstance(modalEl);
-    //                modal.hide();
-    //                $("#edit-treatment-title-description-form")[0].reset();
-    //                location.reload();
-    //            } else {
-    //                handleApiError(res.erro)
-    //            }
-    //        },
-    //        error: function () {
-    //            showPopup("خطایی پیش آمده")
-    //        }
-    //    });
-    //})
+   
 
 })
