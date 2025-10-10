@@ -136,67 +136,69 @@
 
    
 
-    //$(document).on("click", ".add-edited-treatment-image", function (e) {
-    //    e.preventDefault();
-    //    var sendBtn = $(this);
-    //    var form = $("#add-treatment-image-form")[0];
-    //    var formData = new FormData(form);
+    $(document).on("click", ".add-edited-treatment-image", function (e) {
+        e.preventDefault();
+        var sendBtn = $(this);
+        var form = $("#add-treatment-image-form")[0];
+        var formData = new FormData(form);
 
-    //    $.ajax({
-    //        url: '@Url.Page("Index", "AddImage")',
-    //        type: 'Post',
-    //        data: formData,
-    //        contentType: false,
-    //        processData: false,
-    //        beforeSend: function () {
-    //            sendBtn.prop("disabled", true);
-    //        },
-    //        success: function (res) {
-    //            if (res.success) {
-    //                var modalEl = document.getElementById('staticBackdrop');
-    //                var modal = bootstrap.Modal.getInstance(modalEl);
-    //                modal.hide();
-    //                $("#add-treatment-image-form")[0].reset();
-    //                location.reload();
-    //            } else {
-    //                handleApiError(res.error);
-    //                sendBtn.prop("disabled", false);
-    //            }
-    //        },
-    //        error: function (res) {
-    //            showPopup(res.error);
-    //            sendBtn.prop("disabled", false);
-    //        }
-    //    });
-    //});
+        $.ajax({
+            url: addImage,
+            type: 'Post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                sendBtn.prop("disabled", true);
+            },
+            success: function (res) {
+                if (res.success) {
+                    var modalEl = document.getElementById('staticBackdrop');
+                    var modal = bootstrap.Modal.getInstance(modalEl);
+                    modal.hide();
+                    form.reset();
+                    location.reload();
+                } else {
+                    handleApiError(res.error);
+                    sendBtn.prop("disabled", false);
+                }
+            },
+            error: function (res) {
+                showPopup(res.error);
+                sendBtn.prop("disabled", false);
+            }
+        });
+    });
 
-    //$(document).on("click", ".delete-treatment-image-btn", function (e) {
-    //    e.preventDefault();
-    //    var deleteBtn = $(this);
-    //    var token = $('input[name="__RequestVerificationToken"]').val();
-    //    var treatmentId = $("#treatmentId").val();
-    //    imageId = deleteBtn.data("id");
-    //    $.ajax({
-    //        url: '@Url.Page("Index", "DeleteImage")',
-    //        type: 'Post',
-    //        data: {
-    //            imageid: imageId,
-    //            id: treatmentId,
-    //            __RequestVerificationToken: token,
-    //        },
-    //        success: function (res) {
+    $(document).on("click", ".delete-treatment-image-btn", function (e) {
+        e.preventDefault();
+        var deleteBtn = $(this);
+        deleteBtn.prop("disabled", true);
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        var treatmentId = $("#treatmentId").val();
+        imageId = deleteBtn.data("id");
+        $.ajax({
+            url: deleteImage,
+            type: 'Post',
+            data: {
+                imageid: imageId,
+                id: treatmentId,
+                __RequestVerificationToken: token,
+            },
+            success: function (res) {
 
-    //            if (res.success) {
-    //                deleteBtn.closest(".col-md-6").remove();
-    //            } else {
-    //                handleApiError(res.error)
-    //            }
-    //        },
-    //        error: function () {
-    //            showPopup("خطایی ایجاد شده");
-    //        }
-    //    });
-    //})
+                if (res.success) {
+                    deleteBtn.closest(".col-md-6").remove();
+                } else {
+                    handleApiError(res.error)
+                }
+            },
+            error: function () {
+                showPopup("خطایی ایجاد شده");
+                deleteBtn.prop("disabled", false);
+            }
+        });
+    })
 
    
 
