@@ -4,11 +4,12 @@ using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Models;
+using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.Treatments;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
 {
-    public class IndexModel : PageModel
+    public class IndexModel : AjaxBasePageModel
     {
         private readonly ITreatmentService _service;
         public GetAllTreatmentModel ListModel { get; set; } = new();
@@ -19,29 +20,27 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
         [BindProperty]
         public TreatmentDetailsDto ModelData { get; set; }
 
-        public IndexModel(ITreatmentService service)
+        public IndexModel(ITreatmentService service,
+            ErrorMessages errorMessage) : base(errorMessage)
         {
             _service = service;
         }
 
 
-        public async Task OnGet(int pageNumber = 0, int limit = 5)
+        public async Task<IActionResult> OnGet(int pageNumber = 0, int limit = 5)
         {
-            int offset = pageNumber;       
-            
-            var treatments = await _service.GetAll(offset, limit);
+            int offset = pageNumber;
 
-            if (treatments.IsSuccess && treatments.Data != null)
+            var result = await _service.GetAll(offset, limit);
+            var response = HandleApiResult(result);
+            if (result.IsSuccess && result.Data != null)
             {
-                ListModel.Treatments = treatments.Data.Elements;
-                ListModel.TotalElements = treatments.Data.TotalElements;
+                ListModel.Treatments = result.Data.Elements;
+                ListModel.TotalElements = result.Data.TotalElements;
                 ListModel.CurrentPage = pageNumber;
-                ListModel.TotalPages= treatments.Data.TotalElements.ToTotalPage(limit); ;
+                ListModel.TotalPages = result.Data.TotalElements.ToTotalPage(limit); ;
             }
-            else
-            {
-                ViewData["ErrorMessage"] = treatments.Error ?? "خطایی پیش آمده";
-            }
+            return response;
         }
 
         public PartialViewResult OnGetAddTreatmentPartial()
@@ -51,31 +50,35 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
 
         public async Task<IActionResult> OnPostAddTreatment()
         {
-            if (AddModel.Image == null ||
+            var (isValid, message) = AddModel.Image.ValidateImage();
+
+            if(!isValid)
+            {
+                return new JsonResult(new
+                {
+                    success = false,
+                    error = message
+                });
+            }
+
+            if (
                 string.IsNullOrWhiteSpace(AddModel.Title) ||
                 string.IsNullOrWhiteSpace(AddModel.Description))
             {
                 return new JsonResult(new
                 {
                     success = false,
-                    error = "فیلد های ناقص میباشند"
+                    error = "عنوان یا توضیحات  ناقص میباشند"
                 });
             }
 
-            var treatment = await _service.Add(new AddTreatmentModel
+            var result = await _service.Add(new AddTreatmentModel
             {
                 Description = AddModel.Description,
                 Image = AddModel.Image,
                 Title = AddModel.Title
             });
-
-            return new JsonResult(new
-            {
-                data = treatment.Data,
-                success = treatment.IsSuccess,
-                statusCode = treatment.StatusCode,
-                error = treatment.Error
-            });
+            return HandleApiAjxResult(result);
         }
 
         public async Task<PartialViewResult> OnGetEditTreatmentPartial(long id)

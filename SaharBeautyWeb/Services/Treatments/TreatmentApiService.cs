@@ -21,7 +21,6 @@ public class TreatmentApiService : ITreatmentService
     {
         _client = client;
         _apiService = apiService;
-         //_client.BaseAddress = new Uri(baseAddress!);
     }
 
     public async Task<ApiResultDto<long>> Add(AddTreatmentModel dto)
