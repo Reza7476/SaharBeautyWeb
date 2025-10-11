@@ -1,0 +1,22 @@
+﻿/* استایل کلی کارت */
+.whyus-edit-card {
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+}
+
+    .whyus-edit-card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* دکمه‌ها */
+    .whyus-edit-card .btn {
+        border-radius: 0.7rem;
+        transition: all 0.25s ease;
+    }
+
+        .whyus-edit-card .btn:hover {
+            transform: translateY(-2px);
+        }
+
+/* انیمیشن باز شدن فرم ویرایش عکس */
+.edit-whyus

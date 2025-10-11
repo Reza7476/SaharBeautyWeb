@@ -1,37 +1,23 @@
 ﻿$(() => {
-    setUpImagePreview("#input-why-us-section-image", "#preview-add-image-why-us-section");
+
+    $(document).on("change", ".whyus-section-image-input", function () {
+        var inputImage = $(".whyus-section-image-input")[0];
+        var previewImage = $(".whyus-section-preview-img")[0];
+    setUpImagePreview(inputImage, previewImage);
+    })
+
     $(document).on("click", "#createWhyUsSection", function (e) {
         e.preventDefault();
         var send = $(this);
-        var titleInput = $("#why-us-section-title")[0];
-        var descriptionInput = $("#why-us-description")[0];
-        var imageInput = $("#input-why-us-section-image")[0];
-        let hasError;
-        if (!titleInput.value.trim()) {
-            markInputError(titleInput);
-            hasError = true;
-        }
-        if (!descriptionInput.value.trim()) {
-            markInputError(descriptionInput);
-            hasError = true;
-
-        }
-        if (!(imageInput.files[0])) {
-            markInputError(imageInput);
-            hassError = true;
-        }
-        if (hasError) return;
-        var form = $("#add-why-us-section-form")[0];
+        var form = $("#add-whyus-section-form")[0];
         var formData = new FormData(form);
+                send.prop("disabled", true);
         $.ajax({
             url: createWhyUsSectionUrl,
             type: 'Post',
             data: formData,
             contentType: false,
             processData: false,
-            beforeSend: function () {
-                send.prop("disabled", true);
-            },
             success: function (res) {
                 if (res.success) {
                     location.reload();
@@ -45,15 +31,12 @@
                 handleApiError(err);
                 send.prop("disabled", false);
             }
-
         });
-
     })
 
     $(document).on("click", ".add-why-us-question-btn", function (e) {
         e.preventDefault();
         var id = $(this).data("id");
-        console.log(id);
         $.ajax({
             url: addWhyUsQuestionPartialUrl,
             type: 'Get',
@@ -73,18 +56,7 @@
     $(document).on("click", "#add-why-us-question", function (e) {
         e.preventDefault();
         var sendBtn = $(this);
-        var question = $("#why-us-question")[0];
-        var answer = $("#why-us-question-answer")[0];
-        var hasError;
-        if (!question.value.trim()) {
-            markInputError(question);
-            hasError = true;
-        }
-        if (!answer.value.trim()) {
-            markInputError(answer);
-            hasError = true;
-        }
-        if (hasError) return;
+        sendBtn.prop("disabled", true);
         var form = $("#add-why-us-question-form")[0];
         var formData = new FormData(form);
         $.ajax({
@@ -101,6 +73,7 @@
                     location.reload();
                 } else {
                     handleApiError(res.error);
+                    sendBtn.prop("disabled", false);
                 }
             },
             error: function () {
@@ -114,7 +87,7 @@
         e.preventDefault();
         var removeBtn = $(this);
         var id = removeBtn.data("id");
-
+        removeBtn.prop("disabled", true);
         var token = $('input[name="__RequestVerificationToken"]').val();
         $.ajax({
             url: deleteQuestionUrl,
@@ -123,9 +96,7 @@
                 id: id,
                 __RequestVerificationToken: token
             },
-            beforeSend: function () {
-                removeBtn.prop("disabled", true);
-            },
+           
             success: function (res) {
                 if (res.success) {
                     location.reload();
@@ -142,19 +113,30 @@
 
     $(document).on("click", ".edit-why-us-section-btn", function (e) {
         e.preventDefault();
+        var btnSend = $(this);
+        btnSend.prop("disabled", true);
         id = $(this).data("id");
         $.ajax({
             url: editWhyUsSectionEditUrl,
             type: 'Get',
             data: { id: id },
-            success: function (html) {
+            success: function (res, status, xhr) {
+
+                const contentType = xhr.getResponseHeader("content-type") || "";
+                if (contentType.includes("application/json")) {
+                    if (!res.success) {
+                        handleApiError(res.error);
+                        btnSend.prop("disabled", false);
+                        return;
+                    }
+                }
+                $("#staticBackdrop .modal-body").html(res);
                 var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-                $("#staticBackdrop .modal-body").html(html);
                 modal.show();
             },
             error: function (xhr, status, error) {
-                let msg = (xhr.responseJSON?.error) || xhr.responseText || "خطایی پیش آمده";
-                showPopup(msg);
+                showPopup("خطا در بارگذاری فرم ویرایش!");
+                btnSend.prop("disabled", false);
             }
 
         });
@@ -163,18 +145,7 @@
     $(document).on("click", ".edit-why-us-section-title-description", function (e) {
         e.preventDefault();
         var sendBtn = $(this);
-        var title = $("#edit-why-us-section-title")[0];
-        var description = $("#edit-why-us-section-description")[0];
-        let hasError;
-        if (!title.value.trim()) {
-            markInputError(title);
-            hasError = true;
-        }
-        if (!description.value.trim()) {
-            markInputError(description);
-            hasError = true;
-        }
-        if (hasError) return;
+        sendBtn.prop("disabled", true);
         var form = $("#edit-why-us-section-title-description-form")[0];
         var formData = new FormData(form);
 
@@ -184,21 +155,20 @@
             processData: false,
             contentType: false,
             data: formData,
-            beforeSend: function () {
-                sendBtn.prop("disabled", true);
-            },
             success: function (res) {
                 if (res.success) {
                     location.reload();
                 } else {
                     handleApiError(res.error);
                     location.reload();
+                    sendBtn.prop("disabled", false);
                 }
             },
-            error: function (xhr) {
-                let msg = (xhr.responseJSON?.error) || xhr.responseText || "خطایی پیش آمده";
-                handleApiError(msg);
+            error: function () {
+               
+                handleApiError("خطایی در بارگذاری فرم ویزرایش پیش امده");
                 location.reload();
+                sendBtn.prop("disabled", false);
             }
         });
 
@@ -209,48 +179,31 @@
         $("#edit-why-us-section-image-div").css("display", "block");
     });
 
-
-    setUpImagePreview("#edit-why-us-image-input", "#preview-edit-image-why-us-section");
     $(document).on("click", ".apply-edited-why-us-image", function (event) {
         event.preventDefault();
         var send = $(this);
-        var imageInput = $("#edit-why-us-image-input")[0];
-        let hasError;
-        //if (!(imageInput.files[0])) {
-        //    markInputError(imageInput);
-        //    hassError = true;
-        //}
-        //if (hasError) return;
-
+        send.prop("disabled", true);
         var form = $("#edit-whyUsSection-image-form")[0];
         var formData = new FormData(form);
-        for (var pair  of formData.entries()) {
-            console.log(pair[0] + ":" + pair[1]);
-        }
         $.ajax({
             url: applyEditWhyUsImage,
             type: 'Post',
             processData: false,
             contentType: false,
             data: formData,
-            beforeSend: function () {
-                send.prop("disabled", true);
-            },
             success: function (res) {
                 if (res.success) {
+                    form.reset();
                     location.reload();
                 } else {
                     handleApiError(res.error);
-                    location.reload();
+                    send.prop("disabled", false);
                 }
             },
-            error: function (xhr) {
-                location.reload();
+            error: function () {
+                handleApiError("در بارگذاری فرم ویرایش خطایی چیش امده");
+                send.prop("disabled", false);
             }
-
-
         });
-
-
     });
 });

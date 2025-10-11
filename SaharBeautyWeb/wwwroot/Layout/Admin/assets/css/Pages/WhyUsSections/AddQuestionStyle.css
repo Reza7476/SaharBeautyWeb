@@ -1,0 +1,40 @@
+﻿.whyus-question-card {
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+}
+
+    .whyus-question-card:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        transform: translateY(-3px);
+    }
+
+.whyus-input,
+.whyus-textarea {
+    border-radius: 0.6rem;
+    border: 1px solid #ddd;
+    transition: all 0.25s ease;
+}
+
+    .whyus-input:focus,
+    .whyus-textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.15);
+    }
+
+.add-whyus-question-btn {
+    border-radius: 0.6rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .add-whyus-question-btn:hover {
+        background-color: #0056b3;
+        transform: translateY(-1px);
+    }
+
+/* برای موبایل */
+@media (max-width: 768px) {
+    .whyus-question-card {
+        padding: 0.75rem;
+    }
+}

@@ -1,0 +1,44 @@
+﻿/* کارت اصلی */
+.whyus-section-card {
+    border-radius: 1rem;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+    .whyus-section-card:hover {
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+        transform: translateY(-3px);
+    }
+
+/* تصویر */
+.whyus-section-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+    .whyus-section-img:hover {
+        transform: scale(1.03);
+    }
+
+/* دکمه ویرایش */
+.edit-why-us-section-btn {
+    border-radius: 0.6rem;
+    transition: all 0.25s ease;
+}
+
+    .edit-why-us-section-btn:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+/* برای موبایل */
+@media (max-width: 768px) {
+    .whyus-section-card {
+        padding: 0.5rem;
+    }
+
+    .whyus-section-img {
+        width: 80%;
+    }
+}

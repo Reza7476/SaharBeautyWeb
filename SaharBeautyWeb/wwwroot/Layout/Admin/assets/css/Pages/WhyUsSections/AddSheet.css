@@ -1,0 +1,81 @@
+﻿/* کارت اصلی */
+.whyus-section-card {
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    transition: box-shadow 0.3s ease;
+}
+
+    .whyus-section-card:hover {
+        box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    }
+
+/* سربرگ */
+.whyus-section-header {
+    border-bottom: 2px solid var(--bs-primary);
+    margin-bottom: 1rem;
+}
+
+.whyus-section-title {
+    font-weight: 600;
+    color: var(--bs-dark);
+}
+
+/* فرم */
+.whyus-section-form label {
+    font-weight: 500;
+    color: #333;
+}
+
+.whyus-section-form .form-control {
+    border-radius: 0.75rem;
+    box-shadow: none;
+    transition: all 0.2s ease-in-out;
+}
+
+    .whyus-section-form .form-control:focus {
+        border-color: var(--bs-primary);
+        box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.15);
+    }
+
+/* دکمه ارسال */
+.whyus-section-submit-btn {
+    font-weight: 500;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+    .whyus-section-submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+/* پیش‌نمایش تصویر */
+.whyus-section-image-preview img {
+    display:block;
+    border-radius: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .whyus-section-image-preview img:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+/* موبایل */
+@media (max-width: 768px) {
+    .whyus-section-card {
+        padding: 1rem;
+    }
+
+    .whyus-section-title {
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .whyus-section-submit-btn {
+        width: 100%;
+    }
+}
