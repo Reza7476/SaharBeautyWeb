@@ -1,12 +1,10 @@
-﻿using Microsoft.VisualBasic;
-using SaharBeautyWeb.Models.Commons.Dtos;
+﻿using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Models;
 using SaharBeautyWeb.Services.Contracts;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using System.Threading.RateLimiting;
 
 namespace SaharBeautyWeb.Services.WhyUsSections;
 
@@ -22,7 +20,6 @@ public class WhyUsSectionApiService : IWhyUsSectionService
     {
         _client = client;
         _apiService = apiService;
-       // _client.BaseAddress = new Uri(baseAddress!);
     }
 
     public async Task<ApiResultDto<long>> AddWhyUsQuestions(AddWhyUsQuestionsDto dto)
@@ -44,12 +41,12 @@ public class WhyUsSectionApiService : IWhyUsSectionService
         var url = $"{_controllerUrl}/add";
         using var content = new MultipartFormDataContent();
         content.Add(new StringContent(dto.Title), "Title");
-        content.Add(new StringContent(dto.Title), "Description");
+        content.Add(new StringContent(dto.Description), "Description");
         var fileStream = dto.Image.OpenReadStream();
         var fileContent = new StreamContent(fileStream);
         fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
         content.Add(fileContent, "Image", dto.Image.FileName);
-        
+
         var result = await _apiService.AddFromFormAsync<long>(url, content);
         return result;
     }
@@ -61,7 +58,7 @@ public class WhyUsSectionApiService : IWhyUsSectionService
         return result;
     }
 
-    public async Task<ApiResultDto<object>> 
+    public async Task<ApiResultDto<object>>
         EditTitleAndDescription(EditWhyUsSectionTitleAndDescriptionDto dto)
     {
         var url = $"{_controllerUrl}/{dto.Id}";
@@ -84,11 +81,12 @@ public class WhyUsSectionApiService : IWhyUsSectionService
         {
             Data = result.Data,
             IsSuccess = result.IsSuccess,
-            Error = result.Error
+            Error = result.Error,
+            StatusCode=result.StatusCode,
         };
     }
 
-    public async Task<ApiResultDto<WhyUsSectionModel_Edit>> GetWhyUsSectionById(long id)
+    public async Task<ApiResultDto<WhyUsSectionModel_Edit?>> GetWhyUsSectionById(long id)
     {
         var url = $"{_controllerUrl}/{id}";
         var result = await _apiService.GetAsync<WhyUsSectionModel_Edit>(url);
@@ -106,15 +104,15 @@ public class WhyUsSectionApiService : IWhyUsSectionService
         var url = $"{_controllerUrl}/{dto.Id}/image";
         using var content = new MultipartFormDataContent();
         var fileStream = dto.AddMedia.OpenReadStream();
-        var fileContent=new StreamContent(fileStream);
-        fileContent.Headers.ContentType=new MediaTypeHeaderValue("application/json");
+        var fileContent = new StreamContent(fileStream);
+        fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
         content.Add(fileContent, "Media", dto.AddMedia.FileName);
 
         var result = await _apiService.UpdateAsPatchAsync<object>(url, content);
         return result;
     }
 
-    public async Task<ApiResultDto<GetWhyUsSectionForLandingDto>> 
+    public async Task<ApiResultDto<GetWhyUsSectionForLandingDto>>
         GetWhyUsSectionForLanding()
     {
         var url = $"{_controllerUrl}/all-for-landing";

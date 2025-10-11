@@ -1,70 +1,69 @@
 ﻿@using SaharBeautyWeb.Models.Entities.WhyUsSections.Models
 @model WhyUsSectionModel
-<div style="display:block" id="register-why-us-section">
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">ثبت چرا ما</h4>
+<link href="~/layout/admin/assets/css/pages/whyussections/addsheet.css" rel="stylesheet" />
+<div id="register-whyus-section" class="whyus-section-form-container">
+    <div class="whyus-section-card">
+        <div class="whyus-section-header">
+            <h4 class="whyus-section-title">ثبت بخش "چرا ما"</h4>
         </div>
-        <div class="card-body">
-            <div class="row">
 
+        <div class="whyus-section-body">
+            <div class="row g-4 align-items-start">
+                <!-- فرم ثبت -->
                 <div class="col-md-6">
-                    <form class="needs-validation"
+                    <form class="needs-validation whyus-section-form"
                           method="post"
-                          id="add-why-us-section-form"
+                          id="add-whyus-section-form"
                           asp-page="Index"
                           asp-page-handler="CreateWhyUsSection"
                           enctype="multipart/form-data">
-                          @Html.AntiForgeryToken()
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">عنوان</label>
-                                <input type="text"
-                                       id="why-us-section-title"
-                                       class="form-control"
-                                       asp-for="Title"
-                                       placeholder="لطفا یک عنوان را وارد نمایید">
-                            </div>
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label class="form-label">عنوان</label>
+                            <input type="text"
+                                   id="whyus-section-title"
+                                   class="form-control"
+                                   asp-for="Title"
+                                   placeholder="لطفاً عنوان را وارد کنید">
                         </div>
 
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">توضیحات</label>
-                                <textarea class="form-control"
-                                          asp-for="Description"
-                                          id="why-us-description">
+                        <div class="mb-3">
+                            <label class="form-label">توضیحات</label>
+                            <textarea class="form-control"
+                                      asp-for="Description"
+                                      id="whyus-section-description"
+                                      rows="5"
+                                      placeholder="توضیحات بخش را وارد کنید"></textarea>
+                        </div>
 
-                                </textarea>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label">انتخاب تصویر</label>
+                            <input type="file"
+                                   class="form-control whyus-section-image-input"
+                                   asp-for="Image"
+                                   accept="image/jpeg,image/png">
                         </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">انتخاب عکس</label>
-                                <input type="file"
-                                       id="input-why-us-section-image"
-                                       class="form-control"
-                                       asp-for=Image
-                                       placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <button class="btn btn-primary w-100" 
-                                        style="margin-right:auto" 
-                                        type="submit" 
-                                        id="createWhyUsSection">ثبت</button>
-                            </div>
-                        </div>
+
+                        <button class="btn btn-primary w-100 whyus-section-submit-btn"
+                                type="submit"
+                                id="createWhyUsSection">
+                            ثبت بخش
+                        </button>
                     </form>
                 </div>
-                <di class=" col-md-6 d-flex-justify-content-center">
-                    <img id="preview-add-image-why-us-section"
-                         src="/Layout/Admin/assets/images/bg-1.jpg"
-                         class="img-thumbnail mb2"
-                         style="object-fit:cover" />
-                </di>
+
+                <!-- پیش‌نمایش تصویر -->
+                <div class="col-md-6 d-flex justify-content-center align-items-center">
+                    <div class="whyus-section-image-preview">
+                        <img 
+                             src=""
+                             class="img-fluid rounded shadow-sm whyus-section-preview-img"
+                             alt="پیش‌نمایش تصویر"
+                             style="object-fit:cover; max-height:300px;">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-

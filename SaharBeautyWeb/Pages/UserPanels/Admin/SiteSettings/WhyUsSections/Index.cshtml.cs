@@ -4,11 +4,12 @@ using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Models;
+using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.WhyUsSections;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.WhyUsSections;
 
-public class IndexModel : PageModel
+public class IndexModel : AjaxBasePageModel
 {
     [BindProperty]
     public WhyUsSectionModel ModelData { get; set; } = new();
@@ -21,32 +22,43 @@ public class IndexModel : PageModel
 
     private readonly IWhyUsSectionService _service;
 
-    public IndexModel(IWhyUsSectionService service)
+    public IndexModel(IWhyUsSectionService service,
+        ErrorMessages errorMessage) : base(errorMessage)
     {
         _service = service;
     }
 
-    public async Task OnGet()
+    public async Task<IActionResult> OnGet()
     {
-        var whyUsSection = await _service.GetWhyUsSection();
-
-        if (whyUsSection.IsSuccess && whyUsSection.Data != null)
+        var result = await _service.GetWhyUsSection();
+        var apiResult= new ApiResultDto<WhyUsSectionModel>()
         {
-            ModelData.Title = whyUsSection.Data.Title;
-            ModelData.Description = whyUsSection.Data.Description;
-            ModelData.Id = whyUsSection.Data.Id;
-            ModelData.QuestionModels = whyUsSection.Data.Questions.Select(_ => new WhyUsQuestionModel
+            Data = result.Data != null ? new WhyUsSectionModel()
             {
-                Answer = _.Answer,
-                Question = _.Question,
-                Id = _.Id
-            }).ToList();
-            ModelData.Media = whyUsSection.Data.Image;
-        }
-        else
-        {
-            ViewData["ErrorMessage"] = whyUsSection.Error ?? " خطایی پیش آمده";
-        }
+
+                Description = result.Data.Description,
+                Id = result.Data.Id,
+                Title = result.Data.Title,
+                QuestionModels = result.Data.Questions.Select(q => new WhyUsQuestionModel()
+                {
+                    Id = q.Id,
+                    Answer = q.Answer,
+                    Question = q.Question
+
+                }).ToList(),
+                Media = result.Data.Image
+            } : null,
+            Error = result.Error,
+            IsSuccess = result.IsSuccess,
+            StatusCode = result.StatusCode
+        };
+
+        var a = HandleApiResult(apiResult);
+
+        if (a is PageResult)
+            ModelData = apiResult.Data;
+        return a;
+
     }
 
     public async Task<IActionResult> OnPostCreateWhyUsSection()
@@ -56,7 +68,7 @@ public class IndexModel : PageModel
             return new JsonResult(new
             {
                 success = false,
-                error = "فیلد های را پر کنید "
+                error = "فیلد های عنوان و توضیحات خالی هستند "
             });
         }
         var (isValid, message) = ModelData.Image.ValidateImage();
@@ -74,14 +86,8 @@ public class IndexModel : PageModel
             Image = ModelData.Image!,
             Title = ModelData.Title
         });
-        return new JsonResult(new
-        {
-            data = result.Data,
-            success = result.IsSuccess,
-            statusCode = result.StatusCode,
-            error = result.Error
-        });
 
+        return HandleApiAjxResult(result);
     }
 
     public async Task<PartialViewResult> OnGetAddWhyUsQuestionPartial(long id)
@@ -106,7 +112,7 @@ public class IndexModel : PageModel
                 error = "داده نا معتبر "
             });
         }
-        var question = await _service.AddWhyUsQuestions(new AddWhyUsQuestionsDto()
+       var result = await _service.AddWhyUsQuestions(new AddWhyUsQuestionsDto()
         {
             Answer = WhyUsQuestionModel.Answer,
             Question = WhyUsQuestionModel.Question,
@@ -114,47 +120,26 @@ public class IndexModel : PageModel
 
         });
 
-        return new JsonResult(new
-        {
-            success = question.IsSuccess,
-            data = question.Data,
-            Error = question.Error,
-            StatusCode = question.StatusCode
-        });
+        return HandleApiAjxResult(result);
     }
 
     public async Task<IActionResult> OnPostDeleteQuestion(long id)
     {
         var result = await _service.DeleteQuestion(id);
-        return new JsonResult(new
-        {
-            Success = result.IsSuccess,
-            Data = result.Data,
-            StatusCode = result.StatusCode,
-            Error = result.Error
-        });
+        return HandleApiAjxResult(result);
     }
 
     public async Task<IActionResult> OnGetEditWhyUsSectionEdit(long id)
     {
-        var section = await _service.GetWhyUsSectionById(id);
-        if (section.IsSuccess && section.Data != null)
+       
+        var result = await _service.GetWhyUsSectionById(id);
+        return HandleApiAjaxPartialResult(result, data => new WhyUsSectionModel_Edit()
         {
-            var model = new WhyUsSectionModel_Edit()
-            {
-                Description = section.Data.Description,
-                Image = section.Data.Image,
-                Title = section.Data.Title,
-                Id = id
-            };
-            return Partial("_editWhyUsSectionPartial", model);
-        }
-        return BadRequest(new
-        {
-            Error = section.Error != null ? section.Error : "مقداری یافت نشد",
-            Success = section.IsSuccess,
-            StatusCode = section.StatusCode
-        });
+            Description = data.Description,
+            Title = data.Title,
+            Image = data.Image,
+            Id = id
+        }, "_editWhyUsSectionPartial");
     }
 
     public async Task<IActionResult> OnPostApplyEditTitleAndDescription()
@@ -164,7 +149,7 @@ public class IndexModel : PageModel
             return new JsonResult(new
             {
                 Success = false,
-                Error = "داده نامعتبر",
+                Error = "عنوان و توضیحات خالی هستند",
             });
         }
         var result = await _service.EditTitleAndDescription(
@@ -174,12 +159,7 @@ public class IndexModel : PageModel
                          Title = EditModel.Title,
                          Id = EditModel.Id
                      });
-        return new JsonResult(new
-        {
-            Success = result.IsSuccess,
-            Error = result.Error,
-            StatusCode = result.StatusCode
-        });
+        return HandleApiAjxResult(result);
 
     }
     public async Task<IActionResult> OnPostApplyEditWhyUsImage()
@@ -190,21 +170,16 @@ public class IndexModel : PageModel
         {
             return new JsonResult(new
             {
-                error = message,
+                error = message??"داده نامعتبر ",
                 succes = false
             });
         }
-
-        var result = await _service.EditImage(new AddMediaDto()
+       var result = await _service.EditImage(new AddMediaDto()
         {
             Id = EditModel.Id,
             AddMedia = EditModel.AddMedia!
         });
-        return new JsonResult(new
-        {
-            succes = result.IsSuccess,
-            Error=result.Error,
-            StatusCode=result.StatusCode
-        });
+        var a= HandleApiAjxResult(result);
+        return a;
     }
 }

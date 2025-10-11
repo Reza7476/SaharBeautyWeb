@@ -1,43 +1,49 @@
 ﻿@using SaharBeautyWeb.Models.Entities.WhyUsSections.Models
 @model AddWhyUsQuestionModel
-<form class="needs-validation"
-      method="post"
-      id="add-why-us-question-form"
-      asp-page="Index"
-      asp-page-handler="AddQuestions"
-      enctype="multipart/form-data">
-    @Html.AntiForgeryToken()
-    <div class="col-md-12">
-        <div class="mb-3">
-            <label class="form-label">عنوان</label>
-            <input type="text"
-                   id="why-us-question"
-                   class="form-control"
-                   asp-for="Question"
-                   placeholder="لطفا یک سوال را وارد نمایید">
-        </div>
-    </div>
-    <input  type="hidden" asp-for="WhyUsSectionId" value="@Model.WhyUsSectionId"/>
-    <div class="col-md-12">
-        <div class="mb-3">
-            <label class="form-label">پاسخ</label>
-            <textarea class="form-control"
-                      asp-for="Answer"
-                      id="why-us-question-answer">
-            </textarea>
-        </div>
+<link href="~/layout/admin/assets/css/pages/whyussections/addquestionstyle.css" rel="stylesheet" />
+<div class="whyus-question-card card shadow-sm border-0 mt-3">
+    <div class="card-header bg-light">
+        <h5 class="card-title mb-0 text-primary fw-bold">
+            افزودن پرسش و پاسخ جدید
+        </h5>
     </div>
 
-    <div class="col-md-12">
-        <div class="mb-3">
-            <button class="btn btn-primary"
-                      type="submit"
-                      id="add-why-us-question">
-                      ثبت
+    <div class="card-body">
+        <form class="needs-validation"
+              method="post"
+              id="add-why-us-question-form"
+              asp-page="Index"
+              asp-page-handler="AddQuestions"
+              enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">پرسش</label>
+                <input type="text"
+                       id="why-us-question"
+                       class="form-control whyus-input"
+                       asp-for="Question"
+                       placeholder="لطفاً یک سؤال را وارد نمایید">
+            </div>
+
+            <input type="hidden"
+                   asp-for="WhyUsSectionId"
+                   value="@Model.WhyUsSectionId" />
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">پاسخ</label>
+                <textarea class="form-control whyus-textarea"
+                          asp-for="Answer"
+                          id="why-us-question-answer"
+                          rows="4"
+                          placeholder="پاسخ مربوط به این سؤال را بنویسید"></textarea>
+            </div>
+
+            <button class="btn btn-primary w-100 py-2 add-whyus-question-btn"
+                    type="submit"
+                    id="add-why-us-question">
+                <i class="bx bx-save me-1"></i> ثبت پرسش و پاسخ
             </button>
-        </div>
+        </form>
     </div>
-
-
-   
-</form>
+</div>

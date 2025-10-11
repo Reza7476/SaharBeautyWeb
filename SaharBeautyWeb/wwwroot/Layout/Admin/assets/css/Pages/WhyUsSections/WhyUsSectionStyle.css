@@ -1,0 +1,82 @@
+﻿/* کارت اصلی */
+.whyus-section-card {
+    background-color: var(--bs-card-bg, #fff);
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+    margin-bottom: 2rem;
+}
+
+    .whyus-section-card:hover {
+        box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    }
+
+.whyus-section-card-body {
+    padding: 1.5rem;
+}
+
+.whyus-section-title {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--bs-primary);
+    padding-bottom: .5rem;
+}
+
+/* دکمه افزودن */
+.whyus-section-add-btn {
+    font-weight: 500;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .whyus-section-add-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+/* آکاردئون */
+.whyus-section-accordion-item {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.whyus-section-accordion-btn {
+    background-color: #f8f9fa;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .whyus-section-accordion-btn:not(.collapsed) {
+        background-color: var(--bs-primary);
+        color: #fff;
+    }
+
+    .whyus-section-accordion-btn:hover {
+        background-color: var(--bs-primary);
+        color: #fff;
+    }
+
+.whyus-section-accordion-body {
+    background-color: #fff;
+    padding: 1rem 1.25rem;
+}
+
+/* حذف */
+.delete-question-btn {
+    border-radius: 0.5rem;
+    font-weight: 500;
+}
+
+/* موبایل */
+@media (max-width: 768px) {
+    .whyus-section-card-body {
+        padding: 1rem;
+    }
+
+    .whyus-section-add-btn {
+        width: 100%;
+    }
+}

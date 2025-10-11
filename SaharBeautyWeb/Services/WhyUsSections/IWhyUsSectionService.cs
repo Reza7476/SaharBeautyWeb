@@ -15,6 +15,6 @@ public interface IWhyUsSectionService : IService
         EditTitleAndDescription(EditWhyUsSectionTitleAndDescriptionDto dto);
     
     Task<ApiResultDto<GetWhyUsSectionDto>> GetWhyUsSection();
-    Task<ApiResultDto<WhyUsSectionModel_Edit>> GetWhyUsSectionById(long id);
+    Task<ApiResultDto<WhyUsSectionModel_Edit?>> GetWhyUsSectionById(long id);
     Task <ApiResultDto<GetWhyUsSectionForLandingDto>> GetWhyUsSectionForLanding();
 }
