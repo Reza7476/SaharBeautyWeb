@@ -1,85 +1,82 @@
 ﻿@using SaharBeautyWeb.Models.Entities.AboutUs.Management.Models
 @model GetAboutUsModel
-
-
-
-
-<div class="col-md-12">
-    <div class=" card-body">
-        <h1 class=" card-title"> درباره ما</h1>
+<link href="~/layout/admin/assets/css/pages/aboutus/aboutusstyle.css" rel="stylesheet" />
+<div class="aboutus-view card shadow-sm p-3 rounded-4">
+    <div class="card-header bg-light border-0 mb-3">
+        <h4 class="card-title fw-bold text-primary">درباره ما</h4>
     </div>
-    <input style="display:none" value="@Model.Latitude" id="salon-latitude" />
-    <input style="display:none" value="@Model.Longitude" id="salon-longitude" />
-    <input style="display:none" value="@Model.Id" id="about-us-id" />
-    <div class=" row">
-        <div class=" col-md-6">
-            <div class="col-md-12">
-                <label>شماره تلفن</label>
-                <p>@Model.MobileNumber</p>
-            </div>
-            <div class="col-md-12">
-                <label>تلفن محل کار</label>
-                <p>@Model.Telephone</p>
-            </div>
-            <div class="col-md-12">
-                <label>ایمیل</label>
-                <p>@Model.Email</p>
-            </div>
-            <div class="col-md-12">
-                <label>اینستاگرام</label>
-                <p>@Model.Instagram</p>
-            </div>
-            <div class="col-md-12">
-                <label>آدرس</label>
-                <p>@Model.Address</p>
-            </div>
-            <div class=" col-md-6">
-                <div class="col-md-12">
-                    <label>توضیحات</label>
-                    <p>@Model.Description</p>
+
+    <input type="hidden" id="salon-latitude" value="@Model.Latitude" />
+    <input type="hidden" id="salon-longitude" value="@Model.Longitude" />
+    <input type="hidden" id="about-us-id" value="@Model.Id" />
+
+    <div class="row">
+        <!-- اطلاعات متنی -->
+        <div class="col-md-6">
+            <div class="aboutus-info">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">شماره تلفن</label>
+                    <p class="text-muted">@Model.MobileNumber</p>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">تلفن محل کار</label>
+                    <p class="text-muted">@Model.Telephone</p>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">ایمیل</label>
+                    <p class="text-muted">@Model.Email</p>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">اینستاگرام</label>
+                    <p class="text-muted">@Model.Instagram</p>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">آدرس</label>
+                    <p class="text-muted">@Model.Address</p>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">توضیحات</label>
+                    <p class="text-muted">@Model.Description</p>
                 </div>
             </div>
         </div>
 
-        <div class=" col-md-6">
-            <div class="mb-3">
-                <label class="form-label">مکان سالن روی نقشه</label>
-                <div id="display-salon-map" style="height: 400px; width: 100%; border:1px solid #ccc;"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-12">
-        <div>
-            <button class="btn btn-primary w-100"
-                    style="margin-right:auto"
-                    type="button"
-                    id="edit-about-us-button">
-                ویرایش درباره ما
-            </button>
-        </div>
-    </div>
-    <div class="col-md-12">
-        @if (Model.LogoImage != null)
-        {
-            <di class=" d-flex-justify-content-center">
-                <img src="@Model.LogoImage.Url"
-                     class="img-thumbnail mb2 "
-                     style="object-fit:cover" />
-            </di>
-        }
-
-        <div class="col-md-12">
-            <div>
-                <button class="btn btn-primary w-100 edit-about-us-logo-button"
-                        style="margin-right:auto"
-                        type="button"
-                        data-id="@Model.Id">
-                    ویرایش طرح لوگو
-                </button>
+        <!-- نقشه -->
+        <div class="col-md-6">
+            <div class="aboutus-map-wrapper mb-3">
+                <label class="form-label fw-semibold">مکان سالن روی نقشه</label>
+                <div id="display-salon-map" class="aboutus-map"></div>
             </div>
         </div>
     </div>
 
+    <!-- دکمه ویرایش -->
+    <div class="col-md-12 mt-3">
+        <button class="btn btn-primary w-100" type="button" id="edit-about-us-button">
+            ویرایش درباره ما
+        </button>
+    </div>
 
+    <!-- لوگو -->
+    @if (Model.LogoImage != null)
+    {
+        <div class="aboutus-logo text-center mt-4">
+            <img src="@Model.LogoImage.Url"
+                 alt="@Model.LogoImage.ImageName"
+                 class="img-thumbnail aboutus-logo-img" />
+        </div>
+    }
 
+    <div class="col-md-12 mt-3">
+        <button class="btn btn-outline-primary w-100 edit-about-us-logo-button"
+                type="button"
+                data-id="@Model.Id">
+            ویرایش طرح لوگو
+        </button>
+    </div>
 </div>

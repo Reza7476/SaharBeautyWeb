@@ -1,8 +1,9 @@
 ﻿@using SaharBeautyWeb.Models.Entities.AboutUs.Management.Models
 @model EditAboutUsModel
+<link href="~/layout/admin/assets/css/pages/aboutus/editlogostyle.css" rel="stylesheet" />
 <div class="row">
     <div class="col-12">
-        <div class="card">
+        <div class="card edit-aboutus-logo-card">
             <div class="card-header">
                 <h4 class="card-title">ویرایش لوگو </h4>
             </div>
@@ -12,60 +13,45 @@
                         <div class="col-12">
                             <img class="img-thumbnail"
                                  alt="@Model.LogoDetails?.ImageName"
-                                 src="@Model.LogoDetails?.Url"
-                                 data-holder-rendered="true">
-                            <br />
+                                 src="@Model.LogoDetails?.Url">
                         </div>
                     </div>
                 </div>
                 <hr />
-                <div style="display:block" >
-                    <form class="needs-validation"
-                          method="post"
-                          id="edit-about-us-logo-form"
-                          asp-page="Index"
-                          asp-page-handler="ApplyEditedAboutUsLogo"
-                          enctype="multipart/form-data">
-                        @Html.AntiForgeryToken()
-                        <div class="row">
-                            <div class=" col-sm-6">
-                                <div class=" mb-3">
-                                    <input type="file"
-                                           asp-for="Logo"
-                                           id="edit-about-us-logo-input"
-                                           class="form-control"
-                                           placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <div class="mb-3">
-                                    <img class="img-thumbnail"
-                                         alt=""
-                                         width="200"
-                                         src=""
-                                         id="preview-edit-about-us-logo1212"
-                                         data-holder-rendered="true">
-                                </div>
-                            </div>
+                <form class="needs-validation"
+                      method="post"
+                      id="edit-about-us-logo-form"
+                      asp-page="Index"
+                      asp-page-handler="ApplyEditedAboutUsLogo"
+                      enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <input type="file"
+                                   asp-for="Logo"
+                                   id="edit-about-us-logo-input"
+                                   class="form-control input-about-us-logo"
+                                   placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
                         </div>
-                        <div>
-                            <div class="col-12">
-
-                                <button type="submit"
-                                        class="btn btn-primary  col-12"
-                                        id="apply-edited-about-us-logo"
-                                        disabled>
-                                   اعمال تغییرات
-                                </button>
-                            </div>
+                        <div class="col-sm-6">
+                            <img class="img-thumbnail preview-add-image-about-us-logo"
+                                 alt=""
+                                 width="200"
+                                 src=""
+                                 id="preview-edit-about-us-logo1212">
                         </div>
-                        <div>
-                            <input type="hidden" asp-for="@Model.Id"  value="@Model.Id" />
-                            <input type="hidden" asp-for="@Model.MobileNumber"  value="@Model.MobileNumber" />
+                        <div class="col-12">
+                            <button type="submit"
+                                    class="btn btn-primary w-100"
+                                    id="apply-edited-about-us-logo"
+                                    disabled>
+                                اعمال تغییرات
+                            </button>
                         </div>
-                    </form>
-                </div>
+                        <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
+                        <input type="hidden" asp-for="@Model.MobileNumber" value="@Model.MobileNumber" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>

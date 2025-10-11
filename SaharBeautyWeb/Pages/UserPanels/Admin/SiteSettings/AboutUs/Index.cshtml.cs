@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.AboutUs.Management.Dtos;
 using SaharBeautyWeb.Models.Entities.AboutUs.Management.Models;
+using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.AboutUs;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
 {
-    public class IndexModel : PageModel
+    public class IndexModel : AjaxBasePageModel
     {
-
         private readonly IAboutUsService _service;
 
         public GetAboutUsModel ModelData { get; set; }
@@ -21,14 +20,17 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
         [BindProperty]
         public EditAboutUsModel EditModel { get; set; }
 
-        public IndexModel(IAboutUsService service)
+        public IndexModel(IAboutUsService service,
+            ErrorMessages errorMessage) : base(errorMessage)
         {
             _service = service;
         }
 
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             var result = await _service.GeAboutUs();
+            var response = HandleApiResult(result);
+
             if (result.IsSuccess && result.Data != null)
             {
                 ModelData = new GetAboutUsModel()
@@ -45,19 +47,8 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
                     LogoImage = result.Data.LogoImage != null ?
                      result.Data.LogoImage : null
                 };
-
             }
-            else if (!result.IsSuccess)
-            {
-                ViewData["ErrorMessage"] = result.Error ?? "خطایی پیش آمده";
-            }
-            else
-            {
-                ModelData = new GetAboutUsModel()
-                {
-                    MobileNumber = string.Empty
-                };
-            }
+            return response;
         }
 
         public async Task<IActionResult> OnPostCreateAboutUs()
@@ -70,6 +61,18 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
                     success = false,
                     error = mobile.message
                 });
+            }
+            if (AddAboutUsDto.LogoImage != null)
+            {
+                var (isValid, message) = AddAboutUsDto.LogoImage.ValidateImage();
+                if (!isValid)
+                {
+                    return new JsonResult(new
+                    {
+                        success = isValid,
+                        error = message
+                    });
+                }
             }
             var result = await _service.Add(new AddAboutUsDto()
             {
@@ -84,51 +87,39 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
                 LogoImage = AddAboutUsDto.LogoImage,
             });
 
-            return new JsonResult(new
-            {
-
-                success = result.IsSuccess,
-                data = result.Data,
-                error = result.Error,
-                statusCode = result.StatusCode
-            });
+            return HandleApiAjxResult(result);
         }
 
         public async Task<IActionResult> OnGetGetAboutUsForEdit(long id)
         {
             var result = await _service.GeAboutUsById(id);
-            if (result.IsSuccess && result.Data != null)
+            return HandleApiAjaxPartialResult(result, data => new EditAboutUsModel()
             {
-                var model = new EditAboutUsModel()
-                {
-                    MobileNumber = result.Data.MobileNumber,
-                    Address = result.Data.Address,
-                    Description = result.Data.Description,
-                    Email = result.Data.Email,
-                    Id = result.Data.Id,
-                    Instagram = result.Data.Instagram,
-                    Latitude = result.Data.Latitude,
-                    Longitude = result.Data.Longitude,
-                    Telephone = result.Data.Telephone
-                };
-
-                return Partial("_EditAboutUsPartial", model);
-            }
-            else
-            {
-                return new JsonResult(new
-                {
-                    data = result.Data,
-                    success = result.IsSuccess,
-                    error = result.Error,
-                    ststusCode = result.StatusCode
-                });
-            }
+                MobileNumber = data.MobileNumber,
+                Address = data.Address,
+                Description = data.Description,
+                Email = data.Email,
+                Id = data.Id,
+                Instagram = data.Instagram,
+                Latitude = data.Latitude,
+                Longitude = data.Longitude,
+                Telephone = data.Telephone
+            }, "_EditAboutUsPartial");
         }
 
 
         public async Task<IActionResult> OnPostApplyEditAboutUs()
         {
+
+            var mobile = EditModel.MobileNumber.CheckMobile();
+            if (!mobile.isValid)
+            {
+                return new JsonResult(new
+                {
+                    success = false,
+                    error = mobile.message
+                });
+            }
             var result = await _service.Edit(new EditAboutUsDto()
             {
                 MobileNumber = EditModel.MobileNumber,
@@ -141,48 +132,30 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
                 Longitude = EditModel.Longitude,
                 Telephone = EditModel.Telephone
             });
-            return new JsonResult(new
-            {
-                success = result.IsSuccess,
-                error = result.Error,
-                statusCode = result.StatusCode,
-                Data = result.Data
-            });
+
+            return HandleApiAjxResult(result);
         }
 
         public async Task<IActionResult> OnGetGetLogoById(long id)
         {
             var result = await _service.GeAboutUsById(id);
-            if (result.IsSuccess && result.Data != null)
+            return HandleApiAjaxPartialResult(result, data => new EditAboutUsModel()
             {
-                var model = new EditAboutUsModel()
+                MobileNumber = data.MobileNumber,
+                LogoDetails = data.LogoImage != null ? new ImageDetailsDto()
                 {
-                    MobileNumber = result.Data.MobileNumber,
-                    LogoDetails = result.Data.LogoImage != null ? new ImageDetailsDto()
-                    {
-                        Extension = result.Data.LogoImage.Extension,
-                        ImageName = result.Data.LogoImage.ImageName,
-                        UniqueName = result.Data.LogoImage.UniqueName,
-                        Url = result.Data.LogoImage.Url
-                    } : null,
-                    Id = result.Data.Id
-                };
-                return Partial("_editLogo", model);
-            }
-            else
-            {
-                return new JsonResult(new
-                {
-                    success = result.IsSuccess,
-                    error = result.Error,
-                    statusCode = result.StatusCode,
-                });
-            }
+                    Extension = data.LogoImage.Extension,
+                    ImageName = data.LogoImage.ImageName,
+                    UniqueName = data.LogoImage.UniqueName,
+                    Url = data.LogoImage.Url
+                } : null,
+                Id = data.Id
+            },"_editLogo");
+            
         }
 
         public async Task<IActionResult> OnPostApplyEditedAboutUsLogo()
         {
-
             var (isValid, message) = EditModel.Logo.ValidateImage();
 
             if (EditModel?.Id == null || !isValid)
@@ -193,20 +166,12 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
                     success = false
                 });
             }
-
             var result = await _service.EditAboutUsLogo(new EditMediaDto()
             {
                 Media = EditModel.Logo,
                 Id = EditModel.Id
             });
-            return new JsonResult(new
-            {
-                success = result.IsSuccess,
-                error = result.Error,
-                statusCode = result.StatusCode,
-                data = result.Data
-            });
-
+            return HandleApiAjxResult(result);
         }
     }
 }

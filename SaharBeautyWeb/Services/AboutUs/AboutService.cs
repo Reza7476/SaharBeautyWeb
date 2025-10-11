@@ -61,7 +61,8 @@ public class AboutService : IAboutUsService
         {
             var fileStream = dto.LogoImage.OpenReadStream();
             var fileContent = new StreamContent(fileStream);
-            content.Add(fileContent, "LogoImage");
+           fileContent.Headers.ContentType=new MediaTypeHeaderValue(dto.LogoImage.ContentType);
+            content.Add(fileContent, "LogoImage",dto.LogoImage.FileName);
         }
 
         var result = await _apiService.AddFromFormAsync<long>(url, content);

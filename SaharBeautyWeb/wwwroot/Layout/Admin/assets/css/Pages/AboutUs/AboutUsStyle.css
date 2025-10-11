@@ -1,0 +1,35 @@
+﻿.aboutus-view {
+    background: #fff;
+    border-radius: 1rem;
+}
+
+.aboutus-info label {
+    color: #444;
+}
+
+.aboutus-info p {
+    background-color: #f9f9f9;
+    border-radius: 0.5rem;
+    padding: 8px 12px;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.aboutus-map-wrapper {
+    width: 100%;
+}
+
+.aboutus-map {
+    height: 400px;
+    width: 100%;
+    border: 2px solid #dcdcdc;
+    border-radius: 0.75rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.aboutus-logo-img {
+    max-width: 250px;
+    border-radius: 0.75rem;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
