@@ -1,0 +1,43 @@
+﻿/* edit-aboutus-logo.css */
+.edit-aboutus-logo-card {
+    border: 1px solid #dcdcdc;
+    border-radius: 1rem;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    transition: box-shadow 0.3s ease;
+    background-color: #fff;
+}
+
+    .edit-aboutus-logo-card:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .edit-aboutus-logo-card .card-header {
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        border-bottom: 1px solid #eee;
+        border-radius: 1rem 1rem 0 0;
+    }
+
+    .edit-aboutus-logo-card .form-control {
+        border-radius: 0.6rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .edit-aboutus-logo-card .form-control:focus {
+            border-color: #17a2b8;
+            box-shadow: 0 0 0 0.2rem rgba(23,162,184,0.25);
+        }
+
+    .edit-aboutus-logo-card .btn {
+        border-radius: 0.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .edit-aboutus-logo-card .btn:hover {
+            transform: translateY(-2px);
+        }
+
+    .edit-aboutus-logo-card img.img-thumbnail {
+        object-fit: cover;
+        max-height: 200px;
+    }

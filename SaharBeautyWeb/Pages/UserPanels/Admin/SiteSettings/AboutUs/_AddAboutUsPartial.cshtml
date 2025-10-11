@@ -1,127 +1,120 @@
 ﻿@using SaharBeautyWeb.Models.Entities.AboutUs.Management.Models
 @model AddAboutUsModel
 
-<div style="display:block" id="register-why-us-section">
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">ثبت درباره ما</h4>
-        </div>
-        <div class="card-body">
-            <div class="row">
+<div class="aboutus-card card shadow-sm border-0 mt-3" id="register-why-us-section">
+    <div class="card-header bg-light">
+        <h4 class="card-title text-primary fw-bold mb-0">
+            ثبت درباره ما
+        </h4>
+    </div>
 
+    <div class="card-body">
+        <form class="aboutus-form needs-validation"
+              method="post"
+              id="add-about-us-section-form"
+              asp-page="Index"
+              asp-page-handler="CreateAboutUs"
+              enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            <div class="row g-3">
+                <!-- شماره موبایل -->
                 <div class="col-md-6">
-                    <form class="needs-validation"
-                          method="post"
-                          id="add-about-us-section-form"
-                          asp-page="Index"
-                          asp-page-handler="CreateAboutUs"
-                          enctype="multipart/form-data">
-                        @Html.AntiForgeryToken()
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">شماره موبایل</label>
-                                <input type="text"
-                                       id="about-us-mobile"
-                                       class="form-control"
-                                       asp-for="MobileNumber"
-                                       placeholder="لطفا شماره موبایل را وارد نمایید">
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">تلفن محل کار</label>
-                                <input type="text"
-                                       id="about-us-telephone"
-                                       class="form-control"
-                                       asp-for="Telephone"
-                                       placeholder="لطفا شماره تلفن محل را وارد نمایید">
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">آدرس</label>
-                                <input type="text"
-                                       asp-for="Address"
-                                       id="about-us-address"
-                                       class="form-control"
-                                       placeholder="لطفا آدرس محل کار را وارد نمایید">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">ایمیل</label>
-                                <input type="text"
-                                       id="about-us-email"
-                                       asp-for="Email"
-                                       class="form-control"
-                                       placeholder="لطفا ایمیل خود  را وارد نمایید">
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">اینستاگرام</label>
-                                <input type="text"
-                                       asp-for="Instagram"
-                                       id="about-us-instagram"
-                                       class="form-control"
-                                       placeholder="لطفا آیدی اینستاگرام خود را وارد نمایید">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">مکان سالن روی نقشه</label>
-                            <div id="map" style="height: 400px;"></div>
-                            <input type="hidden" asp-for="Latitude" id="latitude" />
-                            <input type="hidden" asp-for="Longitude" id="longitude" />
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">توضیحات</label>
-                                <textarea class="form-control"
-                                          asp-for="Description"
-                                          id="about-us-description">
-
-                                </textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label"> انتخاب عکس لوگو</label>
-                                <input type="file"
-                                       id="input-about-us-logo"
-                                       class="form-control"
-                                       asp-for="LogoImage"
-                                       placeholder="یک عکس بافرمت مناسب انتخاب کنید(jpeg/jpg/png)">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <button class="btn btn-primary w-100"
-                                        style="margin-right:auto"
-                                        type="submit"
-                                        id="send-about-us-button"
-                                        disabled >
-                                    ثبت
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <label class="form-label fw-semibold">شماره موبایل</label>
+                    <input type="text"
+                           id="about-us-mobile"
+                           class="form-control aboutus-input-mobile"
+                           asp-for="MobileNumber"
+                           placeholder="لطفاً شماره موبایل را وارد نمایید">
                 </div>
 
+                <!-- تلفن محل کار -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">تلفن محل کار</label>
+                    <input type="text"
+                           id="about-us-telephone"
+                           class="form-control aboutus-input-phone"
+                           asp-for="Telephone"
+                           placeholder="لطفاً شماره تلفن محل کار را وارد نمایید">
+                </div>
 
-                <di class=" col-md-6 d-flex-justify-content-center">
-                    <img id="preview-add-image-about-us-logo"
+                <!-- آدرس -->
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">آدرس</label>
+                    <input type="text"
+                           asp-for="Address"
+                           id="about-us-address"
+                           class="form-control aboutus-input-address"
+                           placeholder="لطفاً آدرس محل کار را وارد نمایید">
+                </div>
+
+                <!-- ایمیل -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">ایمیل</label>
+                    <input type="email"
+                           id="about-us-email"
+                           asp-for="Email"
+                           class="form-control aboutus-input-email"
+                           placeholder="example@gmail.com">
+                </div>
+
+                <!-- اینستاگرام -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">اینستاگرام</label>
+                    <input type="text"
+                           asp-for="Instagram"
+                           id="about-us-instagram"
+                           class="form-control aboutus-input-instagram"
+                           placeholder="مثلاً saharbeauty_salon">
+                </div>
+
+                <!-- نقشه -->
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">مکان سالن روی نقشه</label>
+                    <div id="map" class="aboutus-map rounded border" style="height: 400px;"></div>
+                    <input type="hidden" asp-for="Latitude" id="latitude" class="aboutus-latitude" />
+                    <input type="hidden" asp-for="Longitude" id="longitude" class="aboutus-longitude" />
+                </div>
+
+                <!-- توضیحات -->
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">توضیحات</label>
+                    <textarea class="form-control aboutus-description"
+                              asp-for="Description"
+                              id="about-us-description"
+                              rows="4"
+                              placeholder="توضیحات مربوط به سالن را بنویسید"></textarea>
+                </div>
+
+                <!-- انتخاب لوگو -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">انتخاب عکس لوگو</label>
+                    <input type="file"
+                           class="form-control aboutus-logo-input input-about-us-logo"
+                           asp-for="LogoImage"
+                           accept=".jpg,.jpeg,.png"
+                           placeholder="یک عکس با فرمت مناسب انتخاب کنید">
+                </div>
+
+                <!-- پیش‌نمایش لوگو -->
+                <div class="col-md-6 text-center d-flex justify-content-center align-items-center">
+                    <img 
                          src="/Layout/Admin/assets/images/bg-1.jpg"
-                         class="img-thumbnail mb2 img-fixed-size"
+                         class="aboutus-logo-preview img-thumbnail mb2 img-fixed-size preview-add-image-about-us-logo"
+                         alt="لوگو سالن"
                          style="object-fit:cover" />
-                </di>
+                </div>
 
-
+                <!-- دکمه ثبت -->
+                <div class="col-md-12">
+                    <button class="aboutus-submit-btn btn btn-primary w-100 py-2 fw-semibold"
+                            type="submit"
+                            id="send-about-us-button"
+                            disabled>
+                        <i class="bx bx-save me-1"></i> ثبت اطلاعات
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
-

@@ -1,108 +1,55 @@
 ﻿@using SaharBeautyWeb.Models.Entities.AboutUs.Management.Models
 @model EditAboutUsModel
+<link href="~/layout/admin/assets/css/pages/aboutus/editstyle.css" rel="stylesheet" />
 
-<div>
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">ویرایش درباره ما</h4>
-        </div>
-        <div class="card-body">
-            <div class="row">
-
+<div class="card edit-aboutus-card">
+    <div class="card-header">
+        <h4 class="card-title">ویرایش درباره ما</h4>
+    </div>
+    <div class="card-body">
+        <form class="needs-validation"
+              id="edit-about-us-section-form"
+              asp-page-handler="EditAboutUs"
+              method="post"
+              enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <div class="row g-3">
                 <div class="col-md-6">
-                    <form class="needs-validation"
-                          method="post"
-                          id="edit-about-us-section-form"
-                          asp-page="Index"
-                          asp-page-handler="EditAboutUs"
-                          enctype="multipart/form-data">
-                        @Html.AntiForgeryToken()
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">شماره موبایل</label>
-                                <input type="text"
-                                       id="edit-about-us-mobile"
-                                       class="form-control"
-                                       asp-for="MobileNumber"
-                                       placeholder="لطفا شماره موبایل را وارد نمایید">
-                            </div>
-                        </div>
-                        <input type="hidden" asp-for="Id" />
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">تلفن محل کار</label>
-                                <input type="text"
-                                       id="edit-about-us-telephone"
-                                       class="form-control"
-                                       asp-for="Telephone"
-                                       placeholder="لطفا شماره تلفن محل را وارد نمایید">
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">آدرس</label>
-                                <input type="text"
-                                       asp-for="Address"
-                                       id="edit-about-us-address"
-                                       class="form-control"
-                                       placeholder="لطفا آدرس محل کار را وارد نمایید">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">ایمیل</label>
-                                <input type="text"
-                                       id="edit-about-us-email"
-                                       asp-for="Email"
-                                       class="form-control"
-                                       placeholder="لطفا ایمیل خود  را وارد نمایید">
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">اینستاگرام</label>
-                                <input type="text"
-                                       asp-for="Instagram"
-                                       id="edit-about-us-instagram"
-                                       class="form-control"
-                                       placeholder="لطفا آیدی اینستاگرام خود را وارد نمایید">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">مکان سالن روی نقشه</label>
-                            <div id="edit-display-salon-map" style="height: 400px;"></div>
-                            <input type="hidden" asp-for="Latitude" id="edit-latitude" />
-                            <input type="hidden" asp-for="Longitude" id="edit-longitude" />
-                            <button type="button" id="remove-location-btn" class="btn btn-outline-danger btn-sm mt-2">
-                                حذف مکان
-                            </button>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">توضیحات</label>
-                                <textarea class="form-control"
-                                          asp-for="Description"
-                                          id="edit-about-us-description">
-
-                                </textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <button class="btn btn-primary w-100"
-                                        style="margin-right:auto"
-                                        type="submit"
-                                        id="apply-edit-about-us-button">
-                                    ثبت
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <label class="form-label">شماره موبایل</label>
+                    <input class="form-control" asp-for="MobileNumber" id="edit-about-us-mobile" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">تلفن محل کار</label>
+                    <input class="form-control" asp-for="Telephone" id="edit-about-us-telephone" />
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">آدرس</label>
+                    <input class="form-control" asp-for="Address" id="edit-about-us-address" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">ایمیل</label>
+                    <input class="form-control" asp-for="Email" id="edit-about-us-email" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">اینستاگرام</label>
+                    <input class="form-control" asp-for="Instagram" id="edit-about-us-instagram" />
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">مکان سالن روی نقشه</label>
+                    <div id="edit-display-salon-map" class="edit-aboutus-map"></div>
+                    <input type="hidden" asp-for="Latitude" id="edit-latitude" />
+                    <input type="hidden" asp-for="Longitude" id="edit-longitude" />
+                    <button type="button" id="remove-location-btn" class="btn btn-outline-danger btn-sm mt-2 remove-location-btn">حذف مکان</button>
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">توضیحات</label>
+                    <textarea class="form-control" asp-for="Description" id="edit-about-us-description"></textarea>
+                </div>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary w-100 aboutus-btn mt-3" id="apply-edit-about-us-button">ثبت تغییرات</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>

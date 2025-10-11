@@ -3,9 +3,9 @@
 @{
     Layout = "_UserPanelLayout";
 }
-@if (string.IsNullOrEmpty(Model.ModelData.MobileNumber))
+@if (Model.ModelData == null)
 {
-    <partial name="_AddAboutUsPartial" model="Model.AddAboutUsDto" />
+    <partial name="_AddAboutUsPartial" model="Model?.AddAboutUsDto" />
 }
 else
 {

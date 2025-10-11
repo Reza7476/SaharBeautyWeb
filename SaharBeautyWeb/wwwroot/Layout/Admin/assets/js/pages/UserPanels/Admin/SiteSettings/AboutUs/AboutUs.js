@@ -10,8 +10,10 @@
         sendButton.prop("disabled", false);
     })
 
-    $(document).on("input", "#input-about-us-logo", function () {
-        setUpImagePreview("#input-about-us-logo", "#preview-add-image-about-us-logo");
+    $(document).on("change", ".input-about-us-logo", function () {
+        var preview = $(".preview-add-image-about-us-logo")[0];
+        var inputLogo = $(".input-about-us-logo")[0];
+        setUpImagePreview(inputLogo, preview);
     })
 
     $(document).on("click", "#send-about-us-button", function (e) {
@@ -27,7 +29,6 @@
             success: function (res) {
                 if (res.success) {
                     location.reload();
-
                 } else {
                     handleApiError(res.error);
                     return;
@@ -52,36 +53,33 @@
             url: getAboutUsForEdit,
             type: 'GET',
             data: { id: id },
-            success: function (html) {
-                if (html) {
-                    var modalEl = document.getElementById('staticBackdrop');
-
-                    // قرار دادن html پارشیال در body مودال
-                    $("#staticBackdrop .modal-body").html(html);
-
-                    // نمایش مودال
-                    var modal = new bootstrap.Modal(modalEl);
-                    modal.show();
-
-                    // وقتی مودال کامل باز شد ⇒ نقشه را مقداردهی کن
-                    modalEl.addEventListener('shown.bs.modal', function () {
-                        var editLatitude = $("#edit-latitude").val();
-                        var editLongitude = $("#edit-longitude").val();
-                        ShowMapForEdit(editLatitude, editLongitude);
-                    }, { once: true });
-
-                    // وقتی مودال بسته شد ⇒ نقشه قبلی را پاک کن تا بار بعد تداخلی نباشه
-                    modalEl.addEventListener('hidden.bs.modal', function () {
-                        if (window._editMap) {
-                            try { window._editMap.remove(); } catch (e) { /* ignore */ }
-                            window._editMap = null;
-                        }
-                    }, { once: true });
-
-                } else {
-                    handleApiError("پاسخی دریافت نشد");
-                    return;
+            success: function (res ,status, xhr) {
+                const contentType = xhr.getResponseHeader("content-type") || "";
+                if (contentType.includes("application/json")) {
+                    if (!res.success) {
+                        handleApiError(res.error);
+                        return;
+                    }
                 }
+                var modalEl = document.getElementById('staticBackdrop');
+                // قرار دادن html پارشیال در body مودال
+                $("#staticBackdrop .modal-body").html(res);
+                // نمایش مودال
+                var modal = new bootstrap.Modal(modalEl);
+                modal.show();
+                // وقتی مودال کامل باز شد ⇒ نقشه را مقداردهی کن
+                modalEl.addEventListener('shown.bs.modal', function () {
+                    var editLatitude = $("#edit-latitude").val();
+                    var editLongitude = $("#edit-longitude").val();
+                    ShowMapForEdit(editLatitude, editLongitude);
+                }, { once: true });
+                // وقتی مودال بسته شد ⇒ نقشه قبلی را پاک کن تا بار بعد تداخلی نباشه
+                modalEl.addEventListener('hidden.bs.modal', function () {
+                    if (window._editMap) {
+                        try { window._editMap.remove(); } catch (e) { /* ignore */ }
+                        window._editMap = null;
+                    }
+                }, { once: true });
             },
             error: function (xhr) {
                 let msg = (xhr.responseJSON?.error) || xhr.responseText || "خطایی پیش آمده";
@@ -112,16 +110,20 @@
                     location.reload();
                 } else {
                     handleApiError(res.error);
-                    location.reload();
+                    btn.prop("disabled", false);
                 }
+            }, error: function () {
+                handleApiError("در بارگذاری فرم ویرایش خطایی پیش آمده");
+                btn.prop("disabled", false);
             }
-
         });
     })
 
     $(document).on("click", ".edit-about-us-logo-button", function (e) {
         e.preventDefault();
         var id = $(this).data("id");
+        var btnSend = $(this);
+        btnSend.prop("disabled", true);
         $.ajax({
             url: getLogoByAboutUsId,
             data: { id: id },
@@ -132,6 +134,7 @@
                 if (contentType.indexOf("application/json") >= 0) {
                     if (!res.success) {
                         handleApiError(res.error);
+                        btnSend.prop("disabled", false);
                         return;
                     }
                 }
@@ -145,26 +148,15 @@
         });
 
     })
-
-    $(document).on("change", "#edit-about-us-logo-input", function (e) {
-        e.preventDefault();
-        var input = this;
-        var btnEdit = $("#apply-edited-about-us-logo");
-        var preview = $("#preview-edit-about-us-logo1212");
-
-        if (!validateImageFile(input)) return;
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                $(preview).attr("src", e.target.result);
-            };
-            reader.readAsDataURL(input.files[0]);
-            btnEdit.prop("disabled", false);
-        }
-    })
+    $(document).on("change", "#edit-about-us-logo-input", function () {
+        $("#apply-edited-about-us-logo").prop("disabled", false);
+    });
+   
 
     $(document).on("click", "#apply-edited-about-us-logo", function (e) {
         e.preventDefault();
+        var btnSend = $(this);
+        btnSend.prop("disabled", true);
         var form = $("#edit-about-us-logo-form")[0];
         var formData = new FormData(form);
         $.ajax({
@@ -174,17 +166,16 @@
             contentType: false,
             processData: false,
             success: function (res) {
-                console.log(res);
                 if (res.success) {
                     location.reload();
                 } else {
                     handleApiError(res.error);
-                    location.reload();
+                    btnSend.prop("disabled", false);
                 }
             },
             Error: function () {
-
-                alert('errorororo');
+                handleApiError("در بارگذاری فرم ویرایش خطایی پیش امده");
+                btnSend.prop("disabled", false);
             }
         });
     })
