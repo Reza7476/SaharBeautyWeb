@@ -1,0 +1,131 @@
+﻿/* footer-modern.css */
+
+.footer-area {
+    background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
+    color: #333;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-item {
+    margin-bottom: 40px;
+    transition: transform 0.3s ease;
+}
+
+    .footer-item:hover {
+        transform: translateY(-5px);
+    }
+
+    .footer-contact h3,
+    .footer-item h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #222;
+    }
+
+.footer-contact .info {
+    list-style: none;
+    padding: 0;
+}
+
+    .footer-contact .info li {
+        margin-bottom: 8px;
+        line-height: 1.8;
+    }
+
+        .footer-contact .info li span {
+            font-weight: 600;
+            color: #444;
+        }
+
+    .footer-contact .info a {
+        color: #666;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        .footer-contact .info a:hover {
+            color: #17a2b8;
+        }
+
+.footer-contact .social {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+    .footer-contact .social a {
+        background: #17a2b8;
+        color: #fff;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+        .footer-contact .social a:hover {
+            background: #138496;
+            transform: translateY(-3px);
+        }
+
+.footer-map-wrapper {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+    .footer-map-wrapper iframe {
+        width: 100%;
+        height: 250px;
+        border: none;
+    }
+
+.footer-img img {
+    max-width: 150px;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.footer-hours {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 15px;
+    color: #555;
+}
+
+    .footer-hours ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer-hours .right span {
+        color: #17a2b8;
+        font-weight: 600;
+    }
+
+/* 📱 ریسپانسیو برای موبایل */
+@media (max-width: 768px) {
+    .footer-area {
+        text-align: center;
+    }
+
+    .footer-hours {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-contact .social {
+        justify-content: center;
+    }
+
+    .footer-img img {
+        margin-bottom: 20px;
+    }
+}
