@@ -1,0 +1,54 @@
+﻿@page
+@model SaharBeautyWeb.Pages.Auth.LoginModel
+@{
+    Layout = null;
+}
+<link href="~/layout/admin/assets/css/pages/auth/authstyle.css" rel="stylesheet" />
+
+<div class="login-page">
+    <div class="login-card">
+        <div class="login-header">
+
+            @if (Model.Logo != null)
+            {
+
+                <img src="@Model.Logo.URL" alt="Beauty Salon" class="logo" />
+            }
+            else
+            {
+                <img src="~/layout/assets/images/logo-two.png"
+                     alt="Beauty Salon" class="logo" />
+            }
+            <h1>ورود به سالن زیبایی</h1>
+            <p>زیبایی شما، تخصص ماست ✨</p>
+        </div>
+
+        <form method="post" class="login-form" asp-page-handler="Login" >
+            <div class="form-group">
+                <label asp-for="DataModel.UserName">نام کاربری</label>
+                <input asp-for="DataModel.UserName" type="Text" placeholder="" required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DataModel.Password">رمز عبور</label>
+                <input asp-for="DataModel.Password" type="password" placeholder="••••••••" required />
+            </div>
+
+            @*  @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+            <div class="error-message">@Model.ErrorMessage</div>
+            } *@
+
+            <button type="submit" class="login-button">ورود</button>
+
+            <p class="register-link">
+                حساب کاربری ندارید؟
+                <a href="/auth/register">ثبت‌نام کنید</a>
+            </p>
+        </form>
+    </div>
+
+    <footer>
+        © 2025 Beauty Salon — Designed with 💖
+    </footer>
+</div>
