@@ -1,4 +1,6 @@
-﻿<div class="vertical-menu">
+﻿@model UserRoleModel
+
+<div class="vertical-menu">
 
     <div data-simplebar class="h-100">
 
@@ -14,7 +16,8 @@
                         <span data-key="t-dashboard">داشبورد</span>
                     </a>
                 </li>
-
+                @if(Model.Roles.Any() && Model.Roles.Contains("Admin"))
+                {
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="grid"></i>
@@ -71,6 +74,7 @@
                         </li>
                     </ul>
                 </li>
+                }
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">

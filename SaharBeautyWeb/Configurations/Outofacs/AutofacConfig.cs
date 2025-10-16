@@ -6,7 +6,7 @@ namespace SaharBeautyWeb.Configurations.Outofacs;
 
 public static class AutofacConfig
 {
-    public static ConfigureHostBuilder AddAutofac(this ConfigureHostBuilder builder,string baseAddress)
+    public static ConfigureHostBuilder AddAutofac(this ConfigureHostBuilder builder, string baseAddress)
     {
         builder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
         builder.ConfigureContainer<ContainerBuilder>(option =>
@@ -25,9 +25,7 @@ public class AutofacModule : Module
     {
         _baseAddress = baseAddress;
     }
-
-
-
+    
     protected override void Load(ContainerBuilder _)
     {
 
@@ -55,6 +53,10 @@ public class AutofacModule : Module
 
             _.RegisterType<ErrorMessages>()
                 .AsSelf()
+                .SingleInstance();
+
+            _.RegisterType<HttpContextAccessor>()
+                .As<IHttpContextAccessor>()
                 .SingleInstance();
         }
 

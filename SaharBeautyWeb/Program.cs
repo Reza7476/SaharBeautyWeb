@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Configurations.Outofacs;
+using SaharBeautyWeb.ProjectMiddleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,48 +15,18 @@ builder.Services.AddRazorPages(option =>
 builder.Services.AddHttpClient();
 
 builder.Host.AddAutofac(baseAddress!);
+builder.Services.AddSession();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    // در محیط توسعه، جزئیات کامل خطا نمایش داده شود
-    app.UseDeveloperExceptionPage();
-}
-else
-{
-    // در محیط تولید / هاست، خطاها به صفحه Error هدایت شوند (امن)
-    app.UseExceptionHandler(error =>
-    {
-        error.Run(async context =>
-        {
-            var feature = context.Features.Get<IExceptionHandlerPathFeature>();
-            var exception = feature?.Error;
-            var path = context.Request.Path;
-
-            if (path.StartsWithSegments("/Landing"))
-            {
-                context.Response.Redirect($"/Landing/Error?message={exception?.Message}");
-            }
-            else if (path.StartsWithSegments("/UserPanels"))
-            {
-                context.Response.Redirect($"/UserPanels/Error?message={exception?.Message}");
-            }
-            else
-            {
-                context.Response.Redirect($"/Error?message={exception?.Message}");
-            }
-        });
-    });
-
-    // HSTS فقط برای محیط Production
-    app.UseHsts();
-}
+app.UseCustomExceptionHandling();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
 app.UseRouting();
 app.UseAuthorization();
+
+app.UseMiddleware<JwtTokenInitializerMiddleware>();
 app.MapRazorPages();
 app.Run();
