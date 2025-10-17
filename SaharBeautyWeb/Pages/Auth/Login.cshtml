@@ -23,7 +23,9 @@
             <p>زیبایی شما، تخصص ماست ✨</p>
         </div>
 
-        <form method="post" class="login-form" asp-page-handler="Login" >
+        <form method="post" class="login-form" asp-page-handler="Login">
+            <input type="hidden" asp-for="ReturnUrl" />
+
             <div class="form-group">
                 <label asp-for="DataModel.UserName">نام کاربری</label>
                 <input asp-for="DataModel.UserName" type="Text" placeholder="" required />
@@ -34,10 +36,10 @@
                 <input asp-for="DataModel.Password" type="password" placeholder="••••••••" required />
             </div>
 
-            @*  @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
             {
-            <div class="error-message">@Model.ErrorMessage</div>
-            } *@
+                <div class="error-message">@Model.ErrorMessage</div>
+            }
 
             <button type="submit" class="login-button">ورود</button>
 

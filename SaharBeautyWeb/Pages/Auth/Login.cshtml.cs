@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Models.Entities.Auth;
 using SaharBeautyWeb.Models.Entities.Auth.Dtos;
@@ -22,6 +21,12 @@ public class LoginModel : PageModel
     public LogoForLoginModel? Logo { get; set; }
     [BindProperty]
     public LoginDataModel DataModel { get; set; } = default!;
+    public string? ErrorMessage { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public string? ReturnUrl { get; set; }
+
+
     public async Task OnGet()
     {
         var aboutUs = await _aboutUsService.GeAboutUs();
@@ -54,14 +59,20 @@ public class LoginModel : PageModel
             Password = DataModel.Password!,
             UserName = DataModel.UserName!
         });
-        if(result.IsSuccess && result.Data != null)
+        if (result.IsSuccess && result.Data != null)
         {
-            HttpContext.Session.SetString("JwtToken", result.Data.JwtToken!=null?result.Data.JwtToken:" ");
-            HttpContext.Session.SetString("RefreshToken", result.Data.RefreshToken!=null?result.Data.RefreshToken:" ");
+            HttpContext.Session.SetString("JwtToken", result.Data.JwtToken != null ? result.Data.JwtToken : " ");
+            HttpContext.Session.SetString("RefreshToken", result.Data.RefreshToken != null ? result.Data.RefreshToken : " ");
+            if (!string.IsNullOrEmpty(ReturnUrl))
+            {
+                return Redirect(ReturnUrl);
+            }
+
             return RedirectToPage("/UserPanels/Index");
         }
-
+        ErrorMessage = result.Error ?? "ورود ناموفق دوباره تلاش کنید ";
 
         return Page();
+
     }
 }

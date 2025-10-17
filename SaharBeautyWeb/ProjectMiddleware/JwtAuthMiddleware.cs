@@ -1,63 +1,160 @@
-﻿using SaharBeautyWeb.Services.Auth;
-using System.IdentityModel.Tokens.Jwt;
+﻿//using SaharBeautyWeb.Services.Auth;
+//using System.IdentityModel.Tokens.Jwt;
 
-namespace SaharBeautyWeb.ProjectMiddleware;
+//namespace SaharBeautyWeb.ProjectMiddleware;
+
+//public class JwtAuthMiddleware
+//{
+//    private readonly RequestDelegate _next;
+//    private readonly IAutheService _authService;
+
+//    public JwtAuthMiddleware(RequestDelegate next,
+//        IAutheService authService)
+//    {
+//        _next = next;
+//        _authService = authService;
+//    }
+
+//    public async Task InvokeAsync(HttpContext context)
+//    {
+//        var path = context.Request.Path.Value?.ToLower();
+//        if (path != null && path.StartsWith("/userpanels"))
+//        {
+//            var token = context.Session.GetString("JwtToken");
+//            var refreshToken = context.Session.GetString("RefreshToken");
+//            if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(refreshToken))
+//            {
+//                context.Response.Redirect("/Auth/Login?returnUrl=" + path);
+//                return;
+//            }
+
+//            var handler = new JwtSecurityTokenHandler();
+//            var jwt = handler.ReadJwtToken(token);
+//            var exp = jwt.ValidTo;
+
+//            if (exp <= DateTime.UtcNow.AddMinutes(1))
+//            {
+//                if (string.IsNullOrWhiteSpace(refreshToken))
+//                {
+//                    context.Response.Redirect("/Auth/Login?returnUrl=" + path);
+//                    return;
+//                }
+//                var newToken = await _authService.RefreshToken(refreshToken, token);
+
+//                if (newToken.IsSuccess && newToken.Data != null)
+//                {
+//                    context.Session.Clear();
+//                    context.Session.SetString("JwtToken", newToken.Data.JwtToken!);
+//                    context.Session.SetString("RefreshToken", newToken.Data.RefreshToken!);
+//                    await _next(context);
+//                    return;
+//                }
+//                else
+//                {
+//                    context.Response.Redirect("/Auth/Login?expired=true");
+//                    return;
+//                }
+//            }
+//            await _next(context);
+//            return;
+//        }
+//        await _next(context);
+//    }
+//}
+//using SaharBeautyWeb.Services.Auth;
+//using System.IdentityModel.Tokens.Jwt;
+
+//namespace SaharBeautyWeb.ProjectMiddleware;
+
+using SaharBeautyWeb.Services.Auth;
+using System.IdentityModel.Tokens.Jwt;
 
 public class JwtAuthMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly IAutheService _authService;
 
-    public JwtAuthMiddleware(RequestDelegate next,
-        IAutheService authService)
+    public JwtAuthMiddleware(RequestDelegate next, IAutheService authService)
     {
         _next = next;
         _authService = authService;
     }
 
+    private static bool IsLocalPath(string? path)
+    {
+        if (string.IsNullOrEmpty(path)) return false;
+        return path.StartsWith("/") && !path.StartsWith("//") && !path.StartsWith("/\\") && !path.Contains("://");
+    }
+
     public async Task InvokeAsync(HttpContext context)
     {
-        var path = context.Request.Path.Value?.ToLower();
-        if (path != null && path.StartsWith("/userpanels"))
+        var path = context.Request.Path.Value ?? string.Empty;
+
+        if (path.StartsWith("/userpanels", StringComparison.OrdinalIgnoreCase))
         {
             var token = context.Session.GetString("JwtToken");
             var refreshToken = context.Session.GetString("RefreshToken");
+
+            var returnUrl = (context.Request.Path + context.Request.QueryString).ToString();
+            if (!IsLocalPath(returnUrl))
+            {
+                returnUrl = "/";
+            }
+            var encodedReturnUrl = Uri.EscapeDataString(returnUrl);
+
             if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(refreshToken))
             {
-                context.Response.Redirect("/Auth/Login?returnUrl=" + path);
+                context.Response.Redirect($"/Auth/Login?returnUrl={encodedReturnUrl}");
                 return;
             }
 
-            var handler = new JwtSecurityTokenHandler();
-            var jwt = handler.ReadJwtToken(token);
-            var exp = jwt.ValidTo;
-
-            if (exp <= DateTime.UtcNow.AddMinutes(1))
+            JwtSecurityToken? jwt = null;
+            try
             {
-                if (string.IsNullOrWhiteSpace(refreshToken))
-                {
-                    context.Response.Redirect("/Auth/Login?returnUrl=" + path);
-                    return;
-                }
-                var newToken = await _authService.RefreshToken(refreshToken, token);
+                var handler = new JwtSecurityTokenHandler();
+                jwt = handler.ReadJwtToken(token);
+            }
+            catch
+            {
+                context.Response.Redirect($"/Auth/Login?returnUrl={encodedReturnUrl}&errorMessage={Uri.EscapeDataString("توکن نامعتبر است")}");
+                return;
+            }
 
-                if (newToken.IsSuccess && newToken.Data != null)
+            var exp = jwt!.ValidTo; // UTC
+
+            var timeRemaining = exp - DateTime.UtcNow;
+            if (timeRemaining <= TimeSpan.FromMinutes(1))
+            {
+                try
                 {
-                    context.Session.Clear();
-                    context.Session.SetString("JwtToken", newToken.Data.JwtToken!);
-                    context.Session.SetString("RefreshToken", newToken.Data.RefreshToken!);
-                    await _next(context);
-                    return;
+                    var refreshResult = await _authService.RefreshToken(refreshToken, token);
+
+                    if (refreshResult.IsSuccess && refreshResult.Data != null)
+                    {
+                        context.Session.SetString("JwtToken", refreshResult.Data.JwtToken ?? string.Empty);
+                        context.Session.SetString("RefreshToken", refreshResult.Data.RefreshToken ?? string.Empty);
+
+                        await _next(context);
+                        return;
+                    }
+                    else
+                    {
+                        var msg = refreshResult.Error ?? "تمدید توکن ممکن نبود";
+                        context.Response.Redirect($"/Auth/Login?returnUrl={encodedReturnUrl}&errorMessage={Uri.EscapeDataString(msg)}");
+                        return;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    context.Response.Redirect("/Auth/Login?expired=true");
+                    context.Response.Redirect($"/Auth/Login?returnUrl={encodedReturnUrl}&errorMessage={Uri.EscapeDataString("خطای شبکه هنگام تمدید توکن")}");
                     return;
                 }
             }
+
             await _next(context);
             return;
         }
+
         await _next(context);
     }
 }
