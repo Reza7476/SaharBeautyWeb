@@ -57,7 +57,7 @@ public class LoginModel : PageModel
         if(result.IsSuccess && result.Data != null)
         {
             HttpContext.Session.SetString("JwtToken", result.Data.JwtToken!=null?result.Data.JwtToken:" ");
-            HttpContext.Session.SetString("refreshToken", result.Data.RefreshToken!=null?result.Data.RefreshToken:" ");
+            HttpContext.Session.SetString("RefreshToken", result.Data.RefreshToken!=null?result.Data.RefreshToken:" ");
             return RedirectToPage("/UserPanels/Index");
         }
 

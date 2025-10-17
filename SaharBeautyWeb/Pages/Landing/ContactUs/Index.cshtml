@@ -2,6 +2,8 @@
 @model SaharBeautyWeb.Pages.Landing.ContactUs.IndexModel
 @{
     Layout = "_Layout";
+
+    var model = Model.ModelData;
 }
 <link href="~/layout/assets/css/pages/contactus/contactus.css" rel="stylesheet" />
 <div class="page-title-wrap">
@@ -35,9 +37,9 @@
                     <h3>آدرس:</h3>
                     <ul>
                         <li>
-                            <a> @Model.ModelData.Address</a>
+                            <a> @(model != null ? model.Address : " ")</a>
                         </li>
-                       
+
 
                     </ul>
                 </div>
@@ -47,10 +49,10 @@
                     <h3>شماره های تماس:</h3>
                     <ul>
                         <li>
-                            <a href="tel:+@Model.ModelData.MobileNumber">@Model.ModelData.MobileNumber</a>
+                            <a href="tel:+@(model!=null?model.MobileNumber:" ")">@(model != null ? model.MobileNumber : " ")</a>
                         </li>
                         <li>
-                            <a href="tel:@Model.ModelData.Telephone">@Model.ModelData.Telephone</a>
+                            <a href="tel:@(model!=null?model.Telephone:" ")">@(model != null ? model.Telephone : " ")</a>
                         </li>
                     </ul>
                 </div>
@@ -60,9 +62,9 @@
                     <h3>ایمیل:</h3>
                     <ul>
                         <li>
-                            <a href="mailto: @Model.ModelData.Email"> @Model.ModelData.Email</a>
+                            <a href="mailto: @(model!=null?model.Email:" ")"> @(model != null ? model.Email : " ")</a>
                         </li>
-                        
+
                     </ul>
                 </div>
             </div>
@@ -75,7 +77,7 @@
 <div class="map-area pb-100">
     <div class="map-wrapper">
         <iframe id="map"
-                src="https://www.google.com/maps?q=@Model.ModelData.Latitude,@Model.ModelData.Longitude&z=15&output=embed"
+                src="https://www.google.com/maps?q=@(model!=null?model.Latitude:"29.0001"),@(model!=null?model.Longitude:"52.0001")&z=15&output=embed"
                 allowfullscreen=""
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade">

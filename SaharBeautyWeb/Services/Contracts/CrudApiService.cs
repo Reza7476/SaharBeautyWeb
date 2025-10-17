@@ -223,6 +223,35 @@ public class CrudApiService : ICRUDApiService
         }
     }
 
+    public async Task<ApiResultDto<T>> SendFromRoutAsyncAsPost<T>(HttpRequestMessage request)
+    {
+        var response = await _client.SendAsync(request);
+        var raw = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            var data = JsonSerializer.Deserialize<T>(raw, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            
+            return new ApiResultDto<T>
+            {
+                Data = data,
+                IsSuccess = response.IsSuccessStatusCode,
+                StatusCode = (int)response.StatusCode
+            };
+        }
+        return new ApiResultDto<T>()
+        {
+            Error = raw,
+            IsSuccess = response.IsSuccessStatusCode,
+            StatusCode = (int)response.StatusCode
+        };
+
+
+    }
+
     public class ErrorResponse
     {
         public string Error { get; set; }
