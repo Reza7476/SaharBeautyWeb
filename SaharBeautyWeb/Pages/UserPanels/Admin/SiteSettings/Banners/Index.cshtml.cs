@@ -4,6 +4,7 @@ using SaharBeautyWeb.Models.Entities.Banners.Management.Dtos;
 using SaharBeautyWeb.Models.Entities.Banners.Management.Models;
 using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.Banners;
+using SaharBeautyWeb.Services.UserPanels.Banners;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
 {
@@ -11,11 +12,13 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
     {
 
         private readonly IBannerService _service;
-
+        private readonly IBannerUserPanelService _bannerUserPanelService;
         public IndexModel(IBannerService service,
-            ErrorMessages errorMessage) : base(errorMessage)
+            ErrorMessages errorMessage,
+            IBannerUserPanelService bannerUserPanelService) : base(errorMessage)
         {
             _service = service;
+            _bannerUserPanelService = bannerUserPanelService;
         }
 
         public BannerModel? Banner { get; set; }
@@ -61,10 +64,11 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
                     error = "عنوان نباید خالی باشد "
                 });
             }
-            var result = await _service.Add(new AddBannerDto()
+            var result = await _bannerUserPanelService.Add(new  AddBannerDto()
             {
                 Title = AddBanner.Title,
-                Image = AddBanner.Image
+                Image = AddBanner.Image,
+               
             });
             var response = HandleApiAjxResult(result);
             return response;
@@ -101,7 +105,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
                     error = "عنوان یا نیابد خالی باشد"
                 });
 
-            var result = await _service.UpdateBanner(new UpdateBannerDto
+            var result = await _bannerUserPanelService.UpdateBanner(new UpdateBannerDto
             {
                 Id = EditDto.Id,
                 Image = EditDto.Image,
