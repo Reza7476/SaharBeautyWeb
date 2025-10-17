@@ -9,7 +9,7 @@ public class IndexModel : LandingBasePageModel
 {
     private readonly IAboutUsService _aboutUsService;
 
-    public GetAboutUsModel ModelData { get; set; }
+    public GetAboutUsModel? ModelData { get; set; }
 
     public IndexModel(IAboutUsService aboutUsService,
         ErrorMessages errorMessage) : base(errorMessage)
