@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using SaharBeautyWeb.Configurations.DelegateHandler;
 using SaharBeautyWeb.Configurations.Interfaces;
 
 namespace SaharBeautyWeb.Configurations.Outofacs;
@@ -58,16 +59,24 @@ public class AutofacModule : Module
             _.RegisterType<HttpContextAccessor>()
                 .As<IHttpContextAccessor>()
                 .SingleInstance();
+
+            _.RegisterType<AuthTokenHandler>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
         }
 
 
         _.Register(ctx =>
         {
-            var clientFactory = ctx.Resolve<IHttpClientFactory>();
-            var client = clientFactory.CreateClient();
-            client.BaseAddress = new Uri(_baseAddress); // تنظیم BaseAddress همانجا
+            var handler = ctx.Resolve<AuthTokenHandler>();
+            handler.InnerHandler = new HttpClientHandler();
+            var client = new HttpClient(handler)
+            {
+                BaseAddress = new Uri(_baseAddress)
+            };
             return client;
-        }).As<HttpClient>().InstancePerLifetimeScope();
+        }).As<HttpClient>()
+              .InstancePerLifetimeScope();
 
         base.Load(_);
     }
