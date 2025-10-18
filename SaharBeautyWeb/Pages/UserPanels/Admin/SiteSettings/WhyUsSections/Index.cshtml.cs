@@ -5,6 +5,7 @@ using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Models;
 using SaharBeautyWeb.Pages.Shared;
+using SaharBeautyWeb.Services.UserPanels.WhyUsSections;
 using SaharBeautyWeb.Services.WhyUsSections;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.WhyUsSections;
@@ -15,23 +16,26 @@ public class IndexModel : AjaxBasePageModel
     public WhyUsSectionModel ModelData { get; set; } = new();
 
     [BindProperty]
-    public WhyUsSectionModel_Edit EditModel { get; set; }
+    public WhyUsSectionModel_Edit? EditModel { get; set; }
 
     [BindProperty]
-    public AddWhyUsQuestionModel WhyUsQuestionModel { get; set; }
+    public AddWhyUsQuestionModel? WhyUsQuestionModel { get; set; }
 
     private readonly IWhyUsSectionService _service;
+    private readonly IWhyUsUserPanelService _whyUsUserPanelService;
 
     public IndexModel(IWhyUsSectionService service,
-        ErrorMessages errorMessage) : base(errorMessage)
+        ErrorMessages errorMessage,
+        IWhyUsUserPanelService whyUsUserPanelService) : base(errorMessage)
     {
         _service = service;
+        _whyUsUserPanelService = whyUsUserPanelService;
     }
 
     public async Task<IActionResult> OnGet()
     {
         var result = await _service.GetWhyUsSection();
-        var apiResult= new ApiResultDto<WhyUsSectionModel>()
+        var apiResult = new ApiResultDto<WhyUsSectionModel>()
         {
             Data = result.Data != null ? new WhyUsSectionModel()
             {
@@ -56,7 +60,7 @@ public class IndexModel : AjaxBasePageModel
         var a = HandleApiResult(apiResult);
 
         if (a is PageResult)
-            ModelData = apiResult.Data;
+            ModelData = apiResult.Data!;
         return a;
 
     }
@@ -80,7 +84,7 @@ public class IndexModel : AjaxBasePageModel
                 error = message
             });
         }
-        var result = await _service.AddWhyUsSection(new AddWhyUsSectionDto()
+        var result = await _whyUsUserPanelService.AddWhyUsSection(new AddWhyUsSectionDto()
         {
             Description = ModelData.Description,
             Image = ModelData.Image!,
@@ -97,7 +101,9 @@ public class IndexModel : AjaxBasePageModel
             WhyUsSectionId = id
         };
 
+        await Task.CompletedTask;
         return Partial("_AddWhyUsQuestion", model);
+
     }
 
     public async Task<IActionResult> OnPostAddQuestions()
@@ -112,7 +118,7 @@ public class IndexModel : AjaxBasePageModel
                 error = "داده نا معتبر "
             });
         }
-       var result = await _service.AddWhyUsQuestions(new AddWhyUsQuestionsDto()
+        var result = await _whyUsUserPanelService.AddWhyUsQuestions(new AddWhyUsQuestionsDto()
         {
             Answer = WhyUsQuestionModel.Answer,
             Question = WhyUsQuestionModel.Question,
@@ -125,13 +131,13 @@ public class IndexModel : AjaxBasePageModel
 
     public async Task<IActionResult> OnPostDeleteQuestion(long id)
     {
-        var result = await _service.DeleteQuestion(id);
+        var result = await _whyUsUserPanelService.DeleteQuestion(id);
         return HandleApiAjxResult(result);
     }
 
     public async Task<IActionResult> OnGetEditWhyUsSectionEdit(long id)
     {
-       
+
         var result = await _service.GetWhyUsSectionById(id);
         return HandleApiAjaxPartialResult(result, data => new WhyUsSectionModel_Edit()
         {
@@ -144,6 +150,7 @@ public class IndexModel : AjaxBasePageModel
 
     public async Task<IActionResult> OnPostApplyEditTitleAndDescription()
     {
+
         if (EditModel.Title == null || EditModel.Description == null)
         {
             return new JsonResult(new
@@ -152,16 +159,18 @@ public class IndexModel : AjaxBasePageModel
                 Error = "عنوان و توضیحات خالی هستند",
             });
         }
-        var result = await _service.EditTitleAndDescription(
-                     new EditWhyUsSectionTitleAndDescriptionDto
-                     {
-                         Description = EditModel.Description,
-                         Title = EditModel.Title,
-                         Id = EditModel.Id
-                     });
-        return HandleApiAjxResult(result);
 
+        var result = 
+            await _whyUsUserPanelService.EditTitleAndDescription(
+            new EditWhyUsSectionTitleAndDescriptionDto
+            {
+                Description = EditModel.Description,
+                Title = EditModel.Title,
+                Id = EditModel.Id
+            });
+        return HandleApiAjxResult(result);
     }
+
     public async Task<IActionResult> OnPostApplyEditWhyUsImage()
     {
         var (isValid, message) = EditModel.AddMedia.ValidateImage();
@@ -170,16 +179,15 @@ public class IndexModel : AjaxBasePageModel
         {
             return new JsonResult(new
             {
-                error = message??"داده نامعتبر ",
+                error = message ?? "داده نامعتبر ",
                 succes = false
             });
         }
-       var result = await _service.EditImage(new AddMediaDto()
+        var result = await _whyUsUserPanelService.EditImage(new AddMediaDto()
         {
             Id = EditModel.Id,
             AddMedia = EditModel.AddMedia!
         });
-        var a= HandleApiAjxResult(result);
-        return a;
+        return HandleApiAjxResult(result);
     }
 }

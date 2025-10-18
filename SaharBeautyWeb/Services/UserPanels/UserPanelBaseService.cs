@@ -1,5 +1,6 @@
 ﻿using SaharBeautyWeb.Models.Commons.Dtos;
 using System.Text.Json;
+using static SaharBeautyWeb.Services.Contracts.CrudApiService;
 
 public class UserPanelBaseService
 {
@@ -57,8 +58,8 @@ public class UserPanelBaseService
             StatusCode = (int)response.StatusCode
         };
     }
-   
-    
+
+
     protected async Task<ApiResultDto<T>>
         SendPutRequestAsync<T>(string url, HttpContent content)
     {
@@ -69,8 +70,8 @@ public class UserPanelBaseService
         return await PutAndPatchMethod<T>(request);
     }
 
-    protected  async Task<ApiResultDto<T>>
-        SendPatchRequestAsync<T>( string url, HttpContent content)
+    protected async Task<ApiResultDto<T>>
+        SendPatchRequestAsync<T>(string url, HttpContent content)
     {
         var request = new HttpRequestMessage(HttpMethod.Patch, url)
         {
@@ -89,10 +90,51 @@ public class UserPanelBaseService
 
 
 
-    private Task<ApiResultDto<T>>
-        SendDeleteRequestAsync<T>(HttpMethod delete, string url)
+    private async Task<ApiResultDto<T>>
+        SendDeleteRequestAsync<T>(string url)
     {
-        throw new NotImplementedException();
+        var request = new HttpRequestMessage(HttpMethod.Delete, url)
+        {
+            Content = null
+        };
+
+        var response = await _client.SendAsync(request);
+        var raw = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            if (raw != "")
+            {
+
+                var data = JsonSerializer.Deserialize<T>(
+                    raw,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                return new ApiResultDto<T>
+                {
+                    Data = data,
+                    IsSuccess = true,
+                    StatusCode = (int)response.StatusCode
+                };
+            }
+            else
+            {
+                return new ApiResultDto<T>
+                {
+                    IsSuccess = true,
+                    StatusCode = (int)response.StatusCode
+                };
+            }
+        }
+
+        return new ApiResultDto<T>
+        {
+            IsSuccess = false,
+            Error = raw,
+            StatusCode = (int)response.StatusCode
+        };
     }
 
 
@@ -156,11 +198,11 @@ public class UserPanelBaseService
 
     protected Task<ApiResultDto<T>>
         PatchAsync<T>(string url, HttpContent content) =>
-        SendPatchRequestAsync<T>( url, content);
+        SendPatchRequestAsync<T>(url, content);
 
 
     protected Task<ApiResultDto<T>>
         DeleteAsync<T>(string url) =>
-        SendDeleteRequestAsync<T>(HttpMethod.Delete, url);
+        SendDeleteRequestAsync<T>(url);
 
 }
