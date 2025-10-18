@@ -32,7 +32,7 @@ public class BannerUserPanelService : UserPanelBaseService, IBannerUserPanelServ
     public async Task<ApiResultDto<long>> UpdateBanner(UpdateBannerDto dto)
     {
         var url = $"{_apiUrl}/{dto.Id}";
-        var content= new MultipartFormDataContent();
+        var content = new MultipartFormDataContent();
         content.Add(new StringContent(dto.Title ?? ""), "Title");
 
         if (dto.Image != null)
@@ -42,8 +42,7 @@ public class BannerUserPanelService : UserPanelBaseService, IBannerUserPanelServ
             fileContent.Headers.ContentType = new MediaTypeHeaderValue(dto.Image.ContentType);
             content.Add(fileContent, "Image", dto.Image.FileName);
         }
-        var a=await 
-            PatchAsync<long>(url, content);
-        return a;
+        var result = await PatchAsync<long>(url, content);
+        return result;
     }
 }

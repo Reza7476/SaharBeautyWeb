@@ -5,6 +5,7 @@ using SaharBeautyWeb.Models.Entities.AboutUs.Management.Dtos;
 using SaharBeautyWeb.Models.Entities.AboutUs.Management.Models;
 using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.AboutUs;
+using SaharBeautyWeb.Services.UserPanels.AboutUs;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
 {
@@ -12,18 +13,22 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
     {
         private readonly IAboutUsService _service;
 
-        public GetAboutUsModel ModelData { get; set; }
+        private readonly IAboutUsUserPanelService _aboutUsUSerPanelService;
+
+        public GetAboutUsModel? ModelData { get; set; }
 
         [BindProperty]
-        public AddAboutUsDto AddAboutUsDto { get; set; }
+        public AddAboutUsDto? AddAboutUsDto { get; set; }
 
         [BindProperty]
-        public EditAboutUsModel EditModel { get; set; }
+        public EditAboutUsModel? EditModel { get; set; }
 
         public IndexModel(IAboutUsService service,
-            ErrorMessages errorMessage) : base(errorMessage)
+            ErrorMessages errorMessage,
+            IAboutUsUserPanelService aboutUsUSerPanelService) : base(errorMessage)
         {
             _service = service;
+            _aboutUsUSerPanelService = aboutUsUSerPanelService;
         }
 
         public async Task<IActionResult> OnGet()
@@ -53,7 +58,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
 
         public async Task<IActionResult> OnPostCreateAboutUs()
         {
-            var mobile = AddAboutUsDto.MobileNumber.CheckMobile();
+            var mobile = AddAboutUsDto!.MobileNumber.CheckMobile();
             if (!mobile.isValid)
             {
                 return new JsonResult(new
@@ -74,7 +79,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
                     });
                 }
             }
-            var result = await _service.Add(new AddAboutUsDto()
+            var result = await _aboutUsUSerPanelService.Add(new AddAboutUsDto()
             {
                 MobileNumber = AddAboutUsDto.MobileNumber,
                 Telephone = AddAboutUsDto.Telephone,
@@ -111,7 +116,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
         public async Task<IActionResult> OnPostApplyEditAboutUs()
         {
 
-            var mobile = EditModel.MobileNumber.CheckMobile();
+            var mobile = EditModel!.MobileNumber.CheckMobile();
             if (!mobile.isValid)
             {
                 return new JsonResult(new
@@ -120,7 +125,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
                     error = mobile.message
                 });
             }
-            var result = await _service.Edit(new EditAboutUsDto()
+            var result = await _aboutUsUSerPanelService.Edit(new EditAboutUsDto()
             {
                 MobileNumber = EditModel.MobileNumber,
                 Address = EditModel.Address,
@@ -150,13 +155,13 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
                     Url = data.LogoImage.Url
                 } : null,
                 Id = data.Id
-            },"_editLogo");
-            
+            }, "_editLogo");
+
         }
 
         public async Task<IActionResult> OnPostApplyEditedAboutUsLogo()
         {
-            var (isValid, message) = EditModel.Logo.ValidateImage();
+            var (isValid, message) = EditModel!.Logo.ValidateImage();
 
             if (EditModel?.Id == null || !isValid)
             {
@@ -166,7 +171,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs
                     success = false
                 });
             }
-            var result = await _service.EditAboutUsLogo(new EditMediaDto()
+            var result = await _aboutUsUSerPanelService.EditLogo(new EditMediaDto()
             {
                 Media = EditModel.Logo,
                 Id = EditModel.Id
