@@ -7,13 +7,6 @@ namespace SaharBeautyWeb.Services.WhyUsSections;
 
 public interface IWhyUsSectionService : IService
 {
-    Task <ApiResultDto<long>> AddWhyUsQuestions(AddWhyUsQuestionsDto dto);
-    Task<ApiResultDto<long>> AddWhyUsSection(AddWhyUsSectionDto dto);
-    Task<ApiResultDto<object>> DeleteQuestion(long questionId);
-    Task<ApiResultDto<object>> EditImage(AddMediaDto dto);
-    Task<ApiResultDto<object>> 
-        EditTitleAndDescription(EditWhyUsSectionTitleAndDescriptionDto dto);
-    
     Task<ApiResultDto<GetWhyUsSectionDto>> GetWhyUsSection();
     Task<ApiResultDto<WhyUsSectionModel_Edit?>> GetWhyUsSectionById(long id);
     Task <ApiResultDto<GetWhyUsSectionForLandingDto>> GetWhyUsSectionForLanding();
