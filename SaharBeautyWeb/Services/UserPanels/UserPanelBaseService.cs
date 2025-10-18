@@ -10,12 +10,11 @@ public class UserPanelBaseService
         _client = client;
     }
 
-    protected async Task<ApiResultDto<T>> SendRequestAsync<T>(
-        HttpMethod method,
+    protected async Task<ApiResultDto<T>> SendPostRequestAsync<T>(
         string url,
         HttpContent? content = null)
     {
-        var request = new HttpRequestMessage(method, url)
+        var request = new HttpRequestMessage(HttpMethod.Post, url)
         {
             Content = content
         };
@@ -28,10 +27,93 @@ public class UserPanelBaseService
             if (raw != "")
             {
 
-                var data = JsonSerializer.Deserialize<T>(raw, new JsonSerializerOptions
+                var data = JsonSerializer.Deserialize<T>(
+                    raw,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                return new ApiResultDto<T>
                 {
-                    PropertyNameCaseInsensitive = true
-                });
+                    Data = data,
+                    IsSuccess = true,
+                    StatusCode = (int)response.StatusCode
+                };
+            }
+            else
+            {
+                return new ApiResultDto<T>
+                {
+                    IsSuccess = true,
+                    StatusCode = (int)response.StatusCode
+                };
+            }
+        }
+
+        return new ApiResultDto<T>
+        {
+            IsSuccess = false,
+            Error = raw,
+            StatusCode = (int)response.StatusCode
+        };
+    }
+   
+    
+    protected async Task<ApiResultDto<T>>
+        SendPutRequestAsync<T>(string url, HttpContent content)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Put, url)
+        {
+            Content = content
+        };
+        return await PutAndPatchMethod<T>(request);
+    }
+
+    protected  async Task<ApiResultDto<T>>
+        SendPatchRequestAsync<T>( string url, HttpContent content)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Patch, url)
+        {
+            Content = content
+        };
+        return await PutAndPatchMethod<T>(request);
+    }
+
+
+
+    protected Task<ApiResultDto<T>>
+        SendGetRequestAsync<T>(HttpMethod get, string url)
+    {
+        throw new NotImplementedException();
+    }
+
+
+
+    private Task<ApiResultDto<T>>
+        SendDeleteRequestAsync<T>(HttpMethod delete, string url)
+    {
+        throw new NotImplementedException();
+    }
+
+
+
+
+    private async Task<ApiResultDto<T>> PutAndPatchMethod<T>(HttpRequestMessage request)
+    {
+        var response = await _client.SendAsync(request);
+        var raw = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            if (raw != "")
+            {
+
+                var data = JsonSerializer.Deserialize<T>(
+                    raw,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
                 return new ApiResultDto<T>
                 {
                     Data = data,
@@ -58,9 +140,27 @@ public class UserPanelBaseService
     }
 
 
-    protected Task<ApiResultDto<T>> GetAsync<T>(string url) => SendRequestAsync<T>(HttpMethod.Get, url);
-    protected Task<ApiResultDto<T>> PostAsync<T>(string url, HttpContent content) => SendRequestAsync<T>(HttpMethod.Post, url, content);
-    protected Task<ApiResultDto<T>> PutAsync<T>(string url, HttpContent content) => SendRequestAsync<T>(HttpMethod.Put, url, content);
-    protected Task<ApiResultDto<T>> PatchAsync<T>(string url, HttpContent content) => SendRequestAsync<T>(HttpMethod.Patch, url, content);
-    protected Task<ApiResultDto<T>> DeleteAsync<T>(string url) => SendRequestAsync<T>(HttpMethod.Delete, url);
+    protected Task<ApiResultDto<T>>
+        GetAsync<T>(string url) =>
+        SendGetRequestAsync<T>(HttpMethod.Get, url);
+
+
+    protected Task<ApiResultDto<T>>
+        PostAsync<T>(string url, HttpContent content) =>
+        SendPostRequestAsync<T>(url, content);
+
+    protected Task<ApiResultDto<T>>
+        PutAsync<T>(string url, HttpContent content) =>
+        SendPutRequestAsync<T>(url, content);
+
+
+    protected Task<ApiResultDto<T>>
+        PatchAsync<T>(string url, HttpContent content) =>
+        SendPatchRequestAsync<T>( url, content);
+
+
+    protected Task<ApiResultDto<T>>
+        DeleteAsync<T>(string url) =>
+        SendDeleteRequestAsync<T>(HttpMethod.Delete, url);
+
 }
