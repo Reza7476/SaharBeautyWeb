@@ -1,30 +1,32 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
 using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Models;
 using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.Treatments;
+using SaharBeautyWeb.Services.UserPanels.Treatments;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
 {
     public class IndexModel : AjaxBasePageModel
     {
         private readonly ITreatmentService _service;
+        private readonly ITreatmentUserPanelService _treatmentUserPanelService;
         public GetAllTreatmentModel ListModel { get; set; } = new();
 
         [BindProperty]
-        public AddTreatmentModel AddModel { get; set; }
+        public AddTreatmentModel? AddModel { get; set; }
 
         [BindProperty]
-        public TreatmentDetailsDto ModelData { get; set; }
+        public TreatmentDetailsDto? ModelData { get; set; }
 
         public IndexModel(ITreatmentService service,
-            ErrorMessages errorMessage) : base(errorMessage)
+            ErrorMessages errorMessage,
+            ITreatmentUserPanelService treatmentUserPanelService) : base(errorMessage)
         {
             _service = service;
+            _treatmentUserPanelService = treatmentUserPanelService;
         }
 
 
@@ -73,7 +75,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
                 });
             }
 
-            var result = await _service.Add(new AddTreatmentModel
+            var result = await _treatmentUserPanelService.Add(new AddTreatmentModel
             {
                 Description = AddModel.Description,
                 Image = AddModel.Image,
@@ -105,7 +107,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
                     success = isValid,
                     error = message
                 });
-            var result = await _service.AddImage(new AddMediaDto
+            var result = await _treatmentUserPanelService.AddImage(new AddMediaDto
             {
                 AddMedia = ModelData.AddMedia!,
                 Id = ModelData.Id
@@ -117,7 +119,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
 
         public async Task<IActionResult> OnPostDeleteImage(long imageId, long id)
         {
-            var result = await _service.DeleteImage(imageId, id);
+            var result = await _treatmentUserPanelService.DeleteImage(imageId, id);
             var response = HandleApiAjxResult(result);
             return response;
         }
@@ -132,12 +134,13 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
                     success = false
                 });
             }
-            var result = await _service.UpdateTitleAndDescription(new UpdateTreatmentTitleAndDescriptionDto()
-            {
-                Description = ModelData.Description,
-                Title = ModelData.Title,
-                Id = ModelData.Id
-            });
+            var result = await _treatmentUserPanelService
+                .UpdateTitleAndDescription(new UpdateTreatmentTitleAndDescriptionDto()
+                {
+                    Description = ModelData.Description,
+                    Title = ModelData.Title,
+                    Id = ModelData.Id
+                });
 
             var response = HandleApiAjxResult(result);
             return response;
