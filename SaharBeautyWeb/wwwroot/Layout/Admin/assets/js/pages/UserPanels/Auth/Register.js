@@ -15,6 +15,7 @@
             processData: false,
             success: function (res) {
                 if (res.success) {
+                    console.log(res);
                     if (res.data.verifyStatusCode == 1 || res.data.verifyStatus == "ارسال موفق بود") {
                         otpRequestId.value = res.data.otpRequestId;
                         $("#step-one-form").removeClass("active");
