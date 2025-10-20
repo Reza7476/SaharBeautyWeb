@@ -36,5 +36,5 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          timeout: 180000
+          timeout: 220000
           local-dir: ./publish/
