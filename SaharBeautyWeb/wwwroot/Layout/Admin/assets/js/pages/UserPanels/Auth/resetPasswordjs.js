@@ -1,4 +1,5 @@
 ﻿$(() => {
+
     var otpCountdown = null;
     $(document).on("click", "#step-one-btn", function (e) {
         e.preventDefault();
@@ -18,8 +19,7 @@
                 if (res.success) {
                     if (res.data.verifyStatusCode === 1 ||
                         res.data.verifyStatus === "عملیات موفق" ||
-                        res.data.otpRequestId.length>11)
-                    {
+                        res.data.otpRequestId.length > 11) {
                         otpRequestId.value = res.data.otpRequestId;
                         $("#step-one-form").removeClass("active");
                         $("#step-two-form").addClass("active");
@@ -46,8 +46,6 @@
         });
     })
 
-   
-
     getOtpCods();
 
     $(document).on("click", "#verify-otp-btn", function (e) {
@@ -66,8 +64,8 @@
             processData: false,
             contentType: false,
             success: function (res) {
-                if (res.success && res.statusCode==200) {
-                    window.location = "/UserPanels";
+                if (res.success && res.statusCode == 200) {
+                    window.location = "/Auth/Login";
                 } else if (res.statusCode === 500) {
                     formStepOne.reset();
                     form.reset();
@@ -130,7 +128,6 @@
                 if (prevBox.length) prevBox.focus();
             }
         });
-
     }
 
     function startTimer(duration) {
@@ -182,15 +179,13 @@
         $("#timer").text(min + ":" + sec);
     }
 
-
-    
     function resetOtpTimer() {
         if (otpCountdown) {
             clearInterval(otpCountdown);
             otpCountdown = null;
         }
         localStorage.removeItem("otpEndTime");
-        localStorage.removeItem("otpRequestId"); 
+        localStorage.removeItem("otpRequestId");
 
         $("#timer").text("00:00");
         $(".otp-box").val("");
@@ -201,5 +196,4 @@
         window.location = "/";
     })
 
-   
-})
+});
