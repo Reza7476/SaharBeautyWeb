@@ -75,4 +75,33 @@ public class AuthService : IAutheService
         var result = await _apiService.AddFromBodyAsync<GetTokenDto?>(url, json);
         return result;
     }
+
+    public async Task<ApiResultDto<GetOtpRequestForRegisterDto>> 
+        SendOtpResetPassword(string mobileNumber)
+    {
+        var url = $"{_apiUrl}/forget-pass-step-one";
+        var json = new
+        {
+            MobileNumber = mobileNumber,
+        };
+
+        var result = await _apiService
+            .AddFromBodyAsync<GetOtpRequestForRegisterDto>(url, json);
+        return result;
+    }
+
+    public async Task<ApiResultDto<object>> VerifyOtpResetPassword(VerifyOtpResetPasswordDto dto)
+    {
+
+        var url = $"{_apiUrl}/forget-password-step-two";
+        var json = new
+        {
+            dto.NewPassword,
+            dto.OtpRequestId,
+            dto.OtpCode
+        };
+
+        var result = await _apiService.AddFromBodyAsync<object>(url, json);
+        return result;
+    }
 }

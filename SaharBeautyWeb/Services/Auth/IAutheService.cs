@@ -9,5 +9,7 @@ public interface IAutheService : IService
     Task<ApiResultDto<GetTokenDto?>> LoginUser(LoginDto loginDto);
     Task<ApiResultDto<GetTokenDto?>> RefreshToken(string refreshToken, string token);
     Task<ApiResultDto<GetOtpRequestForRegisterDto>> SendOtp(string mobileNumber);
+    Task<ApiResultDto<GetOtpRequestForRegisterDto>> SendOtpResetPassword(string mobileNumber);
     Task<ApiResultDto<GetTokenDto?>> VerifyOtp(VerifyOtpDto verifyOtpDto);
+    Task<ApiResultDto<object>> VerifyOtpResetPassword(VerifyOtpResetPasswordDto dto);
 }

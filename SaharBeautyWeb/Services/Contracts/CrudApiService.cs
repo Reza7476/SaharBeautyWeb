@@ -98,16 +98,27 @@ public class CrudApiService : ICRUDApiService
         var raw = await response.Content.ReadAsStringAsync();
         if (response.IsSuccessStatusCode)
         {
-            var data = JsonSerializer.Deserialize<T>(raw, new JsonSerializerOptions
+            if (raw != "")
             {
-                PropertyNameCaseInsensitive = true
-            });
-            return new ApiResultDto<T>
+                var data = JsonSerializer.Deserialize<T>(raw, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                return new ApiResultDto<T>
+                {
+                    Data = data,
+                    IsSuccess = response.IsSuccessStatusCode,
+                    StatusCode = (int)response.StatusCode
+                };
+            }
+            else
             {
-                Data = data,
-                IsSuccess = response.IsSuccessStatusCode,
-                StatusCode = (int)response.StatusCode
-            };
+                return new ApiResultDto<T>()
+                {
+                    IsSuccess = response.IsSuccessStatusCode,
+                    StatusCode = (int)response.StatusCode
+                };
+            }
         }
         return new ApiResultDto<T>()
         {
@@ -238,7 +249,7 @@ public class CrudApiService : ICRUDApiService
             {
                 PropertyNameCaseInsensitive = true
             });
-            
+
             return new ApiResultDto<T>
             {
                 Data = data,
