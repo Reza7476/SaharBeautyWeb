@@ -6,7 +6,8 @@
         var otpRequestId = $("#Otp-request-id")[0];
         var form = $("#step-one-form")[0];
         var formData = new FormData(form);
-
+        var otpBtn = $(this);
+        otpBtn.prop("disabled", true);
         $.ajax({
             url: sendOtp,
             type: 'Post',
@@ -15,7 +16,6 @@
             processData: false,
             success: function (res) {
                 if (res.success) {
-                    console.log(res);
                     if (res.data.verifyStatusCode === 1 ||
                         res.data.verifyStatus === "عملیات موفق" ||
                         res.data.otpRequestId.length>11)
@@ -30,15 +30,18 @@
                     } else {
                         errorP.text("شماره تلفن ارسالی  معتبر نیست");
                         errorP.css("display", "block");
+                        ptpBtn.prop("disabled", false);
                     }
                 } else {
                     errorP.text(res.error);
                     errorP.css("display", "block");
+                    ptpBtn.prop("disabled", false);
                 }
             },
             error: function (err) {
                 errorP.text(err);
                 errorP.css("display", "block");
+                ptpBtn.prop("disabled", false);
             }
         });
     })
@@ -53,6 +56,7 @@
         const form = $("#step-two-form")[0];
         const formData = new FormData(form);
         var errorP = $("#error-register");
+        var otpBtn = $("#step-one-btn");
         $("#step-two-form span[asp-validation-for]").text("");
 
         $.ajax({
@@ -71,6 +75,7 @@
                     errorP.css("display", "block");
                     $("#step-two-form").removeClass("active");
                     $("#step-one-form").addClass("active");
+                    otpBtn.prop("disabled", false);
                     resetOtpTimer();
                 } else if (res.errors) {
                     Object.keys(res.errors).forEach(function (key) {
