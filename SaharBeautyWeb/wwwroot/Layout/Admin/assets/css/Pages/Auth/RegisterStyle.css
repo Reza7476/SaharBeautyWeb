@@ -1,0 +1,164 @@
+﻿
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    font-family: "Vazirmatn", sans-serif;
+}
+
+
+body {
+    background: linear-gradient(135deg, #fff, #f9f9f9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+.register-container {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+.register-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+    .register-box h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+.form-step {
+    display: none;
+}
+
+    .form-step.active {
+        display: block;
+    }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+input[type=text], input[type=tel], input[type=password], input[type=email] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.btn {
+    width: 100%;
+    background: #ffb300;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.otp-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    direction: ltr;
+}
+
+.otp-box {
+    width: 45px;
+    height: 55px;
+    font-size: 22px;
+    text-align: center;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.2s;
+    direction: ltr; 
+}
+
+    .otp-box:focus {
+        border-color: #ff9800;
+        outline: none;
+    }
+
+.timer-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#resendBtn {
+    border: 1px solid #ffb300;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: none;
+    color: #ff9800;
+    cursor: pointer;
+}
+
+    #resendBtn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+#error-register {
+    display: none; /* در حالت عادی پنهان */
+    background-color: #fdecea; /* قرمز خیلی ملایم */
+    color: #b02a37; /* رنگ متن قرمز ملایم */
+    border: 1px solid #f5c2c7;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    font-family: 'IRANSans', sans-serif;
+    direction: rtl;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease-in-out;
+}
+
+.otp-text {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: #444;
+}
+
+.timer-inline {
+    display: inline-block;
+    margin-right: 8px;
+    font-weight: bold;
+    color: #ff9800;
+    font-size: 1.05rem;
+}
+
+.btn-back {
+    display: inline-block;
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s;
+}
+
+    .btn-back:hover {
+        background-color: #ffb300;
+        color: white;
+        border-color: #ffb300;
+    }

@@ -13,6 +13,6 @@ public interface ICRUDApiService : IService
 
     Task<ApiResultDto<T>> UpdateAsPatchAsync<T>(string url, MultipartFormDataContent content);
     Task<ApiResultDto<object>> UpdateAsPutFromBodyAsync<T>(string url, HttpContent content);
-    Task<ApiResultDto<T>> AddFromBodyAsync<T>(string url, HttpContent content);
+    Task<ApiResultDto<T>> AddFromBodyAsync<T>(string url, object body);
     Task<ApiResultDto<T>> SendFromRoutAsyncAsPost<T>(HttpRequestMessage request);
 }

@@ -1,4 +1,5 @@
 ﻿using SaharBeautyWeb.Models.Commons.Dtos;
+using System.Text;
 using System.Text.Json;
 
 namespace SaharBeautyWeb.Services.Contracts;
@@ -88,8 +89,11 @@ public class CrudApiService : ICRUDApiService
         };
     }
 
-    public async Task<ApiResultDto<T>> AddFromBodyAsync<T>(string url, HttpContent content)
+    public async Task<ApiResultDto<T>> AddFromBodyAsync<T>(string url, object body)
     {
+        var json = JsonSerializer.Serialize(body);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
         var response = await _client.PostAsync(url, content);
         var raw = await response.Content.ReadAsStringAsync();
         if (response.IsSuccessStatusCode)

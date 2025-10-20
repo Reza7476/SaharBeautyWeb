@@ -61,6 +61,8 @@ public class LoginModel : PageModel
         });
         if (result.IsSuccess && result.Data != null)
         {
+            HttpContext.Session.Remove("JwtToken");
+            HttpContext.Session.Remove("RefreshToken");
             HttpContext.Session.SetString("JwtToken", result.Data.JwtToken != null ? result.Data.JwtToken : " ");
             HttpContext.Session.SetString("RefreshToken", result.Data.RefreshToken != null ? result.Data.RefreshToken : " ");
             if (!string.IsNullOrEmpty(ReturnUrl))
