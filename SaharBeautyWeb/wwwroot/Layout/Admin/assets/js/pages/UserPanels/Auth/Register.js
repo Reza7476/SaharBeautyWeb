@@ -17,7 +17,8 @@
                 if (res.success) {
                     console.log(res);
                     if (res.data.verifyStatusCode === 1 ||
-                        res.data.verifyStatus === "ارسال موفق بود")
+                        res.data.verifyStatus === "عملیات موفق" ||
+                        res.data.otpRequestId.length>11)
                     {
                         otpRequestId.value = res.data.otpRequestId;
                         $("#step-one-form").removeClass("active");
