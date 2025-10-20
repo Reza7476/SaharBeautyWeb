@@ -2,6 +2,8 @@
 using SaharBeautyWeb.Models.Entities.Auth.Dtos;
 using SaharBeautyWeb.Services.Contracts;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 
 namespace SaharBeautyWeb.Services.Auth;
 
@@ -41,6 +43,36 @@ public class AuthService : IAutheService
         requestMessage.Headers.Authorization=new AuthenticationHeaderValue("Bearer", token);
 
         var result = await _apiService.SendFromRoutAsyncAsPost<GetTokenDto?>(requestMessage);
+        return result;
+    }
+
+    public async Task<ApiResultDto<GetOtpRequestForRegisterDto>> SendOtp(string mobileNumber)
+    {
+        var url = $"{_apiUrl}/initializing-register-user";
+        var json = new
+        {
+            MobileNumber = mobileNumber,
+        };
+
+        var result = await _apiService.AddFromBodyAsync<GetOtpRequestForRegisterDto>(url, json);
+        return result;
+    }
+
+    public async Task<ApiResultDto<GetTokenDto?>> VerifyOtp(VerifyOtpDto dto)
+    {
+        var url = $"{_apiUrl}/finalizing-register-user";
+
+        var json = new
+        {
+            Name = dto.Name,
+            LastName = dto.LastName,
+            UserName = dto.UserName,
+            Password = dto.Password,
+            OtpRequestId = dto.OtpRequestId,
+            OtpCode = dto.OtpCode,
+            Email = dto.Email
+        };
+        var result = await _apiService.AddFromBodyAsync<GetTokenDto?>(url, json);
         return result;
     }
 }
