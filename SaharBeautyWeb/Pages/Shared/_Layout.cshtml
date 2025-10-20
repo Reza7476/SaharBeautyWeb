@@ -1,7 +1,7 @@
-﻿
+﻿@* 
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
+<html lang="fa" dir="rtl"> *@
+@* <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="HTML5,CSS3,HTML,Template,multi-page,Jeel - Beauty and Wellness HTML Template">
@@ -31,9 +31,9 @@
 
 
 </head>
-<body>
+<body> *@
 
-
+@* 
     <div class="header-area">
         <div class="container-fluid">
             <div class="row align-items-center">
@@ -89,8 +89,8 @@
         </div>
     </div>
 
-
-    <div class="navbar-area sticky-top">
+ *@
+    @* <div class="navbar-area sticky-top">
 
         <div class="mobile-nav">
             <a href="index.html" class="logo">
@@ -140,35 +140,27 @@
                             <li class="nav-item">
                                 <a href="Landing/ContactUs" class="nav-link">تماس با ما</a>
                             </li>
-
-                           
-
                         </ul>
                         <div class="side-nav">
-
-                            @* <a class="cart" href="cart.html">
-                            <i class='bx bx-cart'></i>
-                            <span>1</span>
-                            </a> *@
                             <a class="common-btn nav-btn" href="#">رزرو نوبت</a>
                         </div>
                     </div>
                 </nav>
             </div>
         </div>
-    </div>
+    </div> *@
 
-    @RenderBody()
+  @*   @RenderBody()
     @await Component.InvokeAsync("FooterLanding")
 
     <div class="go-top">
         <i class='bx bxs-up-arrow-alt'></i>
         <i class='bx bxs-up-arrow-alt'></i>
     </div>
-
+ *@
 
     <!--=== Essential JS ===-->
-    <script src="~/Layout/assets/js/jquery.min.js"></script>
+   @*  <script src="~/Layout/assets/js/jquery.min.js"></script>
     <script src="~/Layout/assets/js/bootstrap.bundle.min.js"></script>
     <script src="~/Layout/assets/js/form-validator.min.js"></script>
     <script src="~/Layout/assets/js/contact-form-script.js"></script>
@@ -201,9 +193,43 @@
             </span>
         </label>
     </div>
-   
+    *@
     
     
 
+@* </body>
+</html> *@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - سالن زیبایی سحر</title>
+    <link rel="stylesheet" href="~/Refactor/css/main.css" />
+    <link href="~/refactor/css/owl.carousel/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/refactor/css/owl.carousel/owl.theme.default.min.css" rel="stylesheet" />
+    <script src="~/refactor/css/owl.carousel/owl.carousel.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">خانه</a>
+            <a href="/Account/Login">ورود</a>
+            <a href="/Account/Register">ثبت‌نام</a>
+            <a href="/Dashboard">پنل کاربری</a>
+        </nav>
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+    <footer>
+        <p>© 2025 سالن زیبایی سحر</p>
+    </footer>
+    <script src="~/js/main.js"></script>
 </body>
 </html>

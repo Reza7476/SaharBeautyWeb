@@ -1,0 +1,72 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    background: #fff8fa;
+    color: #3e2e4d;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: linear-gradient(90deg, #f7c6e0, #e0bfff 80%);
+    padding: 1rem 0;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+    nav a {
+        color: #a2358d;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.2s;
+    }
+
+        nav a:hover {
+            color: #d12e7b;
+        }
+
+main {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px #f6b6dc1a;
+    padding: 2rem;
+}
+
+button, input[type="submit"] {
+    background: #a2358d;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+    button:hover, input[type="submit"]:hover {
+        background: #d12e7b;
+    }
+
+input, select, textarea {
+    border: 1px solid #d3a4c7;
+    border-radius: 6px;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    background: #f7c6e0;
+    color: #a2358d;
+    margin-top: 3rem;
+    border-radius: 0 0 16px 16px;
+}

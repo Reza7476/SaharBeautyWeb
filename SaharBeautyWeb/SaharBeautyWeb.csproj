@@ -63,6 +63,7 @@
 
   <ItemGroup>
     <Folder Include="Models\Entities\AboutUs\Landing\" />
+    <Folder Include="wwwroot\Refactor\js\" />
   </ItemGroup>
 
 </Project>
