@@ -63,8 +63,14 @@ public class LoginModel : PageModel
         {
             HttpContext.Session.Remove("JwtToken");
             HttpContext.Session.Remove("RefreshToken");
-            HttpContext.Session.SetString("JwtToken", result.Data.JwtToken != null ? result.Data.JwtToken : " ");
-            HttpContext.Session.SetString("RefreshToken", result.Data.RefreshToken != null ? result.Data.RefreshToken : " ");
+            HttpContext.Session.SetString(
+                "JwtToken",
+                result.Data.JwtToken != null ?
+                result.Data.JwtToken : " ");
+            HttpContext.Session.SetString(
+                "RefreshToken",
+                result.Data.RefreshToken != null ?
+                result.Data.RefreshToken : " ");
             if (!string.IsNullOrEmpty(ReturnUrl))
             {
                 return Redirect(ReturnUrl);
