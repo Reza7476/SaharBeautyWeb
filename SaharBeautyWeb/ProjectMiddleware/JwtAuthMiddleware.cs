@@ -36,12 +36,16 @@ public class JwtAuthMiddleware
         }
     }
 
-
-
-
     public async Task InvokeAsync(HttpContext context)
     {
         var path = context.Request.Path.Value ?? string.Empty;
+        if (path.StartsWith("/auth", StringComparison.OrdinalIgnoreCase))
+        {
+            await _next(context);
+            return;
+        }
+
+
 
         if (path.StartsWith("/userpanels", StringComparison.OrdinalIgnoreCase))
         {

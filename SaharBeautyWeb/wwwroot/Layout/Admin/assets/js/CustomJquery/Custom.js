@@ -47,24 +47,24 @@ function markInputError(input) {
     setTimeout(() => input.classList.remove("input-error"), 5000);
 }
 
-$(document).ajaxError(function (event, jqxhr) {
-    if (jqxhr.status === 0) {
-        // اینترنت قطع است
-        window.location.href = '/Error';
-        return;
-    }
+//$(document).ajaxError(function (event, jqxhr) {
+//    if (jqxhr.status === 0) {
+//        // اینترنت قطع است
+//        window.location.href = '/Error';
+//        return;
+//    }
 
-    try {
-        var json = jqxhr.responseJSON || JSON.parse(jqxhr.responseText);
-        if (json && json.redirect) {
-            window.location.href = json.redirect;
-            return;
-        }
-    } catch { }
+//    try {
+//        var json = jqxhr.responseJSON || JSON.parse(jqxhr.responseText);
+//        if (json && json.redirect) {
+//            window.location.href = json.redirect;
+//            return;
+//        }
+//    } catch { }
 
-    // در غیر این صورت به صفحه خطا برو
-    window.location.href = '/Error';
-});
+//    // در غیر این صورت به صفحه خطا برو
+//    window.location.href = '/Error';
+//});
 
 
 $(document).ajaxError(function (event, xhr, settings, error) {
@@ -74,3 +74,20 @@ $(document).ajaxError(function (event, xhr, settings, error) {
         return;
     }
 });
+
+$(document).on("click", "#log-out-btn", function (e) {
+
+    $.ajax({
+        url: '/Auth/Login?handler=RemoveToken',
+        type: 'get',
+        success: function (res) {
+            if (res.sussess || res.statusCode === 200) {
+                window.location.href = '/';
+            } else {
+                handleApiError(res.error);
+            }
+        }, error: function (err) {
+            handleApiError(err);
+        }
+    });
+})
