@@ -25,6 +25,8 @@ public class LoginModel : PageModel
     public LogoForLoginModel? Logo { get; set; }
     [BindProperty]
     public LoginDataModel DataModel { get; set; } = default!;
+
+    [BindProperty(SupportsGet =true)]
     public string? ErrorMessage { get; set; }
 
     [BindProperty(SupportsGet = true)]
@@ -44,6 +46,13 @@ public class LoginModel : PageModel
                     URL = aboutUs.Data.LogoImage.Url,
                 } : null;
         }
+
+        if (!string.IsNullOrWhiteSpace(Request.Query["errorMessage"]))
+        {
+            ErrorMessage = Request.Query["errorMessage"];
+        }
+
+
     }
 
     public async Task<IActionResult> OnPostLogin()
