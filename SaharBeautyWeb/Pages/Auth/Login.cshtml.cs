@@ -4,6 +4,7 @@ using SaharBeautyWeb.Models.Entities.Auth;
 using SaharBeautyWeb.Models.Entities.Auth.Dtos;
 using SaharBeautyWeb.Services.AboutUs;
 using SaharBeautyWeb.Services.Auth;
+using SaharBeautyWeb.Services.UserPanels.LogOut;
 
 namespace SaharBeautyWeb.Pages.Auth;
 
@@ -11,12 +12,15 @@ public class LoginModel : PageModel
 {
     private readonly IAboutUsService _aboutUsService;
     private readonly IAutheService _authService;
+    private readonly ILogoutService _logOutService;
 
     public LoginModel(IAboutUsService aboutUsService,
-        IAutheService authService)
+        IAutheService authService,
+        ILogoutService logOutService)
     {
         _aboutUsService = aboutUsService;
         _authService = authService;
+        _logOutService = logOutService;
     }
     public LogoForLoginModel? Logo { get; set; }
     [BindProperty]
@@ -81,6 +85,38 @@ public class LoginModel : PageModel
         ErrorMessage = result.Error ?? "ورود ناموفق دوباره تلاش کنید ";
 
         return Page();
+    }
 
+    public async Task<IActionResult> OnGetRemoveToken()
+    {
+        var token = HttpContext.Session.GetString("RefreshToken");
+        if (token != null)
+        {
+            var result = await _logOutService.LogOutToken(token);
+            if (result.IsSuccess)
+            {
+                HttpContext.Session.Remove("JwtToken");
+                HttpContext.Session.Remove("RefreshToken");
+                HttpContext.Session.Clear();
+                return new JsonResult(new
+                {
+                    sussess = result.IsSuccess,
+                    statusCode = result.StatusCode
+                });
+            }
+            else
+            {
+                return new JsonResult(new
+                {
+                    success = result.IsSuccess,
+                    error = result.Error,
+                    statusCode = result.StatusCode
+                });
+            }
+        }
+        return new JsonResult(new
+        {
+            success = false,
+        });
     }
 }

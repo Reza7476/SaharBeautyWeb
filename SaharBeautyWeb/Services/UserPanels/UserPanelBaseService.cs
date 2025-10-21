@@ -1,6 +1,5 @@
 ﻿using SaharBeautyWeb.Models.Commons.Dtos;
 using System.Text.Json;
-using static SaharBeautyWeb.Services.Contracts.CrudApiService;
 
 public class UserPanelBaseService
 {
@@ -136,9 +135,6 @@ public class UserPanelBaseService
             StatusCode = (int)response.StatusCode
         };
     }
-
-
-
 
     private async Task<ApiResultDto<T>> PutAndPatchMethod<T>(HttpRequestMessage request)
     {

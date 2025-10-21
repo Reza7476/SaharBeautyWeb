@@ -38,9 +38,9 @@ public class AuthService : IAutheService
     public async Task<ApiResultDto<GetTokenDto?>> RefreshToken(string refreshToken, string token)
     {
         var url = $"{_apiUrl}/{refreshToken}/refresh-token";
-        
+
         using var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
-        requestMessage.Headers.Authorization=new AuthenticationHeaderValue("Bearer", token);
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var result = await _apiService.SendFromRoutAsyncAsPost<GetTokenDto?>(requestMessage);
         return result;
@@ -76,7 +76,7 @@ public class AuthService : IAutheService
         return result;
     }
 
-    public async Task<ApiResultDto<GetOtpRequestForRegisterDto>> 
+    public async Task<ApiResultDto<GetOtpRequestForRegisterDto>>
         SendOtpResetPassword(string mobileNumber)
     {
         var url = $"{_apiUrl}/forget-pass-step-one";
