@@ -65,3 +65,12 @@ $(document).ajaxError(function (event, jqxhr) {
     // در غیر این صورت به صفحه خطا برو
     window.location.href = '/Error';
 });
+
+
+$(document).ajaxError(function (event, xhr, settings, error) {
+    if (xhr.status === 401 || xhr.responseText === "SessionExpired") {
+        const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+        window.location.href = `/Auth/Login?returnUrl=${returnUrl}`;
+        return;
+    }
+});
