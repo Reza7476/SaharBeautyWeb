@@ -83,6 +83,10 @@
                         span.text(messages.join(", "));
                         span.css("color", "red");
                     });
+                } else {
+                    errorP.text(res.error);
+                    errorP.css("display", "block");
+                    otpBtn.prop("disabled", false);
                 }
             },
             error: function (err) {
