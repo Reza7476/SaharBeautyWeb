@@ -35,8 +35,9 @@
                     return
                 }
             },
-            error: function (err) {
-                handleApiError(err);
+            error: function (xhr) {
+
+                handleApiError(xhr);
                 btnSend.prop("disabled", false);
                 return;
             }
