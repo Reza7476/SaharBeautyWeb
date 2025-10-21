@@ -33,15 +33,18 @@ public class RegisterModel : AjaxBasePageModel
 
     public async Task<IActionResult> OnPostSendOtp()
     {
-        if (StepOne.MobileNumber == null)
-        {
-            return HandleApiAjxResult(new ApiResultDto<String>()
-            {
-                Data = "شماره موبایل نامعتبر ",
-                Error = "شماره موبایل نامعتبر",
-                IsSuccess = false,
-                StatusCode = 404
+        var stepOneError = ModelState
+            .Where(x => x.Key.StartsWith("StepOne.") &&
+                   x.Value?.Errors.Count > 0)
+            .ToDictionary(kvp => kvp.Key,
+             kvp => kvp.Value!.Errors.Select(e => e.ErrorMessage).ToArray());
 
+        if (stepOneError.Any())
+        {
+            return new JsonResult(new
+            {
+                success = false,
+                errors = stepOneError
             });
         }
 

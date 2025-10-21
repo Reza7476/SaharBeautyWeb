@@ -1,7 +1,7 @@
-﻿$(() => {
+﻿
     var otpCountdown = null;
     $(document).on("click", "#step-one-btn", function (e) {
-        e.preventDefault();
+        //e.preventDefault();
         var errorP = $("#error-register");
         var otpRequestId = $("#Otp-request-id")[0];
         var form = $("#step-one-form")[0];
@@ -27,21 +27,29 @@
                         resetOtpTimer();
 
                         startTimer(120);
-                    } else {
-                        errorP.text("شماره تلفن ارسالی  معتبر نیست");
+                    } else if(res.statusCode===500) {
+                        errorP.text(res.error);
                         errorP.css("display", "block");
                         otpBtn.prop("disabled", false);
                     }
-                } else {
-                    errorP.text(res.error);
-                    errorP.css("display", "block");
+                } else if (res.errors) {
+
+                    Object.keys(res.errors).forEach(function (key) {
+                        const fieldName = key.replace("StepOne.", "");
+                        const messages = res.errors[key];
+                        const span = $(`span[data-valmsg-for='StepOne.${fieldName}']`);
+                        span.text(messages.join(", "));
+                        span.css("color", "red");
+                    });
                     otpBtn.prop("disabled", false);
+                    //location.reload();
                 }
             },
             error: function (err) {
                 errorP.text(err);
                 errorP.css("display", "block");
                 otpBtn.prop("disabled", false);
+              //  location.reload();
             }
         });
     })
@@ -202,4 +210,3 @@
     })
 
    
-})
