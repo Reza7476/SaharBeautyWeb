@@ -5,31 +5,118 @@
 }
 <link href="~/layout/assets/css/pages/treatmeants/treatmentdetails.css" rel="stylesheet" />
 
-@if (Model.Treatment != null)
-{
 
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-    <div class="service-details-area pt-100 pb-70">
-        <div class="container">
-           
-            <div class="details-spa">
-                <h3>@Model.Treatment.Title </h3>
-                <p>@Model.Treatment.Description</p>
-            </div>
-            <div class="offer-slider owl-theme owl-carousel">
-                @foreach (var item in Model.Treatment.Media)
-                {
-                    <div class="offer-item img-box">
-                        <img src="@item.URL" alt="Offer" >
-                    </div>
-                }
-            </div>
-
-            <div class="mt-4">
-                <a href="javascript:history.back()" class="btn btn-primary">
-                    بازگشت
-                </a>
+<div class="page-title-wrap">
+    <div class="page-title-area title-img-two">
+        <div class="title-shape">
+            <img src="~/Layout/assets/images/title/title-shape1.png" alt="Shape">
+        </div>
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="title-content">
+                    <h2>جزییات خدمات</h2>
+                    <ul>
+                        <li>
+                            <a href="/">خانه</a>
+                        </li>
+                        <li>من 
+                            <span>جزییات خدمات</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
+</div>
+
+
+@if (Model.Treatment != null)
+{
+    <div class="service-details-area pt-100 pb-70">
+        <div class="container">
+            <div class="details-img">
+                <img src="~/Layout/assets/images/services/service-details1.jpg" alt="Details">
+            </div>
+            <div class="details-spa">
+                <h3>@Model.Treatment.Title </h3>
+               
+            </div>
+            <div class="details-items">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="left">
+                            <p> @Model.Treatment.Description</p>
+                            <div class="preview-page">
+                                <a href="../../">
+                                    <i class="bx bx-chevron-right"></i>
+                                    بازگشت
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="right">
+                            <div class="swiper details-swiper">
+                                <div class="swiper-wrapper">
+                                    @foreach (var item in Model.Treatment.Media)
+                                    {
+                                        <div class="swiper-slide">
+                                            <img src="@item.URL" alt="Service">
+                                        </div>
+                                    }
+                                </div>
+
+                                <!-- دکمه‌های کنترل -->
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+@section Scripts {
+<script>
+    $(() => {
+            if ($(".details-swiper").length) {
+
+            // ساخت اسلایدر با تنظیمات دلخواه
+                var swiper = new Swiper(".details-swiper", {
+                loop: true, // تکرار بینهایت
+                autoplay: {
+                    delay: 3000, // هر 3 ثانیه یکبار عکس عوض شود
+                    disableOnInteraction: false, // بعد از کلیک متوقف نشود
+                },
+                pagination: {
+                    el: ".swiper-pagination", // نقطه‌های پایین اسلایدر
+                    clickable: true, // قابل کلیک بودن
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next", // دکمه بعدی
+                    prevEl: ".swiper-button-prev", // دکمه قبلی
+                },
+            });
+
+            // مثال: کلیک روی خود اسلایدر
+            $(document).on("click", ".swiper-wrapper", function () {
+                console.log("روی اسلایدر کلیک شد!");
+                // اینجا می‌تونی هر کاری بخوای انجام بدی
+                // مثلا swiper.slideNext(); برای رفتن به عکس بعدی
+            });
+
+        } else {
+            console.log("اسلایدر در این صفحه وجود ندارد.");
+        }
+    });
+</script>
 }

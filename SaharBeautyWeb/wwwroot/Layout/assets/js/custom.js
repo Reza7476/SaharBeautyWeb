@@ -1,4 +1,4 @@
-jQuery(function ($) {
+﻿jQuery(function ($) {
     'use strict';
 
     // Menu JS
@@ -256,3 +256,39 @@ function toggleTheme() {
       document.getElementById('slider').checked = true;
     }
 })();
+
+// وقتی صفحه کامل لود شد
+$(document).ready(function () {
+
+	// بررسی اینکه اسلایدر در صفحه وجود دارد یا نه
+	if ($(".mySwiper").length) {
+
+		// ساخت اسلایدر با تنظیمات دلخواه
+		var swiper = new Swiper(".mySwiper", {
+			loop: true, // تکرار بینهایت
+			autoplay: {
+				delay: 3000, // هر 3 ثانیه یکبار عکس عوض شود
+				disableOnInteraction: false, // بعد از کلیک متوقف نشود
+			},
+			pagination: {
+				el: ".swiper-pagination", // نقطه‌های پایین اسلایدر
+				clickable: true, // قابل کلیک بودن
+			},
+			navigation: {
+				nextEl: ".swiper-button-next", // دکمه بعدی
+				prevEl: ".swiper-button-prev", // دکمه قبلی
+			},
+		});
+
+		// مثال: کلیک روی خود اسلایدر
+		$(document).on("click", ".swiper-wrapper", function () {
+			console.log("روی اسلایدر کلیک شد!");
+			// اینجا می‌تونی هر کاری بخوای انجام بدی
+			// مثلا swiper.slideNext(); برای رفتن به عکس بعدی
+		});
+
+	} else {
+		console.log("اسلایدر در این صفحه وجود ندارد.");
+	}
+
+});
