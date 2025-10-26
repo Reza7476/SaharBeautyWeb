@@ -1,0 +1,78 @@
+﻿@page
+@model SaharBeautyWeb.Pages.UserPanels.Admin.WeeklySchedules.IndexModel
+@{
+    Layout = "_UserPanelLayout";
+}
+
+<link href="~/layout/admin/assets/css/pages/weeklyschedules/style.css" rel="stylesheet" />
+
+    <div class="weekly-schedule-container">
+        <h2>ساعات کاری</h2>
+
+        <table class="weekly-schedule-table">
+            <thead>
+                <tr>
+                    <th>روز هفته</th>
+                    <th>ساعت شروع</th>
+                    <th>ساعت پایان</th>
+                    <th>فعال</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var daysOfWeek = new[]
+                    {
+            new { NumberId = 0, Name = "شنبه" },
+            new { NumberId = 1, Name = "یک‌شنبه" },
+            new { NumberId = 2, Name = "دوشنبه" },
+            new { NumberId = 3, Name = "سه‌شنبه" },
+            new { NumberId = 4, Name = "چهارشنبه" },
+            new { NumberId = 5, Name = "پنج‌شنبه" },
+            new { NumberId = 6, Name = "جمعه" },
+            };
+                }
+
+                @for (int i = 0; i < daysOfWeek.Length; i++)
+                {
+                    var day = daysOfWeek[i];
+                    var schedule = Model.GetSchedules.FirstOrDefault(x => (int)x.DayOfWeek == day.NumberId);
+
+                    <tr data-day="@day.NumberId" data-id="@(schedule != null ? schedule.Id : 0)">
+
+                        <td>@day.Name</td>
+
+                        <td>
+                            <input type="time"
+                                   class="start-time"
+                                   value="@(schedule != null ? schedule.StartTime.ToString("HH:mm") : "")" />
+                        </td>
+
+                        <td>
+                            <input type="time"
+                                   class="end-time"
+                                   value="@(schedule != null ? schedule.EndTime.ToString("HH:mm") : "")" />
+                        </td>
+
+                        <td>
+                            <input type="checkbox"class="isActive"
+                            @(schedule?.IsActive == true ? "checked" : "") />
+                        </td>
+
+                        <td>
+                            <button type="button" class="save-btn save-day-schedule">اعمال تغییرات</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+
+@section Scripts {
+    <script>
+        var saveNewSchedule = '@Url.Page("Index", "SaveNewSchedule")';
+    </script>
+    <script src="~/layout/admin/assets/js/pages/userpanels/admin/weeklyschedules/schedule.js"></script>
+}
