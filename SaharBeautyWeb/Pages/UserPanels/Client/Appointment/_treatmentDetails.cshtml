@@ -1,0 +1,26 @@
+﻿@using SaharBeautyWeb.Models.Entities.WeeklySchedules.Models
+@model GetTreatmentForAppointmentModel
+
+<div class="service-details-card">
+    @if (!string.IsNullOrEmpty(Model.Image.Url))
+    {
+        <div class="service-image">
+            <img src="@Model.Image.Url" alt="@Model.Title" />
+        </div>
+    }
+
+    <h2>@Model.Title</h2>
+
+    <p class="service-description">
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            @Model.Description
+        }
+        else
+        {
+            <span>توضیحی برای این خدمت ثبت نشده است.</span>
+        }
+    </p>
+
+    
+</div>

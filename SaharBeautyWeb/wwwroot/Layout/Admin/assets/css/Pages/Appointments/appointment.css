@@ -1,0 +1,160 @@
+﻿:root {
+    --primary-color: #f9d5e5;
+    --primary-text: #333333;
+    --secondary-bg: #ffffff;
+    --accent-color: #f3c6d6;
+    --card-border: #e7c7d5;
+    --date-text: #777777;
+    --hour-text: #b94f6f;
+}
+
+body {
+    background-color: #f5f5f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--primary-text);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* کارت انتخاب خدمت */
+.service-select-card {
+    background-color: var(--secondary-bg);
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+}
+
+    .service-select-card label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .service-select-card select {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        border: 1px solid #ccc;
+        outline: none;
+    }
+
+/* جزئیات خدمت */
+.service-details-card {
+    background-color: var(--secondary-bg);
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+    .service-details-card .service-image {
+        width: 100%;
+        max-width: 300px; /* حداکثر عرض کارت */
+        height: 200px; /* ارتفاع ثابت */
+        margin: 0 auto 1rem auto;
+        overflow: hidden;
+        border-radius: 12px;
+    }
+
+        .service-details-card .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* تصویر پر کند و کراپ شود */
+            object-position: top; /* قسمت بالای تصویر حفظ شود */
+            border-radius: 12px;
+            display: block;
+        }
+
+    .service-details-card h2 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: #1e3a8a;
+    }
+
+    .service-details-card .service-description {
+        color: var(--date-text);
+        font-size: 0.95rem;
+        line-height: 1.4rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .service-details-card .service-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        font-size: 0.95rem;
+        color: var(--primary-text);
+    }
+
+        .service-details-card .service-info strong {
+            color: #1e3a8a;
+        }
+
+@media (min-width: 640px) {
+    .service-details-card .service-info {
+        flex-direction: row;
+        gap: 1.5rem;
+    }
+}
+
+/* گرید هفته */
+.week-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 20px;
+    direction: rtl;
+}
+
+/* کارت هر روز */
+.week-card {
+    background: linear-gradient(to bottom, var(--primary-color), var(--secondary-bg));
+    border: 1px solid var(--card-border);
+    border-radius: 1rem;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+    .week-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .week-card .day-name {
+        font-weight: bold;
+        color: #1e3a8a;
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .week-card .day-date {
+        color: var(--date-text);
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .week-card .hours {
+        display: inline-block;
+        background-color: var(--accent-color);
+        color: var(--hour-text);
+        padding: 0.25rem 0.6rem;
+        border-radius: 0.8rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }

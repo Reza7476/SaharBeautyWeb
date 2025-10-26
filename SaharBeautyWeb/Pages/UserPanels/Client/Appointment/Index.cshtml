@@ -1,0 +1,48 @@
+﻿@page
+@model SaharBeautyWeb.Pages.UserPanels.Client.Appointment.IndexModel
+@{
+    Layout = "_UserPanelLayout";
+}
+<link href="~/layout/admin/assets/css/pages/appointments/appointment.css" rel="stylesheet" />
+
+<div class="container">
+    <!-- عنوان صفحه -->
+    <h1 class="page-title">ساعت کاری سالن زیبایی</h1>
+
+    <!-- انتخاب خدمت -->
+    <div class="service-select-card">
+        <label for="serviceSelect">انتخاب خدمت</label>
+        <select id="serviceSelect">
+            <option selected disabled>انتخاب کنید...</option>
+            @foreach (var item in Model.AllTreatment)
+            {
+                <option value="@item.Title" data-id="@item.Id">@item.Title</option>
+            }
+        </select>
+    </div>
+
+    <!-- جزئیات خدمت -->
+    <div id="serviceDetails" class="service-details-card hidden">
+        <h2>جزئیات خدمت</h2>
+        <p id="serviceDesc">لطفاً یک خدمت را انتخاب کنید تا توضیحات نمایش داده شود.</p>
+    </div>
+
+    <!-- تقویم هفتگی -->
+    <div class="week-container">
+        @foreach (var day in Model.CurrentWeekDays)
+        {
+            <div class="week-card">
+                <div class="day-name">@day.PersianDay</div>
+                <div class="day-date">@day.PersianDate</div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/layout/admin/assets/js/pages/userpanels/clients/appointments/appointment.js"></script>
+<script>
+    var getTreatmentDetails = '@Url.Page("Index","GetTreatmentDetails")';
+</script>
+
+}
