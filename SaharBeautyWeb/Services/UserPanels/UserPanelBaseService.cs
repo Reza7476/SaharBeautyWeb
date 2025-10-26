@@ -81,10 +81,51 @@ public class UserPanelBaseService
 
 
 
-    protected Task<ApiResultDto<T>>
-        SendGetRequestAsync<T>(HttpMethod get, string url)
+    protected async Task<ApiResultDto<T>>
+        SendGetRequestAsync<T>(string url, HttpContent? content = null)
     {
-        throw new NotImplementedException();
+        var request = new HttpRequestMessage(HttpMethod.Get, url)
+        {
+            Content = content
+        };
+
+        var response = await _client.SendAsync(request);
+        var raw = await response.Content.ReadAsStringAsync();
+        if (response.IsSuccessStatusCode)
+        {
+            if (raw != "")
+            {
+
+                var data = JsonSerializer.Deserialize<T>(
+                    raw,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                return new ApiResultDto<T>
+                {
+                    Data = data,
+                    IsSuccess = true,
+                    StatusCode = (int)response.StatusCode
+                };
+            }
+            else
+            {
+                return new ApiResultDto<T>
+                {
+                    IsSuccess = true,
+                    StatusCode = (int)response.StatusCode
+                };
+            }
+        }
+
+        return new ApiResultDto<T>
+        {
+            IsSuccess = false,
+            Error = raw,
+            StatusCode = (int)response.StatusCode
+        };
+
     }
 
 
@@ -180,7 +221,7 @@ public class UserPanelBaseService
 
     protected Task<ApiResultDto<T>>
         GetAsync<T>(string url) =>
-        SendGetRequestAsync<T>(HttpMethod.Get, url);
+        SendGetRequestAsync<T>( url);
 
 
     protected Task<ApiResultDto<T>>
