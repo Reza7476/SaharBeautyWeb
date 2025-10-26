@@ -3,6 +3,7 @@ using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 using System.Text.Json;
 using System.Text;
+using SaharBeautyWeb.Models.Entities.Treatments.Models;
 
 namespace SaharBeautyWeb.Services.UserPanels.Treatments;
 
@@ -61,6 +62,20 @@ public class TreatmentUserPanelService : UserPanelBaseService, ITreatmentUserPan
 
     }
 
+    public async Task<ApiResultDto<List<GetAllTreatmentForAppointmentModel>>> GetAllForAppointment()
+    {
+        var url = $"{_apiUrl}/all-for-appointment";
+        var result = await GetAsync<List<GetAllTreatmentForAppointmentModel>>(url);
+        return result;
+    }
+
+    public async Task<ApiResultDto<GetTreatmentForAppointmentDto>> GetDetails(long id)
+    {
+        var url = $"{_apiUrl}/{id}/for-appointment";
+
+        var result = await GetAsync<GetTreatmentForAppointmentDto>(url);
+        return result;
+    }
 
     public async Task<ApiResultDto<object>>
         UpdateTitleAndDescription(UpdateTreatmentTitleAndDescriptionDto dto)

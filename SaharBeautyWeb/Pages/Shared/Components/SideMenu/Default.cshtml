@@ -11,7 +11,7 @@
                 <li class="menu-title" data-key="t-menu">منو</li>
 
                 <li>
-                    <a href="index.html">
+                    <a href="/UserPanels/index.html">
                         <i data-feather="home"></i>
                         <span data-key="t-dashboard">داشبورد</span>
                     </a>
@@ -84,6 +84,52 @@
                     </ul>
                 </li>
                 }
+
+                @if (Model.Roles.Any() && Model.Roles.Contains("Client"))
+                {
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i data-feather="grid"></i>
+                            <span data-key="t-apps">حساب کاربری </span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li>
+                                <a href="/userPanels/Client/Appointment">
+                                    <span data-key="t-calendar">رزرو نوبت </span>
+                                </a>
+                            </li>
+                    @*  <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                        <span data-key="t-email">ایمیل</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="apps-email-inbox.html" data-key="t-inbox">دریافتی</a></li>
+                        <li><a href="apps-email-read.html" data-key="t-read-email">خوانده شده</a></li>
+                        </ul>
+                        </li>
+                        <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                        <span data-key="t-invoices">صورتحساب</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="apps-invoices-list.html" data-key="t-invoice-list">لیست صورتحساب ها</a></li>
+                        <li><a href="apps-invoices-detail.html" data-key="t-invoice-detail">جزئیات صورتحساب</a></li>
+                        </ul>
+                        </li>
+                        <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                        <span data-key="t-contacts">ارتباطات</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="apps-contacts-grid.html" data-key="t-user-grid">ناحیه کاربری</a></li>
+                        <li><a href="apps-contacts-list.html" data-key="t-user-list">لیست کاربران</a></li>
+                        <li><a href="apps-contacts-profile.html" data-key="t-profile">پروفایل</a></li>
+                        </ul>
+                        </li> *@
+                        </ul>
+                    </li>
+                }
+
 
                @*  <li>
                     <a href="javascript: void(0);" class="has-arrow">
