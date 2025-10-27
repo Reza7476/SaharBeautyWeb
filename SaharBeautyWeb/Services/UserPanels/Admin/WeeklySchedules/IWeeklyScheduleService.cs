@@ -9,4 +9,5 @@ public interface IWeeklyScheduleService : IService
     Task<ApiResultDto<List<GetWeeklySchedulesDto>>> GetSchedules();
     Task<ApiResultDto<object>> Add(AddNewScheduleDto dto);
     Task<ApiResultDto<object>> Edit(EditScheduleDto dto);
+    Task<ApiResultDto<GetScheduleDayDto?>> GetDaySchedule(DayWeek dayWeek);
 }

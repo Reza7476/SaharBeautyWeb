@@ -1,11 +1,11 @@
 ﻿:root {
-    --primary-color: #f9d5e5;
+    --primary-color: #e6e0ff; /* بنفش خیلی روشن برای پس‌زمینه کارت‌ها */
     --primary-text: #333333;
     --secondary-bg: #ffffff;
-    --accent-color: #f3c6d6;
-    --card-border: #e7c7d5;
+    --accent-color: #d3c6ff; /* بنفش روشن برای اسلات‌ها */
+    --card-border: #c9bfff; /* رنگ حاشیه کارت‌ها */
     --date-text: #777777;
-    --hour-text: #b94f6f;
+    --hour-text: #6a4dff; /* بنفش پررنگ برای متن ساعت */
 }
 
 body {
@@ -61,10 +61,11 @@ body {
     transition: all 0.3s ease;
     text-align: center;
 }
+
     .service-details-card .service-image {
         width: 100%;
-        max-width: 300px; /* حداکثر عرض کارت */
-        height: 200px; /* ارتفاع ثابت */
+        max-width: 300px;
+        height: 200px;
         margin: 0 auto 1rem auto;
         overflow: hidden;
         border-radius: 12px;
@@ -73,8 +74,8 @@ body {
         .service-details-card .service-image img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* تصویر پر کند و کراپ شود */
-            object-position: top; /* قسمت بالای تصویر حفظ شود */
+            object-fit: cover;
+            object-position: top;
             border-radius: 12px;
             display: block;
         }
@@ -82,7 +83,7 @@ body {
     .service-details-card h2 {
         font-size: 1.2rem;
         margin-bottom: 0.5rem;
-        color: #1e3a8a;
+        color: #5a3fff; /* بنفش تیره برای عنوان */
     }
 
     .service-details-card .service-description {
@@ -101,7 +102,7 @@ body {
     }
 
         .service-details-card .service-info strong {
-            color: #1e3a8a;
+            color: #5a3fff;
         }
 
 @media (min-width: 640px) {
@@ -129,6 +130,7 @@ body {
     text-align: center;
     box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
 }
 
     .week-card:hover {
@@ -136,9 +138,15 @@ body {
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
+    .week-card.selected {
+        background-color: #d3c6ff; /* بنفش روشن برای کارت انتخاب شده */
+        border: 1px solid #6a4dff;
+        cursor: default;
+    }
+
     .week-card .day-name {
         font-weight: bold;
-        color: #1e3a8a;
+        color: #5a3fff;
         font-size: 1.1rem;
         margin-bottom: 0.3rem;
     }
@@ -158,3 +166,38 @@ body {
         font-size: 0.8rem;
         font-weight: 500;
     }
+
+/* بخش نمایش بازه‌های زمانی */
+.time-slot-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.time-slot-card {
+    background-color: var(--accent-color);
+    color: var(--hour-text);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+    .time-slot-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+/* ریسپانسیو: نمایش روز و ساعت‌ها زیر هم در موبایل */
+@media (max-width: 640px) {
+    .week-container {
+        grid-template-columns: 1fr;
+    }
+
+    .time-slot-container {
+        justify-content: flex-start;
+    }
+}
