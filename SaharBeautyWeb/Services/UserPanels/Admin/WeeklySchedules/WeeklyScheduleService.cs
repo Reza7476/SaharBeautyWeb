@@ -51,4 +51,12 @@ public class WeeklyScheduleService : UserPanelBaseService, IWeeklyScheduleServic
         var result = await PutAsync<object>(url, content);
         return result;
     }
+
+    public async Task<ApiResultDto<GetScheduleDayDto?>> GetDaySchedule(DayWeek dayWeek)
+    {
+
+        var url = $"{_apiUrl}/{dayWeek}/day-schedule";
+        var result = await GetAsync<GetScheduleDayDto?>(url);
+        return result;
+    }
 }
