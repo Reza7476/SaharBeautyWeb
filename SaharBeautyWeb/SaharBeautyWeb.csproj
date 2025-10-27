@@ -61,8 +61,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Entities\AboutUs\Landing\" />
-  </ItemGroup>
-
 </Project>

@@ -1,5 +1,7 @@
-﻿using SaharBeautyWeb.Services.Auth;
+﻿
+using SaharBeautyWeb.Services.Auth;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 public class JwtAuthMiddleware
 {
@@ -18,7 +20,7 @@ public class JwtAuthMiddleware
         return path.StartsWith("/") && !path.StartsWith("//") && !path.StartsWith("/\\") && !path.Contains("://");
     }
 
-    private static async Task HandleUnauthenticatedAsync(HttpContext context ,string returnUrl,string? message = null)
+    private static async Task HandleUnauthenticatedAsync(HttpContext context, string returnUrl, string? message = null)
     {
         var isAjax = context.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
         if (isAjax)
@@ -52,34 +54,33 @@ public class JwtAuthMiddleware
             var token = context.Session.GetString("JwtToken");
             var refreshToken = context.Session.GetString("RefreshToken");
             var returnUrl = (context.Request.Path + context.Request.QueryString).ToString();
-            
+
             if (!IsLocalPath(returnUrl))
             {
                 returnUrl = "/";
             }
             var encodedReturnUrl = Uri.EscapeDataString(returnUrl);
 
-            if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(refreshToken))
+            if (string.IsNullOrWhiteSpace(token) ||
+                string.IsNullOrWhiteSpace(refreshToken))
             {
                 await HandleUnauthenticatedAsync(context, returnUrl, "نیاز به ورود مجدد دارید");
                 return;
             }
 
-            JwtSecurityToken? jwt = null;
-            try
-            {
-                var handler = new JwtSecurityTokenHandler();
-                jwt = handler.ReadJwtToken(token);
-            }
-            catch
+
+            var jwt = ValidateAndExtractJwt(token);
+            if (jwt == null)
             {
                 await HandleUnauthenticatedAsync(context, returnUrl, "توکن نامعتبر است");
                 return;
             }
 
+
+
             var exp = jwt!.ValidTo; // UTC
             var timeRemaining = exp - DateTime.UtcNow;
-            
+
             if (timeRemaining <= TimeSpan.FromMinutes(1))
             {
                 try
@@ -108,10 +109,55 @@ public class JwtAuthMiddleware
                 }
             }
 
-            await _next(context);
-            return;
+            if (!HasValidForPath(jwt, path, context))
+            {
+                context.Response.Redirect("/Auth/AccessDenied");
+                return;
+            }
         }
 
         await _next(context);
+    }
+
+    private static bool HasValidForPath(
+        JwtSecurityToken jwt,
+        string path,
+        HttpContext context)
+    {
+        var result = true;
+        var roles = jwt.Claims
+                   .Where(c => c.Type == ClaimTypes.Role ||
+                   c.Type.EndsWith("/claims/role"))
+                   .Select(c => c.Value)
+                   .ToList();
+        if (path.StartsWith("/userpanels/admin",
+            StringComparison.OrdinalIgnoreCase) &&
+            !roles.Contains("Admin"))
+        {
+            context.Response.Redirect("/Auth/AccessDenied");
+            result = false;
+        }
+
+        if (path.StartsWith("/userpanels/client",
+            StringComparison.OrdinalIgnoreCase) &&
+            !roles.Contains("Client"))
+        {
+            context.Response.Redirect("/Auth/AccessDenied");
+            result = false;
+        }
+        return result;
+    }
+
+    private static JwtSecurityToken? ValidateAndExtractJwt(string token)
+    {
+        try
+        {
+            var handler = new JwtSecurityTokenHandler();
+            return handler.ReadJwtToken(token);
+        }
+        catch
+        {
+            return null;
+        }
     }
 }

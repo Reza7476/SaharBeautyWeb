@@ -1,0 +1,26 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    Layout = null; 
+    ViewData["Title"] = "دسترسی غیرمجاز";
+}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="~/layout/admin/assets/css/pages/auth/access-denied.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="access-container">
+        <div class="access-box">
+            <h1>🚫 دسترسی غیرمجاز</h1>
+            <p>شما مجوز ورود به این بخش را ندارید.</p>
+            <a href="/" class="back-btn">بازگشت به صفحه اصلی</a>
+        </div>
+    </div>
+</body>
+</html>
