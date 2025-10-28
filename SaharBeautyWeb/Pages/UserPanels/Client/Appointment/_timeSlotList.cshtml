@@ -4,8 +4,8 @@
 <div class="time-slot-container">
     @foreach (var slot in Model)
     {
-        <div class="time-slot-card">
-            <span>@slot.Start.ToString("HH:mm")</span> - <span>@slot.End.ToString("HH:mm")</span>
+        <div class="time-slot-card " data-start="@slot.Start.ToString("HH:mm")" >
+            <span class="selected-time" >@slot.Start.ToString("HH:mm")</span> - <span>@slot.End.ToString("HH:mm")</span>
 
         </div>
     }

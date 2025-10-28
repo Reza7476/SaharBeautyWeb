@@ -73,6 +73,8 @@ $(document).ready(function () {
                         return;
                     }
                 }
+
+                $("#input-treatmentId").val(serviceId);
                 $("#serviceDetails").html(res).removeClass("hidden");
                 $(".week-card").removeClass("selected").prop("disabled", false);
             }
@@ -84,7 +86,7 @@ $(document).ready(function () {
         var dayCard = $(this);
         var day = dayCard.data("number");
         var duration = $("#treatment-duration").val();
-
+        var date = dayCard.data("milady");
         // پاک کردن کلاس انتخاب شده قبلی
         $(".week-card").removeClass("selected").prop("disabled", false);
 
@@ -104,6 +106,8 @@ $(document).ready(function () {
                     }
                 }
 
+                $("#input-duration").val(duration);
+                $("#input-date").val(date);
                 // حذف محتوای قبلی
                 $(".time-slot-container").remove();
 
@@ -133,4 +137,48 @@ $(document).ready(function () {
             }
         }
     });
+
+    $(document).on("click", ".time-slot-card", function () {
+
+        var selectedTime = $(this).data("start");
+
+        $("#input-time").val(selectedTime);
+
+        $(".time-slot-card").removeClass("selected");
+        $(this).addClass("selected");
+    })
+
+    $(document).on("click", "#reserve-btn", function (e) {
+        e.preventDefault();
+        var form = $("#reserveForm")[0];
+        var formData = new FormData(form);
+        $.ajax({
+            url: reserveAppointment,
+            type: "Post",
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (res) {
+                if (res.success) {
+                    location.reload();
+                }
+                else if (res.statusCode == 400) {
+                    Object.keys(res.error).forEach(function (key) {
+                        const fieldName = key.replace("AppointmentModel.", "");
+                        const messages = res.error[key];
+                        const span = $(`span[data-valmsg-for='AppointmentModel.${fieldName}']`);
+                        span.text(messages.join(", "));
+                        span.css("color", "red");
+                    });
+                } else if (res.statusCode != 200 || res.statusCode != 400) {
+                    handleApiError(res.error);
+                }
+            },
+            error: function (res) {
+
+            }
+        });
+    })
+
+
 });
