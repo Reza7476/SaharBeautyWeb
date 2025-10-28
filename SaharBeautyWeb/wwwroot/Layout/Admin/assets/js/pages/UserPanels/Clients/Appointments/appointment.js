@@ -95,7 +95,7 @@ $(document).ready(function () {
 
         $.ajax({
             url: getWeeklySchedule,
-            data: { dayWeek: day, duration: duration },
+            data: { dayWeek: day, duration: duration ,date:date},
             type: 'GET',
             success: function (res, status, xhr) {
                 const contentType = xhr.getResponseHeader("content-type") || "";
