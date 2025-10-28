@@ -1,12 +1,27 @@
 ﻿@using SaharBeautyWeb.Models.Entities.Appointments.Models
 @model List<TimeSlotModel>
 
-<div class="time-slot-container">
+@* <div class="time-slot-container">
     @foreach (var slot in Model)
     {
         <div class="time-slot-card " data-start="@slot.Start.ToString("HH:mm")" >
             <span class="selected-time" >@slot.Start.ToString("HH:mm")</span> - <span>@slot.End.ToString("HH:mm")</span>
 
+        </div>
+    }
+</div> *@
+
+<div class="time-slot-container">
+    @foreach (var slot in Model)
+    {
+        var slotClass = slot.IsActive ? "time-slot-card active" : "time-slot-card inactive";
+        <div class="@slotClass"
+             data-start="@slot.Start.ToString("HH:mm")"
+             data-end="@slot.End.ToString("HH:mm")"
+        @(slot.IsActive ? "" : "title='رزرو شده'")>
+
+            <span class="selected-time">@slot.Start.ToString("HH:mm")</span> -
+            <span>@slot.End.ToString("HH:mm")</span>
         </div>
     }
 </div>

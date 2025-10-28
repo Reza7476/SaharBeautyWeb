@@ -2,8 +2,8 @@
 
 public class TimeSlotModel
 {
-    public DateTime Start { get; set; } 
-    public DateTime End { get; set; }
+    public TimeOnly Start { get; set; } 
+    public TimeOnly End { get; set; }
 
-    public string Display => $"{Start:HH:mm} - {End:HH:mm}";
+    public bool IsActive { get; set; }
 }

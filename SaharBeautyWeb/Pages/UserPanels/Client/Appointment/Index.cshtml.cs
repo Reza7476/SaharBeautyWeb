@@ -116,11 +116,13 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
 
         }
 
-        public async Task<IActionResult> OnGetGetWeeklySchedule(DayWeek dayWeek, int duration)
+        public async Task<IActionResult> OnGetGetWeeklySchedule(DayWeek dayWeek, int duration, DateTime date)
         {
             var result = await _scheduleService.GetDaySchedule(dayWeek);
+            var booked = await _appointmentService.GetBookedByDate(date);
 
-            if (result.IsSuccess && result.Data != null)
+
+            if ((result.IsSuccess && result.Data != null)&&booked.IsSuccess)
             {
                 var slots = new List<TimeSlotModel>();
                 var start = result.Data.StartTime;
@@ -146,13 +148,29 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
 
                     slots.Add(new TimeSlotModel
                     {
-                        Start = currentTime,
-                        End = nextTime
+                        Start = TimeOnly.FromDateTime(currentTime),
+                        End = TimeOnly.FromDateTime( nextTime),
+                        IsActive=true
                     });
 
                     currentTime = nextTime;
                 }
 
+                if (booked.IsSuccess && booked.Data != null)
+                {
+                    foreach (var slot in slots)
+                    {
+                        foreach (var b in booked.Data)
+                        {
+                            // بررسی تداخل زمانی
+                            if (slot.Start < b.EndDate && b.StartDate < slot.End)
+                            {
+                                slot.IsActive = false;
+                                break;
+                            }
+                        }
+                    }
+                }
 
                 return HandleApiAjaxPartialResult(
                     result,

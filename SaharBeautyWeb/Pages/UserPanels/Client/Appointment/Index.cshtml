@@ -31,8 +31,9 @@
     <div class="week-container">
         @foreach (var day in Model.CurrentWeekDays)
         {
+           
             <div class="week-card" data-number="@day.Day" data-milady="@day.Date">
-               @*  <div style="display:none" data-milady="@day.Date"></div> *@
+              
                 <div class="day-name">@day.PersianDay</div>
                 <div class="day-date">@day.PersianDate</div>
             </div>
