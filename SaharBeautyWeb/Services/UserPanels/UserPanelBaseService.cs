@@ -11,8 +11,8 @@ public class UserPanelBaseService
     }
 
     protected async Task<ApiResultDto<T>> SendPostRequestAsync<T>(
-        string url,
-        HttpContent? content = null)
+    string url,
+    HttpContent? content = null)
     {
         var request = new HttpRequestMessage(HttpMethod.Post, url)
         {
@@ -24,15 +24,28 @@ public class UserPanelBaseService
 
         if (response.IsSuccessStatusCode)
         {
-            if (raw != "")
+            if (!string.IsNullOrEmpty(raw))
             {
+                T data;
 
-                var data = JsonSerializer.Deserialize<T>(
-                    raw,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    });
+                // اگر
+                // T
+                // رشته است، مستقیم مقدار را بگیریم
+                if (typeof(T) == typeof(string))
+                {
+                    object temp = raw.Trim('"'); // در صورتی که رشته کوتیشن دارد
+                    data = (T)temp;
+                }
+                else
+                {
+                    data = JsonSerializer.Deserialize<T>(
+                        raw,
+                        new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        });
+                }
+
                 return new ApiResultDto<T>
                 {
                     Data = data,
@@ -57,6 +70,7 @@ public class UserPanelBaseService
             StatusCode = (int)response.StatusCode
         };
     }
+
 
 
     protected async Task<ApiResultDto<T>>
@@ -221,7 +235,7 @@ public class UserPanelBaseService
 
     protected Task<ApiResultDto<T>>
         GetAsync<T>(string url) =>
-        SendGetRequestAsync<T>( url);
+        SendGetRequestAsync<T>(url);
 
 
     protected Task<ApiResultDto<T>>

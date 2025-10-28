@@ -1,61 +1,4 @@
-﻿@* @page
-@model SaharBeautyWeb.Pages.UserPanels.Client.Appointment.IndexModel
-@{
-    Layout = "_UserPanelLayout";
-}
-<link href="~/layout/admin/assets/css/pages/appointments/appointment.css" rel="stylesheet" />
-
-<div class="container">
-
-    <h1 class="page-title">ساعت کاری  </h1>
-
-    <div class="service-select-card">
-        <label for="serviceSelect">انتخاب خدمت</label>
-        <select id="serviceSelect">
-            <option selected disabled>انتخاب کنید...</option>
-            @foreach (var item in Model.AllTreatment)
-            {
-                <option value="@item.Title" data-id="@item.Id">@item.Title</option>
-            }
-        </select>
-    </div>
-
-
-    <div id="serviceDetails" class="service-details-card hidden">
-        <h2>جزئیات خدمت</h2>
-        <p id="serviceDesc">لطفاً یک خدمت را انتخاب کنید تا توضیحات نمایش داده شود.</p>
-    </div>
-
-    <div class="week-container">
-        @foreach (var day in Model.CurrentWeekDays)
-        {
-            <div class="week-card"
-                data-number="@day.Day">
-                <div class="day-name">@day.PersianDay</div>
-                <div class="day-date">@day.PersianDate</div>
-            </div>
-        }
-    </div>
-    <!-- 🔹 بخش نمایش ساعات کاری (پارشیال) -->
-    <div id="timeSlotContainer" class="time-slot-section">
-       
-    </div>
-
-
-
-</div>
-
-@section Scripts {
-    <script src="~/layout/admin/assets/js/pages/userpanels/clients/appointments/appointment.js"></script>
-    <script>
-        var getTreatmentDetails = '@Url.Page("Index", "GetTreatmentDetails")';
-        var getWeeklySchedule = '@Url.Page("Index","GetWeeklySchedule")';
-    </script>
-
-}
- *@
-
-@page
+﻿@page
 @model SaharBeautyWeb.Pages.UserPanels.Client.Appointment.IndexModel
 @{
     Layout = "_UserPanelLayout";
@@ -88,15 +31,33 @@
     <div class="week-container">
         @foreach (var day in Model.CurrentWeekDays)
         {
-            <div class="week-card" data-number="@day.Day">
+            <div class="week-card" data-number="@day.Day" data-milady="@day.Date">
+               @*  <div style="display:none" data-milady="@day.Date"></div> *@
                 <div class="day-name">@day.PersianDay</div>
                 <div class="day-date">@day.PersianDate</div>
             </div>
         }
     </div>
 
-    <!-- 🔹 بخش نمایش ساعات کاری (پارشیال) -->
+    <!-- partial time-->
+
     <div id="timeSlotContainer" class="time-slot-section"></div>
+
+    <form method="post" id="reserveForm" asp-page-handler="Reserve" class="reserve-form">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="AppointmentModel.TreatmentId" id="input-treatmentId" />
+        <span asp-validation-for="AppointmentModel.TreatmentId"></span>
+        <input type="hidden" asp-for="AppointmentModel.Duration" id="input-duration" />
+        <input type="hidden" asp-for="AppointmentModel.DateOnly" id="input-date" />
+        <span asp-validation-for="AppointmentModel.DateOnly"></span>
+        <input type="hidden" asp-for="AppointmentModel.TimeOnly" id="input-time" />
+        <span asp-validation-for="AppointmentModel.TimeOnly"></span>
+
+        <button type="submit" class="btn btn-primary reserve-btn" id="reserve-btn">
+            ثبت نوبت
+        </button>
+    </form>
 
 </div>
 
@@ -105,5 +66,7 @@
     <script>
         var getTreatmentDetails = '@Url.Page("Index", "GetTreatmentDetails")';
         var getWeeklySchedule = '@Url.Page("Index", "GetWeeklySchedule")';
+        var reserveAppointment = '@Url.Page("Index", "Reserve")';
+
     </script>
 }
