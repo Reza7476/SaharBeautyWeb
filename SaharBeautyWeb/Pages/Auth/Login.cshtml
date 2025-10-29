@@ -4,54 +4,70 @@
     Layout = null;
 }
 
-<script src="~/Layout/Admin/assets/libs/jquery/jquery.min.js"></script>
-<link href="~/layout/admin/assets/css/pages/auth/auth.css" rel="stylesheet" />
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ورود به سالن زیبایی</title>
+
+    <link href="~/layout/admin/assets/css/pages/auth/auth.css" rel="stylesheet" />
+    <script src="~/Layout/Admin/assets/libs/jquery/jquery.min.js"></script>
+</head>
 
 
-<div class="login-page">
-    <div class="form-card login-card">
-        <div class="form-header">
-            @if (Model.Logo != null)
-            {
-                <img src="@Model.Logo.URL" class="logo" alt="Beauty Salon" />
-            }
-            <h1>ورود به سالن زیبایی</h1>
-            <p>زیبایی شما، تخصص ماست ✨</p>
+<body>
+
+
+
+
+    <div class="login-page">
+        <div class="form-card login-card">
+            <div class="form-header">
+                @if (Model.Logo != null)
+                {
+                    <img src="@Model.Logo.URL" class="logo" alt="Beauty Salon" />
+                }
+                <h1>ورود به سالن زیبایی</h1>
+                <p>زیبایی شما، تخصص ماست ✨</p>
+            </div>
+
+            <form method="post" class="login-form" asp-page-handler="Login">
+                <input type="hidden" asp-for="ReturnUrl" />
+
+                <div class="form-group">
+                    <label asp-for="DataModel.UserName">نام کاربری</label>
+                    <input asp-for="DataModel.UserName" type="text" class="log-in" placeholder="نام کاربری" required />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="DataModel.Password">رمز عبور</label>
+                    <input asp-for="DataModel.Password" type="password" class="log-in" placeholder="••••••••" required />
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="error-message" id="error-div">@Model.ErrorMessage</div>
+                }
+
+                <button type="submit" class="login-button">ورود</button>
+
+                <p class="register-link">
+                    حساب کاربری ندارید؟ <a href="/auth/register">ثبت‌نام کنید</a>
+                </p>
+                <p class="register-link">
+                    رمز عبور خود را فراموش کرده اید؟ <a href="/auth/resetPassword">فراموشی رمز عبور</a>
+                </p>
+                <p class="register-link">
+                    بازگشت به صفحه اصلی <a href="/">بازگشت</a>
+                </p>
+            </form>
         </div>
-
-        <form method="post" class="login-form" asp-page-handler="Login">
-            <input type="hidden" asp-for="ReturnUrl" />
-
-            <div class="form-group">
-                <label asp-for="DataModel.UserName">نام کاربری</label>
-                <input asp-for="DataModel.UserName" type="text" class="log-in" placeholder="نام کاربری" required />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="DataModel.Password">رمز عبور</label>
-                <input asp-for="DataModel.Password" type="password" class="log-in" placeholder="••••••••" required />
-            </div>
-
-            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-            {
-                <div class="error-message" id="error-div">@Model.ErrorMessage</div>
-            }
-
-            <button type="submit" class="login-button">ورود</button>
-
-            <p class="register-link">
-                حساب کاربری ندارید؟ <a href="/auth/register">ثبت‌نام کنید</a>
-            </p>
-            <p class="register-link">
-                رمز عبور خود را فراموش کرده اید؟ <a href="/auth/resetPassword">فراموشی رمز عبور</a>
-            </p>
-            <p class="register-link">
-                بازگشت به صفحه اصلی <a href="/">بازگشت</a>
-            </p>
-        </form>
     </div>
-</div>
 
 
 
-<script src="~/layout/admin/assets/js/pages/userpanels/auth/login.js"></script>
+    <script src="~/layout/admin/assets/js/pages/userpanels/auth/login.js"></script>
+</body>
+</html>

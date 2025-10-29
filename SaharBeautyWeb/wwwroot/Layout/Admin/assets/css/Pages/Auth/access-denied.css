@@ -1,19 +1,27 @@
-﻿body {
+﻿/* === پس‌زمینه و پایه === */
+body {
     background: linear-gradient(135deg, #6a11cb, #2575fc);
     font-family: "Vazirmatn", sans-serif;
     color: #fff;
     margin: 0;
-    height: 100vh;
+    min-height: 100vh; /* به جای height */
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 2rem 1rem; /* فاصله از بالا و کناره‌ها برای جلوگیری از بیرون زدن */
+    overflow-x: hidden;
 }
 
+/* === کانتینر === */
 .access-container {
     text-align: center;
     animation: fadeIn 0.8s ease-in-out;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
+/* === جعبه دسترسی (Access Box) === */
 .access-box {
     background-color: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(8px);
@@ -21,7 +29,8 @@
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     max-width: 400px;
-    width: 90%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
     .access-box h1 {
@@ -34,12 +43,13 @@
         margin-bottom: 25px;
     }
 
+/* === دکمه بازگشت === */
 .back-btn {
     display: inline-block;
     text-decoration: none;
     background-color: #fff;
     color: #2575fc;
-    padding: 10px 20px;
+    padding: 10px 25px;
     border-radius: 25px;
     font-weight: bold;
     transition: all 0.3s ease;
@@ -50,6 +60,7 @@
         color: #fff;
     }
 
+/* === انیمیشن ورود === */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -59,5 +70,29 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* === واکنش‌گرایی موبایل === */
+@media (max-width: 640px) {
+    .access-box {
+        padding: 25px;
+        border-radius: 16px;
+        width: 95%;
+    }
+
+        .access-box h1 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .access-box p {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+    .back-btn {
+        padding: 10px 20px;
+        font-size: 0.95rem;
     }
 }
