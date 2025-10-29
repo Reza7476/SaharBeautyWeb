@@ -79,7 +79,8 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
             {
                 Description = AddModel.Description,
                 Image = AddModel.Image,
-                Title = AddModel.Title
+                Title = AddModel.Title,
+                Duration=AddModel.Duration
             });
             return HandleApiAjxResult(result);
         }
@@ -93,7 +94,8 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
                     Description = data.Description,
                     Title = data.Title,
                     Media = result.Data!.Media,
-                    Id = id
+                    Id = id,
+                    Duration=data.Duration
                 }, "_editTreatmentPartial");
             return response;
         }
@@ -139,7 +141,8 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
                 {
                     Description = ModelData.Description,
                     Title = ModelData.Title,
-                    Id = ModelData.Id
+                    Id = ModelData.Id,
+                    Duration=ModelData.Duration
                 });
 
             var response = HandleApiAjxResult(result);

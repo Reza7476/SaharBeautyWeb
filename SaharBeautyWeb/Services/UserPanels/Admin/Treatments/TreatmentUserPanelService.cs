@@ -22,6 +22,7 @@ public class TreatmentUserPanelService : UserPanelBaseService, ITreatmentUserPan
         using var content = new MultipartFormDataContent();
         content.Add(new StringContent(dto.Title ?? " "), "Title");
         content.Add(new StringContent(dto.Description ?? " "), "Description");
+        content.Add(new StringContent(dto.Duration.ToString()), "Duration");
         if (dto.Image != null)
         {
             var fileStream = dto.Image.OpenReadStream();
@@ -84,7 +85,8 @@ public class TreatmentUserPanelService : UserPanelBaseService, ITreatmentUserPan
         var json = JsonSerializer.Serialize(new
         {
             Title = dto.Title,
-            Description = dto.Description
+            Description = dto.Description,
+            Duration = dto.Duration
         });
 
         using var content = new StringContent(json, Encoding.UTF8, "application/json");

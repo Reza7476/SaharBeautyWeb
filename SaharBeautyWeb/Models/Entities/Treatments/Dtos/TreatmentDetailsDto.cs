@@ -9,4 +9,5 @@ public class TreatmentDetailsDto
     public string? Description { get; set; }
     public List<MediaDto> Media { get; set; } = new();
     public IFormFile? AddMedia  { get; set; }
+    public int Duration { get; set; }
 }
