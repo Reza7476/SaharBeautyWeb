@@ -5,4 +5,5 @@ public class UpdateTreatmentTitleAndDescriptionDto
     public required string  Description { get; set; }
     public required string  Title { get; set; }
     public long Id { get; set; }
+    public int Duration { get; set; }
 }

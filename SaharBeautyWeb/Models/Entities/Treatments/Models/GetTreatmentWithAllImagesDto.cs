@@ -8,5 +8,6 @@ public class GetTreatmentWithAllImagesDto
     public string? Description { get; set; }
     public List<MediaDto> Media { get; set; } = default!;
     public IFormFile? Image { get; set; }
+    public int Duration { get; set; }
 
 }
