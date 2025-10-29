@@ -19,7 +19,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
         private readonly ITreatmentUserPanelService _treatmentService;
         private readonly IWeeklyScheduleService _scheduleService;
         private readonly IAppointmentService _appointmentService;
-        
+
         public IndexModel(
             ErrorMessages errorMessage,
             ITreatmentUserPanelService service,
@@ -53,18 +53,18 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
                   kvp => kvp.Value!.Errors.Select(e => e.ErrorMessage).ToArray());
             if (appointmentError.Any())
             {
-                return new JsonResult(new 
+                return new JsonResult(new
                 {
-                    success=false,
-                    statusCode=400,
-                    error=appointmentError
+                    success = false,
+                    statusCode = 400,
+                    error = appointmentError
                 });
             }
             var result = await _appointmentService.Add(new AddAppointmentDto()
             {
-                Duration =          AppointmentModel.Duration,
-                TreatmentId =       AppointmentModel.TreatmentId,
-                AppointmentDate =  AppointmentModel.DateOnly!.Value
+                Duration = AppointmentModel.Duration,
+                TreatmentId = AppointmentModel.TreatmentId,
+                AppointmentDate = AppointmentModel.DateOnly!.Value
                                     .ToDateTime(AppointmentModel.TimeOnly!.Value)
             });
 
@@ -122,24 +122,28 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
             var booked = await _appointmentService.GetBookedByDate(date);
 
 
-            if ((result.IsSuccess && result.Data != null)&&booked.IsSuccess)
+            if ((result.IsSuccess && result.Data != null) && booked.IsSuccess)
             {
-                var slots = new List<TimeSlotModel>();
-                var start = result.Data.StartTime;
-                var end = result.Data.EndTime;
-                var currentTime = start;
                 var now = DateTime.Now;
+                TimeSpan totalDate = result.Data.EndTime - result.Data.StartTime;
+                int validCount = (int)totalDate.TotalMinutes / duration;
+
+                var slots = new List<TimeSlotModel>();
+                var start = TimeOnly.FromDateTime(result.Data.StartTime);
+                var end = TimeOnly.FromDateTime(result.Data.EndTime);
                 int todayDayOfWeek = ((int)now.DayOfWeek) + 1; // 0 = Sunday, 1 = Monday ...
-                                                               // اگر روز انتخاب شده همان روز هفته امروز بود
-                bool isTodaySelected = ((int)dayWeek == todayDayOfWeek);
 
-                while (currentTime < end)
+                bool isTodaySelected = ((int)dayWeek == todayDayOfWeek); // اگر روز انتخاب شده همان روز هفته امروز بود
+
+                while (start < end)
                 {
-                    var nextTime = currentTime.AddMinutes(duration);
+                    if (slots.Count == validCount) break;
+                    var nextTime = start.AddMinutes(duration);
 
-                    if (isTodaySelected && currentTime <= now)
+                    if (isTodaySelected && start <= (TimeOnly.FromDateTime(now)))
                     {
-                        currentTime = nextTime;
+                        start = nextTime;
+                        validCount = validCount - 1;
                         continue;
                     }
 
@@ -148,12 +152,11 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
 
                     slots.Add(new TimeSlotModel
                     {
-                        Start = TimeOnly.FromDateTime(currentTime),
-                        End = TimeOnly.FromDateTime( nextTime),
-                        IsActive=true
+                        Start = start,
+                        End = nextTime,
+                        IsActive = true
                     });
-
-                    currentTime = nextTime;
+                    start = nextTime;
                 }
 
                 if (booked.IsSuccess && booked.Data != null)

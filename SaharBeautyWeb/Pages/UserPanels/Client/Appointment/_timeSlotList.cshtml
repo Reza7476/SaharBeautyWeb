@@ -8,8 +8,7 @@
         <div class="@slotClass"
              data-start="@slot.Start.ToString("HH:mm")"
              data-end="@slot.End.ToString("HH:mm")"
-        @(slot.IsActive ? "" : "title='رزرو شده'")>
-
+             @slot.IsActive>
             <span class="selected-time">@slot.Start.ToString("HH:mm")</span> -
             <span>@slot.End.ToString("HH:mm")</span>
         </div>
