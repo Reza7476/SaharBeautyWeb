@@ -1,65 +1,22 @@
-﻿//$(() => {
-//    var dayBtn = $(".week-card").prop("disabled", true);
-//})
-//$(document).on("change", "#serviceSelect", function () {
-//    var selectedOption = $(this).find("option:selected");
-//    var serviceId = selectedOption.data("id");
+﻿$(document).ready(function () {
 
-//    $.ajax({
-//        url: getTreatmentDetails,
-//        data: { id: serviceId },
-//        type: 'Get',
-//        success: function (res, status, xhr) {
-//            const contentType = xhr.getResponseHeader("content-type") || "";
-//            if (contentType.includes("application/json")) {
-//                if (!res.success) {
-//                    handleApiError(res.error);
-//                    btnSend.prop("disabled", false);
-//                    return;
-//                }
-//            }
-//            $("#serviceDetails ").html(res);
-//            var dayBtn = $(".week-card").prop("disabled", false);
-//        },
-//    });
-//})
+    $("#reserve-btn").prop("disabled", true);
 
-
-
-//$(document).on("click", ".week-card", function () {
-//    var day = $(this).data("number");
-//    var duration = $("#treatment-duration").val();
-
-//    $.ajax({
-//        url: getWeeklySchedule,
-//        data: {
-//            dayWeek: day,
-//            duration: duration
-//        },
-//        type: 'Get',
-//        success: function (res, status, xhr) {
-//            const contentType = xhr.getResponseHeader("content-type") || "";
-//            if (contentType.includes("application/json")) {
-//                if (!res.success) {
-//                    handleApiError(res.error);
-//                    return;
-//                }
-//            }
-//            $("#timeSlotContainer ").html(res);
-//        },
-//    });
-//})
-
-
-
-
-
-$(document).ready(function () {
-
-    // وقتی یک خدمت انتخاب شد
     $(document).on("change", "#serviceSelect", function () {
         var selectedOption = $(this).find("option:selected");
         var serviceId = selectedOption.data("id");
+
+        $("#input-treatmentId").val('');
+        $("#input-duration").val('');
+        $("#input-date").val('');
+        $("#input-time").val('');
+        $("#serviceDetails").addClass("hidden").html('');
+        $(".time-slot-container").remove();         // remove rendered slots
+        $("#timeSlotContainer").empty();            // ensure container empty
+        $(".week-card").removeClass("selected").prop("disabled", false);
+        $("#reserve-btn").prop("disabled", true);  // disable reserve until valid
+
+        if (!serviceId) return;
 
         $.ajax({
             url: getTreatmentDetails,
@@ -74,28 +31,44 @@ $(document).ready(function () {
                     }
                 }
 
-                $("#input-treatmentId").val(serviceId);
+                $("#input-treatmentId").val(serviceId); // ست اولیه (فقط id)
                 $("#serviceDetails").html(res).removeClass("hidden");
-                $(".week-card").removeClass("selected").prop("disabled", false);
+            },
+            error: function () {
+                $(".time-slot-container").remove();
+                $("#timeSlotContainer").empty();
             }
         });
     });
 
-    // وقتی روی یک روز هفته کلیک شد
     $(document).on("click", ".week-card", function () {
         var dayCard = $(this);
         var day = dayCard.data("number");
-        var duration = $("#treatment-duration").val();
+        var duration = $("#treatment-duration").val(); 
         var date = dayCard.data("milady");
-        // پاک کردن کلاس انتخاب شده قبلی
-        $(".week-card").removeClass("selected").prop("disabled", false);
+        var treatmentId = $("#input-treatmentId").val();
 
-        // کارت انتخاب شده را غیرفعال و انتخاب شده کنیم
+        if (!treatmentId) {
+            return;
+        }
+
+        if (!duration) {
+            return;
+        }
+        
+        $(".week-card").removeClass("selected").prop("disabled", false);
+        $(".time-slot-container").remove();
+        $("#timeSlotContainer").empty();
+        $("#input-duration").val(duration);
+        $("#input-date").val(date);
+        $("#input-time").val('');
+        $("#reserve-btn").prop("disabled", true);
+
         dayCard.addClass("selected").prop("disabled", true);
 
         $.ajax({
             url: getWeeklySchedule,
-            data: { dayWeek: day, duration: duration ,date:date},
+            data: { dayWeek: day, duration: duration, date: date },
             type: 'GET',
             success: function (res, status, xhr) {
                 const contentType = xhr.getResponseHeader("content-type") || "";
@@ -106,50 +79,57 @@ $(document).ready(function () {
                     }
                 }
 
-                $("#input-duration").val(duration);
-                $("#input-date").val(date);
-                // حذف محتوای قبلی
-                $(".time-slot-container").remove();
-
-                // ایجاد یک div جدید برای اسلات‌ها
                 var timeSlotSection = $('<div class="time-slot-container"></div>').html(res);
 
-                // موبایل: اسلات‌ها زیر کارت انتخاب شده
+
                 if ($(window).width() <= 640) {
                     dayCard.after(timeSlotSection);
                 } else {
                     $("#timeSlotContainer").html(timeSlotSection);
                 }
+            },
+            error: function () {
+                $(".time-slot-container").remove();
+                $("#timeSlotContainer").empty();
             }
         });
     });
 
-    // تغییر اندازه صفحه (ریسپانسیو)
-    $(window).resize(function () {
-        var selectedDay = $(".week-card.selected");
-        var timeSlotContainer = $(".time-slot-container");
-
-        if (selectedDay.length && timeSlotContainer.length) {
-            if ($(window).width() <= 640) {
-                selectedDay.after(timeSlotContainer);
-            } else {
-                $("#timeSlotContainer").html(timeSlotContainer);
-            }
-        }
-    });
-
     $(document).on("click", ".time-slot-card", function () {
+        var treatmentId = $("#input-treatmentId").val();
+        var date = $("#input-date").val();
+        var duration = $("#input-duration").val();
+
+        if (!treatmentId || !date || !duration) {
+            return;
+        }
+
+        var slotTreatmentId = $(this).data("treatment-id");
+        if (slotTreatmentId && String(slotTreatmentId) !== String(treatmentId)) {
+            return;
+        }
 
         var selectedTime = $(this).data("start");
-
         $("#input-time").val(selectedTime);
 
         $(".time-slot-card").removeClass("selected");
         $(this).addClass("selected");
-    })
+
+        $("#reserve-btn").prop("disabled", false);
+    });
 
     $(document).on("click", "#reserve-btn", function (e) {
         e.preventDefault();
+
+        var treatmentId = $("#input-treatmentId").val();
+        var date = $("#input-date").val();
+        var time = $("#input-time").val();
+        var duration = $("#input-duration").val();
+
+        if (!treatmentId || !date || !time || !duration) {
+            return;
+        }
+
         var form = $("#reserveForm")[0];
         var formData = new FormData(form);
         $.ajax({
@@ -170,15 +150,13 @@ $(document).ready(function () {
                         span.text(messages.join(", "));
                         span.css("color", "red");
                     });
-                } else if (res.statusCode != 200 || res.statusCode != 400) {
+                } else {
                     handleApiError(res.error);
                 }
             },
             error: function (res) {
-
             }
         });
-    })
-
+    });
 
 });
