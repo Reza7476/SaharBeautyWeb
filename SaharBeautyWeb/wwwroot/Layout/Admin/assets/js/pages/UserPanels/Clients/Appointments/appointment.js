@@ -10,6 +10,7 @@
         $("#input-duration").val('');
         $("#input-date").val('');
         $("#input-time").val('');
+        $("#input-day-week").val('');
         $("#serviceDetails").addClass("hidden").html('');
         $(".time-slot-container").remove();         // remove rendered slots
         $("#timeSlotContainer").empty();            // ensure container empty
@@ -61,6 +62,7 @@
         $("#timeSlotContainer").empty();
         $("#input-duration").val(duration);
         $("#input-date").val(date);
+        $("#input-day-week").val(day);
         $("#input-time").val('');
         $("#reserve-btn").prop("disabled", true);
 

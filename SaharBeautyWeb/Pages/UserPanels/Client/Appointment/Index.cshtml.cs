@@ -64,6 +64,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
             {
                 Duration = AppointmentModel.Duration,
                 TreatmentId = AppointmentModel.TreatmentId,
+                DayWeek= AppointmentModel.DayWeek,
                 AppointmentDate = AppointmentModel.DateOnly!.Value
                                     .ToDateTime(AppointmentModel.TimeOnly!.Value)
             });
@@ -131,9 +132,10 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
                 var slots = new List<TimeSlotModel>();
                 var start = TimeOnly.FromDateTime(result.Data.StartTime);
                 var end = TimeOnly.FromDateTime(result.Data.EndTime);
-                int todayDayOfWeek = ((int)now.DayOfWeek) + 1; // 0 = Sunday, 1 = Monday ...
 
-                bool isTodaySelected = ((int)dayWeek == todayDayOfWeek); // اگر روز انتخاب شده همان روز هفته امروز بود
+                var todayDayOfWeekSystem =now.DayOfWeek; 
+                var selectedDay = GetSystemDayWeek(dayWeek);
+                bool isTodaySelected = (todayDayOfWeekSystem == selectedDay); // اگر روز انتخاب شده همان روز هفته امروز بود
 
                 while (start < end)
                 {
@@ -207,22 +209,52 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
             for (int i = 0; i < 7; i++)
             {
                 var dateUtc = today.AddDays(i);
+                var currentDayOfWeek = dateUtc.DayOfWeek;
                 var year = persianCalendar.GetYear(dateUtc);
                 var month = persianCalendar.GetMonth(dateUtc);
                 var day = persianCalendar.GetDayOfMonth(dateUtc);
-
                 string persianDate = $"{day} {GetPersianMonthName(month)} {year}";
 
                 CurrentWeekDays.Add(new DayInfoModel
                 {
                     PersianDay = days[(dayOfWeek + i) % 7],
                     PersianDate = persianDate,
-                    Day = (DayWeek)((dayOfWeek + i) % 7),
+                    Day = GetProjectDayWeek(currentDayOfWeek),
                     Date = DateOnly.FromDateTime(dateUtc)
                 });
             }
-            var a = string.Empty;
         }
+
+        private DayWeek GetProjectDayWeek(DayOfWeek dayOfWeek)
+        {
+            switch (dayOfWeek)
+            {
+                case DayOfWeek.Saturday: return DayWeek.Saturday;
+                case DayOfWeek.Sunday: return DayWeek.Sunday;
+                case DayOfWeek.Monday: return DayWeek.Monday;
+                case DayOfWeek.Tuesday: return DayWeek.Tuesday;
+                case DayOfWeek.Wednesday: return DayWeek.Wednesday;
+                case DayOfWeek.Thursday: return DayWeek.Thursday;
+                case DayOfWeek.Friday: return DayWeek.Friday;
+                default: return DayWeek.None;
+            }
+        }
+
+        private DayOfWeek GetSystemDayWeek(DayWeek dayweek)
+        {
+            switch (dayweek)
+            {
+                case DayWeek.Saturday: return  DayOfWeek.Saturday;
+                case DayWeek.Sunday: return    DayOfWeek.Sunday;
+                case DayWeek.Monday: return    DayOfWeek.Monday;
+                case DayWeek.Tuesday: return   DayOfWeek.Tuesday;
+                case DayWeek.Wednesday: return DayOfWeek.Wednesday;
+                case DayWeek.Thursday: return  DayOfWeek.Thursday;
+                case DayWeek.Friday: return    DayOfWeek.Friday;
+                default:  throw new Exception();
+            }
+        }
+
 
         private string GetPersianMonthName(int month)
         {

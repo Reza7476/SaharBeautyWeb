@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SaharBeautyWeb.Models.Entities.WeeklySchedules.Dtos;
+using System.ComponentModel.DataAnnotations;
 
 namespace SaharBeautyWeb.Models.Entities.Appointments.Models;
 
@@ -16,5 +17,8 @@ public class AddAppointmentModel
 
     [Required]
     public int? Duration { get; set; }
+
+    [Required]
+    public DayWeek DayWeek { get; set; }
 
 }

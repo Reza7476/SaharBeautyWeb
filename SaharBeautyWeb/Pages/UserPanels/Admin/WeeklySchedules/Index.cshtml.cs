@@ -34,7 +34,7 @@ public class IndexModel : AjaxBasePageModel
             StatusCode = result.StatusCode,
             Data = result.Data!.Select(sh => new GetScheduleModel()
             {
-                DayOfWeek = sh.DayOfWeek,
+                DayOfWeek =  sh.DayOfWeek,
                 EndTime = sh.EndTime,
                 Id = sh.Id,
                 IsActive = sh.IsActive,

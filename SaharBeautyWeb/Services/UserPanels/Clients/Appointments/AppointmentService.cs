@@ -21,7 +21,8 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
         {
             dto.TreatmentId,
             dto.Duration,
-            dto.AppointmentDate
+            dto.AppointmentDate,
+            dto.DayWeek
         });
 
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
