@@ -18,17 +18,27 @@ body {
     min-height: 100vh;
 }
 
+/* === کانتینر ثبت‌نام === */
+.register-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
 /* === کارت فرم === */
 .form-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.96);
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 30px rgba(255, 182, 193, 0.2);
+    box-shadow: 0 8px 30px rgba(255, 182, 193, 0.25);
     border-radius: 1.2rem;
     padding: 2rem;
     width: 100%;
     max-width: 420px;
     border: 1px solid #ffe4e6;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 auto;
 }
 
     .form-card:hover {
@@ -55,6 +65,7 @@ body {
     .form-header h2 {
         color: #e11d48;
         margin-top: 1rem;
+        font-weight: 700;
     }
 
     .form-header p {
@@ -72,7 +83,7 @@ input[type=password],
 input[type=email],
 input[type=tel] {
     width: 100%;
-    padding: 0.8rem;
+    padding: 0.85rem;
     border-radius: 0.8rem;
     border: 1px solid #e5e7eb;
     font-size: 1rem;
@@ -82,7 +93,7 @@ input[type=tel] {
 input:focus {
     outline: none;
     border-color: #fb7185;
-    box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.2);
+    box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.25);
 }
 
 /* === دکمه‌ها === */
@@ -145,23 +156,33 @@ input:focus {
 .otp-inputs {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 10px;
     direction: ltr;
+    margin: 1rem 0;
+    flex-wrap: nowrap;
 }
 
 .otp-box {
-    width: 45px;
-    height: 55px;
-    font-size: 22px;
+    width: 50px;
+    height: 60px;
+    font-size: 24px;
     text-align: center;
     border: 2px solid #ccc;
-    border-radius: 8px;
+    border-radius: 10px;
     outline: none;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
+    direction: ltr;
+    font-family: "Vazirmatn", "Tahoma", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
 }
 
     .otp-box:focus {
-        border-color: #ff9800;
+        border-color: #fb7185;
+        box-shadow: 0 0 6px rgba(251, 113, 133, 0.3);
     }
 
 /* === فرم مرحله‌ای === */
@@ -173,12 +194,19 @@ input:focus {
         display: block;
     }
 
+/* === تایمر OTP === */
+#timer {
+    font-weight: 600;
+    color: #e11d48;
+    font-size: 1rem;
+}
+
 /* === واکنش‌گرایی موبایل پسند === */
 @media only screen and (max-width: 768px) {
     .form-card {
         width: 92%;
         max-width: none;
-        padding: 2rem;
+        padding: 1.8rem;
         border-radius: 1.5rem;
         box-shadow: 0 12px 35px rgba(255, 182, 193, 0.25);
     }
@@ -190,15 +218,11 @@ input:focus {
     }
 
     .form-header h1 {
-        font-size: 2rem;
+        font-size: 1.9rem;
     }
 
     .form-header h2 {
         font-size: 1.6rem;
-    }
-
-    .form-header p {
-        font-size: 1.1rem;
     }
 
     input[type=text],
@@ -206,25 +230,34 @@ input:focus {
     input[type=email],
     input[type=tel] {
         padding: 1.1rem;
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         border-radius: 1rem;
     }
 
     .btn,
     .login-button {
-        padding: 1.1rem;
-        font-size: 1.25rem;
+        padding: 1rem;
+        font-size: 1.2rem;
         border-radius: 1rem;
     }
 
-    .register-link,
-    .other-links {
-        font-size: 1.05rem;
+    .otp-inputs {
+        gap: 6px;
+        justify-content: center;
     }
 
     .otp-box {
         width: 55px;
         height: 65px;
-        font-size: 26px;
+        font-size: 15px;
+    }
+}
+
+/* === نمایش خیلی کوچک (گوشی‌های خاص مثل POCO X3) === */
+@media only screen and (max-width: 400px) {
+    .otp-box {
+        width: 52px;
+        height: 60px;
+        font-size: 15px;
     }
 }
