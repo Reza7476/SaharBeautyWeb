@@ -202,62 +202,101 @@ input:focus {
 }
 
 /* === واکنش‌گرایی موبایل پسند === */
+/* نسخه بهینه‌تر برای موبایل‌ها */
+/* === بهینه‌سازی نمایش در موبایل === */
 @media only screen and (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+
     .form-card {
-        width: 92%;
-        max-width: none;
-        padding: 1.8rem;
-        border-radius: 1.5rem;
-        box-shadow: 0 12px 35px rgba(255, 182, 193, 0.25);
+        width: 88%;
+        max-width: 340px;
+        padding: 1.3rem;
+        border-radius: 1rem;
+        margin: 0 auto;
+        transform: scale(0.9);
     }
 
     .form-header .logo {
-        width: 100px;
-        height: 100px;
-        border-width: 5px;
-    }
-
-    .form-header h1 {
-        font-size: 1.9rem;
+        width: 75px;
+        height: 75px;
+        border-width: 4px;
     }
 
     .form-header h2 {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
+    }
+
+    .form-header p {
+        font-size: 0.9rem;
     }
 
     input[type=text],
     input[type=password],
     input[type=email],
     input[type=tel] {
-        padding: 1.1rem;
-        font-size: 1.1rem;
-        border-radius: 1rem;
+        padding: 0.65rem;
+        font-size: 0.9rem;
+        border-radius: 0.6rem;
     }
 
     .btn,
     .login-button {
-        padding: 1rem;
-        font-size: 1.2rem;
-        border-radius: 1rem;
+        padding: 0.8rem;
+        font-size: 1rem;
+        border-radius: 0.7rem;
     }
 
+    /* === باکس‌های OTP === */
     .otp-inputs {
         gap: 6px;
         justify-content: center;
+        flex-wrap: nowrap;
     }
 
     .otp-box {
-        width: 55px;
-        height: 65px;
-        font-size: 15px;
+        width: 38px;
+        height: 48px;
+        font-size: 8px; /* فونت عدد کوچکتر شد */
+        text-align: center;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        transition: all 0.2s ease;
     }
+
+        .otp-box:focus {
+            border-color: #fb7185;
+            box-shadow: 0 0 5px rgba(251, 113, 133, 0.3);
+        }
 }
 
-/* === نمایش خیلی کوچک (گوشی‌های خاص مثل POCO X3) === */
+/* برای گوشی‌های خیلی کوچک (عرض کمتر از 400px) */
 @media only screen and (max-width: 400px) {
+    .form-card {
+        width: 85%;
+        max-width: 320px;
+        padding: 1.1rem;
+        transform: scale(0.88);
+    }
+
     .otp-box {
-        width: 52px;
-        height: 60px;
-        font-size: 15px;
+        width: 36px;
+        height: 45px;
+        font-size: 8px; /* حتی کوچکتر برای جلوگیری از فشردگی */
+    }
+
+    input[type=text],
+    input[type=password],
+    input[type=email],
+    input[type=tel] {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+    }
+
+    .btn,
+    .login-button {
+        padding: 0.75rem;
+        font-size: 0.95rem;
     }
 }
