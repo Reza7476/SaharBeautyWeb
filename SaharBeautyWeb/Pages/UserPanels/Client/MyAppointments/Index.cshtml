@@ -16,7 +16,7 @@
 
     <!-- فیلترها -->
     <div class="filter-card">
-        <form method="get">
+        <form method="get" id="filter-form">
             <div class="filter-row">
                 <div class="filter-item">
                     <label for="Day">روز هفته</label>
@@ -49,8 +49,13 @@
                         <option value="Cancelled">کنسل شده</option>
                     </select>
                 </div>
+
+                <div class="filter-item filter-button">
+                </div>
+
                 <div class="filter-item filter-button">
                     <button type="submit">اعمال فیلتر</button>
+                    <button type="button" id="remove-filter" class="btn-remove-filter">حذف فیلتر</button>
                 </div>
             </div>
         </form>

@@ -14,3 +14,9 @@ $(document).ready(function () {
         });
     } 
 });
+
+
+$(document).on("click", "#remove-filter", function () {
+    var form = $("#filter-form")[0];
+    form.reset();
+})

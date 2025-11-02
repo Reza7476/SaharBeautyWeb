@@ -57,21 +57,36 @@ body {
 .filter-button {
     display: flex;
     align-items: flex-end;
+    gap:10px;
 }
 
     .filter-button button {
         padding: 8px 15px;
-        background-color: #4CAF50;
-        color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: 6px;
         cursor: pointer;
         font-weight: bold;
+        transition: all 0.2s ease-in-out;
     }
 
-        .filter-button button:hover {
+        .filter-button button[type="submit"]:hover {
             background-color: #45a049;
         }
+
+
+.filter-item btn-remove-filter {
+    background-color: #f44336;
+    color: #fff;
+}
+.filter-button .btn-remove-filter:hover {
+    background-color: #d32f2f;
+    transform: translateY(-1px);
+}
+
+/* افکت کلی برای دکمه‌ها */
+.filter-button button:active {
+    transform: scale(0.97);
+}
 
 /* جدول نوبت ها */
 .appointments-card {
@@ -136,12 +151,41 @@ body {
 @media screen and (max-width: 768px) {
     .filter-row {
         flex-direction: column;
+        gap:6px;
     }
 
     .filter-item {
         width: 100%;
+        flex:none;
+        margin-bottom:6px;
+    }
+        .filter-item label {
+            font-size: 0.85rem;
+            margin-bottom: 3px;
+        }
+
+        .filter-item select,
+        .filter-item input {
+            padding: 7px 8px;
+            font-size: 0.9rem;
+        }
+
+    .filter-button {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 5px;
     }
 
+        .filter-button button {
+            flex: 1;
+            font-size: 0.9rem;
+            padding: 8px;
+        }
+
+            .filter-button button + button {
+                margin-left: 8px;
+            }
     .appointments-table th,
     .appointments-table td {
         font-size: 0.8rem;

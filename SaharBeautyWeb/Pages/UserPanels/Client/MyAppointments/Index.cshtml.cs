@@ -4,7 +4,6 @@ using SaharBeautyWeb.Models.Entities.Appointments.Dtos.Clients;
 using SaharBeautyWeb.Models.Entities.Appointments.Models.Clients;
 using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.UserPanels.Clients.ClientService;
-using System.Globalization;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Client.MyAppointments;
 
@@ -26,7 +25,7 @@ public class IndexModel : AjaxBasePageModel
     public async Task<IActionResult> OnGet(int pageNumber = 0, int limit = 5)
     {
         int offset = pageNumber;
-        DateOnly? dateOnly=null ;
+        DateOnly? dateOnly = null;
         if (!string.IsNullOrWhiteSpace(Filter?.Date))
         {
             string persianDateStr = Filter.Date.ConvertPersianNumberToEnglish();
