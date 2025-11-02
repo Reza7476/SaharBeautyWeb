@@ -1,0 +1,68 @@
+﻿
+
+@page
+@model SaharBeautyWeb.Pages.UserPanels.Client.MyAppointments.IndexModel
+@{
+    Layout = "_UserPanelLayout";
+    ViewData["Title"] = "نوبت های من";
+}
+
+<link href="~/layout/admin/assets/css/pages/appointments/client-appointment-list.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css" rel="stylesheet">
+
+
+<div class="container">
+    <h1 class="page-title">نوبت‌های من</h1>
+
+    <!-- فیلترها -->
+    <div class="filter-card">
+        <form method="get">
+            <div class="filter-row">
+                <div class="filter-item">
+                    <label for="Day">روز هفته</label>
+                    <select id="Day" name="Filter.Day" asp-for="Filter.Day">
+                        <option value="">همه</option>
+                        <option value="Saturday">شنبه</option>
+                        <option value="Sunday">یکشنبه</option>
+                        <option value="Monday">دوشنبه</option>
+                        <option value="Tuesday">سه‌شنبه</option>
+                        <option value="Wednesday">چهارشنبه</option>
+                        <option value="Thursday">پنج‌شنبه</option>
+                        <option value="Friday">جمعه</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="Date">تاریخ (شمسی)</label>
+                    <input type="text"
+                           id="Date"
+                           asp-for="Filter.Date"
+                           placeholder="انتخاب تاریخ شمسی"
+                           autocomplete="off"
+                           class="form-control" />
+                </div>
+                <div class="filter-item">
+                    <label for="Status">وضعیت</label>
+                    <select id="Status" name="Filter.Status" asp-for="Filter.Status">
+                        <option value="">همه</option>
+                        <option value="Pending">در انتظار</option>
+                        <option value="Confirmed">تایید شده</option>
+                        <option value="Cancelled">کنسل شده</option>
+                    </select>
+                </div>
+                <div class="filter-item filter-button">
+                    <button type="submit">اعمال فیلتر</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- جدول نوبت ها -->
+    <div class="appointments-card">
+        @await Html.PartialAsync("_AllMyAppointmentList",Model.ListMyAppointment)
+    </div>
+</div>
+@section Scripts{
+    <script>
+
+    </script>
+    <script src="~/layout/admin/assets/js/pages/userpanels/clients/appointments/client-appointment-list.js"></script>
+}

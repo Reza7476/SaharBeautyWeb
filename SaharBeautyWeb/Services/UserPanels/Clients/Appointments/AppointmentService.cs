@@ -1,5 +1,4 @@
-﻿
-using SaharBeautyWeb.Models.Commons.Dtos;
+﻿using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos;
 using System.Text;
 using System.Text.Json;
@@ -37,9 +36,9 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
 
         var content = new MultipartFormDataContent();
         content.Add(new StringContent(dateTime.ToString() ?? ""), "date");
-     
 
-        var result = await GetAsync<List<GetBookedAppointmentByDateDto>>(url,content);
+
+        var result = await GetAsync<List<GetBookedAppointmentByDateDto>>(url, content);
         return result;
     }
 }

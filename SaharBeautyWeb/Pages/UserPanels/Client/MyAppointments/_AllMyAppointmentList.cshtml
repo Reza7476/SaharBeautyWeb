@@ -1,0 +1,177 @@
+﻿@using SaharBeautyWeb.Models.Entities.Appointments.Enums
+@using SaharBeautyWeb.Models.Entities.Appointments.Models.Clients
+@using SaharBeautyWeb.Models.Entities.WeeklySchedules.Dtos
+@using System.Globalization
+
+@model GetAllMyAppointmentsModel
+<link href="~/layout/admin/assets/css/pages/treatments/liststyle.css" rel="stylesheet" />
+
+@if (Model.MyAppointmentModel.Any())
+{
+    <div class="table-responsive">
+        <table class="table treatments-table align-middle">
+            <thead>
+                <tr>
+                    <th>عنوان </th>
+                    <th>زمان شروع</th>
+                    <th>زمان پایان</th>
+                    <th>روز هفته</th>
+                    <th>تاریخ نوبت</th>
+                    <th>وضعیت</th>
+                    <th>ایجاد شده</th>
+                    <th>کنسل شده توسط</th>
+                    <th>تاریخ کنسلی</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.MyAppointmentModel.Any())
+                {
+                    @foreach (var appointment in Model.MyAppointmentModel)
+                    {
+                        var status = GetAppointmentStatus(appointment.Status);
+                        var day = GetPersianDayOfWeek(appointment.DayWeek);
+
+                        <tr>
+                            <td data-label="عنوان">@appointment.TreatmentTitle</td>
+                            <td data-label="زمان شروع">@appointment.StartTime.ToString("HH:mm")</td>
+                            <td data-label="زمان پایان">@appointment.EndTime.ToString("HH:mm")</td>
+                            <td data-label="روز هفته">@day</td>
+                            <td data-label="تاریخ">@GetShamsiDate(appointment.AppointmentDate)</td>
+                            <td data-label="وضیعت">@status</td>
+                            <td data-label="تاریخ رزرو">@GetShamsiDate(appointment.CreatedAt)</td>
+                            <td data-label="کنسل شده توسط">@appointment.CancelledBy  </td>
+                            <td data-label="تاریخ کنسل">@(GetShamsiDate(appointment.CancelledDate))</td>
+                            <td data-label="عملیات">
+                                <div class="dropdown">
+                                    <button class="btn btn-link text-muted dropdown-toggle p-0"
+                                    type="button" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-horizontal-rounded fs-5"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                        <li>
+                                            <button class="dropdown-item edit-treatment-btn"
+                                            data-id="@appointment.Id">
+                                                مشاهده / ویرایش
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-danger" href="#">حذف</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">هیچ داده‌ای یافت نشد</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+  }
+    <div class="row align-items-center justify-content-between mt-3">
+        <div class="col-md-5 col-12 text-center text-md-start mb-3 mb-md-0">
+            <div class="dataTables_info text-muted">
+                مجموع: <strong>@Model.TotalElements</strong> مورد
+            </div>
+        </div>
+
+        <div class="col-md-7 col-12">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center justify-content-md-end flex-wrap mb-0">
+                    <!-- قبلی -->
+                    <li class="page-item @(Model.CurrentPage == 0 ? "disabled" : "")">
+                        <a class="page-link"
+                           href="@Url.Page("Index", new { pageNumber = Model.CurrentPage - 1 })"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <!-- شماره صفحه -->
+                    <li class="page-item active">
+                        <span class="page-link">
+                            @(Model.CurrentPage + 1) از @(Model.TotalPages + 1)
+                        </span>
+                    </li>
+
+                    <!-- بعدی -->
+                    <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                        <a class="page-link"
+                           href="@Url.Page("Index", new { pageNumber = Model.CurrentPage + 1 })"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+
+@{
+    string GetAppointmentStatus(AppointmentStatus status)
+    {
+
+        switch (status)
+        {
+            case AppointmentStatus.Completed:
+                return "انجام شده";
+
+            case AppointmentStatus.Confirmed:
+                return "اطلاع رسانی شده";
+            case AppointmentStatus.Pending:
+                return "در انتظار تایید";
+            case AppointmentStatus.NoShow:
+                return "حضور نیافته";
+            case AppointmentStatus.Cancelled:
+                return "کنسل شده";
+            default: return "نامشخص";
+        }
+    }
+
+    string GetPersianDayOfWeek(DayWeek day)
+    {
+        switch (day)
+        {
+            case DayWeek.Sunday:
+                return "یک شنبه";
+
+            case DayWeek.Monday:
+                return "دوشنبه";
+            case DayWeek.Tuesday:
+                return "سشنبه";
+            case DayWeek.Wednesday:
+                return "چهارشنبه";
+            case DayWeek.Thursday:
+                return "پنجشنبه";
+            case DayWeek.Friday:
+                return "جمعه";
+            default: return " ";
+        }
+    }
+
+    string GetShamsiDate(DateOnly dateOnly)
+    {
+        if (dateOnly != default)
+        {
+
+            DateTime dateTime = dateOnly.ToDateTime(TimeOnly.MinValue);
+            PersianCalendar pCalendar = new PersianCalendar();
+            string persianDate = $"{pCalendar.GetYear(dateTime)}/{pCalendar.GetMonth(dateTime):00}/{pCalendar.GetDayOfMonth(dateTime):00}";
+            return persianDate;
+        }
+        else
+        {
+        return " ";
+            
+        }
+
+    }
+
+}
