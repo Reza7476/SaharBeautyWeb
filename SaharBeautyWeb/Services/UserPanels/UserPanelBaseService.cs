@@ -84,7 +84,7 @@ public class UserPanelBaseService
     }
 
     protected async Task<ApiResultDto<T>>
-        SendPatchRequestAsync<T>(string url, HttpContent content)
+        SendPatchRequestAsync<T>(string url, HttpContent? content=null)
     {
         var request = new HttpRequestMessage(HttpMethod.Patch, url)
         {
@@ -256,7 +256,7 @@ public class UserPanelBaseService
 
 
     protected Task<ApiResultDto<T>>
-        PatchAsync<T>(string url, HttpContent content) =>
+        PatchAsync<T>(string url, HttpContent? content=null) =>
         SendPatchRequestAsync<T>(url, content);
 
 

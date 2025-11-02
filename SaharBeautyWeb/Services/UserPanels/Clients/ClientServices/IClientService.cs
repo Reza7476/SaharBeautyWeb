@@ -7,7 +7,6 @@ namespace SaharBeautyWeb.Services.UserPanels.Clients.ClientService;
 
 public interface IClientService : IService
 {
-
     Task<ApiResultDto<GetAllDto<MyAppointmentsModel>>>
       GetAllClientAppointments(
       int offset,

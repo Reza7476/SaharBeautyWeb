@@ -20,3 +20,26 @@ $(document).on("click", "#remove-filter", function () {
     var form = $("#filter-form")[0];
     form.reset();
 })
+
+$(document).on("click", ".cancel-appointment-btn", function () {
+    var id = $(this).data("id");
+    var token = $('input[name="__RequestVerificationToken"]').val();
+
+    $.ajax({
+        url: cancelAppointment,
+        data: {
+            id: id,
+            __RequestVerificationToken: token
+        },
+        type:'Post',
+        success: function (res) {
+            if (res.success) {
+                location.reload();
+            } else {
+                HandlerApiError(res.error);
+            }
+        }
+    })
+
+
+})

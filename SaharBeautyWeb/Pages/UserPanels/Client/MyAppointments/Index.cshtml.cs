@@ -3,19 +3,22 @@ using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos.Clients;
 using SaharBeautyWeb.Models.Entities.Appointments.Models.Clients;
 using SaharBeautyWeb.Pages.Shared;
+using SaharBeautyWeb.Services.UserPanels.Clients.Appointments;
 using SaharBeautyWeb.Services.UserPanels.Clients.ClientService;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Client.MyAppointments;
 
 public class IndexModel : AjaxBasePageModel
 {
-
+    private readonly IAppointmentService _appointmentService;
     private readonly IClientService _clientService;
     public IndexModel(
         ErrorMessages errorMessage,
-        IClientService clientService) : base(errorMessage)
+        IClientService clientService,
+        IAppointmentService appointmentService) : base(errorMessage)
     {
         _clientService = clientService;
+        _appointmentService = appointmentService;
     }
 
     public GetAllMyAppointmentsModel ListMyAppointment { get; set; } = new();
@@ -51,6 +54,14 @@ public class IndexModel : AjaxBasePageModel
             ListMyAppointment.CurrentPage = pageNumber;
             ListMyAppointment.TotalPages = result.Data.TotalElements.ToTotalPage(limit);
         }
+        return response;
+    }
+
+    public async Task<IActionResult> OnPostCancelAppointment(string id)
+    {
+        var result = await _appointmentService.CancelByClient(id);
+
+        var response =  HandleApiAjxResult(result);
         return response;
     }
 }

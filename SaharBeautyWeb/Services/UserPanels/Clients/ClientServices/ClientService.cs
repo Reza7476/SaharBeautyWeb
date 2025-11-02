@@ -13,6 +13,7 @@ public class ClientService : UserPanelBaseService, IClientService
     {
     }
 
+
     public async Task<ApiResultDto<GetAllDto<MyAppointmentsModel>>>
          GetAllClientAppointments(int offset,
          int limit,
