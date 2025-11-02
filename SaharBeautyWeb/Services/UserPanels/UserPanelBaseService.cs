@@ -102,7 +102,10 @@ public class UserPanelBaseService
         {
             Content = content
         };
+        try
+        {
 
+       
         var response = await _client.SendAsync(request);
         var raw = await response.Content.ReadAsStringAsync();
         if (response.IsSuccessStatusCode)
@@ -139,7 +142,12 @@ public class UserPanelBaseService
             Error = raw,
             StatusCode = (int)response.StatusCode
         };
+        }
+        catch (Exception ex)
+        {
 
+            throw;
+        }
     }
 
 
