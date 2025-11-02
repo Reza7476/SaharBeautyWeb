@@ -30,6 +30,14 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
 
     }
 
+    public async Task<ApiResultDto<object>> CancelByClient(string id)
+    {
+        var url = $"{_apiUrl}/{id}/cancel-by-client";
+
+        var result = await PatchAsync<object>(url);
+        return result;
+    }
+
     public async Task<ApiResultDto<List<GetBookedAppointmentByDateDto>>> GetBookedByDate(DateTime dateTime)
     {
         var url = $"{_apiUrl}/booked-appointment";
