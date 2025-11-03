@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SaharBeautyWeb.Models.Entities.AboutUs.Management.Models;
 using SaharBeautyWeb.Pages.Shared;
-using SaharBeautyWeb.Services.AboutUs;
+using SaharBeautyWeb.Services.Landing.AboutUs;
 
 namespace SaharBeautyWeb.Pages.Landing.ContactUs;
 

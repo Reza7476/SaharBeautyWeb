@@ -5,8 +5,8 @@ using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Models;
 using SaharBeautyWeb.Pages.Shared;
-using SaharBeautyWeb.Services.UserPanels.WhyUsSections;
-using SaharBeautyWeb.Services.WhyUsSections;
+using SaharBeautyWeb.Services.Landing.WhyUsSections;
+using SaharBeautyWeb.Services.UserPanels.Admin.WhyUsSections;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.WhyUsSections;
 

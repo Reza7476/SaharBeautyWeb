@@ -1,10 +1,11 @@
-﻿@page
-@model SaharBeautyWeb.Pages.UserPanels.Client.Accounts.IndexModel
+﻿@page "{handler?}"
+@model Admin.Accounts.IndexModel
 @{
     Layout = "_UserPanelLayout";
 }
 
 <link href="~/layout/admin/assets/css/pages/accounts/profile.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css" rel="stylesheet">
 
 <div class="user-card">
     <div class="user-card-header">
@@ -63,8 +64,16 @@
     </div>
 
     <div class="user-card-actions">
-        <button class="edit-user-btn" onclick="location.href='@Url.Page("/UserPanels/EditUser", new { id = 0 })'">
+        <button class="edit-user-btn"  >
             ویرایش اطلاعات
         </button>
     </div>
 </div>
+@section Scripts{
+    <script>
+        var getUserInfoForEdit = '@Url.Page("Index","UserInfoForEdit")';
+        var applyEditProfile = '@Url.Page("Index", "ApplyEditProfile")';
+    </script>
+    <script src="~/layout/admin/assets/js/pages/userpanels/accounrs/user-info.js"></script>
+
+}

@@ -1,7 +1,6 @@
 ﻿using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos.Clients;
 using SaharBeautyWeb.Models.Entities.Appointments.Models.Clients;
-using SaharBeautyWeb.Services.UserPanels.Clients.ClientService;
 
 namespace SaharBeautyWeb.Services.UserPanels.Clients.ClientServices;
 

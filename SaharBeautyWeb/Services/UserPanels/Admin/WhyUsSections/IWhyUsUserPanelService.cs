@@ -2,7 +2,7 @@
 using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos;
 
-namespace SaharBeautyWeb.Services.UserPanels.WhyUsSections;
+namespace SaharBeautyWeb.Services.UserPanels.Admin.WhyUsSections;
 
 public interface IWhyUsUserPanelService : IService
 {

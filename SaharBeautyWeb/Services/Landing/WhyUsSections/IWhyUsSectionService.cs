@@ -3,11 +3,11 @@ using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Models;
 
-namespace SaharBeautyWeb.Services.WhyUsSections;
+namespace SaharBeautyWeb.Services.Landing.WhyUsSections;
 
 public interface IWhyUsSectionService : IService
 {
     Task<ApiResultDto<GetWhyUsSectionDto>> GetWhyUsSection();
     Task<ApiResultDto<WhyUsSectionModel_Edit?>> GetWhyUsSectionById(long id);
-    Task <ApiResultDto<GetWhyUsSectionForLandingDto>> GetWhyUsSectionForLanding();
+    Task<ApiResultDto<GetWhyUsSectionForLandingDto>> GetWhyUsSectionForLanding();
 }

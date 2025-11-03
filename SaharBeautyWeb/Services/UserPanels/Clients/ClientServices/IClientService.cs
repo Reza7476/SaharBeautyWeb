@@ -3,7 +3,7 @@ using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos.Clients;
 using SaharBeautyWeb.Models.Entities.Appointments.Models.Clients;
 
-namespace SaharBeautyWeb.Services.UserPanels.Clients.ClientService;
+namespace SaharBeautyWeb.Services.UserPanels.Clients.ClientServices;
 
 public interface IClientService : IService
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SaharBeautyWeb.Pages.Shared.Components.LandingBaseComponent;
-using SaharBeautyWeb.Services.WhyUsSections;
+using SaharBeautyWeb.Services.Landing.WhyUsSections;
 
 namespace SaharBeautyWeb.Pages.Shared.Components.WhyUsSectionLanding;
 

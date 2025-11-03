@@ -1,11 +1,10 @@
-﻿
-using SaharBeautyWeb.Models.Commons.Dtos;
+﻿using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
-namespace SaharBeautyWeb.Services.UserPanels.WhyUsSections;
+namespace SaharBeautyWeb.Services.UserPanels.Admin.WhyUsSections;
 
 public class WhyUsUserPanelService : UserPanelBaseService, IWhyUsUserPanelService
 {
@@ -62,7 +61,7 @@ public class WhyUsUserPanelService : UserPanelBaseService, IWhyUsUserPanelServic
         fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
         content.Add(fileContent, "Media", dto.AddMedia.FileName);
 
-        var result=await PatchAsync<object>(url, content);
+        var result = await PatchAsync<object>(url, content);
         return result;
     }
 

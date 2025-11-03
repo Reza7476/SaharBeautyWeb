@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SaharBeautyWeb.Pages.Shared.Components.LandingBaseComponent;
-using SaharBeautyWeb.Services.AboutUs;
+using SaharBeautyWeb.Services.Landing.AboutUs;
 
 namespace SaharBeautyWeb.Pages.Shared.Components.FooterLanding;
 

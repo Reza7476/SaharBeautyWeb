@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Models.Entities.Auth;
 using SaharBeautyWeb.Models.Entities.Auth.Dtos;
-using SaharBeautyWeb.Services.AboutUs;
 using SaharBeautyWeb.Services.Auth;
+using SaharBeautyWeb.Services.Landing.AboutUs;
 using SaharBeautyWeb.Services.UserPanels.LogOut;
 
 namespace SaharBeautyWeb.Pages.Auth;

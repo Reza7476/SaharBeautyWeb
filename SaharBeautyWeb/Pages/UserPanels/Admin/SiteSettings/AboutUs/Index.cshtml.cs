@@ -5,8 +5,8 @@ using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.AboutUs.Management.Dtos;
 using SaharBeautyWeb.Models.Entities.AboutUs.Management.Models;
 using SaharBeautyWeb.Pages.Shared;
-using SaharBeautyWeb.Services.AboutUs;
-using SaharBeautyWeb.Services.UserPanels.AboutUs;
+using SaharBeautyWeb.Services.Landing.AboutUs;
+using SaharBeautyWeb.Services.UserPanels.Admin.AboutUs;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.AboutUs;
 public class IndexModel : AjaxBasePageModel

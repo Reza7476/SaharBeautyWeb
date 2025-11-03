@@ -4,7 +4,7 @@ using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Models;
 using SaharBeautyWeb.Models.Entities.Treatments.Models.Landing;
 
-namespace SaharBeautyWeb.Services.Treatments;
+namespace SaharBeautyWeb.Services.Landing.Treatments;
 
 public interface ITreatmentService : IService
 {

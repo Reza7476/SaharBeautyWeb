@@ -7,9 +7,9 @@ using SaharBeautyWeb.Models.Entities.Treatments.Models;
 using SaharBeautyWeb.Models.Entities.WeeklySchedules.Dtos;
 using SaharBeautyWeb.Models.Entities.WeeklySchedules.Models;
 using SaharBeautyWeb.Pages.Shared;
+using SaharBeautyWeb.Services.UserPanels.Admin.Treatments;
 using SaharBeautyWeb.Services.UserPanels.Admin.WeeklySchedules;
 using SaharBeautyWeb.Services.UserPanels.Clients.Appointments;
-using SaharBeautyWeb.Services.UserPanels.Treatments;
 using System.Globalization;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment

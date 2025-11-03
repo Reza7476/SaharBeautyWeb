@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SaharBeautyWeb.Models.Entities.Treatments.Models.Landing;
 using SaharBeautyWeb.Pages.Shared;
-using SaharBeautyWeb.Services.Treatments;
+using SaharBeautyWeb.Services.Landing.Treatments;
 
 namespace SaharBeautyWeb.Pages.Landing.Treatments;
 

@@ -3,7 +3,7 @@ using SaharBeautyWeb.Models.Entities.WhyUsSections.Dtos;
 using SaharBeautyWeb.Models.Entities.WhyUsSections.Models;
 using SaharBeautyWeb.Services.Contracts;
 
-namespace SaharBeautyWeb.Services.WhyUsSections;
+namespace SaharBeautyWeb.Services.Landing.WhyUsSections;
 
 public class WhyUsSectionApiService : IWhyUsSectionService
 {

@@ -1,0 +1,74 @@
+﻿@using SaharBeautyWeb.Models.Entities.Users.Models
+@model EditUserInfoModel
+
+
+<link href="~/layout/admin/assets/css/pages/accounts/edit-profile.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css" rel="stylesheet">
+
+
+<div class="edit-profile-container">
+    <h2 class="form-title">ویرایش اطلاعات کاربری</h2>
+
+    <form method="post"
+          enctype="multipart/form-data"
+          class="edit-profile-form">
+        <div class="profile-avatar-section">
+            @if (Model.Avatar != null)
+            {
+                <img src="@Model.Avatar.Url"
+                     alt="@Model.Avatar.ImageName"
+                     class="profile-avatar-preview"
+                     id="avatarPreview">
+            }
+            @Html.AntiForgeryToken()
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>نام</label>
+                <input type="text"
+                       asp-for="Name"
+                       value="@Model.Name"
+                       required>
+            </div>
+            <div class="form-group">
+                <label>نام خانوادگی</label>
+                <input type="text"
+                       asp-for="LastName"
+                       value="@Model.LastName"
+                       required>
+            </div>
+            <div class="form-group">
+                <label>شماره موبایل</label>
+                <input type="tel"
+                       value="@Model.Mobile"
+                       disabled>
+            </div>
+            <div class="form-group">
+                <label>ایمیل</label>
+                <input type="email"
+                       asp-for="Email"
+                       value="@Model.Email">
+            </div>
+
+            <div class="form-group">
+                <label for="Date">تاریخ (شمسی)</label>
+                <input type="text"
+                       value="@Model.BirthDate"
+                       asp-for="BirthDate"
+                       placeholder="انتخاب تاریخ شمسی"
+                       autocomplete="off"
+                       class="form-control Shamsi-date" />
+            </div>
+           
+        </div>
+
+        <div class="form-buttons">
+            <button type="submit"
+                    class="save-btn apply-edit-profile">
+                ذخیره تغییرات
+            </button>
+        </div>
+    </form>
+</div>
+

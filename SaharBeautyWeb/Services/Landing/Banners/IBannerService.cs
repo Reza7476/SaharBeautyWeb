@@ -2,7 +2,7 @@
 using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Banners.Management.Dtos;
 
-namespace SaharBeautyWeb.Services.Banners;
+namespace SaharBeautyWeb.Services.Landing.Banners;
 
 public interface IBannerService : IService
 {

@@ -2,7 +2,7 @@
 using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Banners.Landing;
 using SaharBeautyWeb.Pages.Shared.Components.LandingBaseComponent;
-using SaharBeautyWeb.Services.Banners;
+using SaharBeautyWeb.Services.Landing.Banners;
 
 namespace SaharBeautyWeb.Pages.Shared.Components.BannerLanding;
 
