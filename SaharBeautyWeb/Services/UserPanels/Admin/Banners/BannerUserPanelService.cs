@@ -1,9 +1,8 @@
-﻿
-using SaharBeautyWeb.Models.Commons.Dtos;
+﻿using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Banners.Management.Dtos;
 using System.Net.Http.Headers;
 
-namespace SaharBeautyWeb.Services.UserPanels.Banners;
+namespace SaharBeautyWeb.Services.UserPanels.Admin.Banners;
 
 public class BannerUserPanelService : UserPanelBaseService, IBannerUserPanelService
 {

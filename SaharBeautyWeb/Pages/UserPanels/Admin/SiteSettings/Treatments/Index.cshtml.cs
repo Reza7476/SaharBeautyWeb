@@ -4,8 +4,8 @@ using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Models;
 using SaharBeautyWeb.Pages.Shared;
-using SaharBeautyWeb.Services.Treatments;
-using SaharBeautyWeb.Services.UserPanels.Treatments;
+using SaharBeautyWeb.Services.Landing.Treatments;
+using SaharBeautyWeb.Services.UserPanels.Admin.Treatments;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
 {

@@ -11,6 +11,8 @@
                 <li class="menu-title" data-key="t-menu">منو</li>
 
 
+
+
                 @if (Model.Roles.Any() && Model.Roles.Contains("Admin"))
                 {
                     <li>
@@ -19,22 +21,6 @@
                             <span data-key="t-dashboard">داشبورد</span>
                         </a>
                     </li>
-
-                }       
-                @if (Model.Roles.Any() && Model.Roles.Contains("Client"))
-                {
-                    <li>
-                        <a href="/UserPanels/Client">
-                            <i data-feather="home"></i>
-                            <span data-key="t-dashboard">داشبورد</span>
-                        </a>
-                    </li>
-
-                }
-
-
-                @if (Model.Roles.Any() && Model.Roles.Contains("Admin"))
-                {
                     <li>
                         <a href="javascript: void(0);" class="has-arrow">
                             <i data-feather="grid"></i>
@@ -109,6 +95,12 @@
 
                 @if (Model.Roles.Any() && Model.Roles.Contains("Client"))
                 {
+                    <li>
+                        <a href="/UserPanels/Client">
+                            <i data-feather="home"></i>
+                            <span data-key="t-dashboard">داشبورد</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="javascript: void(0);" class="has-arrow">
                             <i data-feather="grid"></i>

@@ -3,7 +3,7 @@ using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 using SaharBeautyWeb.Models.Entities.Treatments.Models;
 
-namespace SaharBeautyWeb.Services.UserPanels.Treatments;
+namespace SaharBeautyWeb.Services.UserPanels.Admin.Treatments;
 
 public interface ITreatmentUserPanelService : IService
 {

@@ -3,8 +3,8 @@ using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Entities.Banners.Management.Dtos;
 using SaharBeautyWeb.Models.Entities.Banners.Management.Models;
 using SaharBeautyWeb.Pages.Shared;
-using SaharBeautyWeb.Services.Banners;
-using SaharBeautyWeb.Services.UserPanels.Banners;
+using SaharBeautyWeb.Services.Landing.Banners;
+using SaharBeautyWeb.Services.UserPanels.Admin.Banners;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
 {

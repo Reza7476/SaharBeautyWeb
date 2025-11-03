@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
-namespace SaharBeautyWeb.Services.UserPanels.AboutUs;
+namespace SaharBeautyWeb.Services.UserPanels.Admin.AboutUs;
 
 public class AboutUsUserPanelService : UserPanelBaseService, IAboutUsUserPanelService
 {

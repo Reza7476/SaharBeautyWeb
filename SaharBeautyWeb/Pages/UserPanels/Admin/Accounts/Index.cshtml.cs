@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
 using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Commons.Models;
+using SaharBeautyWeb.Models.Entities.Users.Dtos;
 using SaharBeautyWeb.Models.Entities.Users.Models;
 using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.UserPanels.Users;
@@ -17,6 +17,9 @@ public class IndexModel : AjaxBasePageModel
         _userService = userService;
     }
     public UserInfoModel UserInfo { get; set; }
+
+    [BindProperty]
+    public EditUserInfoModel EditUserInfoModel { get; set; }
 
     public async Task<IActionResult> OnGet()
     {
@@ -52,5 +55,50 @@ public class IndexModel : AjaxBasePageModel
         }
         return response;
 
+    }
+
+    public async Task<IActionResult> OnGetUserInfoForEdit()
+    {
+        var result = await _userService.GetUserInfo();
+        var response = HandleApiAjaxPartialResult(
+            result,
+            data => new EditUserInfoModel()
+            {
+                Avatar = data.Avatar != null ? new ImageDetailsModel()
+                {
+                    Extension = data.Avatar.Extension,
+                    ImageName = data.Avatar.ImageName,
+                    UniqueName = data.Avatar.UniqueName,
+                    Url = data.Avatar.Url
+                } : null,
+                BirthDate = data.BirthDate != null ? data.BirthDate.Value.ToShamsi() : " ",
+                CreationDate = data.CreationDate.ToShamsi(),
+                Name = data.Name,
+                LastName = data.LastName,
+                Mobile = data.Mobile,
+                Email = data.Email,
+            }, "_editUserInfoPartial");
+        return response;
+    }
+
+    public async Task<IActionResult> OnPostApplyEditProfile()
+    {
+        if (EditUserInfoModel.BirthDate != null)
+        {
+            EditUserInfoModel.BirthDate = EditUserInfoModel.BirthDate.ConvertPersianNumberToEnglish();
+        }
+        var result = await _userService.EditAdminProfile(new EditAdminProfileDto()
+        {
+            Email = EditUserInfoModel.Email,
+            LastName = EditUserInfoModel.LastName,
+            Name = EditUserInfoModel.Name,
+            BirthDateGregorian = EditUserInfoModel.BirthDate != null ?
+                                  EditUserInfoModel.BirthDate
+                                  .ConvertStringShamsiCalendarToGregorian()
+                                  : null
+        });
+
+        var response = HandleApiAjxResult(result);
+        return response;
     }
 }

@@ -4,7 +4,7 @@ using SaharBeautyWeb.Models.Entities.Appointments.Dtos.Clients;
 using SaharBeautyWeb.Models.Entities.Appointments.Models.Clients;
 using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.UserPanels.Clients.Appointments;
-using SaharBeautyWeb.Services.UserPanels.Clients.ClientService;
+using SaharBeautyWeb.Services.UserPanels.Clients.ClientServices;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Client.MyAppointments;
 

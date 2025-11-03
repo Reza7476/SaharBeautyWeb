@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Text;
 using SaharBeautyWeb.Models.Entities.Treatments.Models;
 
-namespace SaharBeautyWeb.Services.UserPanels.Treatments;
+namespace SaharBeautyWeb.Services.UserPanels.Admin.Treatments;
 
 public class TreatmentUserPanelService : UserPanelBaseService, ITreatmentUserPanelService
 {
@@ -84,9 +84,9 @@ public class TreatmentUserPanelService : UserPanelBaseService, ITreatmentUserPan
         var url = $"{_apiUrl}/{dto.Id}";
         var json = JsonSerializer.Serialize(new
         {
-            Title = dto.Title,
-            Description = dto.Description,
-            Duration = dto.Duration
+            dto.Title,
+            dto.Description,
+            dto.Duration
         });
 
         using var content = new StringContent(json, Encoding.UTF8, "application/json");

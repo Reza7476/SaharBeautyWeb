@@ -6,7 +6,7 @@ using SaharBeautyWeb.Services.Contracts;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
-namespace SaharBeautyWeb.Services.Banners;
+namespace SaharBeautyWeb.Services.Landing.Banners;
 
 public class BannerService : IBannerService
 {
@@ -49,7 +49,7 @@ public class BannerService : IBannerService
         return result;
     }
 
-    public  async Task<ApiResultDto<long>> UpdateBanner(UpdateBannerDto dto)
+    public async Task<ApiResultDto<long>> UpdateBanner(UpdateBannerDto dto)
     {
         using var content = new MultipartFormDataContent();
 

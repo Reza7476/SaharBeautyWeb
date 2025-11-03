@@ -1,5 +1,5 @@
 ﻿@page
-@model SaharBeautyWeb.Pages.UserPanels.Client.Accounts.IndexModel
+@model Client.Accounts.IndexModel
 @{
     Layout = "_UserPanelLayout";
 }
@@ -14,7 +14,7 @@
         }
         else
         {
-        <img src="~/layout/admin/assets/images/users/avatar-1.jpg" alt="Avatar" class="user-avatar" />
+            <img src="~/layout/admin/assets/images/users/avatar-1.jpg" alt="Avatar" class="user-avatar" />
 
         }
 
@@ -63,7 +63,7 @@
     </div>
 
     <div class="user-card-actions">
-        <button class="edit-user-btn" onclick="location.href='@Url.Page("/UserPanels/EditUser", new { id = 0 })'">
+        <button class="edit-user-btn" ">
             ویرایش اطلاعات
         </button>
     </div>

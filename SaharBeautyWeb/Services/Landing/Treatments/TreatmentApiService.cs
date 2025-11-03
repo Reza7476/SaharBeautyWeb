@@ -4,7 +4,7 @@ using SaharBeautyWeb.Models.Entities.Treatments.Models;
 using SaharBeautyWeb.Models.Entities.Treatments.Models.Landing;
 using SaharBeautyWeb.Services.Contracts;
 
-namespace SaharBeautyWeb.Services.Treatments;
+namespace SaharBeautyWeb.Services.Landing.Treatments;
 
 public class TreatmentApiService : ITreatmentService
 {

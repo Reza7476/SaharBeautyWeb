@@ -2,7 +2,7 @@
 using SaharBeautyWeb.Models.Entities.AboutUs.Management.Dtos;
 using SaharBeautyWeb.Services.Contracts;
 
-namespace SaharBeautyWeb.Services.AboutUs;
+namespace SaharBeautyWeb.Services.Landing.AboutUs;
 
 public class AboutService : IAboutUsService
 {
