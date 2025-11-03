@@ -1,0 +1,10 @@
+﻿using SaharBeautyWeb.Configurations.Interfaces;
+using SaharBeautyWeb.Models.Commons.Dtos;
+using SaharBeautyWeb.Models.Entities.Users.Dtos;
+
+namespace SaharBeautyWeb.Services.UserPanels.Users;
+
+public interface IUserService : IService
+{
+    Task<ApiResultDto<GetUserInfoDto>> GetUserInfo();
+}
