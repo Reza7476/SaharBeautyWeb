@@ -1,0 +1,70 @@
+﻿@page
+@model SaharBeautyWeb.Pages.UserPanels.Client.Accounts.IndexModel
+@{
+    Layout = "_UserPanelLayout";
+}
+
+<link href="~/layout/admin/assets/css/pages/accounts/profile.css" rel="stylesheet" />
+
+<div class="user-card">
+    <div class="user-card-header">
+        @if (Model.UserInfo.Avatar != null)
+        {
+            <img src="@Model.UserInfo.Avatar.Url" alt="Avatar" class="user-avatar" />
+        }
+        else
+        {
+        <img src="~/layout/admin/assets/images/users/avatar-1.jpg" alt="Avatar" class="user-avatar" />
+
+        }
+
+        <div class="user-basic-info">
+            <h2 class="user-name"></h2>
+            <span class="user-username">@Model.UserInfo.UserName</span>
+        </div>
+    </div>
+
+    <div class="user-card-body">
+        <div class="user-info-item">
+            <strong>نام:</strong> <span>@Model.UserInfo.Name</span>
+        </div>
+
+        <div class="user-info-item">
+            <strong>نام خانوادگی:</strong> <span>@Model.UserInfo.LastName</span>
+        </div>
+
+        <div class="user-info-item">
+            <strong>موبایل:</strong> <span>@Model.UserInfo.Mobile</span>
+        </div>
+        <div class="user-info-item">
+            <strong>ایمیل:</strong> <span>@Model.UserInfo.Email</span>
+        </div>
+        <div class="user-info-item">
+            <strong>تاریخ تولد:</strong> <span>@Model.UserInfo.BirthDate</span>
+        </div>
+        <div class="user-info-item">
+            <strong>تاریخ عضویت:</strong> <span>@Model.UserInfo.CreationDate</span>
+        </div>
+        <div class="user-info-item">
+            <strong>وضعیت:</strong>
+            <span class="@((Model.UserInfo.IsActive) ? "status-active" : "status-inactive")">
+                @(Model.UserInfo.IsActive ? "فعال" : "غیرفعال")
+            </span>
+        </div>
+        <div class="user-info-item">
+            <strong>نقش‌ها:</strong>
+            <span class="roles-container">
+                @foreach (var role in Model.UserInfo.RoleNames)
+                {
+                    <span class="role-badge">@role</span>
+                }
+            </span>
+        </div>
+    </div>
+
+    <div class="user-card-actions">
+        <button class="edit-user-btn" onclick="location.href='@Url.Page("/UserPanels/EditUser", new { id = 0 })'">
+            ویرایش اطلاعات
+        </button>
+    </div>
+</div>

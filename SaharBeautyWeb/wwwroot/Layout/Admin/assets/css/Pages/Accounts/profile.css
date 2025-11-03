@@ -1,0 +1,147 @@
+﻿/* ------------------ کارت کاربری ------------------ */
+.user-card {
+    background-color: #fff;
+    border-radius: 12px;
+    border: 1px solid #ddd; /* نوار بسیار باریک */
+    max-width: 400px;
+    margin: 20px auto;
+    overflow: hidden;
+    font-family: Tahoma, sans-serif;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+}
+
+    .user-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+    }
+
+.user-card-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: #7E57C2; /* بنفش ملایم */
+    color: #fff;
+    gap:15px;
+}
+
+.user-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    margin-right: 15px;
+    object-fit:cover;
+}
+
+.user-basic-info {
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    margin-left:10px;
+}
+
+.user-name {
+    margin: 0;
+    font-size: 1.2rem;
+    color:#5E35B1;
+    font-weight:bold;
+}
+
+.user-username {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-top:5px;
+}
+
+.user-card-body {
+    padding: 15px;
+}
+
+.user-info-item {
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee; /* خط باریک جداکننده */
+    padding-bottom: 5px;
+}
+
+    .user-info-item:last-child {
+        border-bottom: none;
+    }
+
+.status-active {
+    color: #7E57C2;
+    font-weight: bold;
+}
+
+.status-inactive {
+    color: #ccc;
+    font-weight: bold;
+}
+
+.roles-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.role-badge {
+    background-color: #EDE7F6; /* بنفش خیلی روشن */
+    color: #7E57C2;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #D1C4E9; /* نوار بسیار باریک */
+}
+.user-card-actions {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.edit-user-btn {
+    background-color: #7E57C2; /* بنفش تم اصلی */
+    color: #fff;
+    font-weight: bold;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+    .edit-user-btn:hover {
+        background-color: #673AB7; /* بنفش تیره‌تر هنگام هاور */
+        transform: translateY(-1px);
+    }
+
+    .edit-user-btn:active {
+        transform: scale(0.97);
+    }
+/* ریسپانسیو */
+@media screen and (max-width: 480px) {
+    .user-card {
+        max-width: 95%;
+    }
+
+    .user-card-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .user-avatar {
+        margin: 0 0 10px 0;
+    }
+
+    .user-info-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .roles-container {
+        justify-content: flex-start;
+    }
+}
