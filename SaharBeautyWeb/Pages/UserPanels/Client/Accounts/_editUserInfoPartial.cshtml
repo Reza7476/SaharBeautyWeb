@@ -1,5 +1,6 @@
 ﻿@using SaharBeautyWeb.Models.Entities.Users.Models
 @model EditUserInfoModel
+
 <link href="~/layout/admin/assets/css/pages/accounts/edit-profile.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css" rel="stylesheet">
 
@@ -9,7 +10,7 @@
     <form method="post"
           enctype="multipart/form-data"
           class="edit-profile-form "
-          id="edit-profile-image-form">
+          id="edit-profile-image-client-form">
         @Html.AntiForgeryToken()
         <div class="profile-avatar-section">
             <div class="avatar-wrapper">
@@ -18,21 +19,21 @@
                     <img src="@Model.Avatar.Url"
                          alt="@Model.Avatar.ImageName"
                          class="profile-avatar-preview"
-                         id="avatarPreview">
+                         id="clientAvatarPreview">
                 }
                 else
                 {
                     <img src="~/Layout/Admin/assets/images/users/avatar-7.jpg"
-                         id="avatarPreview">
+                         id="clientAvatarPreview">
                 }
-                <label for="avatarUpload"
+                <label for="clientAvatarUpload"
                        class="edit-avatar-btn">
                     <i class="fa fa-pencil-alt"></i>
                 </label>
 
                 <input type="file"
                        asp-for="Avatar"
-                       id="avatarUpload"
+                       id="clientAvatarUpload"
                        accept="image/*"
                        hidden>
             </div>

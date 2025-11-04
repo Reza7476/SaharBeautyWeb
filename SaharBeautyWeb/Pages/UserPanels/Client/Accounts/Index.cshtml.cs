@@ -1,6 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SaharBeautyWeb.Configurations.Extensions;
+using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Commons.Models;
+using SaharBeautyWeb.Models.Entities.Users.Dtos;
 using SaharBeautyWeb.Models.Entities.Users.Models;
 using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.UserPanels.Users;
@@ -85,6 +87,59 @@ public class IndexModel : AjaxBasePageModel
                 Email = data.Email,
                 UserName=data.UserName,
             }, "_editUserInfoPartial");
+        return response;
+    }
+
+
+    public async Task<IActionResult> OnPostApplyEditProfileImage()
+    {
+        var (isValid, message) = Avatar.ValidateImage();
+        if (!isValid)
+        {
+            return new JsonResult(new
+            {
+                success = false,
+                error = message
+            });
+        }
+
+        var result = await _userService.EditProfileImage(new EditMediaDto()
+        {
+            Media = Avatar
+        });
+
+        var response = HandleApiAjxResult(result);
+        return response;
+    }
+
+    public async Task<IActionResult> OnPostApplyEditProfile()
+    {
+
+        if (EditUserInfoModel.UserName == null)
+        {
+            return new JsonResult(new
+            {
+                seuucess = false,
+                error = "نام کاربری نباید خالی باشد"
+            });
+        }
+        if (EditUserInfoModel.BirthDate != null)
+        {
+            EditUserInfoModel.BirthDate = EditUserInfoModel.BirthDate.ConvertPersianNumberToEnglish();
+        }
+        var result = await _userService.EditClientProfile(new EditClientProfileDto()
+        {
+            Email = EditUserInfoModel.Email,
+            LastName = EditUserInfoModel.LastName,
+            Name = EditUserInfoModel.Name,
+            BirthDateGregorian = EditUserInfoModel.BirthDate != null ?
+                                  EditUserInfoModel.BirthDate
+                                  .ConvertStringShamsiCalendarToGregorian()
+                                  : null,
+            UserName=EditUserInfoModel.UserName
+        });
+
+        var response = HandleApiAjxResult(result);
         return response;
     }
 

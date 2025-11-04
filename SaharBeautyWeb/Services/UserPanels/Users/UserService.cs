@@ -34,6 +34,25 @@ public class UserService : UserPanelBaseService, IUserService
         return result;
     }
 
+    public async Task<ApiResultDto<object>> EditClientProfile(EditClientProfileDto dto)
+    {
+        var url = $"{_apiUrl}/client-profile";
+
+        var json = JsonSerializer.Serialize(new
+        {
+            dto.Name,
+            dto.LastName,
+            dto.Email,
+            BirthDate = dto.BirthDateGregorian,
+            dto.UserName
+        });
+
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var result = await PatchAsync<object>(url, content);
+        return result;
+    }
+
     public async Task<ApiResultDto<object>> EditProfileImage(EditMediaDto dto)
     {
         var url = $"{_apiUrl}/profile-image";
