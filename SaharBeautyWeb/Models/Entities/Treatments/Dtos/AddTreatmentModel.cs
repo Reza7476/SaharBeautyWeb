@@ -16,4 +16,7 @@ public class AddTreatmentModel
     public IFormFile Image { get; set; } = default!;
 
     public int Duration { get; set; }
+
+    [Required]
+    public required string Price { get; set; }
 }

@@ -7,7 +7,7 @@ namespace SaharBeautyWeb.Services.UserPanels.Admin.Treatments;
 
 public interface ITreatmentUserPanelService : IService
 {
-    Task<ApiResultDto<long>> Add(AddTreatmentModel dto);
+    Task<ApiResultDto<long>> Add(AddTreatmentDto dto);
     Task<ApiResultDto<long>> AddImage(AddMediaDto dto);
     Task<ApiResultDto<object>> DeleteImage(long imageId, long id);
     Task<ApiResultDto<List<GetAllTreatmentForAppointmentModel>>> GetAllForAppointment();

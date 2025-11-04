@@ -66,21 +66,24 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
 
             if (
                 string.IsNullOrWhiteSpace(AddModel.Title) ||
-                string.IsNullOrWhiteSpace(AddModel.Description))
+                string.IsNullOrWhiteSpace(AddModel.Description)||
+                string.IsNullOrWhiteSpace(AddModel.Price))
             {
                 return new JsonResult(new
                 {
                     success = false,
-                    error = "عنوان یا توضیحات  ناقص میباشند"
+                    error = "عنوان یا توضیحات یا قیمت خدمت ناقص میباشند"
                 });
             }
 
-            var result = await _treatmentUserPanelService.Add(new AddTreatmentModel
+            decimal price = AddModel.Price.ConvertStringNumberToDecimal();
+            var result = await _treatmentUserPanelService.Add(new AddTreatmentDto
             {
                 Description = AddModel.Description,
                 Image = AddModel.Image,
                 Title = AddModel.Title,
-                Duration=AddModel.Duration
+                Duration=AddModel.Duration,
+                Price= price,
             });
             return HandleApiAjxResult(result);
         }

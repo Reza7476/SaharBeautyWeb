@@ -15,7 +15,7 @@ public class TreatmentUserPanelService : UserPanelBaseService, ITreatmentUserPan
     {
     }
 
-    public async Task<ApiResultDto<long>> Add(AddTreatmentModel dto)
+    public async Task<ApiResultDto<long>> Add(AddTreatmentDto dto)
     {
         var url = $"{_apiUrl}/add";
 
@@ -23,6 +23,7 @@ public class TreatmentUserPanelService : UserPanelBaseService, ITreatmentUserPan
         content.Add(new StringContent(dto.Title ?? " "), "Title");
         content.Add(new StringContent(dto.Description ?? " "), "Description");
         content.Add(new StringContent(dto.Duration.ToString()), "Duration");
+        content.Add(new StringContent(dto.Price.ToString()), "Price");
         if (dto.Image != null)
         {
             var fileStream = dto.Image.OpenReadStream();
