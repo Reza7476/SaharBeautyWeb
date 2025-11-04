@@ -200,6 +200,24 @@
         });
     })
 
-   
+    $(document).on("input", "#add-treatment-price", function () {
+
+        var input = $(this);
+        let value = input.val();
+        value = value.replace(/[^0-9۰-۹]/g, '');
+
+        const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        for (let i = 0; i < 10; i++) {
+            value = value.replace(new RegExp(persianDigits[i], 'g'), i);
+        }
+
+        
+        if (value.length > 0 && $.isNumeric(value)) {
+            let formatted = Number(value).toLocaleString('fa-IR');
+            input.val(formatted);
+        } else {
+            input.val('');
+        }
+    })
 
 })

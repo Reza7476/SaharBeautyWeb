@@ -25,11 +25,19 @@
                            placeholder="عنوان خدمت را وارد کنید" />
                 </div>
                 <div class="treatment-form-group">
-                    <input type="text"
-                           id="add-treatment-title"
+                    <input type="number"
+                           id="add-treatment-duration"
                            class="treatment-input"
                            asp-for="Duration"
                            placeholder="مدت زمان خدمت را وارد کنید" />
+                </div>
+
+                <div class="treatment-form-group">
+                    <input type="text"
+                           id="add-treatment-price"
+                           class="treatment-input"
+                           asp-for="Price"
+                           placeholder="قیمت خدمت را وارد کنید به تومان" />
                 </div>
 
                 <div class="treatment-form-group">

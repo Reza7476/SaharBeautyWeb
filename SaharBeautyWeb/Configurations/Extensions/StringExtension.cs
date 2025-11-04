@@ -1,4 +1,7 @@
-﻿namespace SaharBeautyWeb.Configurations.Extensions;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
+
+namespace SaharBeautyWeb.Configurations.Extensions;
 
 public static class StringExtension
 {
@@ -21,4 +24,14 @@ public static class StringExtension
         .Replace('۹', '9');
     }
 
+    public static decimal ConvertStringNumberToDecimal(this string number)
+    {
+        if (string.IsNullOrWhiteSpace(number))
+            return 0m;
+        number = number.ConvertPersianNumberToEnglish();
+
+        number = number.Replace(",", "").Replace("٬", "");
+        decimal price=decimal.Parse(number, CultureInfo.InvariantCulture);
+        return price;
+    }
 }
