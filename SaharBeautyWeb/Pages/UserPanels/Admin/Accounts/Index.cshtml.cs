@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SaharBeautyWeb.Configurations.Extensions;
+using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Commons.Models;
 using SaharBeautyWeb.Models.Entities.Users.Dtos;
 using SaharBeautyWeb.Models.Entities.Users.Models;
@@ -20,6 +21,9 @@ public class IndexModel : AjaxBasePageModel
 
     [BindProperty]
     public EditUserInfoModel EditUserInfoModel { get; set; }
+
+    [BindProperty]
+    public IFormFile? Avatar { get; set; }
 
     public async Task<IActionResult> OnGet()
     {
@@ -101,4 +105,26 @@ public class IndexModel : AjaxBasePageModel
         var response = HandleApiAjxResult(result);
         return response;
     }
+
+    public async Task<IActionResult> OnPostApplyEditProfileImage()
+    {
+        var (isValid, message) = Avatar.ValidateImage();
+        if (!isValid)
+        {
+            return new JsonResult(new
+            {
+                success = false,
+                error = message
+            });
+        }
+
+        var result = await _userService.EditProfileImage(new EditMediaDto()
+        {
+            Media=Avatar
+        });
+
+        var response = HandleApiAjxResult(result);
+        return response;
+    }
+
 }

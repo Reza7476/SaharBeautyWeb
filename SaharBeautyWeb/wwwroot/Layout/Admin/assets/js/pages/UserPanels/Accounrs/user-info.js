@@ -39,14 +39,14 @@ $(document).on("click", ".edit-user-btn", function () {
 })
 
 $(document).on("change", "#avatarUpload", function () {
-    var preview = $("#preview-admin-profile-image")[0];
-    var inputLogo = $(this)[0];
-    setUpImagePreview(inputLogo, preview);
+    var preview = $("#avatarPreview")[0];
+    var inputAvatar = $(this)[0];
+    setUpImagePreview(inputAvatar, preview);
 });
 
-$(document).on("click", ".apply-edit-profile", function (e) {
+$(document).on("click", "#apply-admin-edit-profile", function (e) {
     e.preventDefault();
-    var form = $(".edit-profile-form")[0];
+    var form = $("#edit-admin-profile-form")[0];
     var formData = new FormData(form);
 
     $.ajax({
@@ -74,3 +74,34 @@ $(document).on("click", ".apply-edit-profile", function (e) {
         }
     })
 })
+
+$(document).on("click", "#apply-edit-admin-profile-image", function (e) {
+    e.preventDefault();
+    var form = $("#edit-profile-image-form")[0];
+    var image = $("#avatarUpload")[0];
+    var preview = $("#avatarPreview")[0]
+    var formData = new FormData(form);
+
+    $.ajax({
+        url: applyEditProfileImage,
+        processData: false,
+        contentType: false,
+        data: formData,
+        type: 'Post',
+        success: function (res) {
+            if (res.success) {
+                $(preview).attr("src", "");
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $(preview).attr("src", e.target.result);
+                };
+                reader.readAsDataURL(image.files[0]);
+            } else {
+                handleApiError(res.error);
+            }
+        }, error: function (res) {
+            handleApiError(res.error);
+        }
+
+    });
+});
