@@ -43,7 +43,7 @@ public class UserService : UserPanelBaseService, IUserService
             dto.Name,
             dto.LastName,
             dto.Email,
-            BirthDate = dto.BirthDateGregorian,
+            dto.BirthDateGregorian,
             dto.UserName
         });
 
