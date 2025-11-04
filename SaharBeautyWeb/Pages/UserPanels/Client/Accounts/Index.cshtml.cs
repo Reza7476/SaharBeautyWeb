@@ -21,6 +21,13 @@ public class IndexModel : AjaxBasePageModel
 
     public UserInfoModel UserInfo { get; set; }
 
+    [BindProperty]
+    public EditUserInfoModel EditUserInfoModel { get; set; }
+
+    [BindProperty]
+    public IFormFile? Avatar { get; set; }
+
+
     public async Task<IActionResult> OnGet()
     {
 
@@ -54,6 +61,31 @@ public class IndexModel : AjaxBasePageModel
             }
         }
         return response;
-
     }
+
+    public async Task<IActionResult> OnGetUserInfoForEdit()
+    {
+        var result = await _userService.GetUserInfo();
+        var response = HandleApiAjaxPartialResult(
+            result,
+            data => new EditUserInfoModel()
+            {
+                Avatar = data.Avatar != null ? new ImageDetailsModel()
+                {
+                    Extension = data.Avatar.Extension,
+                    ImageName = data.Avatar.ImageName,
+                    UniqueName = data.Avatar.UniqueName,
+                    Url = data.Avatar.Url
+                } : null,
+                BirthDate = data.BirthDate != null ? data.BirthDate.Value.ToShamsi() : " ",
+                CreationDate = data.CreationDate.ToShamsi(),
+                Name = data.Name,
+                LastName = data.LastName,
+                Mobile = data.Mobile,
+                Email = data.Email,
+                UserName=data.UserName,
+            }, "_editUserInfoPartial");
+        return response;
+    }
+
 }
