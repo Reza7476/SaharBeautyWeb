@@ -153,3 +153,46 @@
         margin: 10px auto;
     }
 }
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.edit-avatar-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(126, 87, 194, 0.85);
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid #fff;
+}
+
+    .edit-avatar-btn:hover {
+        background: #5e35b1;
+        transform: scale(1.05);
+    }
+
+/* پیش‌نمایش تصویر جدید */
+.preview-profile-image {
+    display: block;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 3px dashed rgba(126, 87, 194, 0.4);
+    object-fit: cover;
+    margin: 15px auto 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+    .preview-profile-image.hidden {
+        display: none;
+    }

@@ -8,21 +8,52 @@
 
 <div class="edit-profile-container">
     <h2 class="form-title">ویرایش اطلاعات کاربری</h2>
+    <form method="post"
+          enctype="multipart/form-data"
+          class="edit-profile-form "
+          id="edit-profile-image-form">
+        @Html.AntiForgeryToken()
+        <div class="profile-avatar-section">
+            <div class="avatar-wrapper">
+                @if (Model.Avatar != null)
+                {
+                    <img src="@Model.Avatar.Url"
+                         alt="@Model.Avatar.ImageName"
+                         class="profile-avatar-preview"
+                         id="avatarPreview">
+                }
+                else
+                {
+                    <img src="~/Layout/Admin/assets/images/users/avatar-7.jpg"
+                         id="avatarPreview">
+                }
+                <label for="avatarUpload"
+                       class="edit-avatar-btn">
+                    <i class="fa fa-pencil-alt"></i>
+                </label>
+
+                <input type="file"
+                       asp-for="Avatar"
+                       id="avatarUpload"
+                       accept="image/*"
+                       hidden>
+            </div>
+        </div>
+        <div class="form-buttons">
+            <button type="submit"
+                    class="save-btn"
+                    id="apply-edit-admin-profile-image">
+                ذخیره عکس
+            </button>
+        </div>
+    </form>
 
     <form method="post"
           enctype="multipart/form-data"
-          class="edit-profile-form">
-        <div class="profile-avatar-section">
-            @if (Model.Avatar != null)
-            {
-                <img src="@Model.Avatar.Url"
-                     alt="@Model.Avatar.ImageName"
-                     class="profile-avatar-preview"
-                     id="avatarPreview">
-            }
-            @Html.AntiForgeryToken()
-        </div>
+          class="edit-profile-form "
+          id="edit-admin-profile-form">
 
+        @Html.AntiForgeryToken()
         <div class="form-grid">
             <div class="form-group">
                 <label>نام</label>
@@ -60,12 +91,13 @@
                        autocomplete="off"
                        class="form-control Shamsi-date" />
             </div>
-           
+
         </div>
 
         <div class="form-buttons">
             <button type="submit"
-                    class="save-btn apply-edit-profile">
+                    class="save-btn "
+                    id="apply-admin-edit-profile">
                 ذخیره تغییرات
             </button>
         </div>

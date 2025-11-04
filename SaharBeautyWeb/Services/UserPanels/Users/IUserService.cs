@@ -7,5 +7,6 @@ namespace SaharBeautyWeb.Services.UserPanels.Users;
 public interface IUserService : IService
 {
     Task<ApiResultDto<object>> EditAdminProfile(EditAdminProfileDto dto);
+    Task<ApiResultDto<object>> EditProfileImage(EditMediaDto dto);
     Task<ApiResultDto<GetUserInfoDto?>> GetUserInfo();
 }
