@@ -1,29 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SaharBeautyWeb.Services.JwtTokens;
+using SaharBeautyWeb.Services.UserPanels.Users;
 
 namespace SaharBeautyWeb.Pages.Shared.Components.UserInfo;
 
 public class UserInfoViewComponent : ViewComponent
 {
-    private readonly IJwtTokenService _jwtService;
+    private readonly IUserService _userService;
 
-    public UserInfoViewComponent(IJwtTokenService jwtService)
+    public UserInfoViewComponent(
+        IUserService userService)
     {
-        _jwtService = jwtService;
+        _userService = userService;
     }
     public string? FullName { get; set; }
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var vm = new UserInfoViewComponentModel()
-        {
-            FullName=_jwtService.FirstName
-        };
+        var vm = new UserInfoViewComponentModel();
 
-        return View("Default",vm);
+        var userInfo = await _userService.GetUserInfo();
+        if (userInfo.IsSuccess && userInfo.Data != null)
+        {
+            vm.FullName = userInfo.Data.Name + " " + userInfo.Data.LastName;
+            vm.ImageURL = userInfo.Data.Avatar != null ? userInfo.Data.Avatar.Url : null;
+        }
+        return View("Default", vm);
     }
 }
 
 public class UserInfoViewComponentModel
 {
-    public string? FullName { get; set; } 
+    public string? FullName { get; set; }
+    public string? ImageURL { get; set; }
 }
