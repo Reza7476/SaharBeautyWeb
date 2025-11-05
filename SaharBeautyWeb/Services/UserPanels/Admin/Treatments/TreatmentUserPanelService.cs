@@ -87,7 +87,8 @@ public class TreatmentUserPanelService : UserPanelBaseService, ITreatmentUserPan
         {
             dto.Title,
             dto.Description,
-            dto.Duration
+            dto.Duration,
+            dto.Price
         });
 
         using var content = new StringContent(json, Encoding.UTF8, "application/json");

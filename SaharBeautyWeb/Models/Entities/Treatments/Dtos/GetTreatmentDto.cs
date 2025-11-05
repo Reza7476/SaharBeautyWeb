@@ -8,5 +8,6 @@ public class GetTreatmentDto
     public string? Title { get; set; }
     public string? Description { get; set; }
     public MediaDto? Media { get; set; }
+    public decimal Price { get; set; }
 }
 

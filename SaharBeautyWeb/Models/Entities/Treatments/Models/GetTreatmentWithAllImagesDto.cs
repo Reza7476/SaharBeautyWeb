@@ -9,5 +9,6 @@ public class GetTreatmentWithAllImagesDto
     public List<MediaDto> Media { get; set; } = default!;
     public IFormFile? Image { get; set; }
     public int Duration { get; set; }
+    public decimal Price { get; set; }
 
 }

@@ -19,7 +19,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
         public AddTreatmentModel? AddModel { get; set; }
 
         [BindProperty]
-        public TreatmentDetailsDto? ModelData { get; set; }
+        public TreatmentDetailsModel? ModelData { get; set; } = new();
 
         public IndexModel(ITreatmentService service,
             ErrorMessages errorMessage,
@@ -92,13 +92,14 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
         {
             var result = await _service.GetById(id);
             var response = HandleApiAjaxPartialResult(
-                result, data => new TreatmentDetailsDto()
+                result, data => new TreatmentDetailsModel()
                 {
                     Description = data.Description,
                     Title = data.Title,
                     Media = result.Data!.Media,
                     Id = id,
-                    Duration=data.Duration
+                    Price=result.Data.Price.ConvertDecimalNumberToString(),
+                    Duration=data.Duration,
                 }, "_editTreatmentPartial");
             return response;
         }
@@ -131,7 +132,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
 
         public async Task<IActionResult> OnPostEditTreatment()
         {
-            if (ModelData.Title == null || ModelData.Description == null)
+            if (ModelData.Title == null || ModelData.Description == null||ModelData.Price==null)
             {
                 return new JsonResult(new
                 {
@@ -139,13 +140,16 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Treatments
                     success = false
                 });
             }
+
+            var price = ModelData.Price.ConvertStringNumberToDecimal();
             var result = await _treatmentUserPanelService
                 .UpdateTitleAndDescription(new UpdateTreatmentTitleAndDescriptionDto()
                 {
                     Description = ModelData.Description,
                     Title = ModelData.Title,
                     Id = ModelData.Id,
-                    Duration=ModelData.Duration
+                    Duration=ModelData.Duration,
+                    Price=price
                 });
 
             var response = HandleApiAjxResult(result);

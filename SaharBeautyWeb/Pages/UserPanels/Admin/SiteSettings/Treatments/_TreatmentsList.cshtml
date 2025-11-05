@@ -1,4 +1,5 @@
-﻿@using SaharBeautyWeb.Models.Commons.Dtos
+﻿@using SaharBeautyWeb.Configurations.Extensions
+@using SaharBeautyWeb.Models.Commons.Dtos
 @using SaharBeautyWeb.Models.Entities.Treatments.Models
 
 @model GetAllTreatmentModel
@@ -8,6 +9,7 @@
         <thead>
             <tr>
                 <th>عنوان خدمت</th>
+                <th>قیمت به تومان</th>
                 <th>توضیحات</th>
                 <th>عکس</th>
                 <th>عملیات</th>
@@ -18,8 +20,10 @@
             {
                 foreach (var item in Model.Treatments)
                 {
+                    var price = item.Price.ConvertDecimalNumberToString();
                     <tr>
                         <td data-label="عنوان">@item.Title</td>
+                        <td data-label="فیمت">@price</td>
                         <td data-label="توضیحات">
                             <p class="multiline-truncate">@item.Description</p>
                         </td>

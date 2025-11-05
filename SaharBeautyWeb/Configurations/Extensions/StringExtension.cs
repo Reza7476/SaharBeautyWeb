@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Text.RegularExpressions;
 
 namespace SaharBeautyWeb.Configurations.Extensions;
 
@@ -31,7 +30,32 @@ public static class StringExtension
         number = number.ConvertPersianNumberToEnglish();
 
         number = number.Replace(",", "").Replace("٬", "");
-        decimal price=decimal.Parse(number, CultureInfo.InvariantCulture);
+        decimal price = decimal.Parse(number, CultureInfo.InvariantCulture);
         return price;
+    }
+
+
+    public static string ConvertDecimalNumberToString(this decimal number)
+    {
+        var result= number.ToString("N0", CultureInfo.InvariantCulture);
+        var persianNumber = result.ConvertEnglishNumberToPersian();
+        return persianNumber;
+    }
+
+    public static string ConvertEnglishNumberToPersian(this  string number)
+    {
+        if (string.IsNullOrWhiteSpace(number))
+            return number;
+        return number
+        .Replace( '0','۰')
+        .Replace( '1','۱')
+        .Replace( '2','۲')
+        .Replace( '3','۳')
+        .Replace( '4','۴')
+        .Replace( '5','۵')
+        .Replace( '6','۶')
+        .Replace( '7','۷')
+        .Replace( '8','۸')
+        .Replace( '9', '۹');
     }
 }
