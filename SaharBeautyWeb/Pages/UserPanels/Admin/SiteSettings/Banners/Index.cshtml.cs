@@ -39,7 +39,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
                     ImageName = result.Data.ImageName,
                     URL = result.Data.URL,
                     Id = result.Data.Id,
-                    CreateDate = result.Data.CreateDate.ToShamsi(),
+                    CreateDate = result.Data.CreateDate.ConvertGregorianDateToShamsi(),
                     Title = result.Data.Title,
                 } : null;
             }

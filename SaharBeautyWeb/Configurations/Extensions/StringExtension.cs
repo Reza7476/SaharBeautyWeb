@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using SaharBeautyWeb.Models.Entities.Appointments.Enums;
+using SaharBeautyWeb.Models.Entities.WeeklySchedules.Dtos;
+using System.Globalization;
 
 namespace SaharBeautyWeb.Configurations.Extensions;
 
@@ -58,4 +60,47 @@ public static class StringExtension
         .Replace( '8','۸')
         .Replace( '9', '۹');
     }
+
+    public static string ConvertAppointmentStatusToString( this AppointmentStatus status)
+    {
+        switch(status)
+        {
+            case AppointmentStatus.Completed:
+                return "انجام شده";
+
+            case AppointmentStatus.Confirmed:
+                return "اطلاع رسانی شده";
+            case AppointmentStatus.Pending:
+                return "در انتظار تایید";
+            case AppointmentStatus.NoShow:
+                return "حضور نیافته";
+            case AppointmentStatus.Cancelled:
+                return "کنسل شده";
+            default: return "نامشخص";
+        }
+    }
+
+    public static  string  ConvertDayWeekToPersianDay(this DayWeek day)
+    {
+        switch (day)
+        {
+            case DayWeek.Saturday:
+                return "شنبه";
+            case DayWeek.Sunday:
+                return "یک شنبه";
+            case DayWeek.Monday:
+                return "دوشنبه";
+            case DayWeek.Tuesday:
+                return "سشنبه";
+            case DayWeek.Wednesday:
+                return "چهارشنبه";
+            case DayWeek.Thursday:
+                return "پنجشنبه";
+            case DayWeek.Friday:
+                return "جمعه";
+            default: return " ";
+        }
+    }
+
+
 }

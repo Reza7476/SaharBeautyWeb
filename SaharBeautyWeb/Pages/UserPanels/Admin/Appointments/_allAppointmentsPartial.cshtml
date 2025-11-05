@@ -1,67 +1,43 @@
 ﻿@using SaharBeautyWeb.Configurations.Extensions
-@using SaharBeautyWeb.Models.Entities.Appointments.Enums
-@using SaharBeautyWeb.Models.Entities.Appointments.Models.Clients
-@using SaharBeautyWeb.Models.Entities.WeeklySchedules.Dtos
-@using System.Globalization
+@using SaharBeautyWeb.Models.Entities.Appointments.Models
 
-@model GetAllMyAppointmentsModel
+@model GetAllAppointmentsModel
 <link href="~/layout/admin/assets/css/pages/treatments/liststyle.css" rel="stylesheet" />
-
-@if (Model.MyAppointmentModel.Any())
+@if (Model.AllAppointmentModel.Any())
 {
     <div class="table-responsive">
         <table class="table treatments-table align-middle">
             <thead>
                 <tr>
                     <th>عنوان </th>
+                    <th>نام مشتری </th>
+                    <th>شماره تلفن مشتری </th>
                     <th>زمان شروع</th>
                     <th>زمان پایان</th>
                     <th>روز هفته</th>
                     <th>تاریخ نوبت</th>
                     <th>وضعیت</th>
-                    <th>ایجاد شده</th>
-                    <th>کنسل شده توسط</th>
-                    <th>تاریخ کنسلی</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
             <tbody>
-                @if (Model.MyAppointmentModel.Any())
+                @if (Model.AllAppointmentModel.Any())
                 {
-                    @foreach (var appointment in Model.MyAppointmentModel)
+                    @foreach (var appointment in Model.AllAppointmentModel)
                     {
                         var status = appointment.Status.ConvertAppointmentStatusToString();
                         var day = appointment.DayWeek.ConvertDayWeekToPersianDay();
 
                         <tr>
                             <td data-label="عنوان">@appointment.TreatmentTitle</td>
+                            <td data-label="نام مشتری">@(appointment.ClientName+" "+appointment.ClientLastName )</td>
+                            <td data-label="شماره تلفن">@appointment.ClientMobile</td>
                             <td data-label="زمان شروع">@appointment.StartTime.ToString("HH:mm")</td>
                             <td data-label="زمان پایان">@appointment.EndTime.ToString("HH:mm")</td>
                             <td data-label="روز هفته">@day</td>
                             <td data-label="تاریخ">@(appointment.AppointmentDate.ConvertDateOnlyToPersian())</td>
                             <td data-label="وضیعت">@status</td>
-                            <td data-label="تاریخ رزرو">@(appointment.CreatedAt.ConvertDateOnlyToPersian())</td>
-                            <td data-label="کنسل شده توسط">@appointment.CancelledBy  </td>
-                            <td data-label="تاریخ کنسل">@(appointment.CancelledDate.ConvertDateOnlyToPersian())</td>
-                            <td data-label="عملیات">
-                                @if (appointment.Status == AppointmentStatus.Pending ||
-                               appointment.Status == AppointmentStatus.Confirmed)
-                                {
-                                    <div class="dropdown">
-                                        <button class="btn btn-link text-muted dropdown-toggle p-0"
-                                                type="button" data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-horizontal-rounded fs-5"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                            <li>
-                                                <button class="dropdown-item cancel-appointment-btn"
-                                                        data-id="@appointment.Id">
-                                                    کنسل کردن
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                }
+                            <td data-label="عملیات" data-id="@appointment.Id">جزییات
                             </td>
                         </tr>
                     }
@@ -76,6 +52,7 @@
         </table>
     </div>
 }
+
 <div class="row align-items-center justify-content-between mt-3">
     <div class="col-md-5 col-12 text-center text-md-start mb-3 mb-md-0">
         <div class="dataTables_info text-muted">

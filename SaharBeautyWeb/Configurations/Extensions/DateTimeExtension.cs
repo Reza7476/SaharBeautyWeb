@@ -1,11 +1,12 @@
-﻿using System.Globalization;
-using System;
+﻿using System;
+using System.Globalization;
+using System.Runtime.CompilerServices;
 
 namespace SaharBeautyWeb.Configurations.Extensions;
 
 public static class DateTimeExtension
 {
-    public static string ToShamsi(this DateTime date)
+    public static string ConvertGregorianDateToShamsi(this DateTime date)
     {
         var pc = new System.Globalization.PersianCalendar();
         return string.Format("{0:0000}/{1:00}/{2:00}",
@@ -35,4 +36,21 @@ public static class DateTimeExtension
         }
     }
 
+
+    public  static string ConvertDateOnlyToPersian(this DateOnly dateOnly)
+    {
+        if (dateOnly != default)
+        {
+
+            DateTime dateTime = dateOnly.ToDateTime(TimeOnly.MinValue);
+            PersianCalendar pCalendar = new PersianCalendar();
+            string persianDate = $"{pCalendar.GetYear(dateTime)}/{pCalendar.GetMonth(dateTime):00}/{pCalendar.GetDayOfMonth(dateTime):00}";
+            return persianDate;
+        }
+        else
+        {
+            return " ";
+
+        }
+    }
 }
