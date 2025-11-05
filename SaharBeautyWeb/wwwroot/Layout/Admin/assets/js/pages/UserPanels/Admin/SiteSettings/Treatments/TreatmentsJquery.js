@@ -200,24 +200,30 @@
         });
     })
 
-    $(document).on("input", "#add-treatment-price", function () {
 
+    setupPriceFormatter("#add-treatment-price")
+    setupPriceFormatter("#edit-treatment-price")
+})
+function setupPriceFormatter(selector) {
+    $(document).on("input", selector, function () {
         var input = $(this);
         let value = input.val();
+
+        // حذف کاراکترهای غیرعددی (فارسی و انگلیسی)
         value = value.replace(/[^0-9۰-۹]/g, '');
 
+        // تبدیل اعداد فارسی به انگلیسی
         const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
         for (let i = 0; i < 10; i++) {
             value = value.replace(new RegExp(persianDigits[i], 'g'), i);
         }
 
-        
+        // فرمت کردن به سبک سه‌رقم سه‌رقم (فارسی)
         if (value.length > 0 && $.isNumeric(value)) {
             let formatted = Number(value).toLocaleString('fa-IR');
             input.val(formatted);
         } else {
             input.val('');
         }
-    })
-
-})
+    });
+}
