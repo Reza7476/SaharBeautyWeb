@@ -1,0 +1,109 @@
+﻿body {
+    font-family: "Tahoma", sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.details-container {
+    max-width: 700px;
+    margin: 30px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    padding: 25px;
+}
+
+.page-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 1.6rem;
+    border-bottom: 2px solid #6ac27c;
+    padding-bottom: 8px;
+}
+
+.details-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.detail-value {
+    color: #333;
+}
+
+/* رنگ وضعیت‌ها */
+.status-pending {
+    color: #f39c12;
+    font-weight: bold;
+}
+
+.status-confirmed {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.status-cancelled {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* دکمه بازگشت */
+.button-group {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-back {
+    display: inline-block;
+    background-color: #6ac27c;
+    color: white;
+    text-decoration: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+    .btn-back:hover {
+        background-color: #57ad68;
+    }
+
+/* موبایل */
+@media (max-width: 600px) {
+    .details-card {
+        gap: 8px;
+    }
+
+    .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        border: 1px solid rgba(46,204,113,0.2);
+        border-radius: 8px;
+        margin-bottom: 6px;
+        background: #fcfcfc;
+    }
+
+    .detail-label {
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+    }
+
+    .detail-value {
+        font-size: 0.95rem;
+        color: #222;
+    }
+}

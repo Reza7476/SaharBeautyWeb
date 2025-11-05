@@ -37,7 +37,10 @@
                             <td data-label="روز هفته">@day</td>
                             <td data-label="تاریخ">@(appointment.AppointmentDate.ConvertDateOnlyToPersian())</td>
                             <td data-label="وضیعت">@status</td>
-                            <td data-label="عملیات" data-id="@appointment.Id">جزییات
+                            <td data-label="عملیات" data-id="@appointment.Id">
+                                <a asp-page="Details" asp-route-id="@appointment.Id" class="edit-btn">
+                                    جزئیات
+                                </a>
                             </td>
                         </tr>
                     }

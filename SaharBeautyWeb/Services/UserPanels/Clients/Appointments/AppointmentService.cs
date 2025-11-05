@@ -114,4 +114,13 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
         var result = await GetAsync<List<GetBookedAppointmentByDateDto>>(url, content);
         return result;
     }
+
+    public async Task<ApiResultDto<GetAppointmentDetailsDto?>> GetDetails(string id)
+    {
+
+        var url = $"{_apiUrl}/{id}";
+
+        var result = await GetAsync<GetAppointmentDetailsDto?>(url);
+        return result;
+    }
 }

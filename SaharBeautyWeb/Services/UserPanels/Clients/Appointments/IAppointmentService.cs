@@ -18,4 +18,5 @@ public interface IAppointmentService : IService
         string? search=null);
     
     Task<ApiResultDto<List<GetBookedAppointmentByDateDto>>> GetBookedByDate(DateTime date);
+    Task<ApiResultDto<GetAppointmentDetailsDto?>> GetDetails(string id);
 }
