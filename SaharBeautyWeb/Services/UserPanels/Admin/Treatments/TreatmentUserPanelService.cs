@@ -79,6 +79,13 @@ public class TreatmentUserPanelService : UserPanelBaseService, ITreatmentUserPan
         return result;
     }
 
+    public async Task<ApiResultDto<List<GetTreatmentTitleDto>>> GetTitlesForAdmin()
+    {
+        var url = $"{_apiUrl}/all-for-admin-appointment-list";
+        var result = await GetAsync<List<GetTreatmentTitleDto>>(url);
+        return result;
+    }
+
     public async Task<ApiResultDto<object>>
         UpdateTitleAndDescription(UpdateTreatmentTitleAndDescriptionDto dto)
     {

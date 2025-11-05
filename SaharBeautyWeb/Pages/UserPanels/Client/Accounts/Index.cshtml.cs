@@ -49,8 +49,8 @@ public class IndexModel : AjaxBasePageModel
                         UniqueName = result.Data.Avatar.UniqueName,
                         Url = result.Data.Avatar.Url
                     } : null,
-                    BirthDate = result.Data.BirthDate != null ? result.Data.BirthDate.Value.ToShamsi() : " ",
-                    CreationDate = result.Data.CreationDate.ToShamsi(),
+                    BirthDate = result.Data.BirthDate != null ? result.Data.BirthDate.Value.ConvertGregorianDateToShamsi() : " ",
+                    CreationDate = result.Data.CreationDate.ConvertGregorianDateToShamsi(),
                     Email = result.Data.Email,
                     Id = result.Data.Id,
                     IsActive = result.Data.IsActive,
@@ -79,8 +79,8 @@ public class IndexModel : AjaxBasePageModel
                     UniqueName = data.Avatar.UniqueName,
                     Url = data.Avatar.Url
                 } : null,
-                BirthDate = data.BirthDate != null ? data.BirthDate.Value.ToShamsi() : " ",
-                CreationDate = data.CreationDate.ToShamsi(),
+                BirthDate = data.BirthDate != null ? data.BirthDate.Value.ConvertGregorianDateToShamsi() : " ",
+                CreationDate = data.CreationDate.ConvertGregorianDateToShamsi(),
                 Name = data.Name,
                 LastName = data.LastName,
                 Mobile = data.Mobile,

@@ -84,7 +84,7 @@ public class UserPanelBaseService
     }
 
     protected async Task<ApiResultDto<T>>
-        SendPatchRequestAsync<T>(string url, HttpContent? content=null)
+        SendPatchRequestAsync<T>(string url, HttpContent? content = null)
     {
         var request = new HttpRequestMessage(HttpMethod.Patch, url)
         {
@@ -102,10 +102,8 @@ public class UserPanelBaseService
         {
             Content = content
         };
-        try
-        {
 
-       
+
         var response = await _client.SendAsync(request);
         var raw = await response.Content.ReadAsStringAsync();
         if (response.IsSuccessStatusCode)
@@ -142,12 +140,7 @@ public class UserPanelBaseService
             Error = raw,
             StatusCode = (int)response.StatusCode
         };
-        }
-        catch (Exception ex)
-        {
 
-            throw;
-        }
     }
 
 
@@ -242,8 +235,8 @@ public class UserPanelBaseService
 
 
     protected Task<ApiResultDto<T>>
-        GetAsync<T>(string url,HttpContent? content=null) =>
-        SendGetRequestAsync<T>(url ,content);
+        GetAsync<T>(string url, HttpContent? content = null) =>
+        SendGetRequestAsync<T>(url, content);
 
 
     protected Task<ApiResultDto<T>>
@@ -256,7 +249,7 @@ public class UserPanelBaseService
 
 
     protected Task<ApiResultDto<T>>
-        PatchAsync<T>(string url, HttpContent? content=null) =>
+        PatchAsync<T>(string url, HttpContent? content = null) =>
         SendPatchRequestAsync<T>(url, content);
 
 
