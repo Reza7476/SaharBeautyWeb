@@ -16,9 +16,18 @@ $(document).ready(function () {
 });
 
 
-$(document).on("click", "#remove-filter", function () {
-    var form = $("#filter-form")[0];
-    form.reset();
+$(document).on("click", "#remove-filter", function (e) {
+    e.preventDefault();
+    const form = $("#filter-form");
+    form.trigger("reset");
+    form.find("select").prop("selectedIndex", 0);
+    form.find("input[type='text']").val("");
+    fetch(window.location.pathname)
+        .then(response => response.text())
+        .then(html => {
+            const newContent = $(html).find(".appointments-card").html();
+            $(".appointments-card").html(newContent);
+        })
 })
 
 $(document).on("click", ".cancel-appointment-btn", function () {

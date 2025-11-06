@@ -54,6 +54,10 @@ public class IndexModel : AjaxBasePageModel
             ListMyAppointment.CurrentPage = pageNumber;
             ListMyAppointment.TotalPages = result.Data.TotalElements.ToTotalPage(limit);
         }
+
+        ViewData["Day"] = Filter?.Day;
+        ViewData["Status"] = Filter?.Status;
+        ViewData["Date"] = Filter?.Date;
         return response;
     }
 
