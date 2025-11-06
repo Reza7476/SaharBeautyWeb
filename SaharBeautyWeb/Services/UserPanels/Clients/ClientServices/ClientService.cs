@@ -1,6 +1,7 @@
 ﻿using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos.Clients;
 using SaharBeautyWeb.Models.Entities.Appointments.Models.Clients;
+using SaharBeautyWeb.Models.Entities.Clients.Dtos;
 
 namespace SaharBeautyWeb.Services.UserPanels.Clients.ClientServices;
 
@@ -62,5 +63,21 @@ public class ClientService : UserPanelBaseService, IClientService
             IsSuccess = true,
             StatusCode = result.StatusCode
         };
+    }
+
+    public async Task<ApiResultDto<List<GetAllClientsForAddAppointmentDto>>> GetAllForAppointment(string? search=null)
+    {
+        var url = $"{_apiUrl}/all-for-create-appointment";
+
+        var query = new List<string>();
+        if (string.IsNullOrWhiteSpace(search))
+        {
+            query.Add($"search={search}");
+        }
+        url=url+"?" + string.Join("&", query);
+
+        var result = await GetAsync<List<GetAllClientsForAddAppointmentDto>>(url);
+        return result;
+
     }
 }

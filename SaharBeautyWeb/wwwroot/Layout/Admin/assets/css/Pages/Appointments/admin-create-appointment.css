@@ -1,0 +1,338 @@
+﻿.admin-create-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* بخش مشتریان */
+.clients-section {
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+    .section-header input {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        width: 50%;
+        transition: 0.3s;
+    }
+
+        .section-header input:focus {
+            border-color: #2196f3;
+            outline: none;
+        }
+
+/* اسکرول مشتریان */
+.clients-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+}
+
+.client-card {
+    min-width: 150px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .client-card:hover {
+        background: #e0f3ff;
+        transform: scale(1.03);
+    }
+
+    .client-card img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 8px;
+    }
+
+.client-info .client-name {
+    display: block;
+    font-weight: bold;
+    color: #333;
+}
+
+.client-info .client-phone {
+    font-size: 0.85rem;
+    color: #666;
+    direction: ltr;
+}
+
+.client-card.active {
+    border: 2px solid #2196f3;
+    background-color: #e6f2ff;
+}
+
+/* بخش اطلاعات نوبت */
+.appointment-section {
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-group select {
+        width: 100%;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+/* جزئیات خدمت */
+.service-details-card {
+    text-align: center;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 15px;
+    margin-top: 15px;
+    transition: all 0.3s;
+}
+
+    .service-details-card .service-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+        max-height: 220px;
+        overflow: hidden;
+    }
+
+    .service-details-card img {
+        width: auto;
+        height: 200px;
+        border-radius: 10px;
+        object-fit: contain;
+        max-width: 100%;
+    }
+
+    .service-details-card h2 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .service-details-card p {
+        font-size: 0.95rem;
+        color: #555;
+        line-height: 1.6;
+    }
+
+/* روزهای هفته */
+.week-days-container {
+    margin: 25px 0;
+}
+
+.week-days-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 10px 0;
+    scroll-behavior: smooth;
+}
+
+.day-card {
+    flex: 0 0 auto;
+    width: 110px;
+    background: #fff;
+    border-radius: 12px;
+    border: 2px solid #eee;
+    text-align: center;
+    padding: 12px 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+    .day-card:hover {
+        border-color: #2196f3;
+        transform: translateY(-3px);
+    }
+
+    .day-card.selected {
+        background: #e3f2fd;
+        border-color: #2196f3;
+        box-shadow: 0 0 10px rgba(33, 150, 243, 0.3);
+    }
+
+.day-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.day-date {
+    color: #666;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+/* === نمایش ساعت‌های روز (نوبت‌ها) به صورت افقی === */
+.time-slot-container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0;
+    margin-top: 15px;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+}
+
+.time-slot-card {
+    flex: 0 0 auto;
+    min-width: 90px;
+    background-color: #f7f7f7;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    text-align: center;
+    padding: 10px 6px;
+    font-size: 0.95rem;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    user-select: none;
+}
+
+    /* نوبت فعال */
+    .time-slot-card.active {
+        border-color: #4caf50;
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        font-weight: bold;
+    }
+
+    /* نوبت غیر فعال */
+    .time-slot-card.inactive {
+        border-color: #ddd;
+        background-color: #f1f1f1;
+        color: #999;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    /* هنگام هاور روی نوبت فعال */
+    .time-slot-card.active:hover {
+        background-color: #4caf50;
+        color: #fff;
+        transform: scale(1.05);
+    }
+
+    /* انتخاب شده (وقتی کاربر ساعت را انتخاب کرد) */
+    .time-slot-card.selected {
+        background-color: #2196f3;
+        color: #fff;
+        border-color: #1976d2;
+        box-shadow: 0 0 8px rgba(33,150,243,0.4);
+    }
+
+    /* ساعت داخل کارت */
+    .time-slot-card .selected-time {
+        font-weight: 600;
+    }
+
+/* دکمه ثبت ثابت پایین صفحه */
+.fixed-submit {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    padding: 10px;
+    z-index: 999;
+}
+
+    .fixed-submit button {
+        background-color: #4caf50;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 30px;
+        width: 90%;
+        max-width: 400px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .fixed-submit button:hover {
+            background-color: #45a049;
+        }
+
+/* ریسپانسیو */
+@media (max-width: 768px) {
+    .section-header input {
+        width: 100%;
+    }
+
+    .clients-scroll {
+        gap: 6px;
+    }
+
+    .client-card {
+        min-width: 120px;
+        padding: 8px;
+    }
+
+    .day-card {
+        width: 90px;
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+
+    .time-slot-card {
+        min-width: 75px;
+        font-size: 0.85rem;
+        padding: 8px 4px;
+    }
+
+    .fixed-submit {
+        padding: 8px;
+    }
+
+        .fixed-submit button {
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+}

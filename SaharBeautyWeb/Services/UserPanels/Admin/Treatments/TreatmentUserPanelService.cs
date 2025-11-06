@@ -71,11 +71,11 @@ public class TreatmentUserPanelService : UserPanelBaseService, ITreatmentUserPan
         return result;
     }
 
-    public async Task<ApiResultDto<GetTreatmentForAppointmentDto>> GetDetails(long id)
+    public async Task<ApiResultDto<GetTreatmentForAppointmentDto?>> GetDetails(long id)
     {
         var url = $"{_apiUrl}/{id}/for-appointment";
 
-        var result = await GetAsync<GetTreatmentForAppointmentDto>(url);
+        var result = await GetAsync<GetTreatmentForAppointmentDto?>(url);
         return result;
     }
 
