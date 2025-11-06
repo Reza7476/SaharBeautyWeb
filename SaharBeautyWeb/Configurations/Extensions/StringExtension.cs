@@ -67,9 +67,8 @@ public static class StringExtension
         {
             case AppointmentStatus.Completed:
                 return "انجام شده";
-
             case AppointmentStatus.Confirmed:
-                return "اطلاع رسانی شده";
+                return "تایید شده";
             case AppointmentStatus.Pending:
                 return "در انتظار تایید";
             case AppointmentStatus.NoShow:
@@ -91,7 +90,7 @@ public static class StringExtension
             case DayWeek.Monday:
                 return "دوشنبه";
             case DayWeek.Tuesday:
-                return "سشنبه";
+                return "سه شنبه";
             case DayWeek.Wednesday:
                 return "چهارشنبه";
             case DayWeek.Thursday:

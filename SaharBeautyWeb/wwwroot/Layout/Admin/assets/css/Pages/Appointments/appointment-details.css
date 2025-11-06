@@ -82,6 +82,93 @@
         background-color: #57ad68;
     }
 
+
+.status-dropdown {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    min-width: 180px;
+}
+
+    /* فلش زیباتر */
+    .status-dropdown::after {
+        content: '▼';
+        position: absolute;
+        right: 10px;
+        pointer-events: none;
+    }
+
+    /* هاور */
+    .status-dropdown:hover {
+        border-color: #888;
+        background-color: #f3f3f3;
+    }
+
+    /* فوکوس */
+    .status-dropdown:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+    }
+
+    /* رنگ هر وضعیت در منو */
+    .status-dropdown option[value="Pending"] {
+        color: #ff9800; /* نارنجی - در انتظار */
+        font-weight: bold;
+    }
+
+    .status-dropdown option[value="Confirmed"] {
+        color: #2196f3; /* آبی - تایید شده */
+        font-weight: bold;
+    }
+
+    .status-dropdown option[value="Completed"] {
+        color: #4caf50; /* سبز - انجام شد */
+        font-weight: bold;
+    }
+
+    .status-dropdown option[value="Cancelled"] {
+        color: #f44336; /* قرمز - لغو شده */
+        font-weight: bold;
+    }
+    .status-dropdown option[value="NoShow"] {
+        color: #9c27b0;
+    }
+
+.btn-save-status {
+    background-color: #007bff !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+    margin-right: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: inline-block;
+}
+
+    .btn-save-status:hover {
+        background-color: #0056b3 !important;
+        transform: translateY(-1px);
+    }
+
+    .btn-save-status:active {
+        background-color: #004494 !important;
+        transform: translateY(0);
+    }
+
+
 /* موبایل */
 @media (max-width: 600px) {
     .details-card {
