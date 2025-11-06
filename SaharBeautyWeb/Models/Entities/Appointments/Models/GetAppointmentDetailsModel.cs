@@ -1,4 +1,6 @@
-﻿namespace SaharBeautyWeb.Models.Entities.Appointments.Models;
+﻿using SaharBeautyWeb.Models.Entities.Appointments.Enums;
+
+namespace SaharBeautyWeb.Models.Entities.Appointments.Models;
 
 public class GetAppointmentDetailsModel
 {
@@ -10,7 +12,9 @@ public class GetAppointmentDetailsModel
     public TimeOnly StartTime { get; set; }
     public TimeOnly EndTime { get; set; }
     public string? Day { get; set; }
-    public string? Status { get; set; }
+    public string? StatusString { get; set; }
+    public AppointmentStatus Status { get; set; }
     public int Duration { get; set; }
-    public string Price { get; set; }
+    public string? Price { get; set; }
+    public string Id { get; set; } = default!;
 }

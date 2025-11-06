@@ -1,5 +1,6 @@
 ﻿using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos;
+using SaharBeautyWeb.Models.Entities.Appointments.Enums;
 using SaharBeautyWeb.Models.Entities.Appointments.Models;
 using System.Text;
 using System.Text.Json;
@@ -36,6 +37,19 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
         var url = $"{_apiUrl}/{id}/cancel-by-client";
 
         var result = await PatchAsync<object>(url);
+        return result;
+    }
+
+    public async Task<ApiResultDto<object>> ChangeStatus(string id, AppointmentStatus status)
+    {
+        var url = $"{_apiUrl}/change-status";
+        var json = JsonSerializer.Serialize(new
+        {
+            id,
+            status
+        });
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var result = await PatchAsync<object>(url, content);
         return result;
     }
 

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SaharBeautyWeb.Configurations.Extensions;
+using SaharBeautyWeb.Models.Entities.Appointments.Enums;
 using SaharBeautyWeb.Models.Entities.Appointments.Models;
 using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.UserPanels.Clients.Appointments;
@@ -35,15 +36,24 @@ public class DetailsModel : AjaxBasePageModel
                     Date = result.Data.Date.ConvertDateOnlyToPersian(),
                     Day = result.Data.Day.ConvertDayWeekToPersianDay(),
                     EndTime = result.Data.EndTime,
-                    Status = result.Data.Status.ConvertAppointmentStatusToString(),
+                    StatusString = result.Data.Status.ConvertAppointmentStatusToString(),
+                    Status=result.Data.Status,
                     StartTime= result.Data.StartTime,
                     Duration=result.Data.Duration,
                     TreatmentTitle= result.Data.TreatmentTitle,
                     Price=result.Data.Price.ConvertDecimalNumberToString(),
+                    Id=id
                 };
             }
         }
 
+        return response;
+    }
+
+    public async Task<IActionResult> OnPostChangeStatus(string id,AppointmentStatus status)
+    {
+        var result=await _appointmentService.ChangeStatus(id,status);
+        var response = HandleApiAjxResult(result);
         return response;
     }
 }
