@@ -12,4 +12,5 @@ public class GetAppointmentDetailsModel
     public string? Day { get; set; }
     public string? Status { get; set; }
     public int Duration { get; set; }
+    public string Price { get; set; }
 }

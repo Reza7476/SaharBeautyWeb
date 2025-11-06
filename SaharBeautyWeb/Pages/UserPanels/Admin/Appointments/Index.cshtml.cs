@@ -53,7 +53,7 @@ public class IndexModel : AjaxBasePageModel
         };
 
         var treatmentTitle = await _treatmentService.GetTitlesForAdmin();
-        if(treatmentTitle.IsSuccess&& treatmentTitle.Data!=null) 
+        if (treatmentTitle.IsSuccess && treatmentTitle.Data != null)
         {
             TreatmentTitles = treatmentTitle.Data.Select(_ => new TreatmentTitleModel()
             {
@@ -71,7 +71,11 @@ public class IndexModel : AjaxBasePageModel
             ListAppointments.CurrentPage = pageNumber;
             ListAppointments.TotalPages = result.Data.TotalElements.ToTotalPage(limit);
         }
-
+        ViewData["Search"] = Search;
+        ViewData["Day"] = Filter?.Day;
+        ViewData["Status"] = Filter?.Status;
+        ViewData["TreatmentTitle"] = Filter?.TreatmentTitle;
+        ViewData["Date"] = Filter?.Date;
         return response;
     }
 }

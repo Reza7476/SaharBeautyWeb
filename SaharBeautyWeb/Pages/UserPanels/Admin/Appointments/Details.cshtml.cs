@@ -39,6 +39,7 @@ public class DetailsModel : AjaxBasePageModel
                     StartTime= result.Data.StartTime,
                     Duration=result.Data.Duration,
                     TreatmentTitle= result.Data.TreatmentTitle,
+                    Price=result.Data.Price.ConvertDecimalNumberToString(),
                 };
             }
         }
