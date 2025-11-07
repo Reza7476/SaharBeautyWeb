@@ -1,16 +1,26 @@
-﻿@using SaharBeautyWeb.Models.Entities.Appointments.Models
-@model List<TimeSlotModel>
+﻿@using SaharBeautyWeb.Models.Entities.WeeklySchedules.Models
+@model GetDayScheduleModel
 
 <div class="time-slot-container">
-    @foreach (var slot in Model)
+    @if (Model.IsActive && Model.TimeSlots.Any())
     {
-        var slotClass = slot.IsActive ? "time-slot-card active" : "time-slot-card inactive";
-        <div class="@slotClass"
-             data-start="@slot.Start.ToString("HH:mm")"
-             data-end="@slot.End.ToString("HH:mm")"
-             @slot.IsActive>
-            <span class="selected-time">@slot.Start.ToString("HH:mm")</span> -
-            <span>@slot.End.ToString("HH:mm")</span>
+        @foreach (var slot in Model.TimeSlots)
+        {
+            var slotClass = slot.IsActive ? "time-slot-card active" : "time-slot-card inactive";
+            <div class="@slotClass"
+                 data-start="@slot.Start.ToString("HH:mm")"
+                 data-end="@slot.End.ToString("HH:mm")"
+            @slot.IsActive>
+                <span class="selected-time">@slot.Start.ToString("HH:mm")</span> -
+                <span>@slot.End.ToString("HH:mm")</span>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="no-service-message">
+            <i class="fa fa-info-circle"></i>
+            <span>@Model.Description</span>
         </div>
     }
 </div>

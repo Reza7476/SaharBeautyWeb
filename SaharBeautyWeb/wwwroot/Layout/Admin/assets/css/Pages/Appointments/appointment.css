@@ -247,7 +247,34 @@ body {
         margin: 0;
         padding-left: 20px;
     }
+/* پیام عدم ارائه خدمت */
+.no-service-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 12px 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
 
+    .no-service-message i {
+        margin-right: 8px;
+        font-size: 1.1rem;
+        color: #856404;
+    }
+
+    .no-service-message:hover {
+        background-color: #fff8e1;
+        transform: translateY(-2px);
+    }
 /* --- ریسپانسیو --- */
 @media (max-width: 768px) {
     .week-container {
