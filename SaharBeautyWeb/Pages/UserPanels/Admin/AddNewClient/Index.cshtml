@@ -1,0 +1,35 @@
+﻿@page
+@model SaharBeautyWeb.Pages.UserPanels.Admin.AddNewClient.IndexModel
+@{
+    Layout = "_UserPanelLayout";
+}
+<link href="~/layout/admin/assets/css/pages/addnewclient/add-new-client.css" rel="stylesheet" />
+
+<div class="register-page">
+    <div class="register-container">
+        <h1>ثبت نام مشتری</h1>
+        <form id="registerForm" method="post" asp-page-handler="RejecterClient">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label for="firstName">نام</label>
+                <input type="text" asp-for="NewClient.Name" placeholder="نام خود را وارد کنید" required>
+                <span asp-validation-for="NewClient.Name"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">نام خانوادگی</label>
+                <input type="text" asp-for="NewClient.LastName" placeholder="نام خانوادگی خود را وارد کنید" required>
+                <span asp-validation-for="NewClient.LastName"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="mobile">شماره موبایل</label>
+                <input type="tel" asp-for="NewClient.Mobile" placeholder="09121234567" required pattern="[0-9]{11}">
+                <span asp-validation-for="NewClient.Mobile"></span>
+            </div>
+
+            <input type="hidden" asp-for="ReturnUrl" value="@ViewData["ReturnUrl"]" />
+            <button type="submit" class="register-btn">ثبت نام</button>
+        </form>
+    </div>
+</div>

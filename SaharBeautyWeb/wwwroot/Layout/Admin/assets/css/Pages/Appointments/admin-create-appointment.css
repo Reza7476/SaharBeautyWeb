@@ -41,7 +41,45 @@
             border-color: #2196f3;
             outline: none;
         }
+.client-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 10px;
+}
 
+#client-search {
+    flex: 1;
+    min-width: 200px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+    #client-search:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+.add-client-btn {
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+}
+
+    .add-client-btn:hover {
+        background-color: #218838;
+    }
 /* === اسکرول مشتریان === */
 .clients-scroll {
     display: flex;
