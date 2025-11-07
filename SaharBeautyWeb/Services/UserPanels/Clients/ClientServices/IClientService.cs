@@ -8,6 +8,7 @@ namespace SaharBeautyWeb.Services.UserPanels.Clients.ClientServices;
 
 public interface IClientService : IService
 {
+    Task<ApiResultDto<string>> AddNewClient(AddNewClientDto dto);
     Task<ApiResultDto<GetAllDto<MyAppointmentsModel>>>
       GetAllClientAppointments(
       int offset,
