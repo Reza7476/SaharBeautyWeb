@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Commons.Dtos;
+using SaharBeautyWeb.Models.Entities.Appointments.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Models;
 using SaharBeautyWeb.Models.Entities.Clients.Models;
 using SaharBeautyWeb.Models.Entities.Treatments.Models;
@@ -40,8 +41,12 @@ public class IndexModel : AjaxBasePageModel
     public GetTreatmentForAppointmentModel Details { get; set; } = default!;
     public List<GetAllClientsForAddAppointmentModel> AllClients { get; set; } = new();
     public List<GetAllTreatmentForAppointmentModel> AllTreatments { get; set; } = new();
-    public List<TimeSlotModel> TimeSlotModel { get; set; } = new();
+    public GetDayScheduleModel DaySchedule { get; set; } = new();
+
     public List<DayInfoModel> DaysOfWeek { set; get; } = new();
+
+    [BindProperty]
+    public AddAdminAppointmentModel AppointmentModel { get; set; } = new();
 
     public async Task<IActionResult> OnGet()
     {
@@ -66,11 +71,8 @@ public class IndexModel : AjaxBasePageModel
             }).ToList();
         }
 
-
         var treatments = await _treatmentService.GetAllForAppointment();
-
         var treatmentResponse = HandleApiResult(treatments);
-
         if (treatments.IsSuccess && treatments.Data != null)
         {
             AllTreatments = treatments.Data.Select(_ => new GetAllTreatmentForAppointmentModel()
@@ -82,7 +84,7 @@ public class IndexModel : AjaxBasePageModel
 
         if (clientResponse is PageResult)
         {
-            DaysOfWeek = DateTimeExtension.GeneratePersianWeekDays(200);
+            DaysOfWeek = DateTimeExtension.GeneratePersianWeekDays(31);
         }
 
         return clientResponse;
@@ -92,6 +94,10 @@ public class IndexModel : AjaxBasePageModel
     public async Task<IActionResult> OnGetGetTreatmentDetails(int id)
     {
         var result = await _treatmentService.GetDetails(id);
+        if (result.IsSuccess && result.Data != null && result.Data.Duration != 0)
+        {
+            HttpContext.Session.SetInt32("SelectedTreatmentDuration", result.Data.Duration);
+        }
         return HandleApiAjaxPartialResult(
             result,
             data => new GetTreatmentForAppointmentModel()
@@ -104,76 +110,116 @@ public class IndexModel : AjaxBasePageModel
 
             }, "_treatmentDetails");
     }
-    public async Task<IActionResult> OnGetGetWeeklySchedule(DayWeek dayWeek, int duration, DateTime date)
+    public async Task<IActionResult> OnGetGetWeeklySchedule(DayWeek dayWeek, DateTime date)
     {
         var result = await _scheduleService.GetDaySchedule(dayWeek);
         var booked = await _appointmentService.GetBookedByDate(date);
 
-
-        if ((result.IsSuccess && result.Data != null) && booked.IsSuccess)
+        var duration = HttpContext.Session.GetInt32("SelectedTreatmentDuration") ?? 0;
+        if ((result.IsSuccess && result.Data != null) && (booked.IsSuccess && booked.Data != null))
         {
-            var now = DateTime.Now;
-            TimeSpan totalDate = result.Data.EndTime - result.Data.StartTime;
-            int validCount = (int)totalDate.TotalMinutes / duration;
-
             var slots = new List<TimeSlotModel>();
-            var start = TimeOnly.FromDateTime(result.Data.StartTime);
-            var end = TimeOnly.FromDateTime(result.Data.EndTime);
-
-            var todayDayOfWeekSystem = now.DayOfWeek;
-            var selectedDay = DateTimeExtension.GetSystemDayWeek(dayWeek);
-            bool isTodaySelected = (todayDayOfWeekSystem == selectedDay); // اگر روز انتخاب شده همان روز هفته امروز بود
-
-            while (start < end)
+            if (result.Data.IsActive)
             {
-                if (slots.Count == validCount) break;
-                var nextTime = start.AddMinutes(duration);
+                DaySchedule.IsActive = true;
 
-                if (isTodaySelected && start <= (TimeOnly.FromDateTime(now)))
+                var now = DateTime.Now;
+                TimeSpan totalDate = result.Data.EndTime - result.Data.StartTime;
+                int validCount = (int)totalDate.TotalMinutes / duration;
+
+                var start = TimeOnly.FromDateTime(result.Data.StartTime);
+                var end = TimeOnly.FromDateTime(result.Data.EndTime);
+
+                var todayDayOfWeekSystem = now.DayOfWeek;
+                var selectedDay = DateTimeExtension.GetSystemDayWeek(dayWeek);
+                bool isTodaySelected = (todayDayOfWeekSystem == selectedDay); // اگر روز انتخاب شده همان روز هفته امروز بود
+
+                while (start < end)
                 {
+                    if (slots.Count == validCount) break;
+                    var nextTime = start.AddMinutes(duration);
+
+                    if (isTodaySelected && start <= (TimeOnly.FromDateTime(now)))
+                    {
+                        start = nextTime;
+                        validCount = validCount - 1;
+                        continue;
+                    }
+
+                    if (nextTime > end)
+                        nextTime = end;
+
+                    slots.Add(new TimeSlotModel
+                    {
+                        Start = start,
+                        End = nextTime,
+                        IsActive = true,
+                    });
                     start = nextTime;
-                    validCount = validCount - 1;
-                    continue;
                 }
 
-                if (nextTime > end)
-                    nextTime = end;
-
-                slots.Add(new TimeSlotModel
+                if (booked.IsSuccess && booked.Data != null)
                 {
-                    Start = start,
-                    End = nextTime,
-                    IsActive = true
-                });
-                start = nextTime;
-            }
-
-            if (booked.IsSuccess && booked.Data != null)
-            {
-                foreach (var slot in slots)
-                {
-                    foreach (var b in booked.Data)
+                    foreach (var slot in slots)
                     {
-                        // بررسی تداخل زمانی
-                        if (slot.Start < b.EndDate && b.StartDate < slot.End)
+                        foreach (var b in booked.Data)
                         {
-                            slot.IsActive = false;
-                            break;
+                            // بررسی تداخل زمانی
+                            if (slot.Start < b.EndDate && b.StartDate < slot.End)
+                            {
+                                slot.IsActive = false;
+                                break;
+                            }
                         }
                     }
                 }
+                DaySchedule.TimeSlots = slots;
             }
-
+            else
+            {
+                DaySchedule.IsActive = false;
+                DaySchedule.Description = "خدماتی در این روز ارایه نمیگردد";
+            }
             return HandleApiAjaxPartialResult(
                 result,
-                data => slots,
+                data => DaySchedule,
                 "_timeSlotList"
             );
         }
 
         // اگر موفق نبود، پیام خطا برمی‌گردد
-        return HandleApiAjaxPartialResult(result, data => new List<TimeSlotModel>(), "_timeSlotList");
+        return HandleApiAjaxPartialResult(result, data => DaySchedule, "_timeSlotList");
 
     }
 
+
+
+    public async Task<IActionResult> OnPostReserve()
+    {
+        var appointmentError = ModelState
+               .Where(x => x.Key.StartsWith("AppointmentModel.") &&
+               x.Value?.Errors.Count > 0)
+               .ToDictionary(
+                 kvp => kvp.Key,
+                 kvp => kvp.Value!.Errors.Select(e => e.ErrorMessage).ToArray());
+        if (appointmentError.Any())
+        {
+            return new JsonResult(new
+            {
+                success = false,
+                statusCode = 400,
+                error = appointmentError
+            });
+        }
+        var result = await _appointmentService.AddAdminAppointment(new AddAdminAppointmentDto()
+        {
+            ClientId=AppointmentModel.ClientId,
+            DayWeek=AppointmentModel.DayWeek,
+            Duration= HttpContext.Session.GetInt32("SelectedTreatmentDuration")??0,
+            TreatmentId=AppointmentModel.TreatmentId,
+            AppointmentDate = AppointmentModel.DateOnly!.Value
+                                    .ToDateTime(AppointmentModel.TimeOnly!.Value)
+        });
+        return HandleApiAjxResult(result);
+    }
 }

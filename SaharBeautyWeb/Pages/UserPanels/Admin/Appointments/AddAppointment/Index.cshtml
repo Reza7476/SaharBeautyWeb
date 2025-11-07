@@ -74,11 +74,27 @@
             </div>
         </div>
     </section>
+    <form method="post" id="admin-reserve-form"  class="reserve-form">
+        @Html.AntiForgeryToken()
 
-    <!-- دکمه ثبت -->
-    <div class="fixed-submit">
-        <button type="submit" id="create-appointment-btn">ثبت نوبت</button>
-    </div>
+        <input type="hidden" asp-for="AppointmentModel.TreatmentId" id="input-treatmentId" />
+        <span asp-validation-for="AppointmentModel.TreatmentId"></span>
+       
+        <input type="hidden" asp-for="AppointmentModel.DateOnly" id="input-date" />
+        <span asp-validation-for="AppointmentModel.DateOnly"></span>
+       
+        <input type="hidden" asp-for="AppointmentModel.TimeOnly" id="input-time" />
+        <span asp-validation-for="AppointmentModel.TimeOnly"></span>
+       
+        <input type="hidden" asp-for="AppointmentModel.DayWeek" id="input-day-week" />
+        <span asp-validation-for="AppointmentModel.DayWeek"></span>
+        
+        <input type="hidden" asp-for="AppointmentModel.ClientId" id="input-client-id" />
+        <span asp-validation-for="AppointmentModel.ClientId" ></span>
+        <div class="fixed-submit">
+            <button type="submit" id="create-admin-appointment-btn">ثبت نوبت</button>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
@@ -86,6 +102,7 @@
     <script>
         var getTreatmentDetails = '@Url.Page("Index", "GetTreatmentDetails")';
         var getWeeklySchedule = '@Url.Page("Index", "GetWeeklySchedule")';
+        var reserveAdminAppointment = '@Url.Page("Index", "Reserve")';
     </script>
     <script src="~/layout/admin/assets/js/pages/userpanels/admin/appointments/admin-appointment-create.js"></script>
 }

@@ -1,4 +1,5 @@
-﻿.admin-create-container {
+﻿/* === کانتینر اصلی === */
+.admin-create-container {
     max-width: 900px;
     margin: 0 auto;
     padding: 20px;
@@ -9,9 +10,10 @@
     font-size: 1.8rem;
     color: #333;
     margin-bottom: 20px;
+    font-weight: 600;
 }
 
-/* بخش مشتریان */
+/* === بخش مشتریان === */
 .clients-section {
     background: #fff;
     padding: 15px;
@@ -40,13 +42,14 @@
             outline: none;
         }
 
-/* اسکرول مشتریان */
+/* === اسکرول مشتریان === */
 .clients-scroll {
     display: flex;
     overflow-x: auto;
     gap: 10px;
     padding-bottom: 8px;
     scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
 }
 
 .client-card {
@@ -57,6 +60,7 @@
     padding: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
+    flex: 0 0 auto;
 }
 
     .client-card:hover {
@@ -84,12 +88,12 @@
     direction: ltr;
 }
 
-.client-card.active {
+.client-card.selected {
     border: 2px solid #2196f3;
     background-color: #e6f2ff;
 }
 
-/* بخش اطلاعات نوبت */
+/* === بخش اطلاعات نوبت === */
 .appointment-section {
     background: #fff;
     padding: 15px;
@@ -114,7 +118,7 @@
         border: 1px solid #ccc;
     }
 
-/* جزئیات خدمت */
+/* === جزئیات خدمت === */
 .service-details-card {
     text-align: center;
     background-color: #fff;
@@ -154,31 +158,35 @@
         line-height: 1.6;
     }
 
-/* روزهای هفته */
+/* === روزهای هفته === */
 .week-days-container {
     margin: 25px 0;
 }
 
 .week-days-scroll {
     display: flex;
+    flex-wrap: wrap; /* اضافه شد برای موبایل چند ردیف شدن */
     gap: 12px;
-    overflow-x: auto;
     padding: 10px 0;
+    justify-content: center; /* وسط چین کردن روزها */
     scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
 
+
+/* روزها */
 .day-card {
-    flex: 0 0 auto;
-    width: 110px;
+    flex: 0 0 110px; /* اندازه ثابت دسکتاپ */
     background: #fff;
     border-radius: 12px;
     border: 2px solid #eee;
     text-align: center;
     padding: 12px 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     transition: all 0.2s ease;
     cursor: pointer;
 }
+
 
     .day-card:hover {
         border-color: #2196f3;
@@ -190,7 +198,6 @@
         border-color: #2196f3;
         box-shadow: 0 0 10px rgba(33, 150, 243, 0.3);
     }
-
 .day-name {
     font-weight: 600;
     font-size: 0.95rem;
@@ -203,36 +210,34 @@
     margin-top: 4px;
 }
 
-/* === نمایش ساعت‌های روز (نوبت‌ها) به صورت افقی === */
+/* === کانتینر ساعت‌ها (Grid چند ردیفی) === */
 .time-slot-container {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 10px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 10px 0;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr); /* همیشه ۳ ستون */
+    gap: 8px;
     margin-top: 15px;
-    scrollbar-width: thin;
-    scroll-behavior: smooth;
+    padding: 5px 0;
+    width: 100%;
+    box-sizing: border-box;
+    justify-items: center;
 }
 
+/* کارت ساعت‌ها */
 .time-slot-card {
-    flex: 0 0 auto;
-    min-width: 90px;
-    background-color: #f7f7f7;
-    border: 2px solid #eee;
+    background-color: #f0f0ff;
+    border: 1px solid #b0b0f0;
     border-radius: 8px;
     text-align: center;
-    padding: 10px 6px;
-    font-size: 0.95rem;
-    color: #333;
+    padding: 8px 4px;
+    font-size: 0.85rem;
     cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    user-select: none;
+    transition: all 0.2s ease;
 }
-
-    /* نوبت فعال */
+    .time-slot-card.active:hover {
+        background-color: #8c8cff;
+        color: #fff;
+        transform: scale(1.05);
+    }
     .time-slot-card.active {
         border-color: #4caf50;
         background-color: #e8f5e9;
@@ -240,7 +245,6 @@
         font-weight: bold;
     }
 
-    /* نوبت غیر فعال */
     .time-slot-card.inactive {
         border-color: #ddd;
         background-color: #f1f1f1;
@@ -249,14 +253,6 @@
         opacity: 0.6;
     }
 
-    /* هنگام هاور روی نوبت فعال */
-    .time-slot-card.active:hover {
-        background-color: #4caf50;
-        color: #fff;
-        transform: scale(1.05);
-    }
-
-    /* انتخاب شده (وقتی کاربر ساعت را انتخاب کرد) */
     .time-slot-card.selected {
         background-color: #2196f3;
         color: #fff;
@@ -264,12 +260,40 @@
         box-shadow: 0 0 8px rgba(33,150,243,0.4);
     }
 
-    /* ساعت داخل کارت */
     .time-slot-card .selected-time {
         font-weight: 600;
     }
 
-/* دکمه ثبت ثابت پایین صفحه */
+/* پیام عدم ارائه خدمت */
+.no-service-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 12px 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+    .no-service-message i {
+        margin-right: 8px;
+        font-size: 1.1rem;
+        color: #856404;
+    }
+
+    .no-service-message:hover {
+        background-color: #fff8e1;
+        transform: translateY(-2px);
+    }
+
+/* === دکمه ثبت ثابت پایین صفحه === */
 .fixed-submit {
     position: fixed;
     bottom: 0;
@@ -300,39 +324,28 @@
             background-color: #45a049;
         }
 
-/* ریسپانسیو */
+/* === حالت موبایل === */
+
 @media (max-width: 768px) {
-    .section-header input {
-        width: 100%;
-    }
 
-    .clients-scroll {
-        gap: 6px;
-    }
-
-    .client-card {
-        min-width: 120px;
-        padding: 8px;
+    .week-days-scroll {
+        justify-content: center;
+        flex-wrap: wrap; /* روزها در چند ردیف */
     }
 
     .day-card {
-        width: 90px;
-        padding: 10px;
-        font-size: 0.85rem;
+        flex: 0 0 45%; /* دو روز در هر ردیف موبایل */
+        margin-bottom: 10px;
+        justify-items: center;
+    }
+
+    .time-slot-container {
+        grid-template-columns: repeat(4, 1fr); /* همیشه ۳ ستون */
+        gap: 6px;
     }
 
     .time-slot-card {
-        min-width: 75px;
-        font-size: 0.85rem;
-        padding: 8px 4px;
+        padding: 6px 3px;
+        font-size: 0.8rem;
     }
-
-    .fixed-submit {
-        padding: 8px;
-    }
-
-        .fixed-submit button {
-            padding: 10px;
-            font-size: 0.9rem;
-        }
 }
