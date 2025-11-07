@@ -1,13 +1,10 @@
 ﻿$(document).ready(function () {
 
-    $("#reserve-btn").prop("disabled", true);
-
     $(document).on("change", "#serviceSelect", function () {
         var selectedOption = $(this).find("option:selected");
         var serviceId = selectedOption.data("id");
 
         $("#input-treatmentId").val('');
-        $("#input-duration").val('');
         $("#input-date").val('');
         $("#input-time").val('');
         $("#input-day-week").val('');
@@ -43,34 +40,29 @@
     });
 
     $(document).on("click", ".week-card", function () {
-        var dayCard = $(this);
-        var day = dayCard.data("number");
-        var duration = $("#treatment-duration").val(); 
-        var date = dayCard.data("milady");
+        var selectedDay = $(this);
+        var day = selectedDay.data("number");
+      
+        var date = selectedDay.data("milady");
         var treatmentId = $("#input-treatmentId").val();
 
         if (!treatmentId) {
-            return;
-        }
-
-        if (!duration) {
             return;
         }
         
         $(".week-card").removeClass("selected").prop("disabled", false);
         $(".time-slot-container").remove();
         $("#timeSlotContainer").empty();
-        $("#input-duration").val(duration);
         $("#input-date").val(date);
         $("#input-day-week").val(day);
         $("#input-time").val('');
         $("#reserve-btn").prop("disabled", true);
 
-        dayCard.addClass("selected").prop("disabled", true);
+        selectedDay.addClass("selected").prop("disabled", true);
 
         $.ajax({
             url: getWeeklySchedule,
-            data: { dayWeek: day, duration: duration, date: date },
+            data: { dayWeek: day,  date: date },
             type: 'GET',
             success: function (res, status, xhr) {
                 const contentType = xhr.getResponseHeader("content-type") || "";
@@ -85,7 +77,7 @@
 
 
                 if ($(window).width() <= 640) {
-                    dayCard.after(timeSlotSection);
+                    selectedDay.after(timeSlotSection);
                 } else {
                     $("#timeSlotContainer").html(timeSlotSection);
                 }
@@ -100,9 +92,8 @@
     $(document).on("click", ".time-slot-card", function () {
         var treatmentId = $("#input-treatmentId").val();
         var date = $("#input-date").val();
-        var duration = $("#input-duration").val();
 
-        if (!treatmentId || !date || !duration) {
+        if (!treatmentId || !date ) {
             return;
         }
 
@@ -126,9 +117,8 @@
         var treatmentId = $("#input-treatmentId").val();
         var date = $("#input-date").val();
         var time = $("#input-time").val();
-        var duration = $("#input-duration").val();
 
-        if (!treatmentId || !date || !time || !duration) {
+        if (!treatmentId || !date || !time ) {
             return;
         }
 

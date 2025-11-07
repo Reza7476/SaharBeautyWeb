@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Models;
@@ -37,7 +38,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
         public GetTreatmentForAppointmentModel Details { get; set; } = default!;
         public List<DayInfoModel> CurrentWeekDays { get; set; } = new();
         public List<TimeSlotModel> TimeSlotModel { get; set; } = new();
-
+        public GetDayScheduleModel DaySchedule { get; set; } = new();
         [BindProperty]
         public AddAppointmentModel AppointmentModel { get; set; } = default!;
         public bool HasSubmitted { get; set; } = false;
@@ -62,9 +63,9 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
             }
             var result = await _appointmentService.Add(new AddAppointmentDto()
             {
-                Duration = AppointmentModel.Duration,
+                Duration = HttpContext.Session.GetInt32("SelectedTreatmentDuration") ?? 0,
                 TreatmentId = AppointmentModel.TreatmentId,
-                DayWeek= AppointmentModel.DayWeek,
+                DayWeek = AppointmentModel.DayWeek,
                 AppointmentDate = AppointmentModel.DateOnly!.Value
                                     .ToDateTime(AppointmentModel.TimeOnly!.Value)
             });
@@ -103,6 +104,11 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
         public async Task<IActionResult> OnGetGetTreatmentDetails(int id)
         {
             var result = await _treatmentService.GetDetails(id);
+            if (result.IsSuccess && result.Data != null && result.Data.Duration != 0)
+            {
+                HttpContext.Session.SetInt32("SelectedTreatmentDuration", result.Data.Duration);
+            }
+
             return HandleApiAjaxPartialResult(
                 result,
                 data => new GetTreatmentForAppointmentModel()
@@ -117,69 +123,79 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
 
         }
 
-        public async Task<IActionResult> OnGetGetWeeklySchedule(DayWeek dayWeek, int duration, DateTime date)
+        public async Task<IActionResult> OnGetGetWeeklySchedule(DayWeek dayWeek,  DateTime date)
         {
             var result = await _scheduleService.GetDaySchedule(dayWeek);
             var booked = await _appointmentService.GetBookedByDate(date);
+            var duration = HttpContext.Session.GetInt32("SelectedTreatmentDuration") ?? 0;
 
-
-            if ((result.IsSuccess && result.Data != null) && booked.IsSuccess)
+            if ((result.IsSuccess && result.Data != null) && (booked.IsSuccess && booked.Data != null))
             {
-                var now = DateTime.Now;
-                TimeSpan totalDate = result.Data.EndTime - result.Data.StartTime;
-                int validCount = (int)totalDate.TotalMinutes / duration;
-
                 var slots = new List<TimeSlotModel>();
-                var start = TimeOnly.FromDateTime(result.Data.StartTime);
-                var end = TimeOnly.FromDateTime(result.Data.EndTime);
-
-                var todayDayOfWeekSystem =now.DayOfWeek; 
-                var selectedDay = GetSystemDayWeek(dayWeek);
-                bool isTodaySelected = (todayDayOfWeekSystem == selectedDay); // اگر روز انتخاب شده همان روز هفته امروز بود
-
-                while (start < end)
+                if (result.Data.IsActive)
                 {
-                    if (slots.Count == validCount) break;
-                    var nextTime = start.AddMinutes(duration);
+                    DaySchedule.IsActive = true;
 
-                    if (isTodaySelected && start <= (TimeOnly.FromDateTime(now)))
+                    var now = DateTime.Now;
+                    TimeSpan totalDate = result.Data.EndTime - result.Data.StartTime;
+                    int validCount = (int)totalDate.TotalMinutes / duration;
+
+                    var start = TimeOnly.FromDateTime(result.Data.StartTime);
+                    var end = TimeOnly.FromDateTime(result.Data.EndTime);
+
+                    var todayDayOfWeekSystem = now.DayOfWeek;
+                    var selectedDay = DateTimeExtension.GetSystemDayWeek(dayWeek);
+                    bool isTodaySelected = (todayDayOfWeekSystem == selectedDay); // اگر روز انتخاب شده همان روز هفته امروز بود
+
+                    while (start < end)
                     {
+                        if (slots.Count == validCount) break;
+                        var nextTime = start.AddMinutes(duration);
+
+                        if (isTodaySelected && start <= (TimeOnly.FromDateTime(now)))
+                        {
+                            start = nextTime;
+                            validCount = validCount - 1;
+                            continue;
+                        }
+
+                        if (nextTime > end)
+                            nextTime = end;
+
+                        slots.Add(new TimeSlotModel
+                        {
+                            Start = start,
+                            End = nextTime,
+                            IsActive = true,
+                        });
                         start = nextTime;
-                        validCount = validCount - 1;
-                        continue;
                     }
 
-                    if (nextTime > end)
-                        nextTime = end;
-
-                    slots.Add(new TimeSlotModel
+                    if (booked.IsSuccess && booked.Data != null)
                     {
-                        Start = start,
-                        End = nextTime,
-                        IsActive = true
-                    });
-                    start = nextTime;
-                }
-
-                if (booked.IsSuccess && booked.Data != null)
-                {
-                    foreach (var slot in slots)
-                    {
-                        foreach (var b in booked.Data)
+                        foreach (var slot in slots)
                         {
-                            // بررسی تداخل زمانی
-                            if (slot.Start < b.EndDate && b.StartDate < slot.End)
+                            foreach (var b in booked.Data)
                             {
-                                slot.IsActive = false;
-                                break;
+                                // بررسی تداخل زمانی
+                                if (slot.Start < b.EndDate && b.StartDate < slot.End)
+                                {
+                                    slot.IsActive = false;
+                                    break;
+                                }
                             }
                         }
                     }
+                    DaySchedule.TimeSlots = slots;
                 }
-
+                else
+                {
+                    DaySchedule.IsActive = false;
+                    DaySchedule.Description = "خدماتی در این روز ارایه نمیگردد";
+                }
                 return HandleApiAjaxPartialResult(
                     result,
-                    data => slots,
+                    data => DaySchedule,
                     "_timeSlotList"
                 );
             }
@@ -244,14 +260,14 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.Appointment
         {
             switch (dayweek)
             {
-                case DayWeek.Saturday: return  DayOfWeek.Saturday;
-                case DayWeek.Sunday: return    DayOfWeek.Sunday;
-                case DayWeek.Monday: return    DayOfWeek.Monday;
-                case DayWeek.Tuesday: return   DayOfWeek.Tuesday;
+                case DayWeek.Saturday: return DayOfWeek.Saturday;
+                case DayWeek.Sunday: return DayOfWeek.Sunday;
+                case DayWeek.Monday: return DayOfWeek.Monday;
+                case DayWeek.Tuesday: return DayOfWeek.Tuesday;
                 case DayWeek.Wednesday: return DayOfWeek.Wednesday;
-                case DayWeek.Thursday: return  DayOfWeek.Thursday;
-                case DayWeek.Friday: return    DayOfWeek.Friday;
-                default:  throw new Exception();
+                case DayWeek.Thursday: return DayOfWeek.Thursday;
+                case DayWeek.Friday: return DayOfWeek.Friday;
+                default: throw new Exception();
             }
         }
 

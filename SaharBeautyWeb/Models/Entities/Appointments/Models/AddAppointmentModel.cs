@@ -16,9 +16,6 @@ public class AddAppointmentModel
     public TimeOnly? TimeOnly { get; set; }
 
     [Required]
-    public int? Duration { get; set; }
-
-    [Required]
     public DayWeek DayWeek { get; set; }
 
 }
