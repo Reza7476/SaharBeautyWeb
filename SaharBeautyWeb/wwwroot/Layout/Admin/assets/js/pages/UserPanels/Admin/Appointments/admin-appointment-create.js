@@ -143,8 +143,17 @@ function clearInputs() {
     var inputDayWeek = $("#input-day-week").val("");
 }
 
-if (inputTreat && inputDate && inputTime && inputDayWeek) {
-    $("#create-admin-appointment-btn").prop("disabled", false);
-} else {
-    $("#create-admin-appointment-btn").prop("disabled", true);
-}
+
+
+$("#client-search").on("input", function () {
+    var search = $(this).val().trim().toLowerCase();  
+    $(".client-card").each(function () { 
+        var phone = $(this).find('.client-phone').text().toLowerCase(); 
+
+        if (phone.includes(search)) { 
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    });
+});
