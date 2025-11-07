@@ -1,0 +1,108 @@
+﻿@page
+@model SaharBeautyWeb.Pages.UserPanels.Admin.Appointments.AddAppointment.IndexModel
+@{
+    Layout = "_UserPanelLayout";
+    ViewData["Title"] = "ثبت نوبت جدید";
+}
+
+<link href="~/layout/admin/assets/css/pages/appointments/admin-create-appointment.css" rel="stylesheet" />
+<div class="admin-create-container">
+
+    <h1 class="page-title">ثبت نوبت جدید</h1>
+
+    <!-- بخش 1: انتخاب مشتری -->
+    <section class="clients-section">
+        <div class="section-header">
+            <h2>انتخاب مشتری</h2>
+            <input type="text" id="client-search" placeholder="جستجوی شماره..." />
+        </div>
+
+        <div class="clients-scroll">
+
+            @foreach (var client in Model.AllClients)
+            {
+                <div class="client-card" data-id="@client.Id">
+                    <img src="@(client.Profile?.Url ?? "~/layout/admin/assets/img/default-user.png")" alt="user" />
+                    <div class="client-info">
+                        <span class="client-name">@($"{client.Name} {client.LastName}") </span>
+                        <span class="client-phone" style="direction:ltr">@client.MobileNumber</span>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+
+    <!-- بخش 2: اطلاعات نوبت -->
+    <section class="appointment-section">
+        <h2>اطلاعات نوبت</h2>
+
+        <div class="form-group">
+            <label>نوع خدمت</label>
+            <select id="treatment-select">
+                <option value="">انتخاب خدمت</option>
+                @foreach (var treatment in Model.AllTreatments)
+                {
+                    <option data-id="@treatment.Id" >@treatment.Title</option>
+                }
+            </select>
+        </div>
+        <div id="serviceDetails" class="service-details-card">
+            <h2>جزئیات خدمت</h2>
+            <p id="serviceDesc">لطفاً یک خدمت را انتخاب کنید تا توضیحات نمایش داده شود.</p>
+        </div>
+
+
+        <div class="week-days-container">
+            <h3>انتخاب روز</h3>
+            <div id="week-days" class="week-days-scroll">
+                @foreach (var day in Model.DaysOfWeek)
+                {
+                    <div class="day-card" data-number="@day.Day" data-milady="@day.Date">
+                        <div class="day-name">@day.PersianDay</div>
+                        <div class="day-date">@day.PersianDate</div>
+                    </div>
+                }
+            </div>
+        </div>
+
+
+        <div class="form-group" id="hours-container" >
+            <label>انتخاب ساعت</label>
+            <div class="hours-grid">
+                <!-- داینامیک از JS -->
+                <div id="timeSlotContainer" class="time-slot-section"></div>
+            </div>
+        </div>
+    </section>
+    <form method="post" id="admin-reserve-form"  class="reserve-form">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="AppointmentModel.TreatmentId" id="input-treatmentId" />
+        <span asp-validation-for="AppointmentModel.TreatmentId"></span>
+       
+        <input type="hidden" asp-for="AppointmentModel.DateOnly" id="input-date" />
+        <span asp-validation-for="AppointmentModel.DateOnly"></span>
+       
+        <input type="hidden" asp-for="AppointmentModel.TimeOnly" id="input-time" />
+        <span asp-validation-for="AppointmentModel.TimeOnly"></span>
+       
+        <input type="hidden" asp-for="AppointmentModel.DayWeek" id="input-day-week" />
+        <span asp-validation-for="AppointmentModel.DayWeek"></span>
+        
+        <input type="hidden" asp-for="AppointmentModel.ClientId" id="input-client-id" />
+        <span asp-validation-for="AppointmentModel.ClientId" ></span>
+        <div class="fixed-submit">
+            <button type="submit" id="create-admin-appointment-btn">ثبت نوبت</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+
+    <script>
+        var getTreatmentDetails = '@Url.Page("Index", "GetTreatmentDetails")';
+        var getWeeklySchedule = '@Url.Page("Index", "GetWeeklySchedule")';
+        var reserveAdminAppointment = '@Url.Page("Index", "Reserve")';
+    </script>
+    <script src="~/layout/admin/assets/js/pages/userpanels/admin/appointments/admin-appointment-create.js"></script>
+}

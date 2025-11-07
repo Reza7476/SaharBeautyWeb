@@ -11,7 +11,7 @@ public interface ITreatmentUserPanelService : IService
     Task<ApiResultDto<long>> AddImage(AddMediaDto dto);
     Task<ApiResultDto<object>> DeleteImage(long imageId, long id);
     Task<ApiResultDto<List<GetAllTreatmentForAppointmentModel>>> GetAllForAppointment();
-    Task<ApiResultDto<GetTreatmentForAppointmentDto>> GetDetails(long id);
+    Task<ApiResultDto<GetTreatmentForAppointmentDto?>> GetDetails(long id);
     Task<ApiResultDto<List<GetTreatmentTitleDto>>> GetTitlesForAdmin();
     Task<ApiResultDto<object>> UpdateTitleAndDescription(UpdateTreatmentTitleAndDescriptionDto dto);
 }

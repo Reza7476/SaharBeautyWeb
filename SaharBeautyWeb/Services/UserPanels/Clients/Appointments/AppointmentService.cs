@@ -32,6 +32,22 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
 
     }
 
+    public async Task<ApiResultDto<string>> AddAdminAppointment(AddAdminAppointmentDto dto)
+    {
+        var url = $"{_apiUrl}/add-admin";
+        var json = JsonSerializer.Serialize(new
+        {
+            dto.ClientId,
+            dto.Duration,
+            dto.TreatmentId,
+            dto.AppointmentDate,
+            dto.DayWeek
+        });
+        using var content=new StringContent(json,Encoding.UTF8, "application/json");
+        var result = await PostAsync<string>(url, content);
+        return result;
+    }
+
     public async Task<ApiResultDto<object>> CancelByClient(string id)
     {
         var url = $"{_apiUrl}/{id}/cancel-by-client";

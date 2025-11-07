@@ -68,13 +68,15 @@ public static class StringExtension
             case AppointmentStatus.Completed:
                 return "انجام شده";
             case AppointmentStatus.Confirmed:
-                return "تایید شده";
+                return "اطلاع رسانی شده";
             case AppointmentStatus.Pending:
                 return "در انتظار تایید";
             case AppointmentStatus.NoShow:
                 return "حضور نیافته";
             case AppointmentStatus.Cancelled:
                 return "کنسل شده";
+            case AppointmentStatus.Approved:
+                return "تایید شده";
             default: return "نامشخص";
         }
     }

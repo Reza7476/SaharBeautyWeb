@@ -9,6 +9,7 @@ namespace SaharBeautyWeb.Services.UserPanels.Clients.Appointments;
 public interface IAppointmentService : IService
 {
     Task<ApiResultDto<string>> Add(AddAppointmentDto dto);
+    Task<ApiResultDto<string>> AddAdminAppointment(AddAdminAppointmentDto dto);
     Task<ApiResultDto<object>> CancelByClient(string id);
     Task<ApiResultDto<object>> ChangeStatus(string id, AppointmentStatus status);
     

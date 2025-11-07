@@ -1,0 +1,24 @@
+﻿@using SaharBeautyWeb.Models.Entities.WeeklySchedules.Models
+@model GetTreatmentForAppointmentModel
+
+<div class="service-details-card">
+    @if (!string.IsNullOrEmpty(Model.Image.Url))
+    {
+        <input type="hidden" value="@Model.Duration" id="treatment-duration" />
+        <input type="hidden" value="@Model.Id" />
+        <div class="service-image">
+            <img src="@Model.Image.Url" alt="@Model.Title" />
+        </div>
+    }
+
+    <h2>@Model.Title</h2>
+
+    <p class="service-description">
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            @Model.Description
+        }
+    </p>
+
+
+</div>
