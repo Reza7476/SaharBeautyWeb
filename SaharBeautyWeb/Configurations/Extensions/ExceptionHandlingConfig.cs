@@ -2,12 +2,12 @@
 
 namespace SaharBeautyWeb.Configurations.Extensions;
 
-public static  class ExceptionHandlingConfig
+public static class ExceptionHandlingConfig
 {
 
     public static void UseCustomExceptionHandling(this WebApplication app)
     {
-        if(app.Environment.IsDevelopment())
+        if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
@@ -21,18 +21,19 @@ public static  class ExceptionHandlingConfig
                     var exception = feature?.Error;
                     var path = context.Request.Path;
 
-                    if (path.StartsWithSegments("/Landing"))
-                    {
-                        context.Response.Redirect($"/Landing/Error?message={exception?.Message}");
-                    }
-                    else if (path.StartsWithSegments("/UserPanels"))
-                    {
-                        context.Response.Redirect($"/UserPanels/Error?message={exception?.Message}");
-                    }
-                    else
-                    {
-                        context.Response.Redirect($"/Error?message={exception?.Message}");
-                    }
+                    //if (path.StartsWithSegments("/Landing"))
+                    //{
+                    //    context.Response.Redirect($"/Landing/Error?message={exception?.Message}");
+                    //}
+                    //else if (path.StartsWithSegments("/UserPanels"))
+                    //{
+                    //    context.Response.Redirect($"/UserPanels/Error?message={exception?.Message}");
+                    //}
+                    //else
+                    //{
+                    //    context.Response.Redirect($"/Error?message={exception?.Message}");
+                    //}
+                    context.Response.Redirect($"/Error?message={exception?.Message}");
                 });
             });
 

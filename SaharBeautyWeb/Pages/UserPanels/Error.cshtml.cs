@@ -5,10 +5,18 @@ namespace SaharBeautyWeb.Pages.UserPanels
 {
     public class ErrorModel : PageModel
     {
+        [BindProperty(SupportsGet = true)]
         public string? Message { get; set; }
-        public void OnGet(string message)
+
+        [BindProperty(SupportsGet = true)]
+        public string? ReturnUrl { get; set; }
+        public IActionResult OnGet()
         {
-            Message = message;
+            if (string.IsNullOrEmpty(ReturnUrl))
+            {
+                ReturnUrl = "/UserPanels/Dashboard/Index";
+            }
+            return Page();
         }
     }
 }

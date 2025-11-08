@@ -18,14 +18,13 @@ public class DetailsModel : AjaxBasePageModel
         _appointmentService = appointmentService;
     }
 
-    public GetAppointmentDetailsModel AppointmentDetails { get; set; } = new();
+    public GetAppointmentDetailsModel? AppointmentDetails { get; set; } 
 
     [BindProperty(SupportsGet =true)]
     public string? ReturnUrl { get; set; }
     public async Task<IActionResult> OnGet(string id)
     {
         var result = await _appointmentService.GetDetails(id);
-        var response = HandleApiResult(result);
         if (result.IsSuccess)
         {
             if(result.Data != null)
@@ -49,6 +48,7 @@ public class DetailsModel : AjaxBasePageModel
             }
         }
         TempData["ReturnUrl"] = ReturnUrl?? "/UserPanels/Admin/Appointments/Index"; 
+        var response = HandleApiResult(result);
         return response;
     }
 

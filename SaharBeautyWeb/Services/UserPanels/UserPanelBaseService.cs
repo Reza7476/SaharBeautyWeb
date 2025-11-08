@@ -62,6 +62,21 @@ public class UserPanelBaseService
                 };
             }
         }
+        if (!response.IsSuccessStatusCode && raw != "")
+        {
+            var errorMessage = JsonSerializer.Deserialize<ServerErrorDto>(raw, new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            return new ApiResultDto<T>
+            {
+                IsSuccess = false,
+                Error = errorMessage?.Error ?? "UnknownError",
+                StatusCode = (int)response.StatusCode
+            };
+
+
+        }
 
         return new ApiResultDto<T>
         {
@@ -132,6 +147,18 @@ public class UserPanelBaseService
                     StatusCode = (int)response.StatusCode
                 };
             }
+        }if(!response.IsSuccessStatusCode && raw != "")
+        {
+            var errorMessage = JsonSerializer.Deserialize<ServerErrorDto>(raw, new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            return new ApiResultDto<T>
+            {
+                IsSuccess = false,
+                Error = errorMessage?.Error ?? "UnknownError",
+                StatusCode = (int)response.StatusCode
+            };
         }
 
         return new ApiResultDto<T>
@@ -182,6 +209,18 @@ public class UserPanelBaseService
                     StatusCode = (int)response.StatusCode
                 };
             }
+        }if(!response.IsSuccessStatusCode && raw!="") 
+        {
+            var errorMessage = JsonSerializer.Deserialize<ServerErrorDto>(raw, new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            return new ApiResultDto<T>
+            {
+                IsSuccess = false,
+                Error = errorMessage?.Error ?? "UnknownError",
+                StatusCode = (int)response.StatusCode
+            };
         }
 
         return new ApiResultDto<T>
@@ -224,6 +263,19 @@ public class UserPanelBaseService
                 };
             }
         }
+        if (!response.IsSuccessStatusCode && raw != "")
+        {
+            var errorMessage = JsonSerializer.Deserialize<ServerErrorDto>(raw, new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            return new ApiResultDto<T>
+            {
+                IsSuccess = false,
+                Error = errorMessage?.Error ?? "UnknownError",
+                StatusCode = (int)response.StatusCode
+            };
+        }
 
         return new ApiResultDto<T>
         {
@@ -257,4 +309,10 @@ public class UserPanelBaseService
         DeleteAsync<T>(string url) =>
         SendDeleteRequestAsync<T>(url);
 
+}
+public class ServerErrorDto
+{
+    public string? Error { get; set; }
+    public string? Description { get; set; }
+    public int? StatusCode { get; set; }
 }
