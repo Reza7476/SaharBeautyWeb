@@ -52,7 +52,6 @@ $(document).on("change", "#status-dropdown", function () {
             status: selectedValue
         },
         success: function (res) {
-            console.log(res);
             if (res.success) {
                 location.reload();
             } else {
