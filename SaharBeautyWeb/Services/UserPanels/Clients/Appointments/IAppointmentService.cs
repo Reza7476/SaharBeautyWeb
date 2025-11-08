@@ -20,6 +20,13 @@ public interface IAppointmentService : IService
         AdminAppointmentFilterDto? filter=null,
         string? search=null);
     
+    Task<ApiResultDto<GetAllDto<GetAdminAllAppointmentsModel>>> 
+        GetAllTodayAdminAppointments(
+        int offset,
+        int limit, 
+        AdminAppointmentFilterDto? filter=null, 
+        string? search=null);
+    
     Task<ApiResultDto<List<GetBookedAppointmentByDateDto>>> GetBookedByDate(DateTime date);
     Task<ApiResultDto<GetAppointmentDetailsDto?>> GetDetails(string id);
 }

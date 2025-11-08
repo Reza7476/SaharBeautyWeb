@@ -43,7 +43,7 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
             dto.AppointmentDate,
             dto.DayWeek
         });
-        using var content=new StringContent(json,Encoding.UTF8, "application/json");
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
         var result = await PostAsync<string>(url, content);
         return result;
     }
@@ -107,9 +107,7 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
             url = url + "?" + string.Join("&", query);
         }
 
-
         var result = await GetAsync<GetAllDto<GetAdminAllAppointmentsModel>>(url);
-
         if (!result.IsSuccess || result.Error != null)
         {
             return new ApiResultDto<GetAllDto<GetAdminAllAppointmentsModel>>
@@ -118,7 +116,54 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
                 IsSuccess = result.IsSuccess
             };
         }
+        var mapped = new GetAllDto<GetAdminAllAppointmentsModel>()
+        {
+            Elements = result.Data.Elements,
+            TotalElements = result.Data.TotalElements,
+        };
 
+        return new ApiResultDto<GetAllDto<GetAdminAllAppointmentsModel>>
+        {
+            Data = mapped,
+            IsSuccess = true,
+            StatusCode = result.StatusCode
+        };
+    }
+
+    public async Task<ApiResultDto<GetAllDto<GetAdminAllAppointmentsModel>>>
+        GetAllTodayAdminAppointments(int offset,
+        int limit,
+        AdminAppointmentFilterDto? filter = null,
+        string? search = null)
+    {
+        var url = $"{_apiUrl}/all-today";
+        var query = new List<string>()
+        {
+            $"Offset={offset}",
+            $"Limit={limit}",
+        };
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            query.Add($"search={search}");
+        }
+        if (filter != null)
+        {
+            query.Add($"Status={filter.Status}");
+            query.Add($"TreatmentTitle={filter.TreatmentTitle}");
+        }
+        if (query.Any())
+        {
+            url = url + "?" + string.Join("&", query);
+        }
+        var result = await GetAsync<GetAllDto<GetAdminAllAppointmentsModel>>(url);
+        if (!result.IsSuccess || result.Error != null)
+        {
+            return new ApiResultDto<GetAllDto<GetAdminAllAppointmentsModel>>
+            {
+                Error = result.Error,
+                IsSuccess = result.IsSuccess
+            };
+        }
         var mapped = new GetAllDto<GetAdminAllAppointmentsModel>()
         {
             Elements = result.Data.Elements,
