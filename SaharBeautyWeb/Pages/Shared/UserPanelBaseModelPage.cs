@@ -13,7 +13,7 @@ public class UserPanelBaseModelPage : PageModel
         _errorMessage = errorMessage;
     }
 
-    protected IActionResult HandleApiResult<T>(ApiResultDto<T> result,
+    protected IActionResult HandleApiResult2<T>(ApiResultDto<T> result,
         string? successPage = null)
     {
         if (result == null)
@@ -34,5 +34,26 @@ public class UserPanelBaseModelPage : PageModel
         string message = _errorMessage.GetMessage(errorKey);
 
         return RedirectToPage("/UserPanels/Error", new { message });
+    }
+
+
+    protected IActionResult HandleApiResult<T>(ApiResultDto<T> result, string? successPage = null)
+    {
+        if (result == null)
+        {
+            return RedirectToPage("/UserPanels/Error", new { message = "پاسخی از سرور دریافت نشد", returnUrl = Request.Path });
+        }
+
+        if (result.IsSuccess && (result.StatusCode == 200 || result.StatusCode == 204))
+        {
+            return string.IsNullOrWhiteSpace(successPage)
+                ? Page()
+                : RedirectToPage(successPage);
+        }
+
+        string errorKey = result.Error ?? result.StatusCode.ToString();
+        string message = _errorMessage.GetMessage(errorKey);
+
+        return RedirectToPage("/UserPanels/Error", new { message, returnUrl = Request.Path });
     }
 }

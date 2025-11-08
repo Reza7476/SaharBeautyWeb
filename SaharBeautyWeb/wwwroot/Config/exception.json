@@ -1,6 +1,31 @@
 {
   
-    "UnknownError": " رضااااااخطای ناشناخته",
-    "The service is unavailable.": "سرور در دسترس نیست"
-  
+  "The service is unavailable.": "سرور در دسترس نیست",
+  "WhyUsQuestionNotFound": "سوال چرا ما بهترین هستیم پیدا نشد",
+  "WhyUsSectionNotFound": "چرا ما بهترین هستیم پیدا نشد",
+  "DayOfWeekIsDuplicate": "روز هفته تکراری است",
+  "EndTimeIsLessThanStartTime": "زمان پایان کوچکتر از زمان شروع میباشد",
+  "ScheduleNotFound": "زمان بندی یفت نشد",
+  "MobileNumberHasBeenRegistered": "این شماره موبایل قبلا ثبت شده",
+  "MobileNumberIsDuplicate": "شماره موبایل تکراری است",
+  "UserNameIsDuplicate": "نالم کاربری تکراری است",
+  "NotAllowedDeleteImage": "اجازه حذف عکس را ندارید",
+  "TreatmentIsDuplicate": "سرویس تکراری است",
+  "TreatmentNotFound": "سرویس یافت نشد",
+  "TreatmentPriceIsLesThanZero": "قیمت خدمت کمتر از صفر است",
+  "TechnicianNotDefined": "آرایشگر تعریف نشده",
+  "RoleNameIsDuplicate": "نام نقش تکراری است",
+  "RefreshTokenNotFound": "رفرش توکن پیدا نشد",
+  "TokenIsExpired": "توکن منقضی شده است",
+  "OtpCodeExpired": "کد ارسالی منقضی شده",
+  "OtpCodeIsInvalid": "کد ارسالی معتبر نیست",
+  "AboutUsNotFound": "درباره ما یافت نشد",
+  "ClientNotFound": "مشتری یافت نشد",
+  "YouAreNotAllowedToAccess": "شما اجازهع دسترسی ندارید",
+  "BannerNotFound": "بنر یافت نشد",
+  "AppointmentIsBusyAtThisTime": "نوبت در این زمان مشغول است",
+  "AppointmentNotFound": "نوبت یافت نشد",
+  "UserNotRegisterAsClient": "کاربر به عنوان مشتری ثبت نشده ",
+  "UnknownError": "خطایی رخ داده است، با پشتیبانی تماس بگیرید"
+
 }

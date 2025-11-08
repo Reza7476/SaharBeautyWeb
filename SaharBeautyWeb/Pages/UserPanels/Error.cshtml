@@ -3,8 +3,25 @@
 @{
     Layout = "_UserPanelLayout";
 }
-@if (!string.IsNullOrEmpty(Model.Message))
-{
-    <p>@Model.Message</p>
+<link href="~/Layout/admin/assets/css/pages/errors/error.css" rel="stylesheet" />
+<div class="error-container">
+    <div class="error-card">
+        <div class="icon-container">
+            <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+        </div>
+        <h2 class="error-title">خطایی رخ داده است</h2>
 
-}
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <p class="error-message">@Model.Message</p>
+        }
+        else
+        {
+            <p class="error-message">متاسفانه خطایی ناشناخته رخ داده است.</p>
+        }
+
+        <a href="@Model.ReturnUrl" class="btn-back">
+            بازگشت
+        </a>
+    </div>
+</div>
