@@ -1,0 +1,40 @@
+﻿/* کارت‌ها */
+.card {
+    border-radius: 12px;
+    transition: all 0.2s ease-in-out;
+}
+
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    /* کارت آمار */
+    .card h3 {
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
+/* لیست نوبت‌ها */
+#recentAppointments li {
+    transition: background-color 0.2s;
+}
+
+    #recentAppointments li:hover {
+        background-color: rgba(0,123,255,0.05);
+    }
+
+/* دکمه‌ها */
+.btn-primary {
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+}
+
+/* Badge وضعیت */
+.badge.bg-success {
+    background-color: #28a745 !important;
+}
+
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+}

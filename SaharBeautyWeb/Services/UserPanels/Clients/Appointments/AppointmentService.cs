@@ -178,6 +178,14 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
         };
     }
 
+    public async Task<ApiResultDto<List<GetAppointmentPerDayForChartDto>>> GetAppointmentPerDayForChart()
+    {
+
+        var url = $"{_apiUrl}/appointment-per-day-for-chart";
+        var result = await GetAsync<List<GetAppointmentPerDayForChartDto>>(url);
+        return result;
+    }
+
     public async Task<ApiResultDto<List<GetBookedAppointmentByDateDto>>> GetBookedByDate(DateTime dateTime)
     {
         var url = $"{_apiUrl}/booked-appointment";

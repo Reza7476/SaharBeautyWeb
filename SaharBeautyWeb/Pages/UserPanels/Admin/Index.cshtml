@@ -1,8 +1,119 @@
 ﻿@page
+@using System.Text.Json
 @model SaharBeautyWeb.Pages.UserPanels.Admin.IndexModel
 @{
     Layout = "_UserPanelLayout";
 }
-<p>
-   admin dashboard
-</p>
+<link href="~/layout/admin/assets/css/pages/dashboard/dashboard.css" rel="stylesheet" />
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="m-0">داشبورد مدیریت سالن</h2>
+        <div>
+            <button id="btn-add-appointment" class="btn btn-primary me-2">ثبت نوبت جدید</button>
+            <a href="/UserPanels/Customers" class="btn btn-outline-secondary">مشتریان</a>
+        </div>
+    </div>
+
+    <!-- ردیف کارت‌های خلاصه -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">نوبت‌های امروز</h6>
+                    <h3 id="stat-appointments-today">0</h3>
+                    <small id="stat-appointments-today-diff" class="text-success">—</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">مشتریان</h6>
+                    <h3 id="stat-customers">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">خدمات</h6>
+                    <h3 id="stat-services">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">درآمد امروز</h6>
+                    <h3 id="stat-revenue">0</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ردیف نمودار و لیست -->
+    <div class="row g-3">
+        <div class="col-lg-7">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <strong>نمودار نوبت‌های هفته</strong>
+                    <small class="text-muted">نمایش روند هفت روز گذشته</small>
+                </div>
+                <div class="card-body">
+                    <canvas id="appointmentsChart" height="160"></canvas>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <strong>نوبت‌های جدید</strong>
+                </div>
+                <div class="card-body p-0">
+                    <ul id="recentAppointments" class="list-group list-group-flush">
+                        <!-- آیتم‌ها توسط JS اضافه می‌شود -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header">
+                    <strong>خدمات پرطرفدار</strong>
+                </div>
+                <div class="card-body">
+                    <div id="servicesList">
+                        <!-- آیتم‌ها توسط JS اضافه می‌شود -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <strong>تقویم کاری (نمای هفته)</strong>
+                </div>
+                <div class="card-body">
+                    <div id="scheduleOverview">
+                        <!-- خلاصه ساعات کاری هفته -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    <script>
+        const labels = @Html.Raw(JsonSerializer.Serialize(Model.AppointmentsPerDay.Select(_=>_.DayWeek).ToList()));
+        const data = @Html.Raw(JsonSerializer.Serialize(Model.AppointmentsPerDay.Select(_=>_.Count).ToList()));
+    </script>
+    <script src="~/layout/admin/assets/js/pages/userpanels/admin/dashboard/dashboard.js"></script>
+}
