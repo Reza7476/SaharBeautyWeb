@@ -51,7 +51,7 @@ public class ClientService : UserPanelBaseService, IClientService
             query.Add($"dayOfWeek={filter.Date.Value.DayOfWeek}");
         }
         query.Add($"Status={filter.Status}");
-        query.Add($"Day={filter.Day}");
+        query.Add($"DayWeek={filter.Day}");
 
         if (query.Any())
         {
