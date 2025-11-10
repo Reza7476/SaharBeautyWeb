@@ -31,6 +31,7 @@ public interface IAppointmentService : IService
     Task<ApiResultDto<List<GetAppointmentPerDayForChartDto>>> GetAppointmentPerDayForChart();
    
     Task<ApiResultDto<List<GetBookedAppointmentByDateDto>>> GetBookedByDate(DateTime date);
+    Task<ApiResultDto<DashboardClientSummaryDto?>> GetDashboardClientSummary();
     Task<ApiResultDto<GetAppointmentDetailsDto?>> GetDetails(string id);
     Task<ApiResultDto<List<GetAdminDashboardNewAppointmentsDto>>> GetNewAppointmentDashboard();
 }

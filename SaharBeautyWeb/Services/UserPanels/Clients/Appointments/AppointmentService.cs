@@ -206,6 +206,13 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
         return result;
     }
 
+    public async Task<ApiResultDto<DashboardClientSummaryDto?>> GetDashboardClientSummary()
+    {
+        var url = $"{_apiUrl}/dashboard-client-summary";
+        var result = await GetAsync<DashboardClientSummaryDto?>(url);
+        return result;
+    }
+
     public async Task<ApiResultDto<GetAppointmentDetailsDto?>> GetDetails(string id)
     {
 
