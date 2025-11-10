@@ -90,9 +90,12 @@
 }
 
 .appointments-list {
-    flex: 1;
+    max-height: 360px; /* حدوداً اندازه 3 آیتم */
     overflow-y: auto;
-    padding-right: 6px;
+    scrollbar-width: thin; /* در مرورگرهای مدرن */
+    scrollbar-color: #ccc transparent; /* رنگ اسکرول */
+    border-radius: 8px;
+    padding-right: 8px;
 }
 
     .appointments-list::-webkit-scrollbar {

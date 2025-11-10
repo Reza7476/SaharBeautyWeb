@@ -9,7 +9,6 @@ using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.UserPanels.Admin.Treatments;
 using SaharBeautyWeb.Services.UserPanels.Admin.WeeklySchedules;
 using SaharBeautyWeb.Services.UserPanels.Clients.Appointments;
-using System.Collections.Immutable;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin;
 
@@ -35,24 +34,32 @@ public class IndexModel : AjaxBasePageModel
     public List<AppointmentPerDayModel> AppointmentsPerDay { get; set; } = new();
 
     public List<GetWeeklyScheduleDashboardModel> WeeklySchedule { get; set; } = new();
-    public List<GetPopularTreatmentsModel> PopularTreatments { get;set; } = new();  
+    public List<GetPopularTreatmentsModel> PopularTreatments { get; set; } = new();
 
     public GetAdminDashboardSummaryModel? DashboardSummary { get; set; }
 
     public List<GetAdminDashboardNewAppointmentsModel> NewAppointmentModel { get; set; } = new();
     public async Task<IActionResult> OnGet()
     {
-        var result = await _appointmentService.GetAppointmentPerDayForChart();
-        AppointmentsPerDay = result.Data!.Select(_ => new AppointmentPerDayModel()
+
+        var appointmentPerDay = await _appointmentService.GetAppointmentPerDayForChart();
+        if (appointmentPerDay.IsSuccess && appointmentPerDay.Data != null)
         {
-            DayWeek = StringExtension.ConvertDayWeekToPersianDay(_.DayWeek),
-            Count = _.Count
-        }).ToList();
-        
+            AppointmentsPerDay = appointmentPerDay.Data!.Select(_ => new AppointmentPerDayModel()
+            {
+                DayWeek = StringExtension.ConvertDayWeekToPersianDay(_.DayWeek),
+                Count = _.Count
+            }).ToList();
+
+        }
+        else
+        {
+            var response = HandleApiResult(appointmentPerDay);
+        }
+      
         var weeklySchedule = await _weeklySchedule.GetSchedules();
         if (weeklySchedule.IsSuccess && weeklySchedule.Data != null)
         {
-
             WeeklySchedule = weeklySchedule.Data.Select(_ => new GetWeeklyScheduleDashboardModel()
             {
                 Day = _.DayOfWeek.ConvertDayWeekToPersianDay(),
@@ -62,30 +69,36 @@ public class IndexModel : AjaxBasePageModel
 
             }).ToList();
         }
+        else
+        {
+            var response= HandleApiResult(weeklySchedule);
+        }
 
         var popularTreatments = await _treatmentService.GetPopularTreatments();
-
-        if(popularTreatments.IsSuccess && popularTreatments.Data != null)
+        if (popularTreatments.IsSuccess && popularTreatments.Data != null)
         {
             PopularTreatments = popularTreatments.Data.Select(_ => new GetPopularTreatmentsModel()
             {
                 AppointmentCount = _.AppointmentCount,
-                Id=_.Id,
-                Title=_.Title,
-                Image=_.Image!=null?new ImageDetailsDto()
+                Id = _.Id,
+                Title = _.Title,
+                Image = _.Image != null ? new ImageDetailsDto()
                 {
-                    Extension=_.Image.Extension,
-                    ImageName=_.Image.ImageName,
-                    UniqueName=_.Image.UniqueName,
-                    Url=_.Image.Url
-                }:null,
+                    Extension = _.Image.Extension,
+                    ImageName = _.Image.ImageName,
+                    UniqueName = _.Image.UniqueName,
+                    Url = _.Image.Url
+                } : null,
             }).ToList();
+        }
+        else
+        {
+            var response=HandleApiResult(popularTreatments);
         }
 
 
         var dashboardSummary = await _appointmentService.GetAdminDashboardSummary();
-
-        if(dashboardSummary.IsSuccess &&dashboardSummary.Data != null) 
+        if (dashboardSummary.IsSuccess && dashboardSummary.Data != null)
         {
             DashboardSummary = new GetAdminDashboardSummaryModel()
             {
@@ -94,9 +107,14 @@ public class IndexModel : AjaxBasePageModel
                 TotalTreatments = dashboardSummary.Data.TotalTreatments,
             };
         }
+        else
+        {
+            var response = HandleApiResult(dashboardSummary);
+        }
 
         var newAppoints = await _appointmentService.GetNewAppointmentDashboard();
-        if(newAppoints.IsSuccess && newAppoints.Data != null)
+
+        if (newAppoints.IsSuccess && newAppoints.Data != null)
         {
             NewAppointmentModel = newAppoints.Data.Select(_ => new GetAdminDashboardNewAppointmentsModel()
             {
@@ -109,8 +127,12 @@ public class IndexModel : AjaxBasePageModel
                 TreatmentTitle = _.TreatmentTitle
             }).ToList();
         }
+        else
+        {
+            var response = HandleApiResult(newAppoints);
+        }
 
-        return null;
+        return Page();
     }
 }
 
