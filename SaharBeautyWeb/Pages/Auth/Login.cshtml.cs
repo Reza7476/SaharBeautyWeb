@@ -5,6 +5,8 @@ using SaharBeautyWeb.Models.Entities.Auth.Dtos;
 using SaharBeautyWeb.Services.Auth;
 using SaharBeautyWeb.Services.Landing.AboutUs;
 using SaharBeautyWeb.Services.UserPanels.LogOut;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace SaharBeautyWeb.Pages.Auth;
 
@@ -13,7 +15,6 @@ public class LoginModel : PageModel
     private readonly IAboutUsService _aboutUsService;
     private readonly IAutheService _authService;
     private readonly ILogoutService _logOutService;
-
     public LoginModel(IAboutUsService aboutUsService,
         IAutheService authService,
         ILogoutService logOutService)
@@ -26,7 +27,7 @@ public class LoginModel : PageModel
     [BindProperty]
     public LoginDataModel DataModel { get; set; } = default!;
 
-    [BindProperty(SupportsGet =true)]
+    [BindProperty(SupportsGet = true)]
     public string? ErrorMessage { get; set; }
 
     [BindProperty(SupportsGet = true)]
@@ -89,10 +90,29 @@ public class LoginModel : PageModel
                 return Redirect(ReturnUrl);
             }
 
-            return RedirectToPage("/UserPanels/Index");
+            var jwtToken = result.Data.JwtToken;
+            if (!string.IsNullOrWhiteSpace(jwtToken))
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var token = handler.ReadJwtToken(jwtToken);
+                var role = token.Claims.First(c => c.Type == ClaimTypes.Role ||
+                                              c.Type == "role" ||
+                                              c.Type == "Role")?.Value;
+
+                if (!string.IsNullOrWhiteSpace(role))
+                {
+                    if (role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return RedirectToPage("/UserPanels/Admin/Index");
+                    }
+                    if (role.Equals("Client", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return RedirectToPage("/UserPanels/Client/Index");
+                    }
+                }
+            }
         }
         ErrorMessage = result.Error ?? "ورود ناموفق دوباره تلاش کنید ";
-
         return Page();
     }
 
