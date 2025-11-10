@@ -97,12 +97,9 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
 
         if (filter != null)
         {
-            if (filter.Date != null)
+            if (filter.Date != default)
             {
-                query.Add($"year={filter.Date.Value.Year}");
-                query.Add($"month={filter.Date.Value.Month}");
-                query.Add($"day={filter.Date.Value.Day}");
-                query.Add($"dayOfWeek={filter.Date.Value.DayOfWeek}");
+                query.Add($"filter.Date={filter.Date:yyyy-MM-dd}");
             }
             query.Add($"Status={filter.Status}");
             query.Add($"DayWeek={filter.Day}");

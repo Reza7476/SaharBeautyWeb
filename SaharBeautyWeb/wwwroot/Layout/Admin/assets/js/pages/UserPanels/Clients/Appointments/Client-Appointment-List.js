@@ -18,10 +18,22 @@ $(document).ready(function () {
 
 $(document).on("click", "#remove-filter", function (e) {
     e.preventDefault();
+
     const form = $("#filter-form");
     form.trigger("reset");
-    form.find("select").prop("selectedIndex", 0);
-    form.find("input[type='text']").val("");
+
+    form.find("select").each(function () {
+        $(this).prop("selectedIndex", 0);
+        $(this).prop("disabled", false);
+    })
+
+    form.find("input[type='text']").each(function () {
+        $(this).val("");                  // خالی شود
+        $(this).prop("disabled", false);  // فعال شود
+    });
+    
+
+
     fetch(window.location.pathname)
         .then(response => response.text())
         .then(html => {
@@ -52,3 +64,22 @@ $(document).on("click", ".cancel-appointment-btn", function () {
 
 
 })
+
+$(document).on("change", "#Day", function () {
+    if ($(this).val()) {
+        $("#Date").val('');                // مقدار تاریخ خالی شود
+        $("#Date").prop("disabled", true); // غیرفعال شود
+    } else {
+        $("#Date").prop("disabled", false); // اگر پاک شد دوباره فعال شود
+    }
+});
+
+// اگر تاریخ انتخاب شد → روز هفته غیرفعال شود
+$(document).on("change", "#Date", function () {
+    if ($(this).val()) {
+        $("#Day").val('');                 // مقدار روز هفته خالی شود
+        $("#Day").prop("disabled", true);  // غیرفعال شود
+    } else {
+        $("#Day").prop("disabled", false); // اگر پاک شد دوباره فعال شود
+    }
+});
