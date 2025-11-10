@@ -18,17 +18,20 @@ $(document).on("click", "#remove-filter", function (e) {
 
     e.preventDefault();
 
-    // تمام فیلدهای فرم را ریست کن
     const form = $("#admin-appointment-filter-form");
     form.trigger("reset");
 
-    // ورودی‌های select را به گزینه‌ی اول (همه) برگردان
-    form.find("select").prop("selectedIndex", 0);
+    form.find("select").each(function () {
+        $(this).prop("selectedIndex", 0);
+        $(this).prop("disabled", false);
 
-    // فیلدهای text و hidden را هم خالی کن
-    form.find("input[type='text'], input[type='hidden']").val("");
+    })
 
-    // حالا با AJAX محتوای جدول را بدون فیلتر دوباره بگیر
+    form.find("input[type='text']").each(function () {
+        $(this).val("");                  // خالی شود
+        $(this).prop("disabled", false);  // فعال شود
+    });
+
     fetch(window.location.pathname)
         .then(response => response.text())
         .then(html => {
@@ -63,3 +66,22 @@ $(document).on("change", "#status-dropdown", function () {
         }
     })
 })
+
+$(document).on("change", "#Day", function () {
+    if ($(this).val()) {
+        $("#Date").val('');
+        $("#Date").prop("disabled", true);
+    } else {
+        $("#Date").prop("disabled", false);
+    }
+});
+
+// 🔹 اگر تاریخ انتخاب شد → روز هفته بی‌اثر شود
+$(document).on("change", "#Date", function () {
+    if ($(this).val()) {
+        $("#Day").val('');
+        $("#Day").prop("disabled", true);
+    } else {
+        $("#Day").prop("disabled", false);
+    }
+});
