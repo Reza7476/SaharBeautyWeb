@@ -1,4 +1,5 @@
 ﻿using SaharBeautyWeb.Models.Commons.Dtos;
+using SaharBeautyWeb.Models.Commons.Models;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Enums;
 using SaharBeautyWeb.Models.Entities.Appointments.Models;
@@ -66,6 +67,13 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
         });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
         var result = await PatchAsync<object>(url, content);
+        return result;
+    }
+
+    public async Task<ApiResultDto<GetDAshboardAdminSummaryDto?>> GetAdminDashboardSummary()
+    {
+        var url = $"{_apiUrl}/admin-dashboard-summary";
+        var result = await GetAsync<GetDAshboardAdminSummaryDto?>(url);
         return result;
     }
 
@@ -204,6 +212,13 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
         var url = $"{_apiUrl}/{id}";
 
         var result = await GetAsync<GetAppointmentDetailsDto?>(url);
+        return result;
+    }
+
+    public async Task<ApiResultDto<List<GetAdminDashboardNewAppointmentsDto>>> GetNewAppointmentDashboard()
+    {
+        var url = $"{_apiUrl}/new-appointments-for-dashboard";
+        var result = await GetAsync<List<GetAdminDashboardNewAppointmentsDto>>(url);
         return result;
     }
 }
