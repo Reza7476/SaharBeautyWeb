@@ -1,5 +1,4 @@
 ﻿using SaharBeautyWeb.Models.Commons.Dtos;
-using SaharBeautyWeb.Models.Commons.Models;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Enums;
 using SaharBeautyWeb.Models.Entities.Appointments.Models;
@@ -106,7 +105,7 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
                 query.Add($"dayOfWeek={filter.Date.Value.DayOfWeek}");
             }
             query.Add($"Status={filter.Status}");
-            query.Add($"Day={filter.Day}");
+            query.Add($"DayWeek={filter.Day}");
             query.Add($"TreatmentTitle={filter.TreatmentTitle}");
         }
 
