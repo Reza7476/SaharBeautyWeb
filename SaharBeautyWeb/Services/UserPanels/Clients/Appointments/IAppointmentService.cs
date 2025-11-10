@@ -1,5 +1,6 @@
 ﻿using SaharBeautyWeb.Configurations.Interfaces;
 using SaharBeautyWeb.Models.Commons.Dtos;
+using SaharBeautyWeb.Models.Commons.Models;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Enums;
 using SaharBeautyWeb.Models.Entities.Appointments.Models;
@@ -12,7 +13,7 @@ public interface IAppointmentService : IService
     Task<ApiResultDto<string>> AddAdminAppointment(AddAdminAppointmentDto dto);
     Task<ApiResultDto<object>> CancelByClient(string id);
     Task<ApiResultDto<object>> ChangeStatus(string id, AppointmentStatus status);
-    
+    Task<ApiResultDto<GetDAshboardAdminSummaryDto?>> GetAdminDashboardSummary();
     Task<ApiResultDto<GetAllDto<GetAdminAllAppointmentsModel>>> 
         GetAllAdminAppointments(
         int offset,
@@ -31,4 +32,5 @@ public interface IAppointmentService : IService
    
     Task<ApiResultDto<List<GetBookedAppointmentByDateDto>>> GetBookedByDate(DateTime date);
     Task<ApiResultDto<GetAppointmentDetailsDto?>> GetDetails(string id);
+    Task<ApiResultDto<List<GetAdminDashboardNewAppointmentsDto>>> GetNewAppointmentDashboard();
 }

@@ -5,7 +5,7 @@
 
 const ctx = document.getElementById('appointmentsChart').getContext('2d');
 const appointmentsChart = new Chart(ctx, {
-    type: 'pie', // نوع نمودار: bar, line, pie و غیره
+    type: 'bar', // نوع نمودار: bar, line, pie و غیره
     data: {
         labels: labels,
         datasets: [{

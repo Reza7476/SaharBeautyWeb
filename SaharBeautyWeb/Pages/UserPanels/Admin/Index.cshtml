@@ -1,119 +1,186 @@
 ﻿@page
 @using System.Text.Json
-@model SaharBeautyWeb.Pages.UserPanels.Admin.IndexModel
+ @model SaharBeautyWeb.Pages.UserPanels.Admin.IndexModel
 @{
     Layout = "_UserPanelLayout";
 }
 <link href="~/layout/admin/assets/css/pages/dashboard/dashboard.css" rel="stylesheet" />
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="container-fluid py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="m-0">داشبورد مدیریت سالن</h2>
-        <div>
-            <button id="btn-add-appointment" class="btn btn-primary me-2">ثبت نوبت جدید</button>
-            <a href="/UserPanels/Customers" class="btn btn-outline-secondary">مشتریان</a>
-        </div>
-    </div>
 
-    <!-- ردیف کارت‌های خلاصه -->
+    <!-- =================== بخش 1: خلاصه آمار =================== -->
     <div class="row g-3 mb-4">
         <div class="col-6 col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
+            <div class="card summary-card shadow-sm">
+                <div class="card-body text-center">
                     <h6 class="card-subtitle mb-2 text-muted">نوبت‌های امروز</h6>
-                    <h3 id="stat-appointments-today">0</h3>
-                    <small id="stat-appointments-today-diff" class="text-success">—</small>
+                    <h3>@(Model.DashboardSummary?.TodayAppointments ?? 0)</h3>
                 </div>
             </div>
         </div>
 
         <div class="col-6 col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
+            <div class="card summary-card shadow-sm">
+                <div class="card-body text-center">
                     <h6 class="card-subtitle mb-2 text-muted">مشتریان</h6>
-                    <h3 id="stat-customers">0</h3>
+                    <h3>@(Model.DashboardSummary?.TotalClients ?? 0)</h3>
                 </div>
             </div>
         </div>
 
         <div class="col-6 col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
+            <div class="card summary-card shadow-sm">
+                <div class="card-body text-center">
                     <h6 class="card-subtitle mb-2 text-muted">خدمات</h6>
-                    <h3 id="stat-services">0</h3>
+                    <h3>@(Model.DashboardSummary?.TotalTreatments ?? 0)</h3>
                 </div>
             </div>
         </div>
 
         <div class="col-6 col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
+            <div class="card summary-card shadow-sm">
+                <div class="card-body text-center">
                     <h6 class="card-subtitle mb-2 text-muted">درآمد امروز</h6>
-                    <h3 id="stat-revenue">0</h3>
+                    <h3>0 تومان</h3>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ردیف نمودار و لیست -->
     <div class="row g-3">
-        <div class="col-lg-7">
+        <!-- نمودار -->
+        <div class="col-lg-6 col-12">
             <div class="card shadow-sm mb-3">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header">
                     <strong>نمودار نوبت‌های هفته</strong>
                     <small class="text-muted">نمایش روند هفت روز گذشته</small>
                 </div>
                 <div class="card-body">
-                    <canvas id="appointmentsChart" height="160"></canvas>
-                </div>
-            </div>
-
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <strong>نوبت‌های جدید</strong>
-                </div>
-                <div class="card-body p-0">
-                    <ul id="recentAppointments" class="list-group list-group-flush">
-                        <!-- آیتم‌ها توسط JS اضافه می‌شود -->
-                    </ul>
+                    <canvas id="appointmentsChart" height="100"></canvas>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-5">
+        <!-- خدمات پرطرفدار -->
+        <div class="col-lg-6 col-12">
             <div class="card shadow-sm mb-3">
                 <div class="card-header">
                     <strong>خدمات پرطرفدار</strong>
                 </div>
-                <div class="card-body">
-                    <div id="servicesList">
-                        <!-- آیتم‌ها توسط JS اضافه می‌شود -->
-                    </div>
-                </div>
-            </div>
+                <div class="card-body popular-services">
+                    <div class="services-grid">
 
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <strong>تقویم کاری (نمای هفته)</strong>
-                </div>
-                <div class="card-body">
-                    <div id="scheduleOverview">
-                        <!-- خلاصه ساعات کاری هفته -->
+                        @if (Model.PopularTreatments != null && Model.PopularTreatments.Any())
+                        {
+                            @foreach (var item in Model.PopularTreatments)
+                            {
+                                <div class="service-card">
+                                    @if (item.Image != null)
+                                    {
+                                        <img src="@item.Image.Url" alt="Service" class="service-image" />
+
+                                    }
+                                    <h3 class="service-name">@item.Title</h3>
+                                    <p class="service-info">تعداد نوبتها: @(item.AppointmentCount)</p>
+                                </div>
+                            }
+                        }
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+    <!-- =================== بخش 3: نوبت‌های جدید + تقویم کاری =================== -->
+    <div class="row g-3">
+        <!-- نوبت‌های جدید -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm new-appointments-container">
+                <div class="dashboard-card-header">
+                    <h3 class="dashboard-card-title">نوبت‌های جدید</h3>
+                    <span class="appointment-count">تعداد: <strong>@Model.NewAppointmentModel.Count</strong></span>
+                </div>
+                <div class="appointments-list">
+                    @foreach (var item in Model.NewAppointmentModel)
+                    {
+
+                        <div class="appointment-item">
+                            <div class="appointment-info">
+                                <span class="client-name">@($"{item.ClientName} {item.ClientLastName}")</span>
+                                <span class="treatment-name">@item.Mobile</span>
+                                <span class="treatment-name">@item.TreatmentTitle</span>
+                            </div>
+                            <div class="appointment-meta">
+                                <span class="appointment-date">@item.Date</span>
+                                <span class="appointment-date">@item.DayWeek</span>
+                                <span class="status status-pending">@item.Status</span>
+                            </div>
+                        </div>
+
+                    }
+                   
+                </div>
+
+            </div>
+        </div>
+
+        <!-- تقویم کاری -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header"><strong>تقویم کاری (نمای هفته)</strong></div>
+                <div class="card-body table-responsive" id="scheduleOverview">
+                    @if (Model.WeeklySchedule != null && Model.WeeklySchedule.Any())
+                    {
+                        <table class="table table-striped align-middle text-center mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>روز</th>
+                                    <th>ساعت شروع</th>
+                                    <th>ساعت پایان</th>
+                                    <th>وضعیت</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var day in Model.WeeklySchedule)
+                                {
+                                    <tr>
+                                        <td data-label="روز">@day.Day</td>
+                                        <td data-label="ساعت شروع">@(day.Start ?? "—")</td>
+                                        <td data-label="ساعت پایان">@(day.End ?? "—")</td>
+                                        <td data-label="وضعیت">
+                                            @if (!day.IsActive)
+                                            {
+                                                <span class="badge bg-danger-subtle text-danger fw-semibold">تعطیل</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-success-subtle text-success fw-semibold">فعال</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="empty-block">
+                            <p>تقویم کاری برای این هفته خالی است.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-
-
-@section Scripts
-{
+@section Scripts {
     <script>
-        const labels = @Html.Raw(JsonSerializer.Serialize(Model.AppointmentsPerDay.Select(_=>_.DayWeek).ToList()));
-        const data = @Html.Raw(JsonSerializer.Serialize(Model.AppointmentsPerDay.Select(_=>_.Count).ToList()));
+        const labels = @Html.Raw(JsonSerializer.Serialize(Model.AppointmentsPerDay.Select(_ => _.DayWeek).ToList()));
+        const data = @Html.Raw(JsonSerializer.Serialize(Model.AppointmentsPerDay.Select(_ => _.Count).ToList()));
     </script>
     <script src="~/layout/admin/assets/js/pages/userpanels/admin/dashboard/dashboard.js"></script>
 }
