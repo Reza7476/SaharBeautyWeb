@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Models.Entities.Auth;
 using SaharBeautyWeb.Models.Entities.Auth.Dtos;
 using SaharBeautyWeb.Services.Auth;
-using SaharBeautyWeb.Services.JwtTokens;
 using SaharBeautyWeb.Services.Landing.AboutUs;
 using SaharBeautyWeb.Services.UserPanels.LogOut;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,22 +15,19 @@ public class LoginModel : PageModel
     private readonly IAboutUsService _aboutUsService;
     private readonly IAutheService _authService;
     private readonly ILogoutService _logOutService;
-    private readonly IJwtTokenService _jwtService;
     public LoginModel(IAboutUsService aboutUsService,
         IAutheService authService,
-        ILogoutService logOutService,
-        IJwtTokenService jwtService)
+        ILogoutService logOutService)
     {
         _aboutUsService = aboutUsService;
         _authService = authService;
         _logOutService = logOutService;
-        _jwtService = jwtService;
     }
     public LogoForLoginModel? Logo { get; set; }
     [BindProperty]
     public LoginDataModel DataModel { get; set; } = default!;
 
-    [BindProperty(SupportsGet =true)]
+    [BindProperty(SupportsGet = true)]
     public string? ErrorMessage { get; set; }
 
     [BindProperty(SupportsGet = true)]
@@ -95,28 +91,28 @@ public class LoginModel : PageModel
             }
 
             var jwtToken = result.Data.JwtToken;
-            if(!string.IsNullOrWhiteSpace(jwtToken)) 
+            if (!string.IsNullOrWhiteSpace(jwtToken))
             {
                 var handler = new JwtSecurityTokenHandler();
                 var token = handler.ReadJwtToken(jwtToken);
-                var role = token.Claims.First(c => c.Type == ClaimTypes.Role || c.Type == "role" || c.Type == "Role")?.Value;
+                var role = token.Claims.First(c => c.Type == ClaimTypes.Role ||
+                                              c.Type == "role" ||
+                                              c.Type == "Role")?.Value;
 
                 if (!string.IsNullOrWhiteSpace(role))
                 {
-                    if(role.Equals("Admin",StringComparison.OrdinalIgnoreCase))
+                    if (role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
                     {
-                        return RedirectToPage("/UserPanels/Index");
+                        return RedirectToPage("/UserPanels/Admin/Index");
+                    }
+                    if (role.Equals("Client", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return RedirectToPage("/UserPanels/Client/Index");
                     }
                 }
             }
-
-
-
-
-            return RedirectToPage("/UserPanels/Index");
         }
         ErrorMessage = result.Error ?? "ورود ناموفق دوباره تلاش کنید ";
-
         return Page();
     }
 
