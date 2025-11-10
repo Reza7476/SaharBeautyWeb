@@ -121,9 +121,6 @@ public class UserPanelBaseService
 
         var response = await _client.SendAsync(request);
         var raw = await response.Content.ReadAsStringAsync();
-        Console.ForegroundColor= ConsoleColor.Red;
-        Console.WriteLine(raw);
-        Console.ResetColor();
         if (response.IsSuccessStatusCode)
         {
             if (raw != "")
