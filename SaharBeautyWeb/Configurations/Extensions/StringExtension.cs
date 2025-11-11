@@ -103,5 +103,13 @@ public static class StringExtension
         }
     }
 
+    public static string ConvertActiveBoolToString(bool isActive)
+    {
+        switch (isActive)
+        {
+            case true: return "فعال";
+            case false: return "غیر فعال";
+        }
+    }
 
 }

@@ -63,7 +63,33 @@ public class UserService : UserPanelBaseService, IUserService
         fileContent.Headers.ContentType = new MediaTypeHeaderValue(dto.Media.ContentType);
         content.Add(fileContent, "Media", dto.Media.FileName);
 
-        var result=await PatchAsync<object>(url, content);
+        var result = await PatchAsync<object>(url, content);
+        return result;
+    }
+
+    public async Task<ApiResultDto<GetAllDto<GetAllUsersDto>>>
+        GetAllUsers(int offset,
+        int limit,
+        string? search = null)
+    {
+        var url = $"{_apiUrl}/all";
+        var query = new List<string>()
+        {
+            $"Offset={offset}",
+            $"Limit={limit}",
+        };
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            query.Add($"search={search}");
+        }
+
+        if (query.Any())
+        {
+            url = url + "?" + string.Join("&", query);
+        }
+
+        var result = await GetAsync<GetAllDto<GetAllUsersDto>>(url);
         return result;
     }
 
