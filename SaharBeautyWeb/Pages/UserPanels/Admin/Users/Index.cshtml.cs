@@ -52,14 +52,25 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.Users
                         Name = _.Name,
                         Roles = _.Roles,
                         UserName = _.UserName,
+                        Active=_.IsActive,
+                        Id=_.Id,
                     }).ToList(),
                     CurrentPage = pageNumber,
                     TotalElements = result.Data.TotalElements,
-                    TotalPages = result.Data.TotalElements.ToTotalPage(limit)
+                    TotalPages = result.Data.TotalElements.ToTotalPage(limit),
+                    
                 };
             }
 
             var response = HandleApiResult(result);
+            return response;
+        }
+
+        public async Task<IActionResult> OnPostChangeUserActivate(string userId,bool activate)
+        {
+            var result = await _userService.ChangeUserActivate(userId, activate);
+
+            var response = HandleApiAjxResult(result);
             return response;
         }
     }

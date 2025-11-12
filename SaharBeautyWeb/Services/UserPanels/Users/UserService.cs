@@ -15,6 +15,21 @@ public class UserService : UserPanelBaseService, IUserService
     {
     }
 
+    public  async Task<ApiResultDto<object>> ChangeUserActivate(string userId, bool activate)
+    {
+        var url = $"{_apiUrl}/change-user-activation";
+        var json = JsonSerializer.Serialize(new
+        {
+            UserId = userId,
+            IsActive = activate
+        });
+
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var result = await PatchAsync<object>(url, content);
+        return result;
+    }
+
     public async Task<ApiResultDto<object>> EditAdminProfile(EditAdminProfileDto dto)
     {
 

@@ -25,4 +25,6 @@ public class AllUsersModel
     public string? CreatedAt { get; set; }
     public int AppointmentNumber { get; set; }
     public ImageDetailsModel? Avatar { get; set; }
+    public bool Active { get; set; }
+    public string Id { get; set; } = default!;
 }

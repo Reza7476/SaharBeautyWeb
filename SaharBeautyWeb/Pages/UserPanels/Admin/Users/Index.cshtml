@@ -2,16 +2,13 @@
 @model SaharBeautyWeb.Pages.UserPanels.Admin.Users.IndexModel
 @{
     Layout = "_UserPanelLayout";
-
     var model = Model.AllUsersModel;
 }
 <link href="~/layout/admin/assets/css/pages/admin-users/users.css" rel="stylesheet" />
 
 @if (model != null)
 {
-
     <div class="users-container">
-        <!-- فیلتر و عنوان -->
         <div class="users-header">
             <h2>مدیریت کاربران</h2>
             <form id="search-form" method="get">
@@ -21,14 +18,10 @@
                 <button type="submit" hidden></button>
             </form>
         </div>
-
-        <!-- گرید کاربران -->
-        <div class="users-grid" id="users-grid">
-            <!-- کارت نمونه -->
+        <div class="users-grid" id="users-grid" >
             @foreach (var item in Model.AllUsersModel.AllUsers)
             {
-
-                <div class="user-card">
+                <div class="user-card" data-user-id="@item.Id">
                     <div class="user-avatar">
 
                         @if (item.Avatar != null)
@@ -36,7 +29,6 @@
                             <img src="@item.Avatar.Url" alt="avatar">
                         }
                         else
-
                         {
                             <img src="~/layout/admin/assets/images/users/avatar-1.png" alt="avatar">
                         }
@@ -48,26 +40,24 @@
                         <p><i class="lucide lucide-phone"></i> @item.Mobile</p>
                         <p><i class="lucide lucide-mail"></i> @item.Email</p>
                     </div>
-
                     <div class="user-meta">
                         @foreach (var role in item.Roles)
                         {
                             <p><i class="lucide lucide-shield"></i> @role</p>
-
                         }
-
                         <p><i class="lucide lucide-calendar"></i> @item.CreatedAt</p>
-                        <p class="status active"><i class="lucide lucide-check-circle"></i> @item.IsActive</p>
+                    </div>
+                    <div class="user-footer">
+                        <label class="switch">
+                            <input type="checkbox" @(item.Active ? "checked" : "")  class="toggle-switch" id="change-user-active">
+                            <span class="slider"></span>
+                        </label>
                     </div>
                 </div>
-
             }
-
-            <!-- کارت‌های بیشتر ... -->
         </div>
 
         <div class="pagination-container mt-4 d-flex justify-content-center align-items-center gap-2 flex-wrap">
-            <!-- قبلی -->
             <a class="page-btn btn btn-outline-primary @(model.CurrentPage == 0 ? "disabled" : "")"
                asp-page="Index"
                asp-route-pageNumber="@(model.CurrentPage - 1)"
@@ -75,12 +65,10 @@
                 قبلی
             </a>
 
-            <!-- صفحه فعلی -->
             <span class="current-page btn btn-primary disabled">
                 @(model.CurrentPage)
             </span>
 
-            <!-- بعدی -->
             <a class="page-btn btn btn-outline-primary @(model.CurrentPage == model.TotalPages ? "disabled" : "")"
                asp-page="Index"
                asp-route-pageNumber="@(model.CurrentPage + 1)"
@@ -88,12 +76,17 @@
                 بعدی
             </a>
         </div>
-
     </div>
-
-
+    
     @section Scripts {
+
+        <script>
+            var changeUserActivate = '@Url.Page("Index","ChangeUserActivate")';
+
+        </script>
     <script src="~/layout/admin/assets/js/pages/userpanels/admin/users/users.js"></script>
+
+
     }
 }
 
