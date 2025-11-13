@@ -35,6 +35,11 @@ public class IndexModel : AjaxBasePageModel
 
     public async Task<IActionResult> OnGet(int pageNumber = 0, int limit = 5)
     {
+
+        if (!string.IsNullOrWhiteSpace(Search))
+        {
+            Search = Search.RemoveCountryCodeFromPhoneNumber();
+        }
         int offset = pageNumber;
         DateOnly? dateOnly = null;
         if (!string.IsNullOrWhiteSpace(Filter?.Date))

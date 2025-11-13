@@ -50,7 +50,10 @@ public class IndexModel : AjaxBasePageModel
 
     public async Task<IActionResult> OnGet()
     {
-
+        if (!string.IsNullOrWhiteSpace(Search))
+        {
+            Search = Search.RemoveCountryCodeFromPhoneNumber();
+        }
         var client = await _clientService.GetAllForAppointment(Search);
         var clientResponse = HandleApiResult(client);
         if (client.IsSuccess && client.Data != null)

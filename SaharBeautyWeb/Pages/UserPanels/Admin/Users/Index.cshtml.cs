@@ -25,6 +25,11 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.Users
 
         public async Task<IActionResult> OnGet(int pageNumber = 0, int limit = 5)
         {
+
+            if (!string.IsNullOrWhiteSpace(Search))
+            {
+                Search = Search.RemoveCountryCodeFromPhoneNumber();
+            }
             int offset = pageNumber;
             var result = await _userService.GetAllUsers(offset, limit, Search);
 

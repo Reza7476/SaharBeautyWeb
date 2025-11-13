@@ -52,7 +52,10 @@ public class IndexModel : AjaxBasePageModel
                 Title = _.Title
             }).ToList();
         }
-
+        if(!string.IsNullOrWhiteSpace(Search)) 
+        {
+            Search = Search.RemoveCountryCodeFromPhoneNumber();
+        }
 
         var result = await _appointmentService.GetAllTodayAdminAppointments(offset, limit, filter, Search);
         var response = HandleApiResult(result);
