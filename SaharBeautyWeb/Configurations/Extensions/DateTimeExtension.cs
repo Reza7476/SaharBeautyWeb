@@ -8,11 +8,11 @@ public static class DateTimeExtension
 {
     public static string ConvertGregorianDateToShamsi(this DateTime date)
     {
-        var pc = new System.Globalization.PersianCalendar();
+        var pc = new PersianCalendar();
         return string.Format("{0:0000}/{1:00}/{2:00}",
-        pc.GetYear(date),
-            pc.GetMonth(date),
-            pc.GetDayOfMonth(date));
+                     pc.GetYear(date),
+                     pc.GetMonth(date),
+                     pc.GetDayOfMonth(date));
     }
 
 
@@ -126,7 +126,7 @@ public static class DateTimeExtension
         }
     }
 
-    public static  DayOfWeek GetSystemDayWeek(DayWeek dayweek)
+    public static DayOfWeek GetSystemDayWeek(DayWeek dayweek)
     {
         switch (dayweek)
         {
@@ -141,4 +141,15 @@ public static class DateTimeExtension
         }
     }
 
+    public static string ConvertGregorianDateWithTimeToShamsi(this DateTime date)
+    {
+        var pc = new PersianCalendar();
+        return string.Format("{0:0000}/{1:00}/{2:00} {3:00}:{4:00}",
+                     pc.GetYear(date),
+                     pc.GetMonth(date),
+                     pc.GetDayOfMonth(date),
+                     pc.GetHour(date),
+                     pc.GetMinute(date));
+            ;
+    }
 }

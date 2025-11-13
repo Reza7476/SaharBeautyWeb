@@ -1,0 +1,252 @@
+﻿body {
+    font-family: "Vazirmatn", sans-serif;
+    direction: rtl;
+    background: #f7f8fa;
+    color: #333;
+}
+
+/* کانتینر کلی صفحه */
+.sms-page-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+}
+
+/* -------------------- */
+/* کارت اعتبار پنل */
+/* -------------------- */
+.sms-credit-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    text-align: right;
+}
+
+    .sms-credit-card h2 {
+        margin: 0;
+        font-size: 1.1rem;
+        color: #555;
+    }
+
+.credit-value {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #009688;
+}
+
+.refresh-btn {
+    background: #009688;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 500;
+}
+
+    .refresh-btn:hover {
+        background: #00796b;
+    }
+
+/* -------------------- */
+/* جستجو */
+/* -------------------- */
+.sms-filters {
+    display: flex;
+    justify-content: flex-end;
+}
+
+    .sms-filters input {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 0.6rem 1rem;
+        width: 250px;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+    }
+
+        .sms-filters input:focus {
+            border-color: #009688;
+            outline: none;
+        }
+
+/* -------------------- */
+/* جدول پیام‌ها */
+/* -------------------- */
+.sms-table-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+    overflow-x: auto;
+}
+
+.sms-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+}
+
+    .sms-table th,
+    .sms-table td {
+        padding: 12px;
+        text-align: center;
+        vertical-align: top;
+        font-size: 0.9rem;
+        border-bottom: 1px solid #eee;
+        word-break: break-word;
+    }
+
+    .sms-table th {
+        background: #f3f4f6;
+        font-weight: 600;
+        color: #555;
+    }
+
+    .sms-table tr:hover {
+        background: #fafafa;
+    }
+
+/* -------------------- */
+/* وضعیت پیام */
+/* -------------------- */
+.status {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+}
+
+    .status.sent {
+        background: #e0f7fa;
+        color: #00796b;
+    }
+
+    .status.failed {
+        background: #ffebee;
+        color: #c62828;
+    }
+
+    .status.delivered {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .status.pending {
+        background: #fffde7;
+        color: #f9a825;
+    }
+
+/* -------------------- */
+/* متن پیام طولانی */
+/* -------------------- */
+.sms-message {
+    max-height: 4.5em; /* حدوداً 3 خط */
+    overflow: hidden;
+    position: relative;
+}
+
+    .sms-message.expanded {
+        max-height: none;
+    }
+
+.sms-show-more {
+    display: block;
+    color: #007bff;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+/* -------------------- */
+/* صفحه‌بندی */
+/* -------------------- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.3rem;
+}
+
+.page-btn {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+    .page-btn:hover {
+        background: #009688;
+        color: #fff;
+    }
+
+    .page-btn.active {
+        background: #009688;
+        color: #fff;
+        border-color: #009688;
+    }
+
+/* -------------------- */
+/* حالت موبایل */
+/* -------------------- */
+@media (max-width: 768px) {
+
+    /* کارت اعتبار */
+    .sms-credit-card {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .sms-filters {
+        justify-content: center;
+    }
+
+        .sms-filters input {
+            width: 100%;
+        }
+
+    /* جدول ریسپانسیو */
+    .sms-table thead {
+        display: none;
+    }
+
+    .sms-table tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .sms-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 15px;
+        border-bottom: 1px solid #f1f1f1;
+        text-align: right;
+    }
+
+        .sms-table tbody td::before {
+            content: attr(data-label);
+            font-weight: bold;
+            color: #555;
+        }
+
+        .sms-table tbody td:last-child {
+            border-bottom: none;
+        }
+}
