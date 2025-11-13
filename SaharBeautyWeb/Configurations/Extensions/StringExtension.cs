@@ -1,4 +1,5 @@
 ﻿using SaharBeautyWeb.Models.Entities.Appointments.Enums;
+using SaharBeautyWeb.Models.Entities.SMS_Logs.Enum;
 using SaharBeautyWeb.Models.Entities.WeeklySchedules.Dtos;
 using System.Globalization;
 
@@ -112,4 +113,44 @@ public static class StringExtension
         }
     }
 
+    public static string ConvertSMSStatusToString(this SendSMSStatus status)
+    {
+        switch (status)
+        {
+            case SendSMSStatus.Pending:
+                return "در حال ارسال ";
+            case SendSMSStatus.Sent:
+                return "ارسال شد";
+            case SendSMSStatus.Failed:
+                return "موفق نبود";
+            case SendSMSStatus.Delivered:
+                return "تحویل داده شد";
+            default: return " نامشخص";
+        }
+    }
+
+
+    public static string RemoveCountryCodeFromPhoneNumber(this string phone)
+    {
+        if (string.IsNullOrWhiteSpace(phone))
+            return string.Empty;
+
+        // حذف فاصله، خط تیره و پرانتزها
+        phone = phone.Replace(" ", "")
+                     .Replace("-", "")
+                     .Replace("(", "")
+                     .Replace(")", "");
+
+        // حذف +98 یا 0098 یا 98 از ابتدای شماره
+        if (phone.StartsWith("+98"))
+            phone =  phone.Substring(3);
+        else if (phone.StartsWith("0098"))
+            phone =  phone.Substring(4);
+        else if (phone.StartsWith("98"))
+            phone =  phone.Substring(2);
+        else if (phone.StartsWith("0"))
+            phone = phone.Substring(1);
+
+        return phone;
+    }
 }
