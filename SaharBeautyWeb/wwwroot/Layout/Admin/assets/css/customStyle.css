@@ -1,5 +1,12 @@
-﻿body {
+﻿
+html {
+    font-size: 17px !important; /* مقدار پیشنهادی */
 }
+
+html, body, body * {
+    font-family: "IRANYekan", sans-serif !important;
+}
+
 .multiline-truncate {
     display: -webkit-box;
     -webkit-line-clamp: 2; /* حداکثر تعداد خطوط */
