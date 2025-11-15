@@ -91,10 +91,25 @@ function toggleSubmenu(menuId) {
 // Logout
 // ------------------------------
 function logout() {
-    if (confirm("آیا مطمئن هستید که می‌خواهید خارج شوید؟")) {
-        localStorage.removeItem("openSubmenu");
-        window.location.href = "/Account/Logout";
-    }
+
+    $.ajax({
+        url: '/Auth/Login?handler=RemoveToken',
+        type: 'get',
+        success: function (res) {
+            if (res.sussess || res.statusCode === 200) {
+                window.location.href = '/';
+            } else {
+                handleApiError(res.error);
+            }
+        }, error: function (err) {
+            handleApiError(err);
+        }
+    });
+
+    //if (confirm("آیا مطمئن هستید که می‌خواهید خارج شوید؟")) {
+    //    localStorage.removeItem("openSubmenu");
+    //    window.location.href = "/Account/Logout";
+    //}
 }
 
 // ------------------------------
@@ -111,3 +126,8 @@ window.addEventListener("resize", () => {
     if (window.innerWidth >= 768) openSidebar();
     else closeSidebar();
 });
+
+$(document).on("click", "#log-out-btn", function (e) {
+
+   
+})
