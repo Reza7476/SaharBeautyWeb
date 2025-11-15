@@ -1,4 +1,4 @@
-﻿namespace SaharBeautyWeb.Models.Commons;
+﻿namespace SaharBeautyWeb.Models.Commons.Models;
 
 public class DashboardClientSummaryModel
 {
