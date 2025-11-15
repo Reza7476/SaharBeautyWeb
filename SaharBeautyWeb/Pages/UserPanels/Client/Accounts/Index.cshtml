@@ -2,6 +2,7 @@
 @model Client.Accounts.IndexModel
 @{
     Layout = "_UserPanelLayout";
+    ViewData["ActiveMenu"] = "Profile";
 }
 
 <link href="~/layout/admin/assets/css/pages/accounts/profile.css" rel="stylesheet" />
@@ -68,7 +69,7 @@
         </button>
     </div>
 </div>
-@section scripts{
+@section scripts {
     <script>
         var getUserInfoForEdit = '@Url.Page("Index", "UserInfoForEdit")';
         var applyEditProfile = '@Url.Page("Index", "ApplyEditProfile")';
