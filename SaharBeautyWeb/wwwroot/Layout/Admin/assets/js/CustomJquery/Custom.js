@@ -75,19 +75,3 @@ $(document).ajaxError(function (event, xhr, settings, error) {
     }
 });
 
-$(document).on("click", "#log-out-btn", function (e) {
-
-    $.ajax({
-        url: '/Auth/Login?handler=RemoveToken',
-        type: 'get',
-        success: function (res) {
-            if (res.sussess || res.statusCode === 200) {
-                window.location.href = '/';
-            } else {
-                handleApiError(res.error);
-            }
-        }, error: function (err) {
-            handleApiError(err);
-        }
-    });
-})
