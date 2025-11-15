@@ -27,7 +27,7 @@
             @foreach (var client in Model.AllClients)
             {
                 <div class="client-card" data-id="@client.Id">
-                    <img src="@(client.Profile?.Url ?? "~/layout/admin/assets/img/default-user.png")" alt="user" />
+                    <img src="@(client.Profile?.Url ?? "/layout/admin/assets/images/users/avatar-1.png")" alt="user" />
                     <div class="client-info">
                         <span class="client-name">@($"{client.Name} {client.LastName}") </span>
                         <span class="client-phone" style="direction:ltr">@client.MobileNumber</span>
