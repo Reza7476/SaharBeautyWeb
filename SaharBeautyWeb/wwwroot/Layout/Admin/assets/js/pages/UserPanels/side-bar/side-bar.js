@@ -105,11 +105,6 @@ function logout() {
             handleApiError(err);
         }
     });
-
-    //if (confirm("آیا مطمئن هستید که می‌خواهید خارج شوید؟")) {
-    //    localStorage.removeItem("openSubmenu");
-    //    window.location.href = "/Account/Logout";
-    //}
 }
 
 // ------------------------------
@@ -126,8 +121,3 @@ window.addEventListener("resize", () => {
     if (window.innerWidth >= 768) openSidebar();
     else closeSidebar();
 });
-
-$(document).on("click", "#log-out-btn", function (e) {
-
-   
-})
