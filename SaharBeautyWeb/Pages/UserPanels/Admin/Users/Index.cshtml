@@ -2,6 +2,7 @@
 @model SaharBeautyWeb.Pages.UserPanels.Admin.Users.IndexModel
 @{
     Layout = "_UserPanelLayout";
+    ViewData["ActiveMenu"] = "UsersList";
     var model = Model.AllUsersModel;
 }
 <link href="~/layout/admin/assets/css/pages/admin-users/users.css" rel="stylesheet" />

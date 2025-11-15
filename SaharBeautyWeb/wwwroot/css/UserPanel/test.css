@@ -1,0 +1,70 @@
+﻿
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+
+* {
+    font-family: 'Vazirmatn', sans-serif;
+}
+
+.sidebar {
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+    .sidebar.closed {
+        transform: translateX(100%);
+    }
+
+.sidebar-overlay {
+    transition: opacity 0.3s ease-in-out;
+}
+
+    .sidebar-overlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+.menu-item {
+    transition: all 0.2s ease;
+}
+
+    .menu-item:hover {
+        background-color: rgba(219, 39, 119, 0.1);
+    }
+
+    .menu-item.active {
+        background-color: rgba(219, 39, 119, 0.15);
+        border-right: 4px solid #db2777;
+    }
+
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+
+    .submenu.open {
+        max-height: 500px;
+    }
+
+.submenu-item {
+    transition: all 0.2s ease;
+}
+
+    .submenu-item:hover {
+        background-color: rgba(219, 39, 119, 0.05);
+        padding-right: 3.5rem;
+    }
+
+    .submenu-item.active {
+        background-color: rgba(219, 39, 119, 0.1);
+        color: #db2777;
+        font-weight: 600;
+        border-right: 3px solid #db2777;
+    }
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 280px !important;
+    }
+}
+
+
