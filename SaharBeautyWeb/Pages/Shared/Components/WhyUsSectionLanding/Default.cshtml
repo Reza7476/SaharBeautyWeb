@@ -4,7 +4,7 @@
 
 @if (Model != null)
 {
-    <div class="best-area pt-100 pb-70">
+   @*  <div class="best-area pt-100 pb-70">
         <div class="best-shape">
             <img src="~/Layout/assets/images/best/best-shape1.png" alt="Shape">
         </div>
@@ -39,5 +39,49 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
+
+
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">درباره ما</h2>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                       @Model.Title
+                    </p>
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        @Model.Description
+                    </p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="text-center p-4 bg-pink-50 rounded-lg">
+                            <i class="fas fa-users text-4xl text-pink-600 mb-2"></i>
+                            <div class="text-2xl font-bold mb-1">۵۰۰۰+</div>
+                            <div class="text-sm text-gray-600">مشتری راضی</div>
+                        </div>
+                        <div class="text-center p-4 bg-pink-50 rounded-lg">
+                            <i class="fas fa-award text-4xl text-pink-600 mb-2"></i>
+                            <div class="text-2xl font-bold mb-1">۱۵+</div>
+                            <div class="text-sm text-gray-600">سال تجربه</div>
+                        </div>
+                        <div class="text-center p-4 bg-pink-50 rounded-lg">
+                            <i class="fas fa-clock text-4xl text-pink-600 mb-2"></i>
+                            <div class="text-2xl font-bold mb-1">۲۴/۷</div>
+                            <div class="text-sm text-gray-600">پشتیبانی</div>
+                        </div>
+                        <div class="text-center p-4 bg-pink-50 rounded-lg">
+                            <i class="fas fa-heart text-4xl text-pink-600 mb-2"></i>
+                            <div class="text-2xl font-bold mb-1">۱۰۰%</div>
+                            <div class="text-sm text-gray-600">رضایت مشتری</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <img src="@Model.Image.Url"
+                         alt="درباره ما"
+                         class="rounded-2xl shadow-2xl w-full h-[500px] object-cover">
+                </div>
+            </div>
+        </div>
+    </section>
 }
