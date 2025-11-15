@@ -207,6 +207,26 @@
                 </div>
             </div>
 
+            <div class="mb-2">
+                <button class="menu-header flex items-center justify-between w-full p-3 text-gray-700 font-bold"
+                        onclick="toggleSubmenu('sms-list')">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-calendar-check w-5"></i>
+                        <span> sms ها</span>
+                    </div>
+                    <i class="fas fa-chevron-down transform transition-transform" id="icon-sms-list"></i>
+                </button>
+                <div id="submenu-sms-list" class="submenu
+                    @(ViewData["ActiveMenu"]?.ToString() == "SMSList" ? "open" : "")">
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
+                    @(ViewData["ActiveMenu"]?.ToString() == "SMSList" ? "active bg-pink-100 font-bold" : "")"
+                            onclick="window.location='/UserPanels/Admin/SMS-Logs/Index'">
+                        <i class="fa-solid fa-calendar-check text-xs ml-2"></i> لیست SMS ها
+                    </button>
+                </div>
+            </div>
+
+
             @* Profile *@
             <div class="mb-2">
                 <button class="menu-header flex items-center justify-between w-full p-3 text-gray-700 font-bold"
