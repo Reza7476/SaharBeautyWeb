@@ -7,9 +7,8 @@ $("#user-search").on("input", function () {
         $("#search-form")[0].submit();
     } else if (value.length === 0) {
         $("#search-form")[0].submit();
-    });
-
-
+    }
+});
 
 $(document).on("change", ".toggle-switch", function () {
     const userCard = $(this).closest(".user-card");
@@ -35,5 +34,4 @@ $(document).on("change", ".toggle-switch", function () {
             handleApiError(res.error);
         }
     });
-
 });

@@ -24,48 +24,33 @@
 
 .section-header {
     display: flex;
+    flex-wrap: wrap; /* اضافه شد برای موبایل */
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    gap: 10px; /* فاصله بین input و دکمه */
 }
 
     .section-header input {
+        flex: 1 1 200px; /* اجازه کوچک شدن ولی حداقل 200px */
+        min-width: 120px;
         padding: 8px 12px;
         border-radius: 8px;
         border: 1px solid #ccc;
-        width: 50%;
-        transition: 0.3s;
+        font-size: 14px;
+        transition: border-color 0.2s ease;
     }
 
         .section-header input:focus {
-            border-color: #2196f3;
+            border-color: #007bff;
             outline: none;
         }
-.client-tools {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-#client-search {
-    flex: 1;
-    min-width: 200px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    transition: border-color 0.2s ease;
-}
-
-    #client-search:focus {
-        border-color: #007bff;
-        outline: none;
-    }
 
 .add-client-btn {
+    flex: 0 0 auto; /* اندازه فقط به محتوا محدود باشد */
+    max-width: 150px; /* محدودیت روی دسکتاپ */
+    text-align: center;
+    white-space: nowrap;
     display: inline-block;
     background-color: #28a745;
     color: white;
@@ -74,12 +59,12 @@
     font-size: 14px;
     text-decoration: none;
     transition: background-color 0.2s ease;
-    white-space: nowrap;
 }
 
     .add-client-btn:hover {
         background-color: #218838;
     }
+
 /* === اسکرول مشتریان === */
 .clients-scroll {
     display: flex;
@@ -90,6 +75,7 @@
     -webkit-overflow-scrolling: touch;
 }
 
+/* کارت مشتری */
 .client-card {
     min-width: 150px;
     background: #f9f9f9;
@@ -167,23 +153,6 @@
     transition: all 0.3s;
 }
 
-    .service-details-card .service-image {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 15px;
-        max-height: 220px;
-        overflow: hidden;
-    }
-
-    .service-details-card img {
-        width: auto;
-        height: 200px;
-        border-radius: 10px;
-        object-fit: contain;
-        max-width: 100%;
-    }
-
     .service-details-card h2 {
         font-size: 1.2rem;
         margin-bottom: 10px;
@@ -206,15 +175,13 @@
     flex-wrap: wrap; /* اضافه شد برای موبایل چند ردیف شدن */
     gap: 12px;
     padding: 10px 0;
-    justify-content: center; /* وسط چین کردن روزها */
+    justify-content: center;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
 }
 
-
-/* روزها */
 .day-card {
-    flex: 0 0 110px; /* اندازه ثابت دسکتاپ */
+    flex: 0 0 110px;
     background: #fff;
     border-radius: 12px;
     border: 2px solid #eee;
@@ -224,7 +191,6 @@
     transition: all 0.2s ease;
     cursor: pointer;
 }
-
 
     .day-card:hover {
         border-color: #2196f3;
@@ -236,6 +202,7 @@
         border-color: #2196f3;
         box-shadow: 0 0 10px rgba(33, 150, 243, 0.3);
     }
+
 .day-name {
     font-weight: 600;
     font-size: 0.95rem;
@@ -248,10 +215,10 @@
     margin-top: 4px;
 }
 
-/* === کانتینر ساعت‌ها (Grid چند ردیفی) === */
+/* === کانتینر ساعت‌ها === */
 .time-slot-container {
     display: grid;
-    grid-template-columns: repeat(16, 1fr); /* همیشه ۳ ستون */
+    grid-template-columns: repeat(16, 1fr);
     gap: 8px;
     margin-top: 15px;
     padding: 5px 0;
@@ -260,7 +227,6 @@
     justify-items: center;
 }
 
-/* کارت ساعت‌ها */
 .time-slot-card {
     background-color: #f0f0ff;
     border: 1px solid #b0b0f0;
@@ -271,11 +237,13 @@
     cursor: pointer;
     transition: all 0.2s ease;
 }
+
     .time-slot-card.active:hover {
         background-color: #8c8cff;
         color: #fff;
         transform: scale(1.05);
     }
+
     .time-slot-card.active {
         border-color: #4caf50;
         background-color: #e8f5e9;
@@ -298,40 +266,6 @@
         box-shadow: 0 0 8px rgba(33,150,243,0.4);
     }
 
-    .time-slot-card .selected-time {
-        font-weight: 600;
-    }
-
-/* پیام عدم ارائه خدمت */
-.no-service-message {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff3cd;
-    border: 1px solid #ffeeba;
-    color: #856404;
-    font-size: 0.95rem;
-    font-weight: 500;
-    padding: 12px 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    text-align: center;
-    margin-top: 10px;
-    transition: all 0.3s ease;
-}
-
-    .no-service-message i {
-        margin-right: 8px;
-        font-size: 1.1rem;
-        color: #856404;
-    }
-
-    .no-service-message:hover {
-        background-color: #fff8e1;
-        transform: translateY(-2px);
-    }
-
-/* === دکمه ثبت ثابت پایین صفحه === */
 .fixed-submit {
     position: fixed;
     bottom: 0;
@@ -363,27 +297,42 @@
         }
 
 /* === حالت موبایل === */
-
 @media (max-width: 768px) {
+
+    /* header مشتریان */
+    .section-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .add-client-btn {
+        max-width: 100%;
+        margin-top: 5px;
+    }
 
     .week-days-scroll {
         justify-content: center;
-        flex-wrap: wrap; /* روزها در چند ردیف */
+        flex-wrap: wrap;
     }
 
     .day-card {
         flex: 0 0 45%; /* دو روز در هر ردیف موبایل */
         margin-bottom: 10px;
-        justify-items: center;
     }
 
     .time-slot-container {
-        grid-template-columns: repeat(4, 1fr); /* همیشه ۳ ستون */
+        grid-template-columns: repeat(4, 1fr);
         gap: 6px;
     }
 
     .time-slot-card {
         padding: 6px 3px;
         font-size: 0.8rem;
+    }
+    .section-header input {
+        max-width:200PX; /* حداکثر عرض ورودی روی موبایل */
+        width:200PX; /* عرض پیش‌فرض برای کشیدگی */
+        margin: 0 auto; /* وسط چین کردن input */
+        max-height:50PX;
     }
 }
