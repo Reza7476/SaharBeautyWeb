@@ -1,0 +1,165 @@
+﻿/* treatments-list.css */
+
+/* جدول کلی */
+.treatments-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+    .treatments-table th {
+        background-color: var(--bs-tertiary-bg);
+        color: var(--bs-body-color);
+        font-weight: 600;
+        border: none;
+        padding: 12px 16px;
+        text-align: center;
+    }
+
+    .treatments-table td {
+        background-color: var(--bs-body-bg);
+        border: none;
+        text-align: center;
+        vertical-align: middle;
+        padding: 14px 16px;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* افکت hover روی ردیف‌ها */
+    .treatments-table tr:hover td {
+        transform: scale(1.01);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* عکس‌ها */
+    .treatments-table img {
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid var(--bs-border-color);
+    }
+
+/* متن توضیحات بلند */
+.multiline-truncate {
+    max-width: 300px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.9rem;
+    color: var(--bs-secondary-color);
+}
+
+/* عنوان کوتاه‌شده */
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* منوی عملیات */
+.dropdown-item {
+    font-size: 0.9rem;
+}
+
+.dropdown-menu {
+    min-width: 140px;
+}
+
+/* صفحه‌بندی */
+.pagination {
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.page-link {
+    border-radius: 8px !important;
+    transition: all 0.2s ease;
+}
+
+    .page-link:hover {
+        background-color: var(--bs-primary);
+        color: #fff;
+    }
+
+.status-None {
+    background-color: #6b7280;
+}
+
+.status-Completed {
+    background-color: #16a34a;
+}
+
+.status-Confirmed {
+    background-color: #2563eb;
+}
+
+.status-Pending {
+    background-color: #fbbf24;
+}
+
+.status-NoShow {
+    background-color: #dc2626;
+}
+
+.status-Cancelled {
+    background-color: #ef4444;
+}
+
+.status-Approved {
+    background-color: #0ea5e9;
+}
+
+
+
+
+/* ریسپانسیو */
+@media (max-width: 768px) {
+    .treatments-table thead {
+        display: none;
+    }
+
+    .treatments-table tr {
+        display: block;
+        background: var(--bs-body-bg);
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .treatments-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 14px;
+        text-align: right;
+        border: none;
+        box-shadow: none;
+    }
+
+        .treatments-table td::before {
+            content: attr(data-label);
+            font-weight: 600;
+            color: var(--bs-secondary-color);
+        }
+}
+/* حالت hover روی ردیف‌های جدول */
+.table tbody tr {
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+    .table tbody tr:hover {
+        background-color: rgba(var(--bs-primary-rgb), 0.08);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+
+@media (prefers-color-scheme: dark) {
+    .table tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 3px 8px rgba(255, 255, 255, 0.05);
+    }
+}

@@ -116,7 +116,7 @@
                             <div class="appointment-meta">
                                 <span class="appointment-date">@item.Date</span>
                                 <span class="appointment-date">@item.DayWeek</span>
-                                <span class="status status-pending">@item.Status</span>
+                                <span class="status @($"status-{item.Status}")">@item.StatusString</span>
                             </div>
                         </div>
 

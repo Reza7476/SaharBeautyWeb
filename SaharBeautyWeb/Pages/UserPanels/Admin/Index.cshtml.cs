@@ -123,8 +123,9 @@ public class IndexModel : AjaxBasePageModel
                 Date = DateTimeExtension.ConvertDateOnlyToPersian(_.Date),
                 DayWeek = StringExtension.ConvertDayWeekToPersianDay(_.DayWeek),
                 Mobile = _.Mobile,
-                Status = StringExtension.ConvertAppointmentStatusToString(_.Status),
-                TreatmentTitle = _.TreatmentTitle
+                StatusString = StringExtension.ConvertAppointmentStatusToString(_.Status),
+                TreatmentTitle = _.TreatmentTitle,
+                Status=_.Status
             }).ToList();
         }
         else

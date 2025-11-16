@@ -5,7 +5,6 @@ using SaharBeautyWeb.Models.Entities.Users.Models;
 using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.UserPanels.Clients.Appointments;
 using SaharBeautyWeb.Services.UserPanels.Users;
-using System.Runtime.CompilerServices;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Client;
 
@@ -56,7 +55,7 @@ public class IndexModel : AjaxBasePageModel
         {
             HandleApiResult(userInfo);
         }
-        
+
 
 
         var summary = await _appointmentService.GetDashboardClientSummary();
@@ -68,17 +67,20 @@ public class IndexModel : AjaxBasePageModel
                 Date = DateTimeExtension.ConvertDateOnlyToPersian(_.Date),
                 Day = StringExtension.ConvertDayWeekToPersianDay(_.Day),
                 Start = _.Start.ToString(),
-                Status = StringExtension.ConvertAppointmentStatusToString(_.Status),
+                StatusString = StringExtension.ConvertAppointmentStatusToString(_.Status),
+                Status=_.Status,
             }).ToList();
             SummaryModel.FormerAppointments = summary.Data.FormerAppointments.Select(_ => new DashboardClientAppointmentModel()
             {
                 Date = DateTimeExtension.ConvertDateOnlyToPersian(_.Date),
                 Day = StringExtension.ConvertDayWeekToPersianDay(_.Day),
                 Start = _.Start.ToString(),
-                Status = StringExtension.ConvertAppointmentStatusToString(_.Status),
+                StatusString = StringExtension.ConvertAppointmentStatusToString(_.Status),
+                Status=_.Status
             }).ToList();
 
-        }else
+        }
+        else
         {
             HandleApiResult(summary);
         }
