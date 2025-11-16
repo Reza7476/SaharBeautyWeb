@@ -9,7 +9,8 @@ public class GetAdminDashboardNewAppointmentsModel
     public string? ClientLastName { get; set; }
     public string? TreatmentTitle { get; set; }
     public string? Mobile { get; set; }
-    public string? Status { get; set; }
+    public string? StatusString { get; set; }
     public string? DayWeek { get; set; }
     public string? Date { get; set; }
+    public AppointmentStatus Status { get; set; }
 }

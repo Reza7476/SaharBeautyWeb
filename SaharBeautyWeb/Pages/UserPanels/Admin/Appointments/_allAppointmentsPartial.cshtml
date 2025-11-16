@@ -2,7 +2,8 @@
 @using SaharBeautyWeb.Models.Entities.Appointments.Models
 
 @model GetAllAppointmentsModel
-<link href="~/layout/admin/assets/css/pages/treatments/liststyle.css" rel="stylesheet" />
+
+<link href="~/layout/admin/assets/css/pages/admin/appointments/appointment-list.css" rel="stylesheet" />
 @if (Model.AllAppointmentModel.Any())
 {
     <div class="table-responsive">
@@ -36,7 +37,11 @@
                             <td data-label="زمان پایان">@appointment.EndTime.ToString("HH:mm")</td>
                             <td data-label="روز هفته">@day</td>
                             <td data-label="تاریخ">@(appointment.AppointmentDate.ConvertDateOnlyToPersian())</td>
-                            <td data-label="وضیعت">@status</td>
+                            <td data-label="وضیعت">
+                                <span class="status-badge @($"status-{appointment.Status}")">
+                                    @status
+                                </span>
+                            </td>
                             <td data-label="عملیات" data-id="@appointment.Id">
                                 <a asp-page="Details" 
                                    asp-route-id="@appointment.Id"

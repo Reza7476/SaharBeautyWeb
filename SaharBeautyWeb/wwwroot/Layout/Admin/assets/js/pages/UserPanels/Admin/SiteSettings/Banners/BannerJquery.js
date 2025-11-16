@@ -45,8 +45,6 @@
     });
 
     $(".edit-banner-btn").on("click", function () {
-
-        alert("hi Reza");
         var bannerId = $(this).data("id");
         var btnSend = $(this);
         $(this).prop("disabled", true);

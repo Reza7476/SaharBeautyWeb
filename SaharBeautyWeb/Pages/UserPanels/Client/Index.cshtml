@@ -9,9 +9,6 @@
     ViewData["ActiveMenu"] = "Dashboard";
 }
 
-
-
-
 <link href="~/layout/admin/assets/css/pages/dashboard/dashboard.css" rel="stylesheet" />
 
 <div class="container-fluid py-4">
@@ -26,7 +23,11 @@
 
                     @if (Model.UserInfo.Avatar != null)
                     {
-                        <img src="@Model.UserInfo.Avatar.Url" alt="@Model.UserInfo.Name" class="rounded-circle mb-3" width="100" height="100">
+                        <img src="@Model.UserInfo.Avatar.Url"
+                             alt="@Model.UserInfo.Name"
+                             class="rounded-circle mb-3"
+                             width="100"
+                             height="100">
                     }
                     <h5 class="fw-bold">@($"{Model.UserInfo.Name} {Model.UserInfo.LastName}")</h5>
                     <p class="text-muted mb-1">شماره موبایل: @(Model.UserInfo.Mobile)</p>
@@ -90,6 +91,8 @@
                         {
                             foreach (var item in model.FutureAppointments)
                             {
+                            
+
 
                                 <div class="appointment-item">
                                     <div class="appointment-info">
@@ -98,7 +101,7 @@
                                         <span class="appointment-time">ساعت @item.Start</span>
                                     </div>
                                     <div class="appointment-meta">
-                                        <span class="status status-pending">@item.Status</span>
+                                        <span class="status @($"status-{item.Status}")">@item.StatusString</span>
                                     </div>
                                 </div>
                             }
@@ -128,7 +131,7 @@
                                         <span class="appointment-time">ساعت @item.Start</span>
                                     </div>
                                     <div class="appointment-meta">
-                                        <span class="status status-done">@item.Status</span>
+                                        <span class="status  @($"status-{item.Status}")">@item.StatusString</span>
                                     </div>
                                 </div>
                             }
@@ -140,48 +143,3 @@
     </div>
 
 </div>
-@* 
-<style>
-    .appointments-list {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .appointment-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border: 1px solid #eee;
-        border-radius: 10px;
-        padding: 10px 15px;
-        background: #fafafa;
-    }
-
-    .appointment-info span {
-        display: block;
-        font-size: 14px;
-    }
-
-    .status {
-        font-size: 13px;
-        padding: 3px 8px;
-        border-radius: 5px;
-    }
-
-    .status-pending {
-        background-color: #fff3cd;
-        color: #856404;
-    }
-
-    .status-confirmed {
-        background-color: #d4edda;
-        color: #155724;
-    }
-
-    .status-done {
-        background-color: #e2e3e5;
-        color: #383d41;
-    }
-</style>
- *@

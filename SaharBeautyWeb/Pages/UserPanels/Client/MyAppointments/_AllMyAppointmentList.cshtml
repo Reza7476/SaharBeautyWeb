@@ -5,8 +5,7 @@
 @using System.Globalization
 
 @model GetAllMyAppointmentsModel
-<link href="~/layout/admin/assets/css/pages/treatments/liststyle.css" rel="stylesheet" />
-
+<link href="~/layout/admin/assets/css/pages/client/list-appointment/my-appointment-list.css" rel="stylesheet" />
 @if (Model.MyAppointmentModel.Any())
 {
     <div class="table-responsive">
@@ -39,7 +38,21 @@
                             <td data-label="زمان پایان">@appointment.EndTime.ToString("HH:mm")</td>
                             <td data-label="روز هفته">@day</td>
                             <td data-label="تاریخ">@(appointment.AppointmentDate.ConvertDateOnlyToPersian())</td>
-                            <td data-label="وضیعت">@status</td>
+                            <td data-label="وضعیت">
+                                <span class="status-badge @(appointment.Status switch
+                                   {
+                                       AppointmentStatus.None => "status-none",
+                                       AppointmentStatus.Completed => "status-completed",
+                                       AppointmentStatus.Confirmed => "status-confirmed",
+                                       AppointmentStatus.Pending => "status-pending",
+                                       AppointmentStatus.NoShow => "status-noshow",
+                                       AppointmentStatus.Cancelled => "status-cancelled",
+                                       AppointmentStatus.Approved => "status-approved",
+                                       _ => ""
+                                   })">
+                                        @status
+                                </span>
+                            </td>
                             <td data-label="تاریخ رزرو">@(appointment.CreatedAt.ConvertDateOnlyToPersian())</td>
                             <td data-label="کنسل شده توسط">@appointment.CancelledBy  </td>
                             <td data-label="تاریخ کنسل">@(appointment.CancelledDate.ConvertDateOnlyToPersian())</td>

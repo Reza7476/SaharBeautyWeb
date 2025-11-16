@@ -1,4 +1,6 @@
-﻿namespace SaharBeautyWeb.Models.Commons.Models;
+﻿using SaharBeautyWeb.Models.Entities.Appointments.Enums;
+
+namespace SaharBeautyWeb.Models.Commons.Models;
 
 public class DashboardClientSummaryModel
 {
@@ -11,5 +13,6 @@ public class DashboardClientAppointmentModel
     public string? Day { get; set; }
     public string? Date { get; set; }
     public string? Start { get; set; }
-    public string? Status { get; set; }
+    public string? StatusString { get; set; }
+    public AppointmentStatus Status { get; set; }
 }
