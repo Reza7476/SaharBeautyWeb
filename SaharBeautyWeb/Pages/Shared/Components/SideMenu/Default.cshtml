@@ -1,17 +1,27 @@
-﻿
-@using SaharBeautyWeb.Services
+﻿@using SaharBeautyWeb.Services
 @model UserRoleModel
-
+@{
+    var userInfo = Model.FullName;
+}
 <aside id="sidebar" class="sidebar fixed top-0 right-0 h-full w-80 bg-white shadow-xl z-50 overflow-y-auto">
 
     <!-- Sidebar Header -->
     <div class="flex items-center justify-between p-6 border-b">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center text-white">
-                <i class="fas fa-user"></i>
+            <div class="w-10 h-10 rounded-full overflow-hidden border border-gray-300">
+                @if (Model.ImageURL != null)
+                {
+                    <img src="@Model.ImageURL"
+                         alt="Profile"
+                         class="w-full h-full object-cover" />
+                }
+                else
+                {
+                    <i class="fas fa-user"></i>
+                }
             </div>
             <div>
-                <div class="font-bold">مریم احمدی</div>
+                <div class="font-bold">@Model.FullName</div>
                 @foreach (var role in Model.Roles)
                 {
                     <div class="text-xs text-gray-500">@role</div>
@@ -30,7 +40,7 @@
         @if (Model.Roles.Contains(SystemRole.Client))
         {
             <div class="mb-2">
-                <button class="menu-item w-full flex items-center gap-3 p-3 rounded-lg text-right 
+                <button class="menu-item w-full flex items-center gap-3 p-3 rounded-lg text-right
                               @(ViewData["ActiveMenu"]?.ToString() == "Dashboard" ? "active bg-pink-100 font-bold" : "")"
                         onclick="window.location='/UserPanels/Client/Index'">
                     <i class="fas fa-gauge w-5"></i>
@@ -47,15 +57,15 @@
                     </div>
                     <i class="fas fa-chevron-down transform transition-transform" id="icon-reservations"></i>
                 </button>
-                <div id="submenu-reservations" class="submenu 
+                <div id="submenu-reservations" class="submenu
                      @(ViewData["ActiveMenu"]?.ToString() == "Reservations" ? "open" : "")">
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                      @(ViewData["ActiveMenu"]?.ToString() == "NewAppointment" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Client/Appointment/Index'">
                         <i class="fas fa-calendar-plus text-xs ml-2"></i>
                         رزرو نوبت جدید
                     </button>
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "MyAppointments" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Client/MyAppointments/Index'">
                         <i class="fas fa-calendar-day text-xs ml-2"></i>
@@ -73,9 +83,9 @@
                     </div>
                     <i class="fas fa-chevron-down transform transition-transform" id="icon-profile"></i>
                 </button>
-                <div id="submenu-profile" class="submenu 
+                <div id="submenu-profile" class="submenu
                 @(ViewData["ActiveMenu"]?.ToString() == "Profile" ? "open" : "")">
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "Profile" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Client/Accounts/Index'">
                         <i class="fas fa-user-pen text-xs ml-2"></i>
@@ -89,7 +99,7 @@
         @if (Model.Roles.Contains(SystemRole.Admin))
         {
             <div class="mb-2">
-                <button class="menu-item w-full flex items-center gap-3 p-3 rounded-lg text-right 
+                <button class="menu-item w-full flex items-center gap-3 p-3 rounded-lg text-right
                 @(ViewData["ActiveMenu"]?.ToString() == "Dashboard" ? "active bg-pink-100 font-bold" : "")"
                         onclick="window.location='/UserPanels/Admin/Index'">
                     <i class="fa-solid fa-gauge w-5"></i>
@@ -107,19 +117,19 @@
                     </div>
                     <i class="fas fa-chevron-down transform transition-transform" id="icon-SiteSetting"></i>
                 </button>
-                <div id="submenu-SiteSetting" class="submenu 
+                <div id="submenu-SiteSetting" class="submenu
                 @(ViewData["ActiveMenu"]?.ToString() == "SiteSetting" ? "open" : "")">
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "Banners" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Admin/SiteSettings/Banners/Index'">
                         <i class="fa-solid fa-image text-xs ml-2"></i> بنر
                     </button>
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "WhyUs" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Admin/SiteSettings/WhyUsSections/Index'">
                         <i class="fa-solid fa-circle-question text-xs ml-2"></i> چرا ما
                     </button>
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "AboutUs" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Admin/SiteSettings/AboutUs/Index'">
                         <i class="fa-solid fa-info-circle text-xs ml-2"></i> درباره ما
@@ -137,14 +147,14 @@
                     </div>
                     <i class="fas fa-chevron-down transform transition-transform" id="icon-services"></i>
                 </button>
-                <div id="submenu-services" class="submenu 
+                <div id="submenu-services" class="submenu
                 @(ViewData["ActiveMenu"]?.ToString() == "Services" ? "open" : "")">
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "Treatments" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Admin/SiteSettings/Treatments/Index'">
                         <i class="fa-solid fa-scissors text-xs ml-2"></i> خدمات
                     </button>
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "WeeklySchedules" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Admin/WeeklySchedules/Index'">
                         <i class="fa-solid fa-calendar-days text-xs ml-2"></i> زمان بندی هفتگی
@@ -162,14 +172,14 @@
                     </div>
                     <i class="fas fa-chevron-down transform transition-transform" id="icon-users"></i>
                 </button>
-                <div id="submenu-users" class="submenu 
+                <div id="submenu-users" class="submenu
                     @(ViewData["ActiveMenu"]?.ToString() == "Users" ? "open" : "")">
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "UsersList" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Admin/Users/Index'">
                         <i class="fa-solid fa-users text-xs ml-2"></i> لیست کاربران
                     </button>
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "AddClient" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Admin/AddNewClient/Index'">
                         <i class="fa-solid fa-user-plus text-xs ml-2"></i> ثبت مشتری جدید
@@ -187,19 +197,19 @@
                     </div>
                     <i class="fas fa-chevron-down transform transition-transform" id="icon-reservations"></i>
                 </button>
-                <div id="submenu-reservations" class="submenu 
+                <div id="submenu-reservations" class="submenu
                     @(ViewData["ActiveMenu"]?.ToString() == "Appointments" ? "open" : "")">
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "AllAppointments" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Admin/Appointments/Index'">
                         <i class="fa-solid fa-calendar-check text-xs ml-2"></i> لیست نوبتها
                     </button>
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "TodayAppointments" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Admin/Appointments/TodayAppointments/Index'">
                         <i class="fa-solid fa-sun text-xs ml-2"></i> لیست نوبتهای امروز
                     </button>
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "AddAppointment" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Admin/Appointments/AddAppointment/Index'">
                         <i class="fa-solid fa-plus-circle text-xs ml-2"></i> ثبت نوبت جدید
@@ -237,9 +247,9 @@
                     </div>
                     <i class="fas fa-chevron-down transform transition-transform" id="icon-profile"></i>
                 </button>
-                <div id="submenu-profile" class="submenu 
+                <div id="submenu-profile" class="submenu
                 @(ViewData["ActiveMenu"]?.ToString() == "Profile" ? "open" : "")">
-                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600 
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "Profile" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Admin/Accounts/Index'">
                         <i class="fa-solid fa-id-badge text-xs ml-2"></i> پروفایل
@@ -261,8 +271,17 @@
 </aside>
 
 <style>
-    .submenu { display: none; }
-    .submenu.open { display: block; }
-    .menu-item.active, .submenu-item.active { background-color: #FBCFE8; font-weight: bold; }
+    .submenu {
+        display: none;
+    }
+
+        .submenu.open {
+            display: block;
+        }
+
+    .menu-item.active, .submenu-item.active {
+        background-color: #FBCFE8;
+        font-weight: bold;
+    }
 </style>
 
