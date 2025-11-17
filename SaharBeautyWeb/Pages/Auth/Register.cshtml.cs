@@ -10,12 +10,16 @@ public class RegisterModel : AjaxBasePageModel
 {
 
     private readonly IAutheService _authService;
+    private readonly IAuth2 _service;
+
 
     public RegisterModel(
         ErrorMessages errorMessage,
-        IAutheService authService) : base(errorMessage)
+        IAutheService authService,
+        IAuth2 service) : base(errorMessage)
     {
         _authService = authService;
+        _service = service;
     }
 
     [BindProperty]
@@ -47,7 +51,7 @@ public class RegisterModel : AjaxBasePageModel
             });
         }
 
-        var result = await _authService.SendOtp(StepOne.MobileNumber);
+        var result = await _service.SendOtp(StepOne.MobileNumber);
         var response = HandleApiAjxResult(result);
         return response;
     }
@@ -70,7 +74,7 @@ public class RegisterModel : AjaxBasePageModel
             });
         }
 
-        var result = await _authService.VerifyOtp(new VerifyOtpDto()
+        var result = await _service.VerifyOtp(new VerifyOtpDto()
         {
             Email = StepTwo.Email,
             LastName = StepTwo.LastName,

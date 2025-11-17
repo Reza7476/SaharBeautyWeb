@@ -7,7 +7,7 @@ namespace SaharBeautyWeb.Services.UserPanels.LogOut;
 
 public class LogoutService : UserPanelBaseService, ILogoutService
 {
-    private const string _apiUrl = "Users";
+    private const string _apiUrl = "authentication";
 
     public LogoutService(HttpClient client) : base(client)
     {
