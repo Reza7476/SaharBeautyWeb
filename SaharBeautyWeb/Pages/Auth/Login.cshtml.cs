@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Models.Entities.Auth;
 using SaharBeautyWeb.Models.Entities.Auth.Dtos;
 using SaharBeautyWeb.Services.Auth;
@@ -25,6 +24,7 @@ public class LoginModel : BaseAuthModelPage
         _authService = authService;
         _logOutService = logOutService;
     }
+
     [BindProperty]
     public LoginDataModel DataModel { get; set; } = default!;
 
@@ -35,26 +35,13 @@ public class LoginModel : BaseAuthModelPage
     public string? ReturnUrl { get; set; }
 
 
-    public async Task OnGet()
+    public  void OnGet()
     {
-        var aboutUs = await _aboutUsService.GeAboutUs();
-
-        if (aboutUs.IsSuccess && aboutUs.Data != null)
-        {
-            var logo = aboutUs.Data.LogoImage != null ?
-                new LogoForLoginModel()
-                {
-                    ImageName = aboutUs.Data.LogoImage.ImageName,
-                    URL = aboutUs.Data.LogoImage.Url,
-                } : null;
-        }
 
         if (!string.IsNullOrWhiteSpace(Request.Query["errorMessage"]))
         {
             ErrorMessage = Request.Query["errorMessage"];
         }
-
-
     }
 
     public async Task<IActionResult> OnPostLogin()
