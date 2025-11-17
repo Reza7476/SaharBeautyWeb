@@ -29,4 +29,39 @@ public class Auth2Service : UserPanelBaseService, IAuth2
         return result;
 
     }
+
+    public async Task<ApiResultDto<GetOtpRequestForRegisterDto>> SendOtp(string mobileNumber)
+    {
+        var url = $"{_apiUrl}/initializing-register-user";
+        var json = JsonSerializer.Serialize(new
+
+        {
+            MobileNumber = mobileNumber,
+        });
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var result = await PostAsync<GetOtpRequestForRegisterDto>(url, content);
+        return result;
+    }
+
+    public async Task<ApiResultDto<GetTokenDto?>> VerifyOtp(VerifyOtpDto dto)
+    {
+        var url = $"{_apiUrl}/finalizing-register-user";
+
+        var json = JsonSerializer.Serialize(new
+        {
+            Name = dto.Name,
+            LastName = dto.LastName,
+            UserName = dto.UserName,
+            Password = dto.Password,
+            OtpRequestId = dto.OtpRequestId,
+            OtpCode = dto.OtpCode,
+            Email = dto.Email
+        });
+
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var result = await PostAsync<GetTokenDto?>(url, content);
+        return result;
+    }
 }

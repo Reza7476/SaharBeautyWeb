@@ -2,7 +2,6 @@
 using SaharBeautyWeb.Models.Entities.Auth;
 using SaharBeautyWeb.Models.Entities.Auth.Dtos;
 using SaharBeautyWeb.Services.Auth;
-using SaharBeautyWeb.Services.Landing.AboutUs;
 using SaharBeautyWeb.Services.UserPanels.LogOut;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,16 +10,13 @@ namespace SaharBeautyWeb.Pages.Auth;
 
 public class LoginModel : BaseAuthModelPage
 {
-    private readonly IAboutUsService _aboutUsService;
     private readonly IAuth2 _authService;
     private readonly ILogoutService _logOutService;
 
     public LoginModel(
-        IAboutUsService aboutUsService,
         IAuth2 authService,
         ILogoutService logOutService)
     {
-        _aboutUsService = aboutUsService;
         _authService = authService;
         _logOutService = logOutService;
     }
@@ -35,7 +31,7 @@ public class LoginModel : BaseAuthModelPage
     public string? ReturnUrl { get; set; }
 
 
-    public  void OnGet()
+    public void OnGet()
     {
 
         if (!string.IsNullOrWhiteSpace(Request.Query["errorMessage"]))
