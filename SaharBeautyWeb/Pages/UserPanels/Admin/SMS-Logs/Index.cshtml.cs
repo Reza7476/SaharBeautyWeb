@@ -54,7 +54,7 @@ public class IndexModel : AjaxBasePageModel
                 AllSMS = smsList.Data.Elements.Select(_ => new AllSMSModel()
                 {
                     Content = _.Content,
-                    ReceiverNumber = _.ReceiverNumber,
+                    ReceiverNumber = "0" + _.ReceiverNumber.RemoveCountryCodeFromPhoneNumber(),
                     RecId = _.RecId,
                     ResponseContent = _.ResponseContent,
                     Title = _.Title,

@@ -44,7 +44,9 @@ public static class DateTimeExtension
 
             DateTime dateTime = dateOnly.ToDateTime(TimeOnly.MinValue);
             PersianCalendar pCalendar = new PersianCalendar();
-            string persianDate = $"{pCalendar.GetYear(dateTime)}/{pCalendar.GetMonth(dateTime):00}/{pCalendar.GetDayOfMonth(dateTime):00}";
+            string persianDate = $"{pCalendar.GetYear(dateTime)}" +
+                $"/{pCalendar.GetMonth(dateTime):00}" +
+                $"/{pCalendar.GetDayOfMonth(dateTime):00}";
             return persianDate;
         }
         else
@@ -143,13 +145,20 @@ public static class DateTimeExtension
 
     public static string ConvertGregorianDateWithTimeToShamsi(this DateTime date)
     {
+        var utcDate = DateTime.SpecifyKind(date, DateTimeKind.Utc);
+
+        // 2) تبدیل به ایران
+        var iranTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Iran Standard Time");
+        var iranDate = TimeZoneInfo.ConvertTimeFromUtc(utcDate, iranTimeZone);
+
+        // 3) تبدیل به شمسی
         var pc = new PersianCalendar();
         return string.Format("{0:0000}/{1:00}/{2:00} {3:00}:{4:00}",
-                     pc.GetYear(date),
-                     pc.GetMonth(date),
-                     pc.GetDayOfMonth(date),
-                     pc.GetHour(date),
-                     pc.GetMinute(date));
-            ;
+            pc.GetYear(iranDate),
+            pc.GetMonth(iranDate),
+            pc.GetDayOfMonth(iranDate),
+            iranDate.Hour,
+            iranDate.Minute);
+
     }
 }
