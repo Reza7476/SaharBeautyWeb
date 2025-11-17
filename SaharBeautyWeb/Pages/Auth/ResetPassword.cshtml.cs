@@ -9,13 +9,13 @@ namespace SaharBeautyWeb.Pages.Auth;
 
 public class ResetPasswordModel : AjaxBasePageModel
 {
-    private readonly IAutheService _authService;
+    private readonly IAuth2 _service;
 
     public ResetPasswordModel(
         ErrorMessages errorMessage,
-        IAutheService authService) : base(errorMessage)
+        IAuth2 service) : base(errorMessage)
     {
-        _authService = authService;
+        _service = service;
     }
 
     [BindProperty]
@@ -43,7 +43,7 @@ public class ResetPasswordModel : AjaxBasePageModel
             });
         }
 
-        var result = await _authService.SendOtpResetPassword(StepOne.MobileNumber);
+        var result = await _service.SendOtpResetPassword(StepOne.MobileNumber);
         var response = HandleApiAjxResult(result);
         return response;
     }
@@ -67,7 +67,7 @@ public class ResetPasswordModel : AjaxBasePageModel
             });
         }
 
-        var result = await _authService.VerifyOtpResetPassword(new VerifyOtpResetPasswordDto()
+        var result = await _service.VerifyOtpResetPassword(new VerifyOtpResetPasswordDto()
         {
             OtpCode = StepTwo.OtpCode,
             OtpRequestId = StepTwo.OtpRequestId,

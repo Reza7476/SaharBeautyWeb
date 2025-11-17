@@ -292,7 +292,7 @@ public class UserPanelBaseService
 
 
     protected Task<ApiResultDto<T>>
-        PostAsync<T>(string url, HttpContent content) =>
+        PostAsync<T>(string url, HttpContent? content=null) =>
         SendPostRequestAsync<T>(url, content);
 
     protected Task<ApiResultDto<T>>

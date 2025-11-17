@@ -30,6 +30,14 @@ public class Auth2Service : UserPanelBaseService, IAuth2
 
     }
 
+    public async Task<ApiResultDto<GetTokenDto?>> RefreshToken(string refreshToken)
+    {
+        var url = $"{_apiUrl}/{refreshToken}/refresh-token";
+        using var content = new StringContent("", Encoding.UTF8, "application/json");
+        var result = await PostAsync<GetTokenDto?>(url,content);
+        return result;
+    }
+
     public async Task<ApiResultDto<GetOtpRequestForRegisterDto>> SendOtp(string mobileNumber)
     {
         var url = $"{_apiUrl}/initializing-register-user";
@@ -38,6 +46,20 @@ public class Auth2Service : UserPanelBaseService, IAuth2
         {
             MobileNumber = mobileNumber,
         });
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var result = await PostAsync<GetOtpRequestForRegisterDto>(url, content);
+        return result;
+    }
+
+    public async Task<ApiResultDto<GetOtpRequestForRegisterDto>> SendOtpResetPassword(string mobileNumber)
+    {
+        var url = $"{_apiUrl}/forget-pass-step-one";
+        var json = JsonSerializer.Serialize(new
+        {
+            MobileNumber = mobileNumber,
+        });
+
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         var result = await PostAsync<GetOtpRequestForRegisterDto>(url, content);
@@ -62,6 +84,22 @@ public class Auth2Service : UserPanelBaseService, IAuth2
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         var result = await PostAsync<GetTokenDto?>(url, content);
+        return result;
+    }
+
+    public async Task<ApiResultDto<object>> VerifyOtpResetPassword(VerifyOtpResetPasswordDto dto)
+    {
+        var url = $"{_apiUrl}/forget-password-step-two";
+        var json = JsonSerializer.Serialize(new
+        {
+            dto.NewPassword,
+            dto.OtpRequestId,
+            dto.OtpCode
+        });
+
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var result = await PostAsync<object>(url, content);
         return result;
     }
 }
