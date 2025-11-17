@@ -26,6 +26,7 @@
   "AppointmentIsBusyAtThisTime": "نوبت در این زمان مشغول است",
   "AppointmentNotFound": "نوبت یافت نشد",
   "UserNotRegisterAsClient": "کاربر به عنوان مشتری ثبت نشده ",
-  "UnknownError": "خطایی رخ داده است، با پشتیبانی تماس بگیرید"
+  "UnknownError": "خطایی رخ داده است، با پشتیبانی تماس بگیرید",
+  "UserNotFound": "کاربر یافت نشد"
 
 }

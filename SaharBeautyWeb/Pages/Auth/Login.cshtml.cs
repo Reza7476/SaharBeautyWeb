@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Models.Entities.Auth;
 using SaharBeautyWeb.Models.Entities.Auth.Dtos;
 using SaharBeautyWeb.Services.Auth;
@@ -10,20 +9,22 @@ using System.Security.Claims;
 
 namespace SaharBeautyWeb.Pages.Auth;
 
-public class LoginModel : PageModel
+public class LoginModel : BaseAuthModelPage
 {
     private readonly IAboutUsService _aboutUsService;
-    private readonly IAutheService _authService;
+    private readonly IAuth2 _authService;
     private readonly ILogoutService _logOutService;
-    public LoginModel(IAboutUsService aboutUsService,
-        IAutheService authService,
+
+    public LoginModel(
+        IAboutUsService aboutUsService,
+        IAuth2 authService,
         ILogoutService logOutService)
     {
         _aboutUsService = aboutUsService;
         _authService = authService;
         _logOutService = logOutService;
     }
-    public LogoForLoginModel? Logo { get; set; }
+
     [BindProperty]
     public LoginDataModel DataModel { get; set; } = default!;
 
@@ -34,26 +35,13 @@ public class LoginModel : PageModel
     public string? ReturnUrl { get; set; }
 
 
-    public async Task OnGet()
+    public  void OnGet()
     {
-        var aboutUs = await _aboutUsService.GeAboutUs();
-
-        if (aboutUs.IsSuccess && aboutUs.Data != null)
-        {
-            var logo = aboutUs.Data.LogoImage != null ?
-                new LogoForLoginModel()
-                {
-                    ImageName = aboutUs.Data.LogoImage.ImageName,
-                    URL = aboutUs.Data.LogoImage.Url,
-                } : null;
-        }
 
         if (!string.IsNullOrWhiteSpace(Request.Query["errorMessage"]))
         {
             ErrorMessage = Request.Query["errorMessage"];
         }
-
-
     }
 
     public async Task<IActionResult> OnPostLogin()
@@ -112,7 +100,8 @@ public class LoginModel : PageModel
                 }
             }
         }
-        ErrorMessage = result.Error ?? "ورود ناموفق دوباره تلاش کنید ";
+
+        ErrorMessage = TranslateError(result.Error);
         return Page();
     }
 
