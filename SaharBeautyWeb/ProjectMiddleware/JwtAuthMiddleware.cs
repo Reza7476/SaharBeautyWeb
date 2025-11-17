@@ -6,10 +6,10 @@ using System.Security.Claims;
 public class JwtAuthMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IAuth2 _authService;
+    private readonly IAuthService _authService;
     public JwtAuthMiddleware(
         RequestDelegate next,
-        IAuth2 authService)
+        IAuthService authService)
     {
         _next = next;
         _authService = authService;

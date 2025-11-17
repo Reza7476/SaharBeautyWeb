@@ -9,16 +9,13 @@ namespace SaharBeautyWeb.Pages.Auth;
 public class RegisterModel : AjaxBasePageModel
 {
 
-    private readonly IAutheService _authService;
-    private readonly IAuth2 _service;
+    private readonly IAuthService _service;
 
 
     public RegisterModel(
         ErrorMessages errorMessage,
-        IAutheService authService,
-        IAuth2 service) : base(errorMessage)
+        IAuthService service) : base(errorMessage)
     {
-        _authService = authService;
         _service = service;
     }
 
