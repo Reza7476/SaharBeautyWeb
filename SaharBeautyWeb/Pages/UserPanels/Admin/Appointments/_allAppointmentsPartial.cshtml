@@ -37,7 +37,7 @@
                             <td data-label="زمان پایان">@appointment.EndTime.ToString("HH:mm")</td>
                             <td data-label="روز هفته">@day</td>
                             <td data-label="تاریخ">@(appointment.AppointmentDate.ConvertDateOnlyToPersian())</td>
-                            <td data-label="وضیعت">
+                            <td data-label="وضیعت" >
                                 <span class="status-badge @($"status-{appointment.Status}")">
                                     @status
                                 </span>
