@@ -2,90 +2,66 @@
 @model GetAboutUsDto
 
 <link href="~/layout/assets/css/pages/commponents/contactus/contact-us.css" rel="stylesheet" />
+@if (Model != null)
+{
 
-<footer class="footer-area pt-100 pb-70">
-    <div class="footer-shape">
-        <img src="~/Layout/assets/images/footer-shape1.png" alt="Shape">
-    </div>
-    <div class="container">
-        <div class="row">
-            @if (Model != null)
-            {
+    <footer class="bg-gray-50 pt-12 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
                 <!-- اطلاعات تماس -->
-                <div class="col-sm-6 col-lg-4">
-                    <div class="footer-item">
-                        <div class="footer-contact">
-                            <h3>اطلاعات تماس:</h3>
-                            <ul class="info">
-                                <li><a>@Model.Address</a></li>
-                                <li><span>تلفن تماس:</span> <a href="tel:@Model.Telephone">@Model.Telephone</a></li>
-                                <li><span>تلفن تماس:</span> <a href="tel:@Model.MobileNumber">@Model.MobileNumber</a></li>
-                                <li><span>ایمیل:</span> <a href="mailto:@Model.Email">@Model.Email</a></li>
-                            </ul>
-                            <ul class="social">
-                                <li><a href="#" target="_blank"><i class='bx bxl-youtube'></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-map-wrapper mt-4">
-                            <iframe id="footer-map"
-                                    src="https://www.google.com/maps?q=@Model.Latitude,@Model.Longitude&z=15&output=embed"
-                                    allowfullscreen
-                                    loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
-                        </div>
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">اطلاعات تماس</h3>
+                    <ul class="text-gray-600 space-y-1">
+                        <li><strong>آدرس:</strong> @(Model.Address )</li>
+                        <li><strong>تلفن تماس:</strong> @(Model.Telephone )</li>
+                        <li><strong>موبایل:</strong> @(Model.MobileNumber )</li>
+                        <li><strong>ایمیل:</strong> @(Model.Email )</li>
+                    </ul>
+                    <div class="mt-4">
+                        <iframe class="w-full h-48 rounded-md border"
+                                src="https://www.google.com/maps?q=@Model!.Latitude,@Model.Longitude&z=15&output=embed"
+                                allowfullscreen
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
                     </div>
-                    <!-- مختصات پنهان -->
-                    <input type="hidden" id="footer-latitude" value="@Model.Latitude" />
-                    <input type="hidden" id="footer-longitude" value="@Model.Longitude" />
                 </div>
 
                 <!-- لوگو -->
-                @if (Model.LogoImage != null)
-                {
-                    <div class="col-sm-6 col-lg-4">
-                        <div class="footer-item">
-                            <div class="footer-img">
-                                <a href="index.html">
-                                    <img src="@Model.LogoImage.Url" alt="@Model.LogoImage.ImageName">
-                                </a>
-                            </div>
+                <div class="flex flex-col items-center justify-center">
+                    @if (Model.LogoImage != null)
+                    {
+                        <img class="w-40 h-auto mb-4 rounded-lg shadow-md" 
+                             src="@Model.LogoImage.Url" alt="@Model.LogoImage.ImageName" />
+                    }
+                    <p class="text-gray-500 text-center">سالن زیبایی شایسته</p>
+                </div>
+
+                <!-- ساعات کاری -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">ساعات کاری</h3>
+                    <div class="grid grid-cols-2 gap-2 text-gray-600">
+                        <div class="space-y-1">
+                            <p>شنبه:</p>
+                            <p>یک‌شنبه:</p>
+                            <p>دوشنبه:</p>
+                            <p>سه‌شنبه:</p>
+                            <p>چهارشنبه:</p>
+                            <p>پنج‌شنبه:</p>
                         </div>
-                    </div>
-                }
-            }
-
-            <!-- ساعات کاری و نقشه -->
-            <div class="col-sm-6 offset-sm-3 offset-lg-0 col-lg-4">
-                <div class="footer-item">
-                    <h3>ساعات کاری:</h3>
-                    <div class="footer-hours">
-                        <div class="left">
-                            <ul>
-                                <li>شنبه:</li>
-                                <li>یک شنبه:</li>
-                                <li>دوشنبه :</li>
-                                <li>سه شنبه:</li>
-                                <li>چهارشنبه:</li>
-                                <li>پنجشنبه:</li>
-                            </ul>
-                        </div>
-                        <div class="right">
-                            <ul>
-                                <li>16:00 <span>21:00</span></li>
-                                <li>16:00 <span>21:00</span></li>
-                                <li>16:00 <span>21:00</span></li>
-                                <li>16:00 <span>21:00</span></li>
-                                <li>16:00 <span>21:00</span></li>
-                                <li>16:00 <span>21:00</span></li>
-                            </ul>
-
-
+                        <div class="space-y-1 text-right">
+                            <p>16:00 - 21:00</p>
+                            <p>16:00 - 21:00</p>
+                            <p>16:00 - 21:00</p>
+                            <p>16:00 - 21:00</p>
+                            <p>16:00 - 21:00</p>
+                            <p>16:00 - 21:00</p>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
-
-    </div>
-</footer>
+    </footer>
+}
