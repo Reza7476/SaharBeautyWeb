@@ -4,7 +4,7 @@ using SaharBeautyWeb.Models.Entities.Auth.Dtos;
 
 namespace SaharBeautyWeb.Services.Auth;
 
-public interface IAuth2 : IService
+public interface IAuthService : IService
 {
     Task<ApiResultDto<GetTokenDto?>> LoginUser(LoginDto dto);
     Task<ApiResultDto<GetTokenDto?>> RefreshToken(string refreshToken);

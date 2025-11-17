@@ -9,11 +9,11 @@ namespace SaharBeautyWeb.Pages.Auth;
 
 public class ResetPasswordModel : AjaxBasePageModel
 {
-    private readonly IAuth2 _service;
+    private readonly IAuthService _service;
 
     public ResetPasswordModel(
         ErrorMessages errorMessage,
-        IAuth2 service) : base(errorMessage)
+        IAuthService service) : base(errorMessage)
     {
         _service = service;
     }

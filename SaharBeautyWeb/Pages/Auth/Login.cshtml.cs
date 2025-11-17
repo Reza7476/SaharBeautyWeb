@@ -10,11 +10,11 @@ namespace SaharBeautyWeb.Pages.Auth;
 
 public class LoginModel : BaseAuthModelPage
 {
-    private readonly IAuth2 _authService;
+    private readonly IAuthService _authService;
     private readonly ILogoutService _logOutService;
 
     public LoginModel(
-        IAuth2 authService,
+        IAuthService authService,
         ILogoutService logOutService)
     {
         _authService = authService;

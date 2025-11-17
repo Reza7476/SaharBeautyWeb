@@ -1,60 +1,68 @@
-﻿using SaharBeautyWeb.Models.Commons.Dtos;
+﻿
+using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Auth.Dtos;
-using SaharBeautyWeb.Services.Contracts;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
 namespace SaharBeautyWeb.Services.Auth;
 
-public class AuthService : IAutheService
+public class AuthService : UserPanelBaseService, IAuthService
 {
-
-    private readonly HttpClient _httpClient;
-    private readonly ICRUDApiService _apiService;
-    private const string _apiUrl = "Users";
-
-    public AuthService(
-        HttpClient httpClient,
-        ICRUDApiService apiService,
-        string? baseAddress)
+    private const string _apiUrl = "authentication";
+    public AuthService(HttpClient client) : base(client)
     {
-        _httpClient = httpClient;
-        _apiService = apiService;
     }
 
     public async Task<ApiResultDto<GetTokenDto?>> LoginUser(LoginDto dto)
     {
+
         var url = $"{_apiUrl}/login";
 
-        using var content = new MultipartFormDataContent();
-        content.Add(new StringContent(dto.UserName), "UserName");
-        content.Add(new StringContent(dto.Password), "Password");
+        var json = JsonSerializer.Serialize(new
+        {
+            userName = dto.UserName,
+            password = dto.Password,
+        });
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var result = await _apiService.AddFromFormAsync<GetTokenDto?>(url, content);
+        var result = await PostAsync<GetTokenDto?>(url, content);
         return result;
+
     }
 
-    public async Task<ApiResultDto<GetTokenDto?>> RefreshToken(string refreshToken, string token)
+    public async Task<ApiResultDto<GetTokenDto?>> RefreshToken(string refreshToken)
     {
         var url = $"{_apiUrl}/{refreshToken}/refresh-token";
-
-        using var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
-        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-        var result = await _apiService.SendFromRoutAsyncAsPost<GetTokenDto?>(requestMessage);
+        using var content = new StringContent("", Encoding.UTF8, "application/json");
+        var result = await PostAsync<GetTokenDto?>(url,content);
         return result;
     }
 
     public async Task<ApiResultDto<GetOtpRequestForRegisterDto>> SendOtp(string mobileNumber)
     {
         var url = $"{_apiUrl}/initializing-register-user";
-        var json = new
+        var json = JsonSerializer.Serialize(new
+
         {
             MobileNumber = mobileNumber,
-        };
+        });
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var result = await _apiService.AddFromBodyAsync<GetOtpRequestForRegisterDto>(url, json);
+        var result = await PostAsync<GetOtpRequestForRegisterDto>(url, content);
+        return result;
+    }
+
+    public async Task<ApiResultDto<GetOtpRequestForRegisterDto>> SendOtpResetPassword(string mobileNumber)
+    {
+        var url = $"{_apiUrl}/forget-pass-step-one";
+        var json = JsonSerializer.Serialize(new
+        {
+            MobileNumber = mobileNumber,
+        });
+
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var result = await PostAsync<GetOtpRequestForRegisterDto>(url, content);
         return result;
     }
 
@@ -62,7 +70,7 @@ public class AuthService : IAutheService
     {
         var url = $"{_apiUrl}/finalizing-register-user";
 
-        var json = new
+        var json = JsonSerializer.Serialize(new
         {
             Name = dto.Name,
             LastName = dto.LastName,
@@ -71,37 +79,27 @@ public class AuthService : IAutheService
             OtpRequestId = dto.OtpRequestId,
             OtpCode = dto.OtpCode,
             Email = dto.Email
-        };
-        var result = await _apiService.AddFromBodyAsync<GetTokenDto?>(url, json);
-        return result;
-    }
+        });
 
-    public async Task<ApiResultDto<GetOtpRequestForRegisterDto>>
-        SendOtpResetPassword(string mobileNumber)
-    {
-        var url = $"{_apiUrl}/forget-pass-step-one";
-        var json = new
-        {
-            MobileNumber = mobileNumber,
-        };
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var result = await _apiService
-            .AddFromBodyAsync<GetOtpRequestForRegisterDto>(url, json);
+        var result = await PostAsync<GetTokenDto?>(url, content);
         return result;
     }
 
     public async Task<ApiResultDto<object>> VerifyOtpResetPassword(VerifyOtpResetPasswordDto dto)
     {
-
         var url = $"{_apiUrl}/forget-password-step-two";
-        var json = new
+        var json = JsonSerializer.Serialize(new
         {
             dto.NewPassword,
             dto.OtpRequestId,
             dto.OtpCode
-        };
+        });
 
-        var result = await _apiService.AddFromBodyAsync<object>(url, json);
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var result = await PostAsync<object>(url, content);
         return result;
     }
 }
