@@ -6,9 +6,10 @@ using System.Security.Claims;
 public class JwtAuthMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IAutheService _authService;
-
-    public JwtAuthMiddleware(RequestDelegate next, IAutheService authService)
+    private readonly IAuth2 _authService;
+    public JwtAuthMiddleware(
+        RequestDelegate next,
+        IAuth2 authService)
     {
         _next = next;
         _authService = authService;
@@ -85,7 +86,7 @@ public class JwtAuthMiddleware
             {
                 try
                 {
-                    var refreshResult = await _authService.RefreshToken(refreshToken, token);
+                    var refreshResult = await _authService.RefreshToken(refreshToken);
 
                     if (refreshResult.IsSuccess && refreshResult.Data != null)
                     {
