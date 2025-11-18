@@ -1,8 +1,10 @@
 ﻿using SaharBeautyWeb.Configurations.Interfaces;
 using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos;
+using SaharBeautyWeb.Models.Entities.Appointments.Dtos.Clients;
 using SaharBeautyWeb.Models.Entities.Appointments.Enums;
 using SaharBeautyWeb.Models.Entities.Appointments.Models;
+using SaharBeautyWeb.Models.Entities.Appointments.Models.Clients;
 
 namespace SaharBeautyWeb.Services.UserPanels.Clients.Appointments;
 
@@ -20,6 +22,13 @@ public interface IAppointmentService : IService
         int limit,
         AdminAppointmentFilterDto? filter = null,
         string? search = null);
+
+    Task<ApiResultDto<GetAllDto<MyAppointmentsModel>>>
+       GetAllClientAppointments(
+       int offset,
+       int limit,
+       ClientAppointmentFilterDto? filter=null);
+
 
     Task<ApiResultDto<GetAllDto<GetAdminAllAppointmentsModel>>> GetAllPendingAdminAppointments(
         int offset,

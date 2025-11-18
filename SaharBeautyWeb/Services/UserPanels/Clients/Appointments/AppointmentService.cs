@@ -1,7 +1,9 @@
 ﻿using SaharBeautyWeb.Models.Commons.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos;
+using SaharBeautyWeb.Models.Entities.Appointments.Dtos.Clients;
 using SaharBeautyWeb.Models.Entities.Appointments.Enums;
 using SaharBeautyWeb.Models.Entities.Appointments.Models;
+using SaharBeautyWeb.Models.Entities.Appointments.Models.Clients;
 using System.Text;
 using System.Text.Json;
 
@@ -134,9 +136,59 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
         };
     }
 
+    public async Task<ApiResultDto<GetAllDto<MyAppointmentsModel>>>
+         GetAllClientAppointments(int offset,
+         int limit,
+         ClientAppointmentFilterDto? filter = null)
+    {
+        var url = $"{_apiUrl}/all-my-appointments";
+        var query = new List<String>()
+        {
+            $"Offset={offset}",
+            $"Limit={limit}"
+        };
+        if (filter != null)
+        {
+            if (filter.Date != default)
+            {
+                query.Add($"filter.Date={filter.Date:yyyy-MM-dd}");
+            }
+            query.Add($"Status={filter.Status}");
+            query.Add($"DayWeek={filter.Day}");
+        }
+
+        if (query.Any())
+        {
+
+            url = url + "?" + string.Join("&", query);
+        }
+
+        var result = await GetAsync<GetAllDto<MyAppointmentsModel>>(url);
+
+
+        if (!result.IsSuccess || result.Error != null)
+            return new ApiResultDto<GetAllDto<MyAppointmentsModel>>
+            {
+                Error = result.Error,
+                IsSuccess = result.IsSuccess,
+            };
+
+        var mapped = new GetAllDto<MyAppointmentsModel>()
+        {
+            Elements = result.Data.Elements,
+            TotalElements = result.Data.TotalElements
+        };
+        return new ApiResultDto<GetAllDto<MyAppointmentsModel>>
+        {
+            Data = mapped,
+            IsSuccess = true,
+            StatusCode = result.StatusCode
+        };
+    }
+
     public async Task<ApiResultDto<GetAllDto<GetAdminAllAppointmentsModel>>> GetAllPendingAdminAppointments(
         int offset,
-        int limit, 
+        int limit,
         AdminAppointmentFilterDto? filter = null,
         string? search = null)
     {
