@@ -134,6 +134,61 @@ public class AppointmentService : UserPanelBaseService, IAppointmentService
         };
     }
 
+    public async Task<ApiResultDto<GetAllDto<GetAdminAllAppointmentsModel>>> GetAllPendingAdminAppointments(
+        int offset,
+        int limit, 
+        AdminAppointmentFilterDto? filter = null,
+        string? search = null)
+    {
+
+        var url = $"{_apiUrl}/all-pending-admin";
+
+        var query = new List<string>()
+        {
+            $"Offset={offset}",
+            $"Limit={limit}",
+        };
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            query.Add($"search={search}");
+        }
+        if (filter != null)
+        {
+            if (filter.Date != default)
+            {
+                query.Add($"filter.Date={filter.Date:yyyy-MM-dd}");
+            }
+            query.Add($"DayWeek={filter.Day}");
+            query.Add($"TreatmentTitle={filter.TreatmentTitle}");
+        }
+
+        if (query.Any())
+        {
+            url = url + "?" + string.Join("&", query);
+        }
+        var result = await GetAsync<GetAllDto<GetAdminAllAppointmentsModel>>(url);
+        if (!result.IsSuccess || result.Error != null)
+        {
+            return new ApiResultDto<GetAllDto<GetAdminAllAppointmentsModel>>
+            {
+                Error = result.Error,
+                IsSuccess = result.IsSuccess
+            };
+        }
+        var mapped = new GetAllDto<GetAdminAllAppointmentsModel>()
+        {
+            Elements = result.Data.Elements,
+            TotalElements = result.Data.TotalElements,
+        };
+
+        return new ApiResultDto<GetAllDto<GetAdminAllAppointmentsModel>>
+        {
+            Data = mapped,
+            IsSuccess = true,
+            StatusCode = result.StatusCode
+        };
+    }
+
     public async Task<ApiResultDto<GetAllDto<GetAdminAllAppointmentsModel>>>
         GetAllTodayAdminAppointments(int offset,
         int limit,

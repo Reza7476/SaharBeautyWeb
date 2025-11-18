@@ -209,6 +209,13 @@
                             onclick="window.location='/UserPanels/Admin/Appointments/TodayAppointments/Index'">
                         <i class="fa-solid fa-sun text-xs ml-2"></i> لیست نوبتهای امروز
                     </button>
+
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
+                    @(ViewData["ActiveMenu"]?.ToString() == "PendingAppointments" ? "active bg-pink-100 font-bold" : "")"
+                            onclick="window.location='/UserPanels/Admin/Appointments/PendingAppointments/Index'">
+                        <i class="fa-solid fa-sun text-xs ml-2"></i> لیست نوبتهای تایید نشده
+                    </button>
+
                     <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
                     @(ViewData["ActiveMenu"]?.ToString() == "AddAppointment" ? "active bg-pink-100 font-bold" : "")"
                             onclick="window.location='/UserPanels/Admin/Appointments/AddAppointment/Index'">

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Models;
@@ -7,7 +8,7 @@ using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.UserPanels.Admin.Treatments;
 using SaharBeautyWeb.Services.UserPanels.Clients.Appointments;
 
-namespace SaharBeautyWeb.Pages.UserPanels.Admin.Appointments.TodayAppointments;
+namespace SaharBeautyWeb.Pages.UserPanels.Admin.Appointments.PendingAppointments;
 
 public class IndexModel : AjaxBasePageModel
 {
@@ -17,34 +18,42 @@ public class IndexModel : AjaxBasePageModel
     public IndexModel(
         ErrorMessages errorMessage,
         IAppointmentService appointmentService,
-        ITreatmentUserPanelService treatmentService) : base(errorMessage)
+        ITreatmentUserPanelService treatmentService)
+        : base(errorMessage)
     {
         _appointmentService = appointmentService;
         _treatmentService = treatmentService;
     }
 
-
     [BindProperty(SupportsGet = true)]
     public string? Search { get; set; }
 
-
     [BindProperty(SupportsGet = true)]
     public AdminAppointmentFilterModel Filter { get; set; } = new();
-
     public GetAllAppointmentsModel ListAppointments { get; set; } = new();
     public List<TreatmentTitleModel> TreatmentTitles { get; set; } = new();
+
 
     public async Task<IActionResult> OnGet(int pageNumber = 0, int limit = 10)
     {
         int offset = pageNumber;
+        DateOnly? dateOnly = null;
+        if (!string.IsNullOrWhiteSpace(Filter?.Date))
+        {
+            string persianDateString = Filter.Date.ConvertPersianNumberToEnglish();
+            var date = persianDateString.ConvertStringShamsiCalendarToGregorian();
+            dateOnly = DateOnly.FromDateTime(date);
+        }
 
         var filter = new AdminAppointmentFilterDto()
         {
-            Status = Filter != null ? Filter.Status : default,
+            Date = dateOnly,
+            Day = Filter != null ? Filter.Day : default,
             TreatmentTitle = Filter != null ? Filter.TreatmentTitle : default
         };
-
         var treatmentTitle = await _treatmentService.GetTitlesForAdmin();
+       
+        
         if (treatmentTitle.IsSuccess && treatmentTitle.Data != null)
         {
             TreatmentTitles = treatmentTitle.Data.Select(_ => new TreatmentTitleModel()
@@ -52,12 +61,18 @@ public class IndexModel : AjaxBasePageModel
                 Title = _.Title
             }).ToList();
         }
-        if(!string.IsNullOrWhiteSpace(Search)) 
+
+        if (!string.IsNullOrWhiteSpace(Search))
         {
             Search = Search.RemoveCountryCodeFromPhoneNumber();
         }
 
-        var result = await _appointmentService.GetAllTodayAdminAppointments(offset, limit, filter, Search);
+        var result = await _appointmentService
+            .GetAllPendingAdminAppointments(
+            offset,
+            limit,
+            filter,
+            Search);
         var response = HandleApiResult(result);
         if (result.IsSuccess && result.Data != null)
         {
@@ -67,8 +82,9 @@ public class IndexModel : AjaxBasePageModel
             ListAppointments.TotalPages = result.Data.TotalElements.ToTotalPage(limit);
         }
         ViewData["Search"] = Search;
-        ViewData["Status"] = Filter?.Status;
+        ViewData["Day"] = Filter?.Day;
         ViewData["TreatmentTitle"] = Filter?.TreatmentTitle;
+        ViewData["Date"] = Filter?.Date;
         return response;
     }
 }
