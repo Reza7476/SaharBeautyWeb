@@ -31,55 +31,6 @@ public class ClientService : UserPanelBaseService, IClientService
         return result;
     }
 
-    public async Task<ApiResultDto<GetAllDto<MyAppointmentsModel>>>
-         GetAllClientAppointments(int offset,
-         int limit,
-         ClientAppointmentFilterDto filter)
-    {
-        var url = $"{_apiUrl}/all-my-appointments";
-        var query = new List<String>()
-        {
-            $"Offset={offset}",
-            $"Limit={limit}"
-        };
-
-        if (filter.Date != default)
-        {
-            query.Add($"filter.Date={filter.Date:yyyy-MM-dd}");
-        }
-
-        query.Add($"Status={filter.Status}");
-        query.Add($"DayWeek={filter.Day}");
-
-        if (query.Any())
-        {
-
-            url = url + "?" + string.Join("&", query);
-        }
-
-        var result = await GetAsync<GetAllDto<MyAppointmentsModel>>(url);
-
-
-        if (!result.IsSuccess || result.Error != null)
-            return new ApiResultDto<GetAllDto<MyAppointmentsModel>>
-            {
-                Error = result.Error,
-                IsSuccess = result.IsSuccess,
-            };
-
-        var mapped = new GetAllDto<MyAppointmentsModel>()
-        {
-            Elements = result.Data.Elements,
-            TotalElements = result.Data.TotalElements
-        };
-        return new ApiResultDto<GetAllDto<MyAppointmentsModel>>
-        {
-            Data = mapped,
-            IsSuccess = true,
-            StatusCode = result.StatusCode
-        };
-    }
-
     public async Task<ApiResultDto<List<GetAllClientsForAddAppointmentDto>>> GetAllForAppointment(string? search=null)
     {
         var url = $"{_apiUrl}/all-for-create-appointment";

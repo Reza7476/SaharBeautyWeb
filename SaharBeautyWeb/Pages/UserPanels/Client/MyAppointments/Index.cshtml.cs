@@ -11,13 +11,11 @@ namespace SaharBeautyWeb.Pages.UserPanels.Client.MyAppointments;
 public class IndexModel : AjaxBasePageModel
 {
     private readonly IAppointmentService _appointmentService;
-    private readonly IClientService _clientService;
+
     public IndexModel(
         ErrorMessages errorMessage,
-        IClientService clientService,
         IAppointmentService appointmentService) : base(errorMessage)
     {
-        _clientService = clientService;
         _appointmentService = appointmentService;
     }
 
@@ -25,7 +23,7 @@ public class IndexModel : AjaxBasePageModel
 
     [BindProperty(SupportsGet = true)]
     public ClientAppointmentFilterModel? Filter { get; set; }
-    public async Task<IActionResult> OnGet(int pageNumber = 0, int limit = 5)
+    public async Task<IActionResult> OnGet(int pageNumber = 0, int limit = 10)
     {
         int offset = pageNumber;
         DateOnly? dateOnly = null;
@@ -42,7 +40,7 @@ public class IndexModel : AjaxBasePageModel
             Status = Filter != null ? Filter.Status : 0,
         };
 
-        var result = await _clientService
+        var result = await _appointmentService
             .GetAllClientAppointments(offset, limit, filter);
 
         var response = HandleApiResult(result);
@@ -65,7 +63,7 @@ public class IndexModel : AjaxBasePageModel
     {
         var result = await _appointmentService.CancelByClient(id);
 
-        var response =  HandleApiAjxResult(result);
+        var response = HandleApiAjxResult(result);
         return response;
     }
 }
