@@ -16,4 +16,5 @@ public class MyAppointmentsModel
     public DateOnly CreatedAt { get; set; }
     public string? CancelledBy { get; set; }
     public DateOnly CancelledDate { get; set; }
+    public bool Reviewed { get; set; }
 }

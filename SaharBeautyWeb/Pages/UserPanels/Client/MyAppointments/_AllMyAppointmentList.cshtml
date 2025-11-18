@@ -18,6 +18,7 @@
                     <th>روز هفته</th>
                     <th>تاریخ نوبت</th>
                     <th>وضعیت</th>
+                    <th>بازخورد</th>
                     <th>ایجاد شده</th>
                     <th>کنسل شده توسط</th>
                     <th>تاریخ کنسلی</th>
@@ -37,28 +38,32 @@
                             <td data-label="زمان شروع">@appointment.StartTime.ToString("HH:mm")</td>
                             <td data-label="زمان پایان">@appointment.EndTime.ToString("HH:mm")</td>
                             <td data-label="روز هفته">@day</td>
+
                             <td data-label="تاریخ">@(appointment.AppointmentDate.ConvertDateOnlyToPersian())</td>
                             <td data-label="وضعیت">
-                                <span class="status-badge @(appointment.Status switch
-                                   {
-                                       AppointmentStatus.None => "status-none",
-                                       AppointmentStatus.Completed => "status-completed",
-                                       AppointmentStatus.Confirmed => "status-confirmed",
-                                       AppointmentStatus.Pending => "status-pending",
-                                       AppointmentStatus.NoShow => "status-noshow",
-                                       AppointmentStatus.Cancelled => "status-cancelled",
-                                       AppointmentStatus.Approved => "status-approved",
-                                       _ => ""
-                                   })">
-                                        @status
-                                </span>
+
+                                <span class="status-badge @($"status-{appointment.Status}")">@status</span>
+
+                            </td>
+
+                            <td data-label="بازخورد">
+                                @if (appointment.Reviewed)
+                                {
+                                    <span class="status-badge status-Completed">ثبت شده</span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge status-Pending">ثبت نشده</span>
+                                }
+
                             </td>
                             <td data-label="تاریخ رزرو">@(appointment.CreatedAt.ConvertDateOnlyToPersian())</td>
                             <td data-label="کنسل شده توسط">@appointment.CancelledBy  </td>
                             <td data-label="تاریخ کنسل">@(appointment.CancelledDate.ConvertDateOnlyToPersian())</td>
                             <td data-label="عملیات">
                                 @if (appointment.Status == AppointmentStatus.Pending ||
-                               appointment.Status == AppointmentStatus.Confirmed)
+                               appointment.Status == AppointmentStatus.Confirmed ||
+                               appointment.Status == AppointmentStatus.Approved)
                                 {
                                     <div class="dropdown">
                                         <button class="btn btn-link text-muted dropdown-toggle p-0"
@@ -70,6 +75,23 @@
                                                 <button class="dropdown-item cancel-appointment-btn"
                                                         data-id="@appointment.Id">
                                                     کنسل کردن
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                }
+                                @if (appointment.Status == AppointmentStatus.Completed && !appointment.Reviewed)
+                                {
+                                    <div class="dropdown">
+                                        <button class="btn btn-link text-muted dropdown-toggle p-0"
+                                                type="button" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-horizontal-rounded fs-5"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                            <li>
+                                                <button class="dropdown-item add-appointment-review-btn"
+                                                        data-id="@appointment.Id">
+                                                    ثبت بازخورد
                                                 </button>
                                             </li>
                                         </ul>

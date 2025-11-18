@@ -96,31 +96,31 @@
 }
 
 /* رنگ‌بندی وضعیت‌ها */
-.status-none {
+.status-None {
     background-color: #6b7280;
 }
 /* خاکستری */
-.status-completed {
+.status-Completed {
     background-color: #16a34a;
 }
 /* سبز */
-.status-confirmed {
+.status-Confirmed {
     background-color: #2563eb;
 }
 /* آبی */
-.status-pending {
+.status-Pending {
     background-color: #fbbf24;
 }
 /* زرد */
-.status-noshow {
+.status-NoShow {
     background-color: #dc2626;
 }
 /* قرمز تیره */
-.status-cancelled {
+.status-Cancelled {
     background-color: #ef4444;
 }
 /* قرمز */
-.status-approved {
+.status-Approved {
     background-color: #0ea5e9;
 }
 
