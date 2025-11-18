@@ -83,3 +83,9 @@ $(document).on("change", "#Date", function () {
         $("#Day").prop("disabled", false); // اگر پاک شد دوباره فعال شود
     }
 });
+
+$(document).on("click", ".add-appointment-review-btn", function () {
+    var btn = $(this);
+    var id = btn.data("id");
+    alert(id);
+})
