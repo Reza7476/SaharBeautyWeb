@@ -78,42 +78,50 @@ $(document).ajaxError(function (event, xhr, settings, error) {
 
 
 function ajaxWithButtonLoading(options) {
-
     var btn = $(options.button);
     if (btn.prop("disabled")) return;
 
-    // ذخیره متن اصلی
     var oldText = btn.text();
 
-    // فعال کردن لودینگ
     btn.prop("disabled", true);
     btn.html("<span class='spinner'></span> در حال پردازش...");
 
     $.ajax({
         url: options.url,
-        type: options.type || "POST",
+        type: options.type,
         data: options.data,
         contentType: options.contentType === false ? false : "application/x-www-form-urlencoded; charset=UTF-8",
         processData: options.processData !== undefined ? options.processData : true,
 
-        success: function (res) {
-            if (options.success) options.success(res);
+        success: function (res, status, xhr) {
+            const contentType = xhr.getResponseHeader("content-type") || "";
+
+            // --- 🔥 اگر JSON بود → چک کنیم ---
+            if (contentType.includes("application/json")) {
+                if (res.success === false) {
+                    if (typeof handleApiError === "function") handleApiError(res.error);
+                    return;
+                }
+            }
+
+            // --- در باقی موارد → نتیجه عادی را به کاربر بده ---
+            if (options.success) options.success(res, status, xhr);
         },
 
         error: function (err) {
+            if (typeof handleApiError === "function") handleApiError(err);
             if (options.error) options.error(err);
-            else alert("خطایی رخ داد");
         },
 
         complete: function () {
-            // بازگرداندن وضعیت دکمه
             btn.prop("disabled", false);
             btn.html(oldText);
-
             if (options.complete) options.complete();
         }
     });
 }
+
+
 
 var errorMessages = {};
 
