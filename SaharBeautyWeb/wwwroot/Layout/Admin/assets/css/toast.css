@@ -1,0 +1,65 @@
+﻿/* کانتینر کلی */
+#toast-container {
+    direction: rtl;
+    font-family: "IRANYekan", sans-serif;
+    z-index: 99999;
+}
+
+/* هر پیام */
+.toast {
+    border-radius: 15px;
+    padding: 16px 20px;
+    font-size: 15px;
+    min-width: 280px;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    opacity: 0.97;
+    transition: all 0.4s ease;
+}
+
+/* رنگ و گرادیان برای خطا */
+.toast-error {
+    background: linear-gradient(135deg, #ff4d4f, #ff7875);
+    color: #fff;
+}
+
+    /* آیکون خطا */
+    .toast-error::before {
+        content: "⚠️";
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+/* عنوان پیام */
+.toast-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+/* متن پیام */
+.toast-message {
+    line-height: 1.4;
+}
+
+/* موقعیت گوشه راست بالا با فاصله مناسب */
+#toast-container.toast-top-right {
+    top: 25px;
+    right: 25px;
+}
+
+/* اضافه کردن انیمیشن نرم */
+.toast-show {
+    transform: translateX(50px);
+    opacity: 0;
+    animation: slideIn 0.5s forwards;
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿ <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="utf-8" />
@@ -12,11 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Tailwind (utility only, preflight خاموش) -->
-    <script>
-        tailwind.config = {
-            corePlugins: { preflight: false }
-        }
-    </script>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- CSS پروژه -->
@@ -25,10 +20,11 @@
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -99,39 +95,7 @@
 
     @RenderSection("Scripts", false)
 
-    <script>
-        // مدیریت خطاهای API
-        var errorMessages = {};
-
-        fetch('/config/exception.json')
-            .then(res => res.json())
-            .then(data => { errorMessages = data; })
-            .catch(err => console.error("خطا در بارگذاری فایل JSON:", err));
-
-        function handleApiError(errorKey) {
-            let message = errorMessages[errorKey] || errorKey;
-            showPopup(message);
-            return message;
-        }
-
-        function showPopup(msg) {
-            if (window.toastr) {
-                toastr.error(msg, "خطا", {
-                    closeButton: true,
-                    progressBar: true,
-                    positionClass: "toast-top-center",
-                    timeOut: 10000
-                });
-            } else {
-                alert(msg);
-            }
-        }
-
-        $(function () {
-            var error = $("#error-input").val();
-            if (error) handleApiError(error);
-        });
-    </script>
-
 </body>
 </html>
+
+ 

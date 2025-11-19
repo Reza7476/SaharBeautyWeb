@@ -96,7 +96,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
                     success = false,
                     error = message
                 });
-
+      
             if (string.IsNullOrEmpty(EditDto.Title))
             
                 return new JsonResult(new
@@ -104,7 +104,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.SiteSettings.Banners
                     success = false,
                     error = "عنوان یا نیابد خالی باشد"
                 });
-
+            EditDto.Id=1111111;
             var result = await _bannerUserPanelService.UpdateBanner(new UpdateBannerDto
             {
                 Id = EditDto.Id,
