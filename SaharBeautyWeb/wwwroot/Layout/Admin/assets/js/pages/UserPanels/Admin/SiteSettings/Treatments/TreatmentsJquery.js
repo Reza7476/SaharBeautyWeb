@@ -1,5 +1,5 @@
 ﻿$(() => {
-    $(document).on("click","#add-treatment-btn", function (e) {
+    $(document).on("click", "#add-treatment-btn", function (e) {
         e.preventDefault();
         $.ajax({
             url: addTreatmentPartial,
@@ -21,12 +21,10 @@
         setUpImagePreview(imageInput, viewImg);
 
     })
-   
+
 
     $(document).on("click", "#createTreatment", function (e) {
         e.preventDefault();
-        var sendBtn = $(this);
-        sendBtn.prop("disabled", true);
         var title = $("#add-treatment-title").val();
         var image = $(".add-treatment-image-input")[0];
         var description = $("#add-treatment-description").val();
@@ -35,36 +33,24 @@
             showPopup("فیلد ها نباید خالی باشند");
             return;
         }
-       var form = $("#add-treatment-form")[0];
-       var formData = new FormData(form);
-       $.ajax({
-           url: addTreatment,
-           type: 'Post',
-           data: formData,
-           contentType: false,
-           processData: false,
-           beforeSend: function () {
-               sendBtn.prop("disabled", true);
-           },
-           success: function (res) {
-               if (res.success) {
-                   var modalEl = document.getElementById('staticBackdrop');
-                   var modal = bootstrap.Modal.getInstance(modalEl);
-                   modal.hide();
-                   form.reset();
-                   location.reload();
-               } else {
-                   handleApiError(res.error );
-                   sendBtn.prop("disabled", false);
-               }
-           },
-           error: function () {
-               showPopup("خطایی رخ داده")
-               var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-               modal.hide();
-               location.reload();
-           }
-       });
+        var form = $("#add-treatment-form")[0];
+        var formData = new FormData(form);
+
+        ajaxWithButtonLoading({
+            button: "#createTreatment",
+            url: addTreatment,
+            type: 'Post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                // در این نقطه فقط وقتی HTML معتبر بود وارد می‌شود
+                var modalEl = document.getElementById('staticBackdrop');
+                var modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+                location.reload();
+            },
+        });
     })
 
     $(document).on("click", ".edit-treatment-title-description", function (e) {
@@ -77,107 +63,65 @@
         }
         var form = $("#edit-treatment-title-description-form")[0];
         var formData = new FormData(form);
-        $.ajax({
+        ajaxWithButtonLoading({
+            button: this,
             url: editTreatment,
             type: 'Post',
             data: formData,
             processData: false,
             contentType: false,
-            success: function (res) {
-                if (res.success) {
-                    var modalEl = document.getElementById('staticBackdrop');
-                    var modal = bootstrap.Modal.getInstance(modalEl);
-                    modal.hide();
-                    form.reset();
-                    location.reload();
-                } else {
-                    handleApiError(res.error);
-                    sendBtn.prop("disabled", false);
-                }
-            },
-            error: function () {
-                showPopup("خطایی پیش آمده");
-                var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-                modal.hide();
+            success: function (res)
+            {
                 location.reload();
             }
+
         });
     })
 
     $(".edit-treatment-btn").on("click", function () {
         var id = $(this).data("id");
-        $.ajax({
+
+        ajaxWithButtonLoading({
+            button: this,
             url: editTreatmentPartial,
             type: 'Get',
             data: { id: id },
             success: function (res, status, xhr) {
-                const contentType = xhr.getResponseHeader("content-type") || "";
-                if (contentType.includes("application/json")) {
-                    if (!res.success) {
-                        handleApiError(res.error);
-                        btnSend.prop("disabled", false);
-                        return;
-                    }
-                }
+                // در این نقطه فقط وقتی HTML معتبر بود وارد می‌شود
                 $("#staticBackdrop .modal-body").html(res);
-                var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-                modal.show();
+                new bootstrap.Modal(document.getElementById('staticBackdrop')).show();
             },
-            error: function () {
-                showPopup("خطا در بارگذاری فرم ویرایش!");
-                btnSend.prop("disabled", false);
-            },
-            complete: function () {
-
-                btnSend.prop("disabled", false);
-            }
-        });
+        })
     });
 
-   
+
 
     $(document).on("click", ".add-edited-treatment-image", function (e) {
         e.preventDefault();
-        var sendBtn = $(this);
         var form = $("#add-treatment-image-form")[0];
         var formData = new FormData(form);
 
-        $.ajax({
+        ajaxWithButtonLoading({
+            button: this,
             url: addImage,
             type: 'Post',
             data: formData,
             contentType: false,
             processData: false,
-            beforeSend: function () {
-                sendBtn.prop("disabled", true);
-            },
             success: function (res) {
-                if (res.success) {
-                    var modalEl = document.getElementById('staticBackdrop');
-                    var modal = bootstrap.Modal.getInstance(modalEl);
-                    modal.hide();
-                    form.reset();
-                    location.reload();
-                } else {
-                    handleApiError(res.error);
-                    sendBtn.prop("disabled", false);
-                }
-            },
-            error: function (res) {
-                showPopup(res.error);
-                sendBtn.prop("disabled", false);
+                location.reload();
             }
         });
     });
 
     $(document).on("click", ".delete-treatment-image-btn", function (e) {
         e.preventDefault();
-        var deleteBtn = $(this);
-        deleteBtn.prop("disabled", true);
+        var btn = $(this);
         var token = $('input[name="__RequestVerificationToken"]').val();
         var treatmentId = $("#treatmentId").val();
-        imageId = deleteBtn.data("id");
-        $.ajax({
+        imageId = $(this).data("id");
+        ajaxWithButtonLoading({
+            button: this,
             url: deleteImage,
             type: 'Post',
             data: {
@@ -186,16 +130,7 @@
                 __RequestVerificationToken: token,
             },
             success: function (res) {
-
-                if (res.success) {
-                    deleteBtn.closest(".col-md-6").remove();
-                } else {
-                    handleApiError(res.error)
-                }
-            },
-            error: function () {
-                showPopup("خطایی ایجاد شده");
-                deleteBtn.prop("disabled", false);
+                btn.closest(".col-md-6").remove();
             }
         });
     })
