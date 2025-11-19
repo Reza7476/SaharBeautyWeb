@@ -73,9 +73,6 @@
 
             }
         });
-
-
-       
     });
 
     $(document).on("click", "#apply-edit-about-us-button", function (e) {
@@ -133,26 +130,6 @@
                 location.reload();
             }
         });
-
-        //$.ajax({
-        //    url: applyEditedaboutUsLogo,
-        //    type: 'Post',
-        //    data: formData,
-        //    contentType: false,
-        //    processData: false,
-        //    success: function (res) {
-        //        if (res.success) {
-        //            location.reload();
-        //        } else {
-        //            handleApiError(res.error);
-        //            btnSend.prop("disabled", false);
-        //        }
-        //    },
-        //    Error: function () {
-        //        handleApiError("در بارگذاری فرم ویرایش خطایی پیش امده");
-        //        btnSend.prop("disabled", false);
-        //    }
-        //});
     })
 });
 
