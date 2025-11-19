@@ -1,0 +1,55 @@
+﻿@using SaharBeautyWeb.Models.Entities.Appointments.Models.Clients
+
+<link href="~/layout/admin/assets/css/pages/client/list-appointment/add-client-comment.css" rel="stylesheet" />
+@model AddClientReviewModel
+
+<div class="review-wrapper">
+    <div class="review-card">
+
+        <h2 class="title">ثبت نظر و امتیاز شما</h2>
+        <p class="subtitle">لطفاً تجربه‌تان از خدمات را با ما به اشتراک بگذارید</p>
+
+        <form id="reviewForm" method="post" >
+
+            @Html.AntiForgeryToken()
+            <div class="form-row">
+                <label>امتیاز</label>
+                <div class="rating">
+                    <input type="radio" id="s5" name="rate" value="5">
+                    <label for="s5">
+                        ★
+                    </label>
+                    <input type="radio" id="s4" name="rate" value="4" checked>
+                    <label for="s4">
+                        ★
+                    </label>
+                    <input type="radio" id="s3" name="rate" value="3">
+                    <label for="s3">
+                        ★
+                    </label>
+                    <input type="radio" id="s2" name="rate" value="2">
+                    <label for="s2">
+                        ★
+                    </label>
+                    <input type="radio" id="s1" name="rate" value="1">
+                    <label for="s1">
+                        ★
+                    </label>
+                </div>
+            </div>
+            <input  asp-for="Rate" hidden  id="selected-rate"/>
+            <input  asp-for="AppointmentId" hidden   value="@Model.AppointmentId"/>
+            <div class="form-row">
+                <label>نظر شما</label>
+                <textarea id="comment" rows="4" asp-for="Description"></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit" id="add-client-comment-btn">ثبت نظر</button>
+
+            <div id="successMessage" class="success-message" hidden>
+                نظر شما با موفقیت ثبت شد 🌟
+            </div>
+        </form>
+
+    </div>
+</div>
