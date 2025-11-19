@@ -3,23 +3,30 @@ using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos.Clients;
 using SaharBeautyWeb.Models.Entities.Appointments.Models.Clients;
 using SaharBeautyWeb.Pages.Shared;
+using SaharBeautyWeb.Services.UserPanels.AppointmentReview;
 using SaharBeautyWeb.Services.UserPanels.Clients.Appointments;
-using SaharBeautyWeb.Services.UserPanels.Clients.ClientServices;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Client.MyAppointments;
 
 public class IndexModel : AjaxBasePageModel
 {
     private readonly IAppointmentService _appointmentService;
+    private readonly IAppointmentReviewService _reviewService;
+
 
     public IndexModel(
         ErrorMessages errorMessage,
-        IAppointmentService appointmentService) : base(errorMessage)
+        IAppointmentService appointmentService,
+        IAppointmentReviewService reviewService) : base(errorMessage)
     {
         _appointmentService = appointmentService;
+        _reviewService = reviewService;
     }
 
     public GetAllMyAppointmentsModel ListMyAppointment { get; set; } = new();
+
+    [BindProperty]
+    public AddClientReviewModel ClientReviewModel { get; set; } = new();
 
     [BindProperty(SupportsGet = true)]
     public ClientAppointmentFilterModel? Filter { get; set; }
@@ -66,4 +73,33 @@ public class IndexModel : AjaxBasePageModel
         var response = HandleApiAjxResult(result);
         return response;
     }
+
+
+    public PartialViewResult OnGetAddCommentPartial(string appointmentId)
+    {
+
+        ClientReviewModel = new AddClientReviewModel()
+        {
+            AppointmentId = appointmentId
+        };
+
+        return Partial("_AddCommentPartial", ClientReviewModel);
+    }
+
+    public async Task<IActionResult> OnPostAddClientComment()
+    {
+
+        var addComment = await _reviewService
+            .AddClientReview(new AddClientReviewAppointmentDto()
+            {
+                AppointmentId = ClientReviewModel.AppointmentId,
+                Description = ClientReviewModel.Description,
+                Rate = ClientReviewModel.Rate
+            });
+
+        var response = HandleApiAjxResult(addComment);
+
+        return response;
+    }
+
 }

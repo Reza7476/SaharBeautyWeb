@@ -12,7 +12,7 @@ $(document).ready(function () {
                 }
             }
         });
-    } 
+    }
 });
 
 
@@ -31,7 +31,7 @@ $(document).on("click", "#remove-filter", function (e) {
         $(this).val("");                  // خالی شود
         $(this).prop("disabled", false);  // فعال شود
     });
-    
+
 
 
     fetch(window.location.pathname)
@@ -52,7 +52,7 @@ $(document).on("click", ".cancel-appointment-btn", function () {
             id: id,
             __RequestVerificationToken: token
         },
-        type:'Post',
+        type: 'Post',
         success: function (res) {
             if (res.success) {
                 location.reload();
@@ -87,5 +87,45 @@ $(document).on("change", "#Date", function () {
 $(document).on("click", ".add-appointment-review-btn", function () {
     var btn = $(this);
     var id = btn.data("id");
-    alert(id);
+
+    $.ajax({
+        url: addCommentPartial,
+        type: 'Get',
+        data: { appointmentId: id },
+        success: function (html) {
+            var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+            $("#staticBackdrop .modal-body").html(html);
+            modal.show();
+        },
+        error: function () {
+        }
+    })
+})
+
+$(document).on("click", "#add-client-comment-btn", function (e) {
+    e.preventDefault();
+    var rate = $("input[name='rate']:checked").val();
+    $("#selected-rate").val(rate);
+
+    var form = $("#reviewForm")[0];
+    var formData = new FormData(form);
+
+    ajaxWithButtonLoading({
+        button: "#add-client-comment-btn",
+        url: addClientComment,
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+            if (res.success) {
+                location.reload();
+            } else {
+                HandlerApiError(res.error)
+            }
+        }, error: function (res) {
+
+            HandlerApiError(res.error)
+        }
+    })
 })

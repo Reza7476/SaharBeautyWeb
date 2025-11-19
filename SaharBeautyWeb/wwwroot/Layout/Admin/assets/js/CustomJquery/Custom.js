@@ -75,3 +75,42 @@ $(document).ajaxError(function (event, xhr, settings, error) {
     }
 });
 
+
+
+function ajaxWithButtonLoading(options) {
+
+    var btn = $(options.button);
+    if (btn.prop("disabled")) return;
+
+    // ذخیره متن اصلی
+    var oldText = btn.text();
+
+    // فعال کردن لودینگ
+    btn.prop("disabled", true);
+    btn.html("<span class='spinner'></span> در حال پردازش...");
+
+    $.ajax({
+        url: options.url,
+        type: options.type || "POST",
+        data: options.data,
+        contentType: options.contentType === false ? false : "application/x-www-form-urlencoded; charset=UTF-8",
+        processData: options.processData !== undefined ? options.processData : true,
+
+        success: function (res) {
+            if (options.success) options.success(res);
+        },
+
+        error: function (err) {
+            if (options.error) options.error(err);
+            else alert("خطایی رخ داد");
+        },
+
+        complete: function () {
+            // بازگرداندن وضعیت دکمه
+            btn.prop("disabled", false);
+            btn.html(oldText);
+
+            if (options.complete) options.complete();
+        }
+    });
+}
