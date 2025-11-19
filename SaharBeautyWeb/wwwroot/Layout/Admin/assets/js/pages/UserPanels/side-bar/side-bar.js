@@ -68,5 +68,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     handleResponsive();
     window.addEventListener("resize", handleResponsive);
+
+
+
 });
+function toggleSubmenu(id) {
+    const submenu = document.getElementById(`submenu-${id}`);
+    const icon = document.getElementById(`icon-${id}`);
+    if (submenu.classList.contains("open")) {
+        submenu.classList.remove("open");
+        icon.classList.remove("rotate-180"); // برای چرخش فلش
+    } else {
+        submenu.classList.add("open");
+        icon.classList.add("rotate-180");
+    }
+}
 
