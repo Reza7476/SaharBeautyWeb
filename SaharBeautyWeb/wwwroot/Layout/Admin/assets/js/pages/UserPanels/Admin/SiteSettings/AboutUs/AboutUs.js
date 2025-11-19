@@ -1,15 +1,4 @@
 ﻿$(() => {
-    $(document).on("input", "#about-us-mobile", function () {
-        var mobile = $(this)[0];
-        var sendButton = $("#send-about-us-button");
-        if (!mobile.value.trim()) {
-            markInputError(mobile);
-            sendButton.prop("disabled", true);
-            return;
-        }
-        sendButton.prop("disabled", false);
-    })
-
     $(document).on("change", ".input-about-us-logo", function () {
         var preview = $(".preview-add-image-about-us-logo")[0];
         var inputLogo = $(".input-about-us-logo")[0];
@@ -20,20 +9,17 @@
         e.preventDefault();
         var form = $("#add-about-us-section-form")[0];
         var formData = new FormData(form);
-        $.ajax({
+
+        ajaxWithButtonLoading({
+            button: "#send-about-us-button",
             url: createAboutUs,
             type: 'Post',
             data: formData,
             contentType: false,
             processData: false,
             success: function (res) {
-                if (res.success) {
-                    location.reload();
-                } else {
-                    handleApiError(res.error);
-                    return;
-                }
-            },
+                location.reload();
+            }
         });
     });
 
@@ -49,41 +35,42 @@
 
     $(document).on("click", "#edit-about-us-button", function () {
         var id = $("#about-us-id").val();
-        $.ajax({
+
+        ajaxWithButtonLoading({
+
+            button: "#edit-about-us-button",
             url: getAboutUsForEdit,
             type: 'GET',
             data: { id: id },
-            success: function (res ,status, xhr) {
-                const contentType = xhr.getResponseHeader("content-type") || "";
-                if (contentType.includes("application/json")) {
-                    if (!res.success) {
-                        handleApiError(res.error);
-                        return;
-                    }
-                }
+            success: function (res, status, xhr) {
                 var modalEl = document.getElementById('staticBackdrop');
                 // قرار دادن html پارشیال در body مودال
                 $("#staticBackdrop .modal-body").html(res);
                 // نمایش مودال
                 var modal = new bootstrap.Modal(modalEl);
                 modal.show();
-                // وقتی مودال کامل باز شد ⇒ نقشه را مقداردهی کن
                 modalEl.addEventListener('shown.bs.modal', function () {
                     var editLatitude = $("#edit-latitude").val();
                     var editLongitude = $("#edit-longitude").val();
                     ShowMapForEdit(editLatitude, editLongitude);
-                }, { once: true });
-                // وقتی مودال بسته شد ⇒ نقشه قبلی را پاک کن تا بار بعد تداخلی نباشه
+                },
+                    {
+                        once: true
+                    });
                 modalEl.addEventListener('hidden.bs.modal', function () {
                     if (window._editMap) {
-                        try { window._editMap.remove(); } catch (e) { /* ignore */ }
+                        try {
+                            window._editMap.remove();
+                        } catch (e) {
+                            /* ignore */
+                        }
                         window._editMap = null;
                     }
-                }, { once: true });
-            },
-            error: function (xhr) {
-                let msg = (xhr.responseJSON?.error) || xhr.responseText || "خطایی پیش آمده";
-                showPopup(msg);
+                },
+                    {
+                        once: true
+                    });
+
             }
         });
     });
@@ -91,30 +78,20 @@
     $(document).on("click", "#apply-edit-about-us-button", function (e) {
         e.preventDefault();
         var btn = $(this);
-        var mobile = $("#edit-about-us-mobile")[0];
-        if (!mobile.value.trim()) {
-            markInputError(mobile);
-            btn.prop("disabled", true);
-            return;
-        }
+       
         var form = $("#edit-about-us-section-form")[0]
         var formData = new FormData(form);
-        $.ajax({
+
+        ajaxWithButtonLoading({
+            button: "#apply-edit-about-us-button",
             url: applyEditAboutUs,
             type: 'Post',
             contentType: false,
             processData: false,
             data: formData,
-            success: function (res) {
-                if (res.success) {
-                    location.reload();
-                } else {
-                    handleApiError(res.error);
-                    btn.prop("disabled", false);
-                }
-            }, error: function () {
-                handleApiError("در بارگذاری فرم ویرایش خطایی پیش آمده");
-                btn.prop("disabled", false);
+            success: function (res)
+            {
+                location.reload();
             }
         });
     })
@@ -122,60 +99,35 @@
     $(document).on("click", ".edit-about-us-logo-button", function (e) {
         e.preventDefault();
         var id = $(this).data("id");
-        var btnSend = $(this);
-        btnSend.prop("disabled", true);
-        $.ajax({
+        ajaxWithButtonLoading({
+            button: this,
             url: getLogoByAboutUsId,
             data: { id: id },
             type: 'Get',
-            success: function (res, status, xhr) {
-
-                var contentType = xhr.getResponseHeader("content-type") || " ";
-                if (contentType.indexOf("application/json") >= 0) {
-                    if (!res.success) {
-                        handleApiError(res.error);
-                        btnSend.prop("disabled", false);
-                        return;
-                    }
-                }
-                else {
-                    var modalEl = document.getElementById('staticBackdrop');
-                    $("#staticBackdrop .modal-body").html(res);
-                    var modal = new bootstrap.Modal(modalEl);
-                    modal.show();
-                }
+            success: function (res, status, xhr)
+            {
+                var modalEl = document.getElementById('staticBackdrop');
+                $("#staticBackdrop .modal-body").html(res);
+                var modal = new bootstrap.Modal(modalEl);
+                modal.show();
             }
         });
-
     })
-    $(document).on("change", "#edit-about-us-logo-input", function () {
-        $("#apply-edited-about-us-logo").prop("disabled", false);
-    });
-   
 
     $(document).on("click", "#apply-edited-about-us-logo", function (e) {
         e.preventDefault();
-        var btnSend = $(this);
-        btnSend.prop("disabled", true);
         var form = $("#edit-about-us-logo-form")[0];
         var formData = new FormData(form);
-        $.ajax({
+        ajaxWithButtonLoading({
+            button: "#apply-edited-about-us-logo",
             url: applyEditedaboutUsLogo,
             type: 'Post',
             data: formData,
             contentType: false,
             processData: false,
-            success: function (res) {
-                if (res.success) {
-                    location.reload();
-                } else {
-                    handleApiError(res.error);
-                    btnSend.prop("disabled", false);
-                }
-            },
-            Error: function () {
-                handleApiError("در بارگذاری فرم ویرایش خطایی پیش امده");
-                btnSend.prop("disabled", false);
+            success: function (res)
+            {
+                location.reload();
             }
         });
     })
