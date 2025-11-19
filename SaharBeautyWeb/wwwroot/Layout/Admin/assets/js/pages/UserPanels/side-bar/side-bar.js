@@ -1,93 +1,4 @@
 ﻿// ------------------------------
-// Sidebar / Menu Script (Optimized)
-// ------------------------------
-
-let sidebarOpen = true;
-let openSubmenu = null;
-
-// Elements
-const sidebar = document.getElementById("sidebar");
-const sidebarOverlay = document.getElementById("sidebar-overlay");
-const toggleSidebarBtn = document.getElementById("toggle-sidebar");
-const closeSidebarBtn = document.getElementById("close-sidebar");
-const mainContent = document.getElementById("main-content");
-
-// ------------------------------
-// Initialization
-// ------------------------------
-window.addEventListener("DOMContentLoaded", () => {
-    // Auto-collapse on mobile
-    if (window.innerWidth < 768) {
-        closeSidebar();
-    }
-
-    // Restore last opened page submenu (optional)
-    const savedSubmenu = localStorage.getItem("openSubmenu");
-    if (savedSubmenu) {
-        const submenu = document.getElementById(`submenu-${savedSubmenu}`);
-        const icon = document.getElementById(`icon-${savedSubmenu}`);
-        if (submenu && icon) {
-            submenu.classList.add("open");
-            icon.classList.add("rotate-180");
-            openSubmenu = savedSubmenu;
-        }
-    }
-});
-
-// ------------------------------
-// Sidebar Toggle
-// ------------------------------
-function toggleSidebar() {
-    sidebarOpen ? closeSidebar() : openSidebar();
-}
-
-function openSidebar() {
-    sidebarOpen = true;
-    sidebar.classList.remove("closed");
-    sidebarOverlay.classList.remove("hidden");
-
-    if (window.innerWidth >= 768) {
-        mainContent.classList.remove("mr-0");
-        mainContent.classList.add("mr-80");
-    }
-}
-
-function closeSidebar() {
-    sidebarOpen = false;
-    sidebar.classList.add("closed");
-    sidebarOverlay.classList.add("hidden");
-
-    if (window.innerWidth >= 768) {
-        mainContent.classList.remove("mr-80");
-        mainContent.classList.add("mr-0");
-    }
-}
-
-// ------------------------------
-// Submenu Toggle
-// ------------------------------
-function toggleSubmenu(menuId) {
-    const submenu = document.getElementById(`submenu-${menuId}`);
-    const icon = document.getElementById(`icon-${menuId}`);
-    if (!submenu || !icon) return;
-
-    // Close previous submenu if open
-    if (openSubmenu && openSubmenu !== menuId) {
-        const prevSubmenu = document.getElementById(`submenu-${openSubmenu}`);
-        const prevIcon = document.getElementById(`icon-${openSubmenu}`);
-        if (prevSubmenu) prevSubmenu.classList.remove("open");
-        if (prevIcon) prevIcon.classList.remove("rotate-180");
-    }
-
-    // Toggle current submenu
-    const isOpen = submenu.classList.toggle("open");
-    icon.classList.toggle("rotate-180");
-
-    openSubmenu = isOpen ? menuId : null;
-    localStorage.setItem("openSubmenu", openSubmenu || "");
-}
-
-// ------------------------------
 // Logout
 // ------------------------------
 function logout() {
@@ -107,17 +18,55 @@ function logout() {
     });
 }
 
-// ------------------------------
-// Event Listeners
-// ------------------------------
-toggleSidebarBtn?.addEventListener("click", toggleSidebar);
-closeSidebarBtn?.addEventListener("click", closeSidebar);
-sidebarOverlay?.addEventListener("click", closeSidebar);
+document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebar-overlay");
+    const toggleBtn = document.getElementById("toggle-sidebar");
+    const toggleIcon = toggleBtn.querySelector("i");
+    const closeBtn = document.getElementById("close-sidebar"); // <-- این خط
+    let sidebarOpen = false; // وضعیت منو در موبایل
 
-// ------------------------------
-// Responsive behavior
-// ------------------------------
-window.addEventListener("resize", () => {
-    if (window.innerWidth >= 768) openSidebar();
-    else closeSidebar();
+    function openSidebar() {
+        sidebar.classList.remove("translate-x-full");
+        overlay.classList.remove("hidden");
+        toggleIcon.classList.remove("fa-bars");
+        toggleIcon.classList.add("fa-times");
+        sidebarOpen = true;
+    }
+
+    function closeSidebar() {
+        sidebar.classList.add("translate-x-full");
+        overlay.classList.add("hidden");
+        toggleIcon.classList.remove("fa-times");
+        toggleIcon.classList.add("fa-bars");
+        sidebarOpen = false;
+    }
+
+    toggleBtn.addEventListener("click", function () {
+        if (sidebarOpen) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    });
+
+    overlay.addEventListener("click", closeSidebar);
+    closeBtn?.addEventListener("click", closeSidebar);
+    // حالت اولیه بر اساس رزولوشن
+    function handleResponsive() {
+        if (window.innerWidth >= 768) {
+            sidebar.classList.remove("translate-x-full");
+            overlay.classList.add("hidden");
+            toggleIcon.classList.remove("fa-times");
+            toggleIcon.classList.add("fa-bars");
+            sidebarOpen = false;
+        } else {
+            sidebar.classList.add("translate-x-full");
+            sidebarOpen = false;
+        }
+    }
+
+    handleResponsive();
+    window.addEventListener("resize", handleResponsive);
 });
+

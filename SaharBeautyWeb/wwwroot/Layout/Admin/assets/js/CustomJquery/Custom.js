@@ -114,3 +114,39 @@ function ajaxWithButtonLoading(options) {
         }
     });
 }
+
+var errorMessages = {};
+
+fetch('/config/exception.json')
+    .then(res => res.json())
+    .then(data => { errorMessages = data; })
+    .catch(err => console.error("خطا در بارگذاری فایل JSON:", err));
+
+function handleApiError(errorKey) {
+    let message = errorMessages[errorKey] || errorKey;
+    showPopup(message);
+    return message;
+}
+
+function showPopup(msg) {
+    if (window.toastr) {
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            positionClass: "toast-top-right",
+            timeOut: 8000,
+            newestOnTop: true,
+            preventDuplicates: true,
+            rtl: true
+        };
+        toastr.error(msg, "خطا");
+    } else {
+        alert(msg);
+    }
+}
+
+
+$(function () {
+    var error = $("#error-input").val();
+    if (error) handleApiError(error);
+});
