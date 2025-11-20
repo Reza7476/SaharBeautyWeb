@@ -23,7 +23,7 @@ namespace SaharBeautyWeb.Pages.UserPanels.Admin.Users
         public GetAllUsersModel AllUsersModel { get; set; } = new();
 
 
-        public async Task<IActionResult> OnGet(int pageNumber = 0, int limit = 5)
+        public async Task<IActionResult> OnGet(int pageNumber = 0, int limit = 10)
         {
 
             if (!string.IsNullOrWhiteSpace(Search))

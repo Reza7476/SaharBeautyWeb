@@ -16,7 +16,8 @@ $(document).on("change", ".toggle-switch", function () {
     const active = $(this).is(":checked");
     var token = $('input[name="__RequestVerificationToken"]').val();
 
-    $.ajax({
+    ajaxWithButtonLoading({
+        button: this,
         url: changeUserActivate,
         type: 'Post',
         data: {
@@ -24,14 +25,11 @@ $(document).on("change", ".toggle-switch", function () {
             __RequestVerificationToken: token,
             activate: active
         },
-        success: function (res) {
-            if (res.success) {
+        success: function (res)
+        {
 
-            } else {
-                handleApiError(res.error);
-            }
-        }, error: function (res) {
-            handleApiError(res.error);
         }
+
     });
+   
 });
