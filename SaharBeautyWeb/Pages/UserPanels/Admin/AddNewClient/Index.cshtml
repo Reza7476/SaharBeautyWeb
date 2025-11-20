@@ -9,7 +9,7 @@
 <div class="register-page">
     <div class="register-container">
         <h1>ثبت نام مشتری</h1>
-        <form id="registerForm" method="post" asp-page-handler="RejecterClient">
+        <form id="registerForm" method="post" >
             @Html.AntiForgeryToken()
             <div class="form-group">
                 <label for="firstName">نام</label>
@@ -30,7 +30,15 @@
             </div>
 
             <input type="hidden" asp-for="ReturnUrl" value="@ViewData["ReturnUrl"]" />
-            <button type="submit" class="register-btn">ثبت نام</button>
+            <button type="submit" id="add-new-client-btn" class="register-btn">ثبت نام</button>
         </form>
     </div>
 </div>
+@section Scripts{
+    <script>
+
+        var rejesterClient = '@Url.Page("Index", "RejesterClient")';
+    </script>
+
+    <script src="~/layout/admin/assets/js/pages/userpanels/admin/addnewclient/add-new-client-admin.js"></script>
+}
