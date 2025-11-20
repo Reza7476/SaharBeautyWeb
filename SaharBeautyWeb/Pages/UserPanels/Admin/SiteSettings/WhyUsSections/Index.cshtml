@@ -26,51 +26,29 @@ else
                     <div class="col-sm">
                         <button type="button"
                                 class="btn btn-primary whyus-section-add-btn w-100 w-sm-auto add-why-us-question-btn"
-                                data-id="@(Model.ModelData!=null ? Model.ModelData.Id:"0")">
+                                data-id="@(Model.ModelData != null ? Model.ModelData.Id : "0")">
                             <i class="bx bx-plus me-1"></i> افزودن پرسش و پاسخ
                         </button>
                     </div>
                 </div>
 
-                <div class="accordion" id="whyusAccordion">
-                    @if (Model.ModelData!=null)
+                @if (Model.ModelData != null && Model.ModelData.QuestionModels.Count > 0)
+                {
+                    foreach (var item in Model.ModelData.QuestionModels)
                     {
-                        @for (int i = 0; i < Model.ModelData.QuestionModels.Count; i++)
-                        {
-                            var question = Model.ModelData.QuestionModels[i];
-                            <div class="accordion-item whyus-section-accordion-item mb-2">
-                                <h2 class="accordion-header" id="heading@(i)">
-                                    <button class="accordion-button collapsed whyus-section-accordion-btn"
-                                            type="button"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#collapse@(i)"
-                                            aria-expanded="false"
-                                            aria-controls="collapse@(i)">
-                                        <span>@question.Question</span>
-                                    </button>
-                                </h2>
-                                <div id="collapse@(i)" class="accordion-collapse collapse"
-                                     aria-labelledby="heading@(i)" data-bs-parent="#whyusAccordion">
-                                    <div class="accordion-body whyus-section-accordion-body">
-                                        <p class="mb-2">@question.Answer</p>
-                                        <button type="button"
-                                                class="btn btn-danger btn-sm delete-question-btn"
-                                                data-id="@question.Id">
-                                            <i class="bx bx-trash"></i> حذف
-                                        </button>
-                                    </div>
-                                </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span class="faq-toggle">+</span>
+                                <span class="faq-title">@item.Question</span>
                             </div>
-                        }
-                    }
-                    else
-                    {
-                        <div class="text-center text-muted py-4">
-                            <i class="bx bx-info-circle fs-4 mb-2 d-block"></i>
-                            هیچ پرسشی ثبت نشده است
+                            <div class="faq-answer">
+                                <p>@item.Answer</p>
+                                <button class="delete-btn delete-question-btn" data-id="@item.Id">حذف</button>
+                            </div>
                         </div>
                     }
-                </div>
+                }
+
             </div>
         </div>
     </div>
