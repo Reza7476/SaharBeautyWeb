@@ -18,25 +18,16 @@ $(document).on("change", "#treatment-select", function () {
     $(".time-slot-card.active").removeClass("selected");
     $(".day-card").removeClass("selected");
 
-    $.ajax({
+    ajaxWithButtonLoading({
+
+        button: "#treatment-select",
         url: getTreatmentDetails,
         data: { id: serviceId },
         type: 'GET',
-        success: function (res, status, xhr) {
-            const contentType = xhr.getResponseHeader("content-type") || "";
-            if (contentType.includes("application/json")) {
-                if (!res.success) {
-                    handleApiError(res.error);
-                    return;
-                }
-            }
-
+        success: function (res, status, xhr)
+        {
             $("#input-treatmentId").val(serviceId); // ست اولیه (فقط id)
             $("#serviceDetails").html(res).removeClass("hidden");
-        },
-        error: function () {
-            $(".time-slot-container").remove();
-            $("#timeSlotContainer").empty();
         }
     });
 });
@@ -56,22 +47,15 @@ $(document).on("click", ".day-card", function () {
     var inputDate = $("#input-date").val("");
     var inputDayWeek = $("#input-day-week").val("");
     var inputTime = $("#input-time").val("");
-    $.ajax({
+
+    ajaxWithButtonLoading({
+        button: this,
         url: getWeeklySchedule,
         data: { dayWeek: dayOfWeek, date: date },
         type: 'GET',
-        success: function (res, status, xhr) {
-            const contentType = xhr.getResponseHeader("content-type") || "";
-            if (contentType.includes("application/json")) {
-                if (!res.success) {
-                    handleApiError(res.error);
-                    return;
-                }
-            }
-
+        success: function (res, status, xhr)
+        {
             var timeSlotSection = $('<div class="time-slot-container"></div>').html(res);
-
-
             inputDate.val(date);
             inputDayWeek.val(dayOfWeek);
             if ($(window).width() <= 640) {
@@ -79,12 +63,8 @@ $(document).on("click", ".day-card", function () {
             } else {
                 $("#timeSlotContainer").html(timeSlotSection);
             }
-        },
-        error: function () {
-            $(".time-slot-container").remove();
-            $("#timeSlotContainer").empty();
         }
-    });
+    })
 });
 
 $(document).on("click", ".time-slot-card", function () {
@@ -106,32 +86,19 @@ $(document).on("click", "#create-admin-appointment-btn", function (e) {
     var form = $("#admin-reserve-form")[0];
     var formData = new FormData(form);
 
-    $.ajax({
+
+    ajaxWithButtonLoading({
+        button: "#create-admin-appointment-btn",
         url: reserveAdminAppointment,
         data: formData,
         type: "Post",
         contentType: false,
         processData: false,
-        success: function (res) {
-            if (res.success) {
-                location.reload();
-            }
-            else if (res.statusCode == 400) {
-                Object.keys(res.error).forEach(function (key) {
-                    const fieldName = key.replace("AppointmentModel.", "");
-                    const messages = res.error[key];
-                    const span = $(`span[data-valmsg-for='AppointmentModel.${fieldName}']`);
-                    span.text(messages.join(", "));
-                    span.css("color", "red");
-                });
-            } else {
-                handleApiError(res.error);
-            }
-        },
-        error: function (res) {
+        success: function (res)
+        {
+            location.reload();
         }
     })
-
 })
 
 
