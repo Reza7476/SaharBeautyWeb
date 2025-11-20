@@ -27,42 +27,7 @@ $(document).on("click", ".edit-user-btn", function () {
 
     });
 
-    //$.ajax({
-    //    url: getUserInfoForEdit,
-    //    type: 'Get',
-    //    success: function (res, status, xhr) {
-    //        const contentType = xhr.getResponseHeader("content-type") || "";
-    //        if (contentType.includes("application/json")) {
-    //            if (!res.success) {
-    //                handleApiError(res.error);
-    //                return;
-    //            }
-    //        }
-    //        var modalEl = document.getElementById('staticBackdrop');
-    //        // قرار دادن html پارشیال در body مودال
-    //        $("#staticBackdrop .modal-body").html(res);
-    //        // نمایش مودال
-    //        var modal = new bootstrap.Modal(modalEl);
-
-    //        modal.show();
-    //        if ($.fn.persianDatepicker) {
-    //            $("#staticBackdrop .Shamsi-date").persianDatepicker({
-    //                format: 'YYYY/MM/DD',
-    //                autoClose: true,
-    //                initialValue: false,
-    //                calendar: {
-    //                    persian: {
-    //                        locale: 'fa'
-    //                    }
-    //                }
-    //            });
-    //        }
-    //    },
-    //    error: function (xhr) {
-    //        let msg = (xhr.responseJSON?.error) || xhr.responseText || "خطایی پیش آمده";
-    //        showPopup(msg)
-    //    }
-    //});
+ 
 })
 
 $(document).on("change", "#clientAvatarUpload", function () {
@@ -92,30 +57,7 @@ $(document).on("click", "#apply-client-edit-profile", function (e) {
         }
     });
 
-    //$.ajax({
-    //    url: applyEditProfile,
-    //    processData: false,
-    //    contentType: false,
-    //    data: formData,
-    //    type: 'Post',
-    //    success: function (res) {
-    //        if (res.success) {
-    //            var modalEl = document.getElementById('staticBackdrop');
-    //            var modal = bootstrap.Modal.getInstance(modalEl);
-    //            modal.hide();
-    //            form.reset();
-    //            location.reload();
-    //        } else {
-    //            handleApiError(res.error);
-    //            sendBtn.prop("disabled", false);
-    //        }
-    //    }, error: function () {
-    //        showPopup("خطایی پیش آمده");
-    //        var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-    //        modal.hide();
-    //        location.reload();
-    //    }
-    //})
+
 })
 
 $(document).on("click", "#apply-edit-client-profile-image", function (e) {
@@ -144,26 +86,5 @@ $(document).on("click", "#apply-edit-client-profile-image", function (e) {
 
     });
 
-    //$.ajax({
-    //    url: applyEditProfileImage,
-    //    processData: false,
-    //    contentType: false,
-    //    data: formData,
-    //    type: 'Post',
-    //    success: function (res) {
-    //        if (res.success) {
-    //            $(preview).attr("src", "");
-    //            const reader = new FileReader();
-    //            reader.onload = function (e) {
-    //                $(preview).attr("src", e.target.result);
-    //            };
-    //            reader.readAsDataURL(image.files[0]);
-    //        } else {
-    //            handleApiError(res.error);
-    //        }
-    //    }, error: function (res) {
-    //        handleApiError(res.error);
-    //    }
 
-    //});
 });
