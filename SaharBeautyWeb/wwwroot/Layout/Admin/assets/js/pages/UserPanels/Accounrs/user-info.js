@@ -1,22 +1,16 @@
 ﻿
 $(document).on("click", ".edit-user-btn", function () {
-    $.ajax({
+
+    ajaxWithButtonLoading({
+        button: this,
         url: getUserInfoForEdit,
         type: 'Get',
-        success: function (res, status, xhr) {
-            const contentType = xhr.getResponseHeader("content-type") || "";
-            if (contentType.includes("application/json")) {
-                if (!res.success) {
-                    handleApiError(res.error);
-                    return;
-                }
-            }
+        success: function (res, status, xhr)
+        {
             var modalEl = document.getElementById('staticBackdrop');
-            // قرار دادن html پارشیال در body مودال
-            $("#staticBackdrop .modal-body").html(res);
-            // نمایش مودال
-            var modal = new bootstrap.Modal(modalEl);
 
+            $("#staticBackdrop .modal-body").html(res);
+            var modal = new bootstrap.Modal(modalEl);
             modal.show();
             if ($.fn.persianDatepicker) {
                 $("#staticBackdrop .Shamsi-date").persianDatepicker({
@@ -30,10 +24,6 @@ $(document).on("click", ".edit-user-btn", function () {
                     }
                 });
             }
-        },
-        error: function (xhr) {
-            let msg = (xhr.responseJSON?.error) || xhr.responseText || "خطایی پیش آمده";
-            showPopup(msg)
         }
     });
 })
@@ -49,30 +39,20 @@ $(document).on("click", "#apply-admin-edit-profile", function (e) {
     var form = $("#edit-admin-profile-form")[0];
     var formData = new FormData(form);
 
-    $.ajax({
+    ajaxWithButtonLoading({
+        button: "#apply-admin-edit-profile",
         url: applyEditProfile,
         processData: false,
         contentType: false,
         data: formData,
         type: 'Post',
-        success: function (res) {
-            if (res.success) {
-                var modalEl = document.getElementById('staticBackdrop');
-                var modal = bootstrap.Modal.getInstance(modalEl);
-                modal.hide();
-                form.reset();
-                location.reload();
-            } else {
-                handleApiError(res.error);
-                sendBtn.prop("disabled", false);
-            }
-        }, error: function () {
-            showPopup("خطایی پیش آمده");
-            var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+        success: function (res)
+        {
+            var modalEl = document.getElementById('staticBackdrop');
+            var modal = bootstrap.Modal.getInstance(modalEl);
             modal.hide();
-            location.reload();
         }
-    })
+    });
 })
 
 $(document).on("click", "#apply-edit-admin-profile-image", function (e) {
@@ -82,26 +62,21 @@ $(document).on("click", "#apply-edit-admin-profile-image", function (e) {
     var preview = $("#avatarPreview")[0]
     var formData = new FormData(form);
 
-    $.ajax({
+    ajaxWithButtonLoading({
+        button: "#apply-edit-admin-profile-image",
         url: applyEditProfileImage,
         processData: false,
         contentType: false,
         data: formData,
         type: 'Post',
-        success: function (res) {
-            if (res.success) {
-                $(preview).attr("src", "");
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    $(preview).attr("src", e.target.result);
-                };
-                reader.readAsDataURL(image.files[0]);
-            } else {
-                handleApiError(res.error);
-            }
-        }, error: function (res) {
-            handleApiError(res.error);
+        success: function (res)
+        {
+            $(preview).attr("src", "");
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $(preview).attr("src", e.target.result);
+            };
+            reader.readAsDataURL(image.files[0]);
         }
-
-    });
+    })
 });
