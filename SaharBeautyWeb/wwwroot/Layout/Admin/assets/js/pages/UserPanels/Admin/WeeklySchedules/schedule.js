@@ -17,22 +17,15 @@ $(document).on("click", ".save-day-schedule", function () {
     formData.append("IsActive", isActive);
     formData.append("__RequestVerificationToken", token);
 
-    $.ajax({
+    ajaxWithButtonLoading({
+        button: this,
         url: saveNewSchedule,
         type: 'Post',
         data: formData,
         contentType: false,
         processData: false,
         success: function (res) {
-            if (res.success) {
-                location.reload();
-            } else {
-
-                handleApiError(res.error);
-            }
-        }, error: function (res) {
-            handleApiError(res.error);
         }
-    })
 
+    });
 })
