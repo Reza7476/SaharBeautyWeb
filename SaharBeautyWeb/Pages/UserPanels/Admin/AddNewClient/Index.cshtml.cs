@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Models.Entities.Clients.Dtos;
 using SaharBeautyWeb.Models.Entities.Clients.Models;
 using SaharBeautyWeb.Pages.Shared;
@@ -29,7 +28,7 @@ public class IndexModel : AjaxBasePageModel
         ViewData["ReturnUrl"] = ReturnUrl;
     }
 
-    public async Task<IActionResult> OnPostRejecterClient()
+    public async Task<IActionResult> OnPostRejesterClient()
     {
         if (!ModelState.IsValid)
         {
@@ -43,18 +42,9 @@ public class IndexModel : AjaxBasePageModel
             Name = NewClient.Name
         });
 
-        var response = HandleApiResult(result);
-        if (response is PageResult)
-        {
-            if (!string.IsNullOrWhiteSpace(ReturnUrl))
-            {
-                return LocalRedirect(ReturnUrl);
-            }
-            else
-            {
-                return RedirectToPage("/UserPanels/Admin/Index");
-            }
-        }
+
+
+        var response = HandleApiAjxResult(result, ReturnUrl);
         return response;
     }
 }

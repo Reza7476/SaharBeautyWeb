@@ -10,7 +10,7 @@ public abstract class AjaxBasePageModel : UserPanelBaseModelPage
     public AjaxBasePageModel(ErrorMessages errorMessage) : base(errorMessage)
     {
     }
-    protected IActionResult HandleApiAjxResult<T>(ApiResultDto<T> result, string? successPage = null)
+    protected IActionResult HandleApiAjxResult<T>(ApiResultDto<T> result, string? redirectUrl = null)
     {
         if (result == null)
         {
@@ -18,7 +18,8 @@ public abstract class AjaxBasePageModel : UserPanelBaseModelPage
             {
                 error = "خطایی پیش آمده",
                 StatusCode = 205,
-                success = false
+                success = false,
+                redirectUrl = redirectUrl
             });
 
         }
@@ -28,7 +29,8 @@ public abstract class AjaxBasePageModel : UserPanelBaseModelPage
             {
                 StatusCode = result.StatusCode,
                 success = result.IsSuccess,
-                data = result.Data
+                data = result.Data,
+                redirectUrl = redirectUrl
             });
         }
 
@@ -41,7 +43,8 @@ public abstract class AjaxBasePageModel : UserPanelBaseModelPage
         {
             error = $"({result.StatusCode}) {message}",
             StatusCode = result.StatusCode,
-            success = result.IsSuccess
+            success = result.IsSuccess,
+            redirectUrl = redirectUrl
         });
 
     }
