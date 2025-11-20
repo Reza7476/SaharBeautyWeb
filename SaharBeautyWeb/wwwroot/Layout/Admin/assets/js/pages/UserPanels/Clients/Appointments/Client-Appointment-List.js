@@ -46,22 +46,19 @@ $(document).on("click", ".cancel-appointment-btn", function () {
     var id = $(this).data("id");
     var token = $('input[name="__RequestVerificationToken"]').val();
 
-    $.ajax({
+    ajaxWithButtonLoading({
+        button: this,
         url: cancelAppointment,
         data: {
             id: id,
             __RequestVerificationToken: token
         },
         type: 'Post',
-        success: function (res) {
-            if (res.success) {
-                location.reload();
-            } else {
-                HandlerApiError(res.error);
-            }
+        success: function (res)
+        {
+            location.reload();
         }
-    })
-
+    });
 
 })
 
@@ -88,18 +85,19 @@ $(document).on("click", ".add-appointment-review-btn", function () {
     var btn = $(this);
     var id = btn.data("id");
 
-    $.ajax({
+
+    ajaxWithButtonLoading({
+        button: this,
         url: addCommentPartial,
         type: 'Get',
         data: { appointmentId: id },
-        success: function (html) {
+        success: function (html)
+        {
             var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
             $("#staticBackdrop .modal-body").html(html);
             modal.show();
-        },
-        error: function () {
         }
-    })
+    });
 })
 
 $(document).on("click", "#add-client-comment-btn", function (e) {
@@ -118,14 +116,7 @@ $(document).on("click", "#add-client-comment-btn", function (e) {
         contentType: false,
         processData: false,
         success: function (res) {
-            if (res.success) {
-                location.reload();
-            } else {
-                HandlerApiError(res.error)
-            }
-        }, error: function (res) {
-
-            HandlerApiError(res.error)
+            location.reload();
         }
     })
 })
