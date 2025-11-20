@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SaharBeautyWeb.Configurations.Extensions;
 using SaharBeautyWeb.Models.Entities.Appointments.Dtos;
 using SaharBeautyWeb.Models.Entities.Appointments.Models;
@@ -52,8 +51,8 @@ public class IndexModel : AjaxBasePageModel
             TreatmentTitle = Filter != null ? Filter.TreatmentTitle : default
         };
         var treatmentTitle = await _treatmentService.GetTitlesForAdmin();
-       
-        
+
+
         if (treatmentTitle.IsSuccess && treatmentTitle.Data != null)
         {
             TreatmentTitles = treatmentTitle.Data.Select(_ => new TreatmentTitleModel()

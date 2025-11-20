@@ -41,31 +41,27 @@ $(document).on("click", "#remove-filter", function (e) {
 
 });
 
-$(document).on("change", "#status-dropdown", function () {
-    var dropdown = $(this);
-    var id = dropdown.data("id");
-    var selectedValue = dropdown.val();
-    var token = $('input[name="__RequestVerificationToken"]').val();
-    $.ajax({
-        url: changeStatus,
-        type: 'post',
-        data: {
-            id: id,
-            __RequestVerificationToken: token,
-            status: selectedValue
-        },
-        success: function (res) {
-            if (res.success) {
-                location.reload();
-            } else {
-                handleApiError(res.error);
-            }
-        },
-        error: function (res) {
-            handleApiError(res.error);
-        }
-    })
-})
+//$(document).on("change", "#status-dropdown", function () {
+//    var dropdown = $(this);
+//    var id = dropdown.data("id");
+//    var selectedValue = dropdown.val();
+//    var token = $('input[name="__RequestVerificationToken"]').val();
+
+//    ajaxWithButtonLoading({
+//        button: this,
+//        url: changeStatus,
+//        type: 'post',
+//        data: {
+//            id: id,
+//            __RequestVerificationToken: token,
+//            status: selectedValue
+//        },
+//        success: function (res) {
+
+//            location.reload();
+//        }
+//    });
+//})
 
 $(document).on("change", "#Day", function () {
     if ($(this).val()) {
