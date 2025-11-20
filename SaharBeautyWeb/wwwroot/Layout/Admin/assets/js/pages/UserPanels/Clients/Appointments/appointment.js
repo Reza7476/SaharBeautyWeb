@@ -16,27 +16,42 @@
 
         if (!serviceId) return;
 
-        $.ajax({
+        ajaxWithButtonLoading({
+            button: "#serviceSelect",
+
             url: getTreatmentDetails,
             data: { id: serviceId },
             type: 'GET',
-            success: function (res, status, xhr) {
-                const contentType = xhr.getResponseHeader("content-type") || "";
-                if (contentType.includes("application/json")) {
-                    if (!res.success) {
-                        handleApiError(res.error);
-                        return;
-                    }
-                }
-
+            success: function (res, status, xhr)
+            {
                 $("#input-treatmentId").val(serviceId); // ست اولیه (فقط id)
                 $("#serviceDetails").html(res).removeClass("hidden");
-            },
-            error: function () {
-                $(".time-slot-container").remove();
-                $("#timeSlotContainer").empty();
+
             }
+
         });
+
+        //$.ajax({
+        //    url: getTreatmentDetails,
+        //    data: { id: serviceId },
+        //    type: 'GET',
+        //    success: function (res, status, xhr) {
+        //        const contentType = xhr.getResponseHeader("content-type") || "";
+        //        if (contentType.includes("application/json")) {
+        //            if (!res.success) {
+        //                handleApiError(res.error);
+        //                return;
+        //            }
+        //        }
+
+        //        $("#input-treatmentId").val(serviceId); // ست اولیه (فقط id)
+        //        $("#serviceDetails").html(res).removeClass("hidden");
+        //    },
+        //    error: function () {
+        //        $(".time-slot-container").remove();
+        //        $("#timeSlotContainer").empty();
+        //    }
+        //});
     });
 
     $(document).on("click", ".week-card", function () {
@@ -124,30 +139,19 @@
 
         var form = $("#reserveForm")[0];
         var formData = new FormData(form);
-        $.ajax({
+
+        ajaxWithButtonLoading({
+            button: "#reserve-btn",
             url: reserveAppointment,
             type: "Post",
             contentType: false,
             processData: false,
             data: formData,
-            success: function (res) {
-                if (res.success) {
-                    location.reload();
-                }
-                else if (res.statusCode == 400) {
-                    Object.keys(res.error).forEach(function (key) {
-                        const fieldName = key.replace("AppointmentModel.", "");
-                        const messages = res.error[key];
-                        const span = $(`span[data-valmsg-for='AppointmentModel.${fieldName}']`);
-                        span.text(messages.join(", "));
-                        span.css("color", "red");
-                    });
-                } else {
-                    handleApiError(res.error);
-                }
-            },
-            error: function (res) {
+            success: function (res)
+            {
+                location.reload();
             }
+
         });
     });
 
