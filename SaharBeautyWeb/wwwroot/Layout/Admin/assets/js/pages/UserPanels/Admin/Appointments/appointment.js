@@ -46,7 +46,8 @@ $(document).on("change", "#status-dropdown", function () {
     var id = dropdown.data("id");
     var selectedValue = dropdown.val();
     var token = $('input[name="__RequestVerificationToken"]').val();
-    $.ajax({
+    ajaxWithButtonLoading({
+        button: "#status-dropdown",
         url: changeStatus,
         type: 'post',
         data: {
@@ -54,15 +55,9 @@ $(document).on("change", "#status-dropdown", function () {
             __RequestVerificationToken: token,
             status: selectedValue
         },
-        success: function (res) {
-            if (res.success) {
-                location.reload();
-            } else {
-                handleApiError(res.error);
-            }
-        },
-        error: function (res) {
-            handleApiError(res.error);
+        success: function (res)
+        {
+            location.reload();
         }
     })
 })
