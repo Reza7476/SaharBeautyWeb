@@ -44,6 +44,15 @@ public class ResetPasswordModel : AjaxBasePageModel
         }
 
         var result = await _service.SendOtpResetPassword(StepOne.MobileNumber);
+        if (result.IsSuccess && result.Data != null)
+        {
+            if (result.Data.VerifyStatusCode != 1)
+            {
+                result.StatusCode = 500;
+                result.IsSuccess = false;
+                result.Error = result.Data.VerifyStatus;
+            }
+        }
         var response = HandleApiAjxResult(result);
         return response;
     }

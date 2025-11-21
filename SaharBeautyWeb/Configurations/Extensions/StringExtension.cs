@@ -117,6 +117,9 @@ public static class StringExtension
     {
         switch (status)
         {
+
+            case SendSMSStatus.NotResponse:
+                return "پاسخی از ملی پیامک دریافت نشد";
             case SendSMSStatus.Pending:
                 return "در حال ارسال ";
             case SendSMSStatus.Sent:
