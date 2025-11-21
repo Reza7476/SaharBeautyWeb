@@ -12,7 +12,9 @@
         <div class="form-header">
             <h2>ثبت‌نام</h2>
         </div>
-
+        <div class="top-actions">
+            <button type="button" class="btn btn-back" id="go-home">بازگشت به صفحه اصلی</button>
+        </div>
         <!-- مرحله ۱: شماره موبایل -->
         <form id="step-one-form" method="post" asp-page-handler="SendOtp" class="form-step active">
             @Html.AntiForgeryToken()
