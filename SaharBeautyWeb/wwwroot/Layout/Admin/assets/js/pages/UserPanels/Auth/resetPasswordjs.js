@@ -30,42 +30,6 @@ $(document).on("click", "#step-one-btn", function (e) {
             startTimer(120);
         }
     });
-
-    //$.ajax({
-    //    url: sendOtp,
-    //    type: 'Post',
-    //    data: formData,
-    //    contentType: false,
-    //    processData: false,
-    //    success: function (res) {
-    //        if (res.success) {
-    //            if (res.data.verifyStatusCode === 1 ||
-    //                res.data.verifyStatus === "عملیات موفق" ||
-    //                res.data.otpRequestId.length > 11) {
-    
-    //                otpRequestId.value = res.data.otpRequestId;
-    //                $("#step-one-form").removeClass("active");
-    //                $("#step-two-form").addClass("active");
-    
-    //                resetOtpTimer();
-    //                startTimer(120);
-    //            } else {
-    //                errorP.text("شماره تلفن ارسالی معتبر نیست");
-    //                errorP.css("display", "block");
-    //                otpBtn.prop("disabled", false);
-    //            }
-    //        } else {
-    //            errorP.text(res.error);
-    //            errorP.css("display", "block");
-    //            otpBtn.prop("disabled", false);
-    //        }
-    //    },
-    //    error: function (err) {
-    //        errorP.text(err);
-    //        errorP.css("display", "block");
-    //        otpBtn.prop("disabled", false);
-    //    }
-    //});
 });
 
 getOtpCods();
