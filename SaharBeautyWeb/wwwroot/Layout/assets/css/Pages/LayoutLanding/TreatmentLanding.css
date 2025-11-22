@@ -34,3 +34,11 @@
         .offer-content .offer-link:hover {
             background: #c2185b;
         }
+.rating i {
+    font-size: 20px;
+    margin-right: 2px;
+}
+
+.text-yellow-500 {
+    color: gold;
+}

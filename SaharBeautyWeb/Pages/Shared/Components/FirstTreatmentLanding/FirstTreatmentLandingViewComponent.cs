@@ -9,7 +9,6 @@ public class FirstTreatmentLandingViewComponent : LandingBaseViewComponent
 {
     private readonly ITreatmentService _service;
 
-    // تزریق همزمان ITreatmentService و ErrorMessages
     public FirstTreatmentLandingViewComponent(ITreatmentService service,
         ErrorMessages errorMessages)
         : base(errorMessages)
