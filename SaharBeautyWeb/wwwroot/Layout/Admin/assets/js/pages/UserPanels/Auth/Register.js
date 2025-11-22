@@ -35,46 +35,6 @@ $(document).on("click", "#step-one-btn", function (e) {
         }
 
     });
-    //$.ajax({
-    //    url: sendOtp,
-    //    type: 'POST',
-    //    data: formData,
-    //    contentType: false,
-    //    processData: false,
-    //    success: function (res) {
-    //        if (res.success) {
-    //            if (res.data.verifyStatusCode === 1 ||
-    //                res.data.verifyStatus === "عملیات موفق" ||
-    //                res.data.otpRequestId.length > 11) {
-
-    //                otpRequestId.value = res.data.otpRequestId;
-    //                $("#step-one-form").removeClass("active");
-    //                $("#step-two-form").addClass("active");
-
-    //                resetOtpTimer();
-    //                startTimer(120);
-    //            } else if (res.statusCode === 500) {
-    //                errorP.text(res.error).fadeIn();
-    //                otpBtn.prop("disabled", false);
-    //            }
-    //        } else if (res.errors) {
-    //            Object.keys(res.errors).forEach(function (key) {
-    //                const fieldName = key.replace("StepOne.", "");
-    //                const messages = res.errors[key];
-    //                const span = $(`span[data-valmsg-for='StepOne.${fieldName}']`);
-    //                span.text(messages.join(", ")).css("color", "red");
-    //            });
-    //            otpBtn.prop("disabled", false);
-    //        } else {
-    //            errorP.text(res.error).fadeIn();
-    //            otpBtn.prop("disabled", false);
-    //        }
-    //    },
-    //    error: function (err) {
-    //        errorP.text("خطا در ارسال درخواست").fadeIn();
-    //        otpBtn.prop("disabled", false);
-    //    }
-    //});
 });
 
 
@@ -101,7 +61,7 @@ $(document).on("click", "#verify-otp-btn", function (e) {
         contentType: false,
         success: function (res) {
             if (res.success && res.statusCode == 200) {
-                window.location = "UserPanels/Client/Index";
+                window.location.href = "/UserPanels/Client";
             } else if (res.statusCode === 500) {
                 formStepOne.reset();
                 form.reset();
