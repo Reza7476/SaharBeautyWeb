@@ -61,7 +61,7 @@ $(document).on("click", "#verify-otp-btn", function (e) {
         contentType: false,
         success: function (res) {
             if (res.success && res.statusCode == 200) {
-                window.location.href = "/UserPanels/Client";
+                window.location.href = "../UserPanels/Client";
             } else if (res.statusCode === 500) {
                 formStepOne.reset();
                 form.reset();
