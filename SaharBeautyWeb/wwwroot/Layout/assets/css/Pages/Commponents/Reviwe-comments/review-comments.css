@@ -1,0 +1,105 @@
+﻿
+.comment-card p {
+    word-break: break-word; /* متن طولانی را مجبور به شکستن می‌کند */
+    overflow-wrap: break-word; /* جایگزین برای word-break */
+    hyphens: auto; /* اگر می‌خواهید خط‌ها با نیم‌خط جدا شوند */
+}
+.scroll-btn {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    background: white;
+    border: 1px solid #ddd;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: 0.2s;
+}
+
+    .scroll-btn:hover {
+        background: #f7f7f7;
+    }
+
+.star-gold {
+    color: #f6c200;
+}
+
+.page-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    background: #ddd;
+}
+
+    .page-dot.active {
+        background: #ff5da2;
+    }
+
+/* کارت‌ها نرم اسکرول شوند */
+.scroll-container {
+    scroll-behavior: smooth;
+}
+
+#prevBtn {
+    right: -20px; /* فاصله دکمه سمت راست */
+}
+
+#nextBtn {
+    
+   left: -20px; /* فاصله دکمه سمت چپ */
+}
+
+/* Wrapper کل Pagination */
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+/* دکمه‌های صفحه */
+.page-btn {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #333;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+    .page-btn:hover {
+        background-color: #ff5da2; /* رنگ برند شما */
+        border-color: #ff5da2;
+        color: #fff;
+    }
+
+    .page-btn:disabled {
+        background-color: #f5f5f5;
+        border-color: #ddd;
+        color: #aaa;
+        cursor: not-allowed;
+    }
+
+/* شماره صفحه فعلی */
+.page-current {
+    background-color: #ff5da2;
+    color: #fff;
+    border-color: #ff5da2;
+}
+
+/* فاصله بین شماره صفحات و دکمه‌ها */
+.pagination-wrapper span {
+    font-size: 14px;
+    color: #555;
+    margin: 0 5px;
+}

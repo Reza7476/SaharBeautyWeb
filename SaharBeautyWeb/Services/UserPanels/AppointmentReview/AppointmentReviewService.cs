@@ -5,6 +5,8 @@ using System.Text.Json;
 using System.Text;
 using SaharBeautyWeb.Models.Entities.Review_Comment.Model;
 using SaharBeautyWeb.Models.Entities.Appointments.Models;
+using SaharBeautyWeb.Models.Entities.Treatments.Models.Landing;
+using System.Linq;
 
 namespace SaharBeautyWeb.Services.UserPanels.AppointmentReview;
 
@@ -46,7 +48,7 @@ public class AppointmentReviewService : UserPanelBaseService, IAppointmentReview
         return result;
     }
 
-    public async Task<ApiResultDto<GetAllDto<AppointmentReviewModel>>> 
+    public async Task<ApiResultDto<GetAllDto<AppointmentReviewModel>>>
         GetAllComments(int offset, int limit)
     {
 
@@ -78,6 +80,44 @@ public class AppointmentReviewService : UserPanelBaseService, IAppointmentReview
         };
 
         return new ApiResultDto<GetAllDto<AppointmentReviewModel>>
+        {
+            Data = mapped,
+            IsSuccess = true,
+            StatusCode = result.StatusCode
+        };
+    }
+
+    public async Task<ApiResultDto<GetAllDto<GetAllCommentLandingModel>>>
+         GetAllPublishedComment(int offset, int limit)
+    {
+        var url = $"{_apiUrl}/all-published-for-landing";
+
+        var query = new List<string>()
+        {
+            $"Offset={offset}",
+            $"Limit={limit}",
+        };
+        if (query.Any())
+        {
+            url = url + "?" + string.Join("&", query);
+        }
+
+        var result = await GetAsync<GetAllDto<GetAllCommentLandingModel>>(url);
+        if (!result.IsSuccess || result.Error != null)
+        {
+            return new ApiResultDto<GetAllDto<GetAllCommentLandingModel>>
+            {
+                Error = result.Error,
+                IsSuccess = result.IsSuccess
+            };
+        }
+        var mapped = new GetAllDto<GetAllCommentLandingModel>()
+        {
+            Elements = result.Data.Elements,
+            TotalElements = result.Data.TotalElements,
+        };
+
+        return new ApiResultDto<GetAllDto<GetAllCommentLandingModel>>
         {
             Data = mapped,
             IsSuccess = true,

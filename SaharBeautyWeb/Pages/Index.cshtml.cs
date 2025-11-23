@@ -1,20 +1,21 @@
+﻿using Microsoft.AspNetCore.Mvc;
 using SaharBeautyWeb.Pages.Shared;
 
-namespace SaharBeautyWeb.Pages
+namespace SaharBeautyWeb.Pages;
+
+public class IndexModel : LandingBasePageModel
 {
-    public class IndexModel : LandingBasePageModel
+    public IndexModel(ErrorMessages errorMessage) : base(errorMessage)
     {
-        private readonly ILogger<IndexModel> _logger;
+    }
 
-        public IndexModel(ILogger<IndexModel> logger,
-            ErrorMessages errorMessage) : base(errorMessage)
-        {
-            _logger = logger;
-        }
+    public void OnGet()
+    {
 
-        public void OnGet()
-        {
+    }
 
-        }
+    public IActionResult OnGetClientComments(int pageNumber = 0)
+    {
+        return ViewComponent("ClientComments", new { pageNumber });
     }
 }
