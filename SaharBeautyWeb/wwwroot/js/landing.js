@@ -30,7 +30,7 @@
     $(document).on('click', '.page-btn', function (e) {
         e.preventDefault();
 
-        const container = $(this).closest('.client-comments-component');
+        const container = $(this).closest('.client-comments-container');
         var page = parseInt($(this).data('page'));
         if (isNaN(page) || page < 0) return;
 
