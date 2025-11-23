@@ -44,11 +44,11 @@
 
         <!-- Pagination -->
         <div class="pagination-wrapper text-center mt-4">
-            <button class="page-btn" data-page="@(Model.CurrentPage - 1)" @(Model.CurrentPage == 0 ? "disabled" : "")>
+            <button class="page-btn-gallery" data-page="@(Model.CurrentPage - 1)" @(Model.CurrentPage == 0 ? "disabled" : "")>
                 قبلی
             </button>
             <span>@(Model.CurrentPage + 1) از @(Model.TotalPages)</span>
-            <button class="page-btn" data-page="@(Model.CurrentPage + 1)" @(Model.CurrentPage >= Model.TotalPages - 1 ? "disabled" : "")>
+            <button class="page-btn-gallery" data-page="@(Model.CurrentPage + 1)" @(Model.CurrentPage >= Model.TotalPages - 1 ? "disabled" : "")>
                 بعدی
             </button>
         </div>

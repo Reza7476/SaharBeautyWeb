@@ -50,4 +50,29 @@
         });
     });
 
+    $(document).on('click', '.page-btn-gallery', function (e) {
+        e.preventDefault();
+
+        const container = $(this).closest('.treatment-gallery-containers');
+        var page = parseInt($(this).data('page'));
+        if (isNaN(page) || page < 0) return;
+
+        $.ajax({
+            url: '/?handler=LandingGallery',
+            type: 'GET',
+            data: { pageNumber: page },
+            beforeSend: function () {
+                container.find('.page-btn-gallery').prop('disabled', true);
+            },
+            success: function (html) {
+                container.html(html);
+            },
+            complete: function () {
+                container.find('.page-btn-gallery').prop('disabled', false);
+            }
+        });
+    });
+
+
+
 });
