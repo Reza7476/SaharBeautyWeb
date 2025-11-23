@@ -10,4 +10,5 @@ public interface IAppointmentReviewService : IService
     Task<ApiResultDto<string>> AddClientReview(AddClientReviewAppointmentDto dto);
     Task<ApiResultDto<object>> ChangePublishStatus(string id, bool publishStatus);
     Task<ApiResultDto<GetAllDto<AppointmentReviewModel>>> GetAllComments(int offset, int limit);
+    Task<ApiResultDto<GetAllDto<GetAllCommentLandingModel>>> GetAllPublishedComment(int offset, int limit);
 }
