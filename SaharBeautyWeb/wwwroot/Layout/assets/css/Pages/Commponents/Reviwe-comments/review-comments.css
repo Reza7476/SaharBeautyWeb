@@ -174,3 +174,30 @@
         right: -10px;
     }
 }
+.page-btn-gallery {
+    padding: 8px 18px;
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #444;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+    /* هاور دکمه */
+    .page-btn-gallery:hover {
+        background: #ffcedd;
+        border-color: #ff9fba;
+        color: #b30049;
+    }
+
+    /* وقتی دکمه غیرفعال شود */
+    .page-btn-gallery[disabled] {
+        background: #f0f0f0;
+        border-color: #ccc;
+        color: #999;
+        cursor: not-allowed;
+    }
+
+
