@@ -1,9 +1,52 @@
-﻿
-.comment-card p {
-    word-break: break-word; /* متن طولانی را مجبور به شکستن می‌کند */
-    overflow-wrap: break-word; /* جایگزین برای word-break */
-    hyphens: auto; /* اگر می‌خواهید خط‌ها با نیم‌خط جدا شوند */
+﻿/* ---------- کارت نظرات مشتریان ---------- */
+.comment-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    flex-shrink: 0;
+    width: 320px;
 }
+
+    .comment-card p {
+        word-break: break-word; /* شکستن متن طولانی */
+        overflow-wrap: break-word;
+        hyphens: auto;
+        color: #4a4a4a;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+/* ---------- ستاره‌ها ---------- */
+.star-gold {
+    color: #f6c200;
+}
+
+/* ---------- اسکرول کارت‌ها ---------- */
+.scroll-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+}
+
+    /* مخفی کردن اسکرولبار در مرورگرهای مدرن */
+    .scroll-container::-webkit-scrollbar {
+        display: none;
+    }
+
+.scroll-container {
+    -ms-overflow-style: none; /* IE 10+ */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* ---------- دکمه‌های Prev/Next ---------- */
+.scroll-wrapper {
+    position: relative; /* موقعیت دکمه‌ها */
+}
+
 .scroll-btn {
     position: absolute;
     top: 40%;
@@ -25,37 +68,17 @@
         background: #f7f7f7;
     }
 
-.star-gold {
-    color: #f6c200;
-}
-
-.page-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    display: inline-block;
-    background: #ddd;
-}
-
-    .page-dot.active {
-        background: #ff5da2;
+    /* Prev سمت چپ */
+    .scroll-btn.prev {
+        left: -20px;
     }
 
-/* کارت‌ها نرم اسکرول شوند */
-.scroll-container {
-    scroll-behavior: smooth;
-}
+    /* Next سمت راست */
+    .scroll-btn.next {
+        right: -20px;
+    }
 
-#prevBtn {
-    right: -20px; /* فاصله دکمه سمت راست */
-}
-
-#nextBtn {
-    
-   left: -20px; /* فاصله دکمه سمت چپ */
-}
-
-/* Wrapper کل Pagination */
+/* ---------- Pagination ---------- */
 .pagination-wrapper {
     display: flex;
     justify-content: center;
@@ -102,4 +125,19 @@
     font-size: 14px;
     color: #555;
     margin: 0 5px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    .comment-card {
+        width: 80%;
+    }
+
+    .scroll-btn.prev {
+        left: -10px;
+    }
+
+    .scroll-btn.next {
+        right: -10px;
+    }
 }

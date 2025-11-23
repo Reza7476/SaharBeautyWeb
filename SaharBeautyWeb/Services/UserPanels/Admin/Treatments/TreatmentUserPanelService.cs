@@ -4,6 +4,7 @@ using SaharBeautyWeb.Models.Entities.Treatments.Dtos;
 using System.Text.Json;
 using System.Text;
 using SaharBeautyWeb.Models.Entities.Treatments.Models;
+using SaharBeautyWeb.Models.Entities.Review_Comment.Model;
 
 namespace SaharBeautyWeb.Services.UserPanels.Admin.Treatments;
 
@@ -77,6 +78,44 @@ public class TreatmentUserPanelService : UserPanelBaseService, ITreatmentUserPan
 
         var result = await GetAsync<GetTreatmentForAppointmentDto?>(url);
         return result;
+    }
+
+    public async Task<ApiResultDto<GetAllDto<GetAllTreatmentImagesModel>>> GetGalleryImage(int offset, int limit)
+    {
+        var url = $"{_apiUrl}/all-image-gallery-for-landing";
+        var query = new List<string>()
+        {
+            $"Offset={offset}",
+            $"Limit={limit}",
+        };
+        if (query.Any())
+        {
+            url = url + "?" + string.Join("&", query);
+        }
+
+
+        var result = await GetAsync<GetAllDto<GetAllTreatmentImagesModel>>(url);
+        if (!result.IsSuccess || result.Error != null)
+        {
+            return new ApiResultDto<GetAllDto<GetAllTreatmentImagesModel>>
+            {
+                Error = result.Error,
+                IsSuccess = result.IsSuccess
+            };
+        }
+        var mapped = new GetAllDto<GetAllTreatmentImagesModel>()
+        {
+            Elements = result.Data.Elements,
+            TotalElements = result.Data.TotalElements,
+        };
+
+        return new ApiResultDto<GetAllDto<GetAllTreatmentImagesModel>>
+        {
+            Data = mapped,
+            IsSuccess = true,
+            StatusCode = result.StatusCode
+        };
+        throw new NotImplementedException();
     }
 
     public async Task<ApiResultDto<List<GetPopularTreatmentsDto>>> GetPopularTreatments()

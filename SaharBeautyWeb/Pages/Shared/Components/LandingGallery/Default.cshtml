@@ -1,37 +1,57 @@
-﻿<section id="gallery" class="gallery py-16">
+﻿@using SaharBeautyWeb.Models.Entities.Treatments.Models.Landing
+@model GetTreatmentGalleryImageModel
+
+<link href="~/layout/assets/css/pages/commponents/reviwe-comments/review-comments.css" rel="stylesheet" />
+
+<section class="client-comments-component py-20 bg-white">
     <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-bold mb-6">گالری تصاویر</h2>
-        <div class="gallery-slider flex overflow-x-auto gap-4">
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1712481846921-d5df6dc4abfd" alt="آرایش مو" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <div class="slide flex-shrink-0 w-64"><img src="https://images.unsplash.com/photo-1698181842119-a5283dea1440" alt="آرایش صورت" class="rounded-lg w-full h-48 object-cover"></div>
-            <!-- تصاویر دیگر اضافه شود -->
+
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">گالری تصاویر</h2>
         </div>
+
+        <!-- Wrapper اسکرول و دکمه‌ها -->
+        <div class="scroll-wrapper relative">
+
+            <!-- دکمه قبلی -->
+            <button class="scroll-btn prev">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <!-- کارت‌ها -->
+            <div class="scroll-container flex gap-6 overflow-x-auto scroll-smooth pb-4">
+                @if (Model.AllTreatmentImages.Any())
+                {
+                    foreach (var item in Model.AllTreatmentImages)
+                    {
+                        foreach (var img in item.Images)
+                        {
+                            <div class="slide flex-shrink-0 w-64">
+                                <img src="@img.Url" alt="@item.TreatmentTitle" class="rounded-lg w-full h-48 object-cover">
+                            </div>
+                            <span>@item.TreatmentTitle</span>
+                        }
+                    }
+                }
+            </div>
+
+            <!-- دکمه بعدی -->
+            <button class="scroll-btn next">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-wrapper text-center mt-4">
+            <button class="page-btn" data-page="@(Model.CurrentPage - 1)" @(Model.CurrentPage == 0 ? "disabled" : "")>
+                قبلی
+            </button>
+            <span>@(Model.CurrentPage + 1) از @(Model.TotalPages)</span>
+            <button class="page-btn" data-page="@(Model.CurrentPage + 1)" @(Model.CurrentPage >= Model.TotalPages - 1 ? "disabled" : "")>
+                بعدی
+            </button>
+        </div>
+
     </div>
 </section>
