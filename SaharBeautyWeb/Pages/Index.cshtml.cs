@@ -18,4 +18,10 @@ public class IndexModel : LandingBasePageModel
     {
         return ViewComponent("ClientComments", new { pageNumber });
     }
+
+    public IActionResult OnGetLandingGallery(int pageNumber = 0)
+    {
+        return ViewComponent("LandingGallery", new { pageNumber });
+    }
+
 }

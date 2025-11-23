@@ -1,20 +1,20 @@
 ﻿$(() => {
 
     // --- اسکرول افقی کارت‌ها با موس (Mouse Wheel) ---
-    $(document).on('wheel', '#scrollBox', function (e) {
+    $(document).on('wheel', '.scroll-container', function (e) {
         e.preventDefault();
         this.scrollLeft += e.originalEvent.deltaY;
     });
 
     // --- Prev / Next دکمه‌ها ---
-    $(document).on('click', '#prevBtn', function () {
-        const scrollBox = document.getElementById('scrollBox');
-        if (scrollBox) scrollBox.scrollBy({ left: 300, behavior: 'smooth' });
+    $(document).on('click', '.scroll-btn.prev', function () {
+        const container = $(this).closest('.scroll-wrapper').find('.scroll-container')[0];
+        if (container) container.scrollBy({ left: -300, behavior: 'smooth' });
     });
 
-    $(document).on('click', '#nextBtn', function () {
-        const scrollBox = document.getElementById('scrollBox');
-        if (scrollBox) scrollBox.scrollBy({ left: -300, behavior: 'smooth' });
+    $(document).on('click', '.scroll-btn.next', function () {
+        const container = $(this).closest('.scroll-wrapper').find('.scroll-container')[0];
+        if (container) container.scrollBy({ left: 300, behavior: 'smooth' });
     });
 
     // --- موبایل منو ---
@@ -30,25 +30,24 @@
     $(document).on('click', '.page-btn', function (e) {
         e.preventDefault();
 
+        const container = $(this).closest('.client-comments-component');
         var page = parseInt($(this).data('page'));
         if (isNaN(page) || page < 0) return;
 
         $.ajax({
-            url: '/?handler=ClientComments', // PageHandler برای ViewComponent
+            url: '/?handler=ClientComments',
             type: 'GET',
             data: { pageNumber: page },
             beforeSend: function () {
-                $('.page-btn').prop('disabled', true); // جلوگیری از کلیک چندباره
+                container.find('.page-btn').prop('disabled', true);
             },
             success: function (html) {
-                $('#client-comments-container').html(html);
+                container.html(html);
             },
             complete: function () {
-                $('.page-btn').prop('disabled', false);
+                container.find('.page-btn').prop('disabled', false);
             }
         });
     });
 
 });
-
-
