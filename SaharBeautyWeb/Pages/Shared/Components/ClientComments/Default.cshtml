@@ -2,25 +2,22 @@
 @model GetReviewPublishedCommentModel
 <link href="~/layout/assets/css/pages/commponents/reviwe-comments/review-comments.css" rel="stylesheet" />
 
-<section class="client-comments-component py-20 bg-white">
+<section class="component-section bg-white no-top-padding">
     <div class="container mx-auto px-4">
 
-        <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold mb-4">نظرات مشتریان</h2>
-            <p class="text-gray-600 max-w-2xl mx-auto">
+        <div class="section-title text-center">
+            <h2 class="title">نظرات مشتریان</h2>
+            <p class="subtitle">
                 تجربه مشتریان ما از خدمات سالن زیبایی شایسته
             </p>
         </div>
 
-        <!-- Wrapper اسکرول و دکمه‌ها -->
         <div class="scroll-wrapper relative">
 
-            <!-- دکمه قبلی -->
             <button class="scroll-btn prev">
                 <i class="fa-solid fa-chevron-left"></i>
             </button>
 
-            <!-- کارت‌ها -->
             <div class="scroll-container flex gap-6 overflow-x-auto scroll-smooth pb-4">
                 @foreach (var item in Model.AllAppointmentReview)
                 {
@@ -29,23 +26,25 @@
 
                     <div class="comment-card bg-white border rounded-lg p-6 shadow-lg flex-shrink-0 w-80">
                         <div class="flex items-center gap-4 mb-4">
-                            <div class="w-12 h-12 bg-pink-100 text-pink-700 rounded-full flex items-center justify-center font-bold">
+                            <div class="avatar">
                                 @($"{f1}.{f2}")
                             </div>
                             <div>
                                 <div class="font-bold">@($"{item.Name} {item.LastName}")</div>
-                                <!-- ستاره‌ها -->
+
                                 <div class="flex gap-1 mt-1">
                                     @for (int i = 0; i < item.Rate; i++)
                                     {
                                         <i class="fa-solid fa-star star-gold"></i>
                                     }
                                 </div>
+
                                 <div class="text-xs text-gray-500 mt-1">
                                     خدمت: @item.TreatmentTitle
                                 </div>
                             </div>
                         </div>
+
                         <p class="text-gray-600 text-sm leading-relaxed break-words">
                             @item.Comment
                         </p>
@@ -53,14 +52,12 @@
                 }
             </div>
 
-            <!-- دکمه بعدی -->
             <button class="scroll-btn next">
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
 
         </div>
 
-        <!-- Pagination -->
         <div class="pagination-wrapper text-center mt-4">
             <button class="page-btn" data-page="@(Model.CurrentPage - 1)" @(Model.CurrentPage == 0 ? "disabled" : "")>
                 قبلی
@@ -73,3 +70,4 @@
 
     </div>
 </section>
+

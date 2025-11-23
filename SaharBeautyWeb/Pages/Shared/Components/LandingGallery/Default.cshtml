@@ -3,22 +3,19 @@
 
 <link href="~/layout/assets/css/pages/commponents/reviwe-comments/review-comments.css" rel="stylesheet" />
 
-<section class="client-comments-component py-20 bg-white">
+<section class="component-section bg-white">
     <div class="container mx-auto px-4">
 
-        <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold mb-4">گالری تصاویر</h2>
+        <div class="section-title text-center">
+            <h2 class="title">گالری تصاویر</h2>
         </div>
 
-        <!-- Wrapper اسکرول و دکمه‌ها -->
         <div class="scroll-wrapper relative">
 
-            <!-- دکمه قبلی -->
             <button class="scroll-btn prev">
                 <i class="fa-solid fa-chevron-left"></i>
             </button>
 
-            <!-- کارت‌ها -->
             <div class="scroll-container flex gap-6 overflow-x-auto scroll-smooth pb-4">
                 @if (Model.AllTreatmentImages.Any())
                 {
@@ -26,23 +23,21 @@
                     {
                         foreach (var img in item.Images)
                         {
-                            <div class="slide flex-shrink-0 w-64">
-                                <img src="@img.Url" alt="@item.TreatmentTitle" class="rounded-lg w-full h-48 object-cover">
+                            <div class="slide flex-shrink-0 w-64 card-wrapper">
+                                <img src="@img.Url" alt="@item.TreatmentTitle" class="gallery-image">
+                                <span class="image-caption">@item.TreatmentTitle</span>
                             </div>
-                            <span>@item.TreatmentTitle</span>
                         }
                     }
                 }
             </div>
 
-            <!-- دکمه بعدی -->
             <button class="scroll-btn next">
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
 
         </div>
 
-        <!-- Pagination -->
         <div class="pagination-wrapper text-center mt-4">
             <button class="page-btn-gallery" data-page="@(Model.CurrentPage - 1)" @(Model.CurrentPage == 0 ? "disabled" : "")>
                 قبلی

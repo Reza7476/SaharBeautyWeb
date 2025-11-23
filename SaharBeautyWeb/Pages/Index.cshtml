@@ -14,7 +14,7 @@
 
 <!-- Testimonials Section comment -->
 
-<div id="client-comments-container">
+<div id="client-comments-container" class="client-comments-container">
     @await Component.InvokeAsync("ClientComments", new { pageNumber = Request.Query["pageNumber"].ToString() != "" ? int.Parse(Request.Query["pageNumber"]) : 0 })
 </div>
 
