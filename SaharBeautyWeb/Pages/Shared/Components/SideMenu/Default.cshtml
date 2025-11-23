@@ -229,7 +229,7 @@
                         onclick="toggleSubmenu('sms-list')">
                     <div class="flex items-center gap-3">
                         <i class="fa-solid fa-calendar-check w-5"></i>
-                        <span> sms ها</span>
+                        <span> پیام ها</span>
                     </div>
                     <i class="fas fa-chevron-down transform transition-transform" id="icon-sms-list"></i>
                 </button>
@@ -240,7 +240,13 @@
                             onclick="window.location='/UserPanels/Admin/SMS-Logs/Index'">
                         <i class="fa-solid fa-calendar-check text-xs ml-2"></i> لیست SMS ها
                     </button>
+                    <button class="submenu-item w-full text-right p-3 pr-12 text-sm text-gray-600
+                    @(ViewData["ActiveMenu"]?.ToString() == "CommentList" ? "active bg-pink-100 font-bold" : "")"
+                            onclick="window.location='/UserPanels/Admin/Comments/Index'">
+                        <i class="fa-solid fa-calendar-check text-xs ml-2"></i> لیست نظرات
+                    </button>
                 </div>
+
             </div>
 
 

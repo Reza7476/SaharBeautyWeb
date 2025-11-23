@@ -1,0 +1,72 @@
+﻿@page
+@using SaharBeautyWeb.Configurations.Extensions
+@model SaharBeautyWeb.Pages.UserPanels.Admin.Comments.IndexModel
+@{
+    Layout = "_UserPanelLayout";
+    ViewData["ActiveMenu"] = "CommentList";
+
+}
+<link href="~/layout/admin/assets/css/pages/commentlist/comment-list.css" rel="stylesheet" />
+
+<div class="container">
+    <h2 class="page-title">لیست نظرات کاربران</h2>
+
+    <div class="appointments-card">
+        <table class="treatments-table">
+            <thead>
+                <tr>
+                    <th>نام خدمت</th>
+                    <th>نظر کاربر</th>
+                    <th>تاریخ ثبت نظر</th>
+                    <th>امتیاز</th>
+                    <th>انتشار یافته</th>
+                    <th>نام کاربر</th>
+                </tr>
+            </thead>
+            <tbody>
+                @* نمونه داده تستی *@
+
+                @if (Model.ReviewModel.AllAppointmentReview.Any())
+                {
+                    foreach (var item in Model.ReviewModel.AllAppointmentReview)
+                    {
+                        <tr>
+                            <td data-label="نام خدمت">@item.TreatmentTitle</td>
+                            <td data-label="نظر کاربر" class="review-text">
+                                <div class="multiline-truncate">@item.Comment!</div>
+                            </td>
+                            <td data-label="تاریخ ثبت نظر">
+                                @item.CreatedAt.ConvertGregorianDateWithTimeToShamsi()
+                            </td>
+
+                            <td data-label="امتیاز">
+                                @for (int i = 0; i < item.Rate; i++)
+                                {
+                                    <span class="stars">
+                                        <i class="fa-solid fa-star text-yellow-500"> </i>
+                                    </span>
+                                }
+                            </td>
+                            <td data-label="انتشار یافته">
+                                <label class="switch">
+                                    <input type="checkbox" class="publish-toggle" data-id="@item.Id" @(item.IsPublished ? "checked" : "")>
+                                    <span class="slider round"></span>
+                                </label>
+
+                            </td>
+                            <td data-label="نام کاربر">@($"{item.Name} {item.LastName}")</td>
+                        </tr>
+
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        var changePublished = '@Url.Page("Index","ChangePublishStatus")';
+    </script>
+    <script src="~/layout/admin/assets/js/pages/userpanels/admin/comment-reviews/review-comments.js"></script>
+}
