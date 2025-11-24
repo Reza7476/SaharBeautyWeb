@@ -46,7 +46,7 @@
                                 <a asp-page="Details"
                                    asp-route-id="@appointment.Id"
                                    asp-route-ReturnUrl="/UserPanels/Admin/Appointments"
-                                   asp-route-pageNumber="@ViewData["PageNumber"]"
+                                   asp-route-pageNumber="@(Model.CurrentPage)"
                                    asp-route-Search="@ViewData["Search"]"
                                    asp-route-Filter_day="@ViewData["Day"]"
                                    asp-route-Filter_status="@ViewData["Status"]"

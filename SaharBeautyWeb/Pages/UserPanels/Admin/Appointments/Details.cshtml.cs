@@ -84,19 +84,19 @@ public class DetailsModel : AjaxBasePageModel
         Filter_Date = filter_date;
         Filter_TreatmentTitle = filter_treatmentTitle;
         var query = new Dictionary<string, string?>
-            {
-                {"PageNumber", pageNumber.ToString()},
-                {"Search", search},
-                {"Day", filter_day},
-                {"Status", filter_status},
-                {"Date", filter_date},
-                {"TreatmentTitle", filter_treatmentTitle}
-            };
+    {
+        { "PageNumber", pageNumber.ToString() },
+        { "Search", string.IsNullOrWhiteSpace(search) ? null : Uri.EscapeDataString(search) },
+        { "Day", string.IsNullOrWhiteSpace(filter_day) ? null : Uri.EscapeDataString(filter_day) },
+        { "Status", string.IsNullOrWhiteSpace(filter_status) ? null : Uri.EscapeDataString(filter_status) },
+        { "Date", string.IsNullOrWhiteSpace(filter_date) ? null : Uri.EscapeDataString(filter_date) },
+        { "TreatmentTitle", string.IsNullOrWhiteSpace(filter_treatmentTitle) ? null : Uri.EscapeDataString(filter_treatmentTitle) }
+    };
         var queryString = string.Join("&",
                  query.Where(x => !string.IsNullOrWhiteSpace(x.Value))
                       .Select(x => $"{x.Key}={x.Value}")
              );
-        var url = $"/UserPanels/Admin/Appointments/Index?{queryString}";
+        var url = $"{ReturnUrl}?{queryString}";
 
 
         TempData["ReturnUrl"] = url;
