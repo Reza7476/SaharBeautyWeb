@@ -81,6 +81,7 @@ public class IndexModel : AjaxBasePageModel
         ViewData["Status"] = Filter?.Status;
         ViewData["TreatmentTitle"] = Filter?.TreatmentTitle;
         ViewData["Date"] = Filter?.Date;
+        ViewData["PageNumber"] = pageNumber;
         return response;
     }
 }

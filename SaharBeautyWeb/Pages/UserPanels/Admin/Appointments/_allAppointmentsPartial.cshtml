@@ -31,33 +31,33 @@
 
                         <tr>
                             <td data-label="عنوان">@appointment.TreatmentTitle</td>
-                            <td data-label="نام مشتری">@(appointment.ClientName+" "+appointment.ClientLastName )</td>
+                            <td data-label="نام مشتری">@(appointment.ClientName + " " + appointment.ClientLastName)</td>
                             <td data-label="شماره تلفن">@appointment.ClientMobile</td>
                             <td data-label="زمان شروع">@appointment.StartTime.ToString("HH:mm")</td>
                             <td data-label="زمان پایان">@appointment.EndTime.ToString("HH:mm")</td>
                             <td data-label="روز هفته">@day</td>
                             <td data-label="تاریخ">@(appointment.AppointmentDate.ConvertDateOnlyToPersian())</td>
-                            <td data-label="وضیعت" >
+                            <td data-label="وضیعت">
                                 <span class="status-badge @($"status-{appointment.Status}")">
                                     @status
                                 </span>
                             </td>
                             <td data-label="عملیات" data-id="@appointment.Id">
-                                <a asp-page="Details" 
+                                <a asp-page="Details"
                                    asp-route-id="@appointment.Id"
                                    asp-route-ReturnUrl="/UserPanels/Admin/Appointments"
+                                   asp-route-pageNumber="@ViewData["PageNumber"]"
+                                   asp-route-Search="@ViewData["Search"]"
+                                   asp-route-Filter_day="@ViewData["Day"]"
+                                   asp-route-Filter_status="@ViewData["Status"]"
+                                   asp-route-Filter_date="@ViewData["Date"]"
+                                   asp-route-Filter_treatmentTitle="@ViewData["TreatmentTitle"]"
                                    class="edit-btn">
                                     جزئیات
                                 </a>
                             </td>
                         </tr>
                     }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="4" class="text-center text-muted py-4">هیچ داده‌ای یافت نشد</td>
-                    </tr>
                 }
             </tbody>
         </table>
@@ -79,12 +79,13 @@
                     <a class="page-link"
                        asp-page="Index"
                        asp-route-pageNumber="@(Model.CurrentPage - 1)"
+                       asp-route-Search="@ViewData["Search"]"
                        asp-route-Filter.Day="@ViewData["Day"]"
                        asp-route-Filter.Status="@ViewData["Status"]"
                        asp-route-Filter.Date="@ViewData["Date"]"
-                       asp-route-Filter.Date="@ViewData["Search"]"
+                       asp-route-Filter.TreatmentTitle="@ViewData["TreatmentTitle"]"
                        aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
+                        <span aria-hidden="true">قبلی</span>
                     </a>
                 </li>
 
@@ -100,12 +101,13 @@
                     <a class="page-link"
                        asp-page="Index"
                        asp-route-pageNumber="@(Model.CurrentPage + 1)"
+                       asp-route-Search="@ViewData["Search"]"
                        asp-route-Filter.Day="@ViewData["Day"]"
                        asp-route-Filter.Status="@ViewData["Status"]"
                        asp-route-Filter.Date="@ViewData["Date"]"
-                       asp-route-Filter.Date="@ViewData["Search"]"
+                       asp-route-Filter.TreatmentTitle="@ViewData["TreatmentTitle"]"
                        aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
+                        <span aria-hidden="true">بعدی</span>
                     </a>
                 </li>
             </ul>
