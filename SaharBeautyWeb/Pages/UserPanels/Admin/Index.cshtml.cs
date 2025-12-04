@@ -9,6 +9,7 @@ using SaharBeautyWeb.Pages.Shared;
 using SaharBeautyWeb.Services.UserPanels.Admin.Treatments;
 using SaharBeautyWeb.Services.UserPanels.Admin.WeeklySchedules;
 using SaharBeautyWeb.Services.UserPanels.Clients.Appointments;
+using SaharBeautyWeb.Services.UserPanels.UserFCMTokens;
 
 namespace SaharBeautyWeb.Pages.UserPanels.Admin;
 
@@ -16,20 +17,22 @@ public class IndexModel : AjaxBasePageModel
 {
 
     private readonly IAppointmentService _appointmentService;
-
     private readonly IWeeklyScheduleService _weeklySchedule;
-
     private readonly ITreatmentUserPanelService _treatmentService;
+    private readonly IUserFCMTokenService _userFCMTokenService;
+
 
     public IndexModel(
         ErrorMessages errorMessage,
         IAppointmentService appointmentService,
         IWeeklyScheduleService weeklySchedule,
-        ITreatmentUserPanelService treatmentService) : base(errorMessage)
+        ITreatmentUserPanelService treatmentService,
+        IUserFCMTokenService userFCMTokenService) : base(errorMessage)
     {
         _appointmentService = appointmentService;
         _weeklySchedule = weeklySchedule;
         _treatmentService = treatmentService;
+        _userFCMTokenService = userFCMTokenService;
     }
     public List<AppointmentPerDayModel> AppointmentsPerDay { get; set; } = new();
 
