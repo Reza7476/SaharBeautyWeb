@@ -20,9 +20,28 @@ messaging.onBackgroundMessage(function (payload) {
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
         body: payload.notification.body,
-        icon: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Flat_tick_icon.svg'
+        icon: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Flat_tick_icon.svg',
+        data: {url:'UserPanels/Admin/Appointments/PendingAppointments'}
     };
     self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
+self.addEventListener('notificationclick', function (event) {
+    event.notification.close(); // حذف نوتیف بعد از کلیک
 
+    // باز کردن مسیر مشخص
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
+            // اگر تب با مسیر وجود داشت، روی آن فعال می‌کنیم
+            for (let client of windowClients) {
+                if (client.url.includes(event.notification.data.url) && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            // در غیر این صورت تب جدید باز می‌کنیم
+            if (clients.openWindow) {
+                return clients.openWindow(event.notification.data.url);
+            }
+        })
+    );
+});
