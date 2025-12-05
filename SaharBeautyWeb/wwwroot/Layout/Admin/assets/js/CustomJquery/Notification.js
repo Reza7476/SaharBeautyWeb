@@ -24,76 +24,102 @@ const analytics = getAnalytics(app);
 const messaging = getMessaging(app);
 
 
-
-// ======================= Toast داخلی =======================
-function showToast(title, message) {
+// ======================= Toast زیبا =======================
+function showToast(title, message, duration = 5000) {
     const toast = document.createElement('div');
     toast.className = 'custom-toast';
-    toast.innerHTML = `<strong>${title}</strong><p>${message}</p>`;
+    toast.innerHTML = `
+        <div class="toast-header">${title}</div>
+        <div class="toast-body">${message}</div>
+    `;
     document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 10000);
+
+    // انیمیشن ورود
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 100);
+
+    // حذف با انیمیشن خروج
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
 }
 
-// استایل ساده برای Toast
+// ======================= استایل =======================
 const style = document.createElement('style');
 style.innerHTML = `
-                .custom-toast {
-                    position: fixed;
-                    bottom: 20px;
-                    right: 20px;
-                    background-color: #333;
-                    color: #fff;
-                    padding: 12px 18px;
-                    border-radius: 6px;
-                    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-                    z-index: 9999;
-                    font-family: sans-serif;
-                    opacity: 0.95;
-                }
-            `;
-document.head.appendChild(style);
+    .custom-toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        min-width: 220px;
+        max-width: 300px;
+        background-color: rgba(50, 50, 50, 0.9);
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        z-index: 9999;
+    }
 
+    .custom-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .custom-toast .toast-header {
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .custom-toast .toast-body {
+        line-height: 1.3;
+    }
+`;
+document.head.appendChild(style);
 // ======================= درخواست دسترسی Notification =======================
 Notification.requestPermission().then(permission => {
     if (permission === "granted") {
-        // گرفتن FCM Token
-        getToken(messaging, {
-            vapidKey: "BB2Z4l2PtWkXd_wUKNOFUUKbkNttqnHbGvaDqImMUDrKC817NC6eozLedEYd6nd2r-LKrHTVdXRnRgBjUnEmkLo"
-        }).then(token => {
-
-            // ارسال Token به سرور
-            const antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
-            $.ajax({
-                url: '/UserPanels/Index?handler=SendFireBaseToken',
-                type: 'POST',
-                data: {
-                    __RequestVerificationToken: antiForgeryToken,
-                    token: token
-                },
-                success: function (res) {
-                },
-                error: function (err) {
-                }
+        getToken(messaging,
+            {
+                vapidKey: "BB2Z4l2PtWkXd_wUKNOFUUKbkNttqnHbGvaDqImMUDrKC817NC6eozLedEYd6nd2r-LKrHTVdXRnRgBjUnEmkLo"
+            }).then(token => {
+                const antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
+                $.ajax({
+                    url: '/UserPanels/Index?handler=SendFireBaseToken',
+                    type: 'POST',
+                    data: {
+                        __RequestVerificationToken: antiForgeryToken,
+                        token: token
+                    }
+                });
             });
-
-        }).catch(err => {
-        });
-    } else {
     }
 });
 
 // ======================= دریافت پیام در Foreground =======================
 onMessage(messaging, (payload) => {
+    const notificationTitle = payload.notification?.title || 'Notification';
+    const type = payload.data.type;
+    const receiver = payload.data.receiver;
 
-    if (Notification.permission === "granted" && payload.notification) {
-        new Notification(payload.notification.title, {
-            body: payload.notification.body,
-            icon: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Flat_tick_icon.svg'
-        });
-    }
+    const notificationOptions = {
+        body: payload.notification?.body || '',
+        icon: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Flat_tick_icon.svg',
+        data: {
+           // url: getUrl(type, receiver)
+        }
+    };
 
-    // نمایش Toast داخلی در UI
-    if (payload.notification) {
+    if (Notification.permission === "granted") {
+        const notification = new Notification(notificationTitle, notificationOptions);
         showToast(payload.notification.title, payload.notification.body);
     }
 });
+

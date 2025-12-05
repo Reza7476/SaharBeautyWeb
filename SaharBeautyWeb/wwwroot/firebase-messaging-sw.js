@@ -18,10 +18,15 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(function (payload) {
     const notificationTitle = payload.notification.title;
+    const type = payload.data.type; // نوع نوتیف
+    const receiver = payload.data.receiver; // admin یا user
+
     const notificationOptions = {
         body: payload.notification.body,
         icon: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Flat_tick_icon.svg',
-        data: {url:'UserPanels/Admin/Appointments/PendingAppointments'}
+        data: {
+            url: getUrl(type, receiver) //getNotificationUrl(type, receiver)
+        }
     };
     self.registration.showNotification(notificationTitle, notificationOptions);
 });
@@ -45,3 +50,33 @@ self.addEventListener('notificationclick', function (event) {
         })
     );
 });
+
+
+function getUrl(type, receiver) {
+
+    let baseUrl;
+
+    if (receiver === "Admin") {
+        baseUrl = '/UserPanels/Admin';
+
+        switch (type) {
+            case "NewAppointment":
+                return `${baseUrl}/Appointments/PendingAppointments`;
+        }
+
+        return baseUrl;
+    }
+
+    if (receiver === "Client") {
+        baseUrl = '/UserPanels/Client';
+
+        switch (type) {
+            case "NewMessage":
+                return `${baseUrl}/Messages`;
+        }
+
+        return baseUrl;
+    }
+
+    return '/';
+}
